@@ -4,6 +4,7 @@ import SignupHeader from '@/components/molecules/signupHeader';
 import StepIndicator from '@/components/atoms/stepIndicator';
 import Button from '@/components/atoms/button';
 import Modal from '@/components/atoms/modal';
+import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
 
 const SignupModal = ({ children }: PropsWithChildren) => {
   return (
@@ -14,7 +15,9 @@ const SignupModal = ({ children }: PropsWithChildren) => {
           <StepIndicator variant={'active'} />
           <StepIndicator variant={'inactive'} />
         </header>
-        <input />
+
+        <AcceptTermsGroup />
+
         <Button disabled={true} className="mb-5 w-80 px-7">
           다음
         </Button>
