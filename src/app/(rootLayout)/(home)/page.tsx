@@ -1,4 +1,5 @@
 import Button from '@/components/atoms/button';
+import SignupModal from '@/components/pages/signupModal';
 
 const Home = () => {
   return (
@@ -33,6 +34,7 @@ const Home = () => {
           submit
         </Button>
       </div>
+      <SignupModal />
     </>
   );
 };
