@@ -1,4 +1,3 @@
-import { PropsWithChildren } from 'react';
 import SignupContainer from '@/components/organisms/signupContainer';
 import SignupHeader from '@/components/molecules/signupHeader';
 import StepIndicator from '@/components/atoms/stepIndicator';
@@ -6,7 +5,7 @@ import Button from '@/components/atoms/button';
 import Modal from '@/components/atoms/modal';
 import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
 
-const SignupModal = ({ children }: PropsWithChildren) => {
+const SignupModal = () => {
   return (
     <Modal>
       <SignupContainer>
