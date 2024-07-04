@@ -1,4 +1,6 @@
 import Button from '@/components/atoms/button';
+import FormField from '@/components/Molecules/FormField';
+import EmailForm from '@/components/Organisms/EmailForm';
 
 const Home = () => {
   return (
@@ -33,6 +35,43 @@ const Home = () => {
           submit
         </Button>
       </div>
+
+      <hr />
+      <div>테스트 코드 작성 부분</div>
+      <br />
+      <FormField
+        label="테스트1"
+        htmlFor="test"
+        labelProps={{}}
+        inputProps={{ type: 'text', placeholder: '이메일' }}
+        variant="primary"
+      />
+
+      <FormField
+        label="테스트2"
+        htmlFor="test"
+        labelProps={{}}
+        inputProps={{ type: 'text', placeholder: '비밀번호' }}
+        variant="primary"
+      />
+
+      <br />
+      <div>테스트2</div>
+      <EmailForm
+        label="테스트"
+        htmlFor="test"
+        labelProps={{}}
+        inputProps={{ type: 'text', placeholder: '비밀번호 확인' }}
+        variant="primary"
+      />
+
+      <EmailForm
+        label="테스트"
+        htmlFor="test"
+        labelProps={{}}
+        inputProps={{ type: 'text', placeholder: '비밀번호 확인' }}
+        variant="secondary"
+      />
     </>
   );
 };
