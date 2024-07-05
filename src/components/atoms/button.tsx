@@ -15,13 +15,13 @@ const buttonVariants = cva(
           'bg-black text-white border-black hover:text-gray-400 data-[disabled=true]:bg-gray-200 data-[disabled=true]:border-gray-200 data-[disabled=true]:text-white',
       },
       size: {
-        l: 'py-5 w-40',
+        lg: 'py-5 w-40',
         sm: 'py-3 px-5',
       },
     },
     defaultVariants: {
       variant: 'primary',
-      size: 'l',
+      size: 'lg',
     },
   },
 );
