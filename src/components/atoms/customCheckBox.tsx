@@ -1,4 +1,3 @@
-import { ComponentProps } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 
 const CustomCheckBoxVariants = cva('h-5 w-5 bg-center bg-no-repeat', {
@@ -15,9 +14,9 @@ const CustomCheckBoxVariants = cva('h-5 w-5 bg-center bg-no-repeat', {
 });
 
 interface CustomCheckBoxProps
-  extends ComponentProps<'input'>,
-    VariantProps<typeof CustomCheckBoxVariants> {
+  extends VariantProps<typeof CustomCheckBoxVariants> {
   id: string;
+  onClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
   checked: boolean;
 }
 
@@ -25,10 +24,15 @@ const CustomCheckBox = ({
   id,
   checked,
   variant,
+  onClick,
   ...props
 }: CustomCheckBoxProps) => {
   return (
-    <div data-checked={checked} className={CustomCheckBoxVariants({ variant })}>
+    <div
+      data-checked={checked}
+      onClick={onClick}
+      className={CustomCheckBoxVariants({ variant })}
+    >
       <input type="checkbox" className="hidden" id={id} {...props} />
     </div>
   );

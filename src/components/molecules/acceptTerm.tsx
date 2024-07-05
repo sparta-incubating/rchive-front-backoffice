@@ -1,24 +1,37 @@
 'use client';
 
 import CustomCheckBox from '@/components/atoms/customCheckBox';
-import { useState } from 'react';
+import { ReactNode } from 'react';
 
-const AcceptAllTerms = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+interface AcceptTermsProps {
+  children: ReactNode;
+  checkBoxId: string;
+  isChecked: boolean;
+  onChange: () => void;
+}
 
-  const handleCheck = () => {
-    setIsChecked((prev) => !prev);
-  };
+const AcceptTerms = ({
+  checkBoxId,
+  children,
+  isChecked,
+  onChange,
+}: AcceptTermsProps) => {
   return (
-    <div className="items-top flex space-x-2">
+    <div className="items-top relative flex space-x-2">
       <CustomCheckBox
-        id={'ageCut'}
+        id={checkBoxId}
         variant={'checked'}
         checked={isChecked}
-        onChange={handleCheck}
+        onClick={onChange}
       />
-      <label htmlFor={'ageCut'}>[필수]만 14세 이상</label>
+      <label
+        htmlFor={'ageCut'}
+        onClick={onChange}
+        className="text-sm text-gray-400"
+      >
+        {children}
+      </label>
     </div>
   );
 };
-export default AcceptAllTerms;
+export default AcceptTerms;

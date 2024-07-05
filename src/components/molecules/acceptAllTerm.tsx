@@ -1,23 +1,39 @@
 'use client';
 
 import CustomCheckBox from '@/components/atoms/customCheckBox';
-import { useState } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 
-const AcceptAllTerm = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+interface AcceptAllTermProps {
+  children: ReactNode;
+  checkBoxId: string;
+  isChecked: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onClick: (
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement | HTMLLabelElement>,
+  ) => void;
+}
 
-  const handleCheck = () => {
-    setIsChecked((prev) => !prev);
-  };
+const AcceptAllTerm = ({
+  checkBoxId,
+  children,
+  isChecked,
+  onClick,
+}: AcceptAllTermProps) => {
   return (
     <div className="items-top flex space-x-2">
       <CustomCheckBox
-        id={'allTerms'}
+        id={checkBoxId}
         variant={'all'}
         checked={isChecked}
-        onChange={handleCheck}
+        onClick={onClick}
       />
-      <label htmlFor={'allTerms'}>전체 약관 동의</label>
+      <label
+        htmlFor={checkBoxId}
+        onClick={onClick}
+        className="text-sm font-semibold"
+      >
+        {children}
+      </label>
     </div>
   );
 };

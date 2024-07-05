@@ -126,11 +126,23 @@ const config = {
       main: ['Pretendard-Regular'],
     },
     fontSize: {
-      '5xl': '2.5rem',
-      '6xl': '3.125rem',
+      xs: '0.75rem', // 12px
+      sm: '0.875rem', // 14px
+      base: '1rem', // 16px
+      lg: '1.125rem', // 18px
+      xl: '1.25rem', // 20px
+      '2xl': '1.5rem', // 24px
+      '3xl': '1.875rem', // 30px
+      '4xl': '2.25rem', // 36px
+      '5xl': '2.5rem', // 40px
+      '6xl': '3.125rem', // 50px
+    },
+    boxShadow: {
+      selectBox:
+        '0px 2px 6px 0px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)',
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar-hide')],
 } satisfies Config;
 
 export default config;
