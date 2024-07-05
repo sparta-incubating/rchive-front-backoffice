@@ -50,6 +50,7 @@ const SelectBox = ({ options, label, onSelect }: SelectBoxProps) => {
             <SelectItem
               key={option.value}
               data-value={option.value}
+              selected={option.selected}
               onClick={() => handleSelect(option)}
             >
               {option.label}
