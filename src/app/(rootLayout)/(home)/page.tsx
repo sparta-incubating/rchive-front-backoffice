@@ -1,6 +1,6 @@
 import Button from '@/components/atoms/button';
-import FormField from '@/components/Molecules/FormField';
-import EmailForm from '@/components/Organisms/EmailForm';
+import InputField from '@/components/Molecules/InputField';
+import PageDiv from '@/components/Molecules/PageDiv';
 
 const Home = () => {
   return (
@@ -39,15 +39,14 @@ const Home = () => {
       <hr />
       <div>테스트 코드 작성 부분</div>
       <br />
-      <FormField
+      <InputField
         label="테스트1"
         htmlFor="test"
         labelProps={{}}
         inputProps={{ type: 'text', placeholder: '이메일' }}
-        variant="primary"
       />
 
-      <FormField
+      <InputField
         label="테스트2"
         htmlFor="test"
         labelProps={{}}
@@ -56,22 +55,30 @@ const Home = () => {
       />
 
       <br />
-      <div>테스트2</div>
-      <EmailForm
-        label="테스트"
-        htmlFor="test"
-        labelProps={{}}
-        inputProps={{ type: 'text', placeholder: '비밀번호 확인' }}
-        variant="primary"
-      />
+      <br />
+      <br />
 
-      <EmailForm
-        label="테스트"
-        htmlFor="test"
-        labelProps={{}}
-        inputProps={{ type: 'text', placeholder: '비밀번호 확인' }}
-        variant="secondary"
-      />
+      <PageDiv>
+        <InputField
+          label="테스트2"
+          htmlFor="test"
+          labelProps={{}}
+          inputProps={{ type: 'text', placeholder: '비밀번호' }}
+          variant="primary"
+        />
+        <Button size="sm" variant="submit" disabled={true}>
+          primary
+        </Button>
+      </PageDiv>
+      <PageDiv>
+        <InputField
+          label="테스트2"
+          htmlFor="test"
+          labelProps={{}}
+          inputProps={{ type: 'text', placeholder: '비밀번호' }}
+          variant="primary"
+        />
+      </PageDiv>
     </>
   );
 };

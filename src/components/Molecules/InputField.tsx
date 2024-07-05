@@ -17,7 +17,7 @@ const divVariants = cva('rounded-full', {
   },
 });
 
-interface FormFieldProps
+interface InputFieldProps
   extends ComponentProps<'div'>,
     VariantProps<typeof divVariants> {
   label: string;
@@ -26,7 +26,7 @@ interface FormFieldProps
   inputProps: ComponentProps<'input'>;
 }
 
-const FormField = ({
+const InputField = ({
   label,
   htmlFor,
   labelProps,
@@ -34,7 +34,7 @@ const FormField = ({
   variant,
   className,
   ...props
-}: FormFieldProps) => {
+}: InputFieldProps) => {
   return (
     <div {...props} className={classMerge(divVariants({ variant }), className)}>
       <Label htmlFor={htmlFor} {...labelProps}>
@@ -45,4 +45,4 @@ const FormField = ({
   );
 };
 
-export default FormField;
+export default InputField;
