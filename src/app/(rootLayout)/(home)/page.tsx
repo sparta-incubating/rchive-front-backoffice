@@ -1,6 +1,6 @@
 import Button from '@/components/atoms/button';
 import InputField from '@/components/Molecules/InputField';
-import PageDiv from '@/components/Molecules/PageDiv';
+import Container from '@/components/Molecules/Container';
 
 const Home = () => {
   return (
@@ -36,49 +36,55 @@ const Home = () => {
         </Button>
       </div>
 
-      <hr />
-      <div>테스트 코드 작성 부분</div>
       <br />
       <InputField
-        label="테스트1"
-        htmlFor="test"
+        label="이메일"
+        htmlFor="email"
         labelProps={{}}
-        inputProps={{ type: 'text', placeholder: '이메일' }}
-      />
-
-      <InputField
-        label="테스트2"
-        htmlFor="test"
-        labelProps={{}}
-        inputProps={{ type: 'text', placeholder: '비밀번호' }}
-        variant="primary"
+        inputProps={{ type: 'text', placeholder: '이메일 입력' }}
       />
 
       <br />
       <br />
       <br />
-
-      <PageDiv>
+      <Container>
         <InputField
-          label="테스트2"
-          htmlFor="test"
+          label="이메일"
+          htmlFor="email"
           labelProps={{}}
-          inputProps={{ type: 'text', placeholder: '비밀번호' }}
+          inputProps={{ type: 'text', placeholder: '이메일 입력' }}
           variant="primary"
         />
         <Button size="sm" variant="submit" disabled={true}>
-          primary
+          중복 확인
         </Button>
-      </PageDiv>
-      <PageDiv>
+      </Container>
+      {!Container ? (
+        ''
+      ) : (
+        <p className="text-primary-400">
+          영문, 숫자 조합으로 6자 이상 입력해 주세요
+        </p>
+      )}
+      <br />
+      <br />
+      <br />
+      <Container>
         <InputField
           label="테스트2"
           htmlFor="test"
           labelProps={{}}
-          inputProps={{ type: 'text', placeholder: '비밀번호' }}
+          inputProps={{
+            type: 'text',
+            placeholder: '비밀번호',
+            className: 'peer',
+          }}
           variant="primary"
         />
-      </PageDiv>
+        <p className="invisible text-sm text-primary-500 peer-invalid:visible">
+          영문, 숫자 조합으로 6자 이상 입력해 주세요
+        </p>
+      </Container>
     </>
   );
 };

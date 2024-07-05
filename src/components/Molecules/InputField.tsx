@@ -4,7 +4,7 @@ import Input from '../atoms/input';
 import { cva, VariantProps } from 'class-variance-authority';
 import { classMerge } from '@/lib/utils';
 
-const divVariants = cva('rounded-full', {
+const divVariants = cva('border w-[230px] h-[46px] data-[hover=true] ', {
   variants: {
     variant: {
       primary: '',
@@ -40,7 +40,7 @@ const InputField = ({
       <Label htmlFor={htmlFor} {...labelProps}>
         {label}
       </Label>
-      <Input {...inputProps} />
+      <Input {...inputProps} className="peer focus:outline-none" />
     </div>
   );
 };
