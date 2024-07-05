@@ -12,9 +12,18 @@ import { z } from 'zod';
 import { signupSchema } from '@/validators/auth/signup.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useSelectBox from '@/hooks/useSelectBox';
+import { SelectOptionType } from '@/types/signup.types';
+
+const selectDumy: SelectOptionType[] = [
+  { value: '1', label: 'AI 웹게발', selected: false },
+  { value: '2', label: '데이터 분석', selected: false },
+  { value: '3', label: '백엔드 개발(Java+Spring)', selected: false },
+  { value: '4', label: '백엔드 개발(Node.js+Express)', selected: false },
+  { value: '5', label: '프론트엔드 개발(React)', selected: false },
+];
 
 const SignupModal = () => {
-  useForm<z.infer<typeof signupSchema>>({
+  const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       email: '',
@@ -27,13 +36,7 @@ const SignupModal = () => {
     },
   });
 
-  const { selectOptions, handleSelected } = useSelectBox([
-    { value: '1', label: 'AI 웹게발', selected: false },
-    { value: '2', label: '데이터 분석', selected: false },
-    { value: '3', label: '백엔드 개발(Java+Spring)', selected: false },
-    { value: '4', label: '백엔드 개발(Node.js+Express)', selected: false },
-    { value: '5', label: '프론트엔드 개발(React)', selected: false },
-  ]);
+  const { selectOptions, handleSelected } = useSelectBox(selectDumy);
 
   return (
     <Modal>
@@ -48,6 +51,7 @@ const SignupModal = () => {
           options={selectOptions}
           label="트랙"
           onSelect={handleSelected}
+          variant={'primary'}
         />
 
         {/*약관*/}
