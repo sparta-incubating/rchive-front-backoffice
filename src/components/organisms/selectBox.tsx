@@ -12,9 +12,16 @@ interface SelectBoxProps {
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
   variant?: 'primary' | 'secondary';
+  className?: string;
 }
 
-const SelectBox = ({ options, label, onSelect, variant }: SelectBoxProps) => {
+const SelectBox = ({
+  options,
+  label,
+  onSelect,
+  variant,
+  className,
+}: SelectBoxProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
     options.find((option) => option.selected) || null,
@@ -31,7 +38,7 @@ const SelectBox = ({ options, label, onSelect, variant }: SelectBoxProps) => {
   };
 
   return (
-    <SelectContainer>
+    <SelectContainer className={className}>
       <SelectLayout>
         <SelectLabel>{label}</SelectLabel>
         <SelectInput

@@ -1,11 +1,22 @@
-import { ComponentProps, PropsWithChildren } from 'react';
+import { ComponentProps, ReactNode } from 'react';
+import { classMerge } from '@/lib/utils';
+
+interface SelectContainerProps extends ComponentProps<'div'> {
+  children: ReactNode;
+  className?: string;
+}
 
 const SelectContainer = ({
   children,
+  className,
   ...props
-}: PropsWithChildren<ComponentProps<'div'>>) => {
+}: SelectContainerProps) => {
+  const baseStyle = classMerge(
+    'relative w-80 rounded-[12px] bg-blue-50 p-5',
+    className,
+  );
   return (
-    <div className="relative w-80 rounded-[12px] bg-blue-50 p-5" {...props}>
+    <div className={baseStyle} {...props}>
       {children}
     </div>
   );
