@@ -52,10 +52,12 @@ const SignupModal = () => {
           label="트랙"
           onSelect={handleSelected}
           variant={'primary'}
+          className={'mb-5'}
         />
 
         {/*약관*/}
         <AcceptTermsGroup />
+
         {/*button*/}
         <Button disabled={true} className="mb-5 w-80 px-7">
           다음
