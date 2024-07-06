@@ -1,4 +1,6 @@
 import Button from '@/components/atoms/button';
+import UploadThumbnail from '@/components/atoms/uploadThumbnail';
+import UploadThumbnailText from '@/components/atoms/uploadThumbnailText';
 
 const Home = () => {
   return (
@@ -32,6 +34,21 @@ const Home = () => {
         <Button variant="submit" size="sm">
           submit
         </Button>
+      </div>
+
+      <div>
+        <h1>Thumbnail test</h1>
+        <UploadThumbnail>
+          <UploadThumbnailText>썸네일</UploadThumbnailText>
+          <UploadThumbnailText>자동 업로드</UploadThumbnailText>
+        </UploadThumbnail>
+        <UploadThumbnail variant={'image'}>
+          <img
+            src={'/assets/test/img.png'}
+            alt={'test img'}
+            className="object-fill"
+          />
+        </UploadThumbnail>
       </div>
     </>
   );
