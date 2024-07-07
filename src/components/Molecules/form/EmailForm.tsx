@@ -6,7 +6,7 @@ import InputField from '../InputField';
 import Button from '@/components/atoms/button';
 
 const EmailForm = () => {
-  const [test, setTest] = useState<string>('');
+  const [isInputFilled, setIsInputFilled] = useState<string>('');
 
   return (
     <>
@@ -21,14 +21,14 @@ const EmailForm = () => {
             type: 'text',
             placeholder: '이메일 입력',
             id: 'email',
-            value: test,
+            value: isInputFilled,
           }}
           className="group"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setTest(e.target.value)
+            setIsInputFilled(e.target.value)
           }
         />
-        {test.length > 0 && (
+        {isInputFilled.length > 0 && (
           <Button size="sm" variant="submit" disabled={true}>
             중복 확인
           </Button>
