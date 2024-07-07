@@ -19,7 +19,12 @@ const PhoneField = () => {
           }
         />
         {isInputFilled.length > 0 && (
-          <Button size="sm" variant="submit" disabled={true}>
+          <Button
+            size="sm"
+            variant="submit"
+            disabled={true}
+            className="h-[42px] w-[85px] p-3 text-xs"
+          >
             인증 요청
           </Button>
         )}

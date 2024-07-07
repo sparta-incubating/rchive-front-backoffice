@@ -29,7 +29,12 @@ const EmailForm = () => {
           }
         />
         {isInputFilled.length > 0 && (
-          <Button size="sm" variant="submit" disabled={true}>
+          <Button
+            size="sm"
+            variant="submit"
+            disabled={true}
+            className="h-[42px] w-[85px] p-2 text-xs"
+          >
             중복 확인
           </Button>
         )}
