@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ ogImage });
     } else {
       return NextResponse.json(
-        { error: 'OG image not found' },
+        { error: 'OG 이미지를 찾을 수 없습니다.' },
         { status: 404 },
       );
     }

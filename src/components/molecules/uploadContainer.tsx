@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UploadThumbnail from '@/components/atoms/uploadThumbnail';
 import UploadThumbnailText from '@/components/atoms/uploadThumbnailText';
 import UploadInput from '@/components/atoms/uploadInput';
+import useDebounce from '@/hooks/useDebounce';
 
 const UploadContainer = () => {
   const [url, setUrl] = useState('');
   const [ogImage, setOgImage] = useState('');
+  const debouncedURL = useDebounce<string>(url, 500);
 
   const fetchOgImage = async (inputUrl: string) => {
     try {
@@ -21,20 +23,27 @@ const UploadContainer = () => {
     }
   };
 
-  const handleUrlChange = (newUrl: string) => {
-    setUrl(newUrl);
-    if (newUrl) {
-      fetchOgImage(newUrl);
+  useEffect(() => {
+    if (debouncedURL) {
+      fetchOgImage(debouncedURL);
     } else {
       setOgImage('');
     }
+  }, [debouncedURL]);
+
+  const handleUrlChange = (newUrl: string) => {
+    setUrl(newUrl);
   };
 
   return (
     <div className="flex w-full gap-4">
       <UploadThumbnail variant={ogImage ? 'image' : 'text'}>
         {ogImage ? (
-          <img src={ogImage} alt="OG 이미지" className="object-fill" />
+          <img
+            src={ogImage}
+            alt="OG 이미지"
+            className="h-full w-full object-fill"
+          />
         ) : (
           <>
             <UploadThumbnailText>썸네일</UploadThumbnailText>
