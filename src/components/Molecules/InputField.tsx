@@ -37,7 +37,7 @@ const InputField = ({
       <Label {...labelProps}>{label}</Label>
       <Input
         {...inputProps}
-        className="peer h-[20px] w-[236px] bg-blue-50 text-sm focus:outline-none"
+        className="bold h-[20px] w-[236px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
       />
     </div>
   );

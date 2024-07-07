@@ -1,12 +1,12 @@
 import { classMerge } from '@/lib/utils';
 import { cva, VariantProps } from 'class-variance-authority';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, PropsWithChildren } from 'react';
 
-const divVariants = cva('flex items-center bg-blue-50 ', {
+const divVariants = cva('flex flex-col rounded-xl border bg-blue-50 p-5', {
   variants: {
     variant: {
-      primary: 'h-[84px] w-[360px] border p-5 rounded-xl',
-      secondary: 'h-[68px] w-[320px]',
+      primary: 'h-[177px] w-[360px] ',
+      secondary: 'h-[246px] w-[360px]',
     },
   },
   defaultVariants: {
@@ -18,7 +18,7 @@ interface DivProps
   extends ComponentProps<'div'>,
     VariantProps<typeof divVariants> {}
 
-const InputContainer = ({
+const PasswordContainer = ({
   children,
   variant,
   className,
@@ -31,4 +31,4 @@ const InputContainer = ({
   );
 };
 
-export default InputContainer;
+export default PasswordContainer;

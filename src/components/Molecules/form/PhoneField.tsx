@@ -2,35 +2,24 @@
 
 import InputContainer from '@/components/atoms/InputContainer';
 import React, { useState } from 'react';
-import InputField from '../InputField';
 import Button from '@/components/atoms/button';
+import Input from '@/components/atoms/input';
 
-const EmailForm = () => {
+const PhoneField = () => {
   const [test, setTest] = useState<string>('');
-
   return (
     <>
-      <InputContainer>
-        <InputField
-          label="이메일"
-          labelProps={{
-            htmlFor: 'email',
-            className: 'text-xs mb-[8px] group-focus-within:text-primary-400',
-          }}
-          inputProps={{
-            type: 'text',
-            placeholder: '이메일 입력',
-            id: 'email',
-            value: test,
-          }}
-          className="group"
+      <InputContainer variant="secondary">
+        <Input
+          className="w-80 bg-blue-50 p-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          placeholder="휴대폰 번호 입력 (-) 제외"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setTest(e.target.value)
           }
         />
         {test.length > 0 && (
           <Button size="sm" variant="submit" disabled={true}>
-            중복 확인
+            인증 요청
           </Button>
         )}
       </InputContainer>
@@ -38,4 +27,4 @@ const EmailForm = () => {
   );
 };
 
-export default EmailForm;
+export default PhoneField;

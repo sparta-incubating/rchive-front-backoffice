@@ -5,33 +5,21 @@ import InputField from '../InputField';
 const BirthdayForm = () => {
   return (
     <>
-      <p>생년월일</p>
-      <InputContainer>
-        <InputField
-          label="생년월일"
-          labelProps={{ htmlFor: 'birthday', className: 'text-sm' }}
-          inputProps={{
-            type: 'text',
-            placeholder: 'ex. 19990101',
-            id: 'birthday',
-          }}
-        />
-      </InputContainer>
       <InputContainer>
         <InputField
           label="생년월일"
           labelProps={{
-            htmlFor: 'birthDay',
-            className: 'text-primary-400 text-sm',
+            htmlFor: 'birthday',
+            className: 'text-xs mb-[8px] group-focus-within:text-primary-400',
           }}
           inputProps={{
             type: 'text',
             placeholder: 'ex. 19990101',
             id: 'birthday',
           }}
+          className="group"
         />
-      </InputContainer>{' '}
-      <br />
+      </InputContainer>
     </>
   );
 };

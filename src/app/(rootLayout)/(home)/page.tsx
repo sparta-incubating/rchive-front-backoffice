@@ -41,13 +41,13 @@ const Home = () => {
           submit
         </Button>
       </div> */}
-
       {/* 회원가입 UI */}
-      <NameForm />
-      {/* <BirthdayContainer />
-      <EmailContainer />
-      <PasswordContainer />
-      <PhoneContainer /> */}
+      <EmailForm /> <br />
+      <PasswordForm /> <br />
+      <NameForm /> <br />
+      <PhoneForm />
+      <br />
+      <BirthdayForm /> <br />
       <br />
       <br />
     </>
