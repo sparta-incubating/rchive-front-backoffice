@@ -1,5 +1,8 @@
+'use client';
+
 import Button from '@/components/atoms/button';
 import UploadContainer from '@/components/molecules/uploadContainer';
+import { createToast } from '@/utils/toast';
 
 const UiComponents = () => {
   return (
@@ -45,6 +48,18 @@ const UiComponents = () => {
           <SignupModal></SignupModal>
         </Modal>
       </div>*/}
+
+      <div>
+        <h1>toast test</h1>
+        <Button
+          size={'sm'}
+          onClick={() =>
+            createToast('게시물 작성이 완료되었습니다.', 'primary')
+          }
+        >
+          create Toast
+        </Button>
+      </div>
     </>
   );
 };

@@ -2,7 +2,7 @@
 
 import { PropsWithChildren } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
-import { classMerge } from '@/lib/utils';
+import { classMerge } from '@/utils/utils';
 import Image from 'next/image';
 
 const SelectInputVariants = cva(

@@ -1,5 +1,5 @@
 import { ComponentProps, ReactNode } from 'react';
-import { classMerge } from '@/lib/utils';
+import { classMerge } from '@/utils/utils';
 
 interface SelectContainerProps extends ComponentProps<'div'> {
   children: ReactNode;
