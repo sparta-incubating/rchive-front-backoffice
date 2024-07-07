@@ -1,11 +1,17 @@
 import Button from '@/components/atoms/button';
-import InputField from '@/components/Molecules/InputField';
-import Container from '@/components/Molecules/Container';
+import InputField from '@/components/molecules/InputField';
+import InputForm from '@/components/atoms/InputContainer';
+import Input from '@/components/atoms/input';
+import NameForm from '@/components/molecules/form/NameForm';
+import BirthdayForm from '@/components/molecules/form/BirthdayForm';
+import EmailForm from '@/components/molecules/form/EmailForm';
+import PasswordForm from '@/components/molecules/form/PasswordForm';
+import PhoneForm from '@/components/molecules/form/PhoneForm';
 
 const Home = () => {
   return (
     <>
-      <div className="text-6xl font-bold">르탄이의 아카이브</div>
+      {/* <div className="text-6xl font-bold">르탄이의 아카이브</div>
       <div className="text-[50px] font-bold">르탄이의 아카이브</div>
       <div className="text-5xl font-bold">르탄이의 아카이브</div>
       <div className="text-[40px] font-bold">르탄이의 아카이브</div>
@@ -34,57 +40,16 @@ const Home = () => {
         <Button variant="submit" size="sm">
           submit
         </Button>
-      </div>
+      </div> */}
 
-      <br />
-      <InputField
-        label="이메일"
-        htmlFor="email"
-        labelProps={{}}
-        inputProps={{ type: 'text', placeholder: '이메일 입력' }}
-      />
-
+      {/* 회원가입 UI */}
+      <NameForm />
+      {/* <BirthdayContainer />
+      <EmailContainer />
+      <PasswordContainer />
+      <PhoneContainer /> */}
       <br />
       <br />
-      <br />
-      <Container>
-        <InputField
-          label="이메일"
-          htmlFor="email"
-          labelProps={{}}
-          inputProps={{ type: 'text', placeholder: '이메일 입력' }}
-          variant="primary"
-        />
-        <Button size="sm" variant="submit" disabled={true}>
-          중복 확인
-        </Button>
-      </Container>
-      {!Container ? (
-        ''
-      ) : (
-        <p className="text-primary-400">
-          영문, 숫자 조합으로 6자 이상 입력해 주세요
-        </p>
-      )}
-      <br />
-      <br />
-      <br />
-      <Container>
-        <InputField
-          label="테스트2"
-          htmlFor="test"
-          labelProps={{}}
-          inputProps={{
-            type: 'text',
-            placeholder: '비밀번호',
-            className: 'peer',
-          }}
-          variant="primary"
-        />
-        <p className="invisible text-sm text-primary-500 peer-invalid:visible">
-          영문, 숫자 조합으로 6자 이상 입력해 주세요
-        </p>
-      </Container>
     </>
   );
 };

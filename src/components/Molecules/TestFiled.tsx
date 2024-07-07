@@ -4,11 +4,11 @@ import Input from '../atoms/input';
 import { cva, VariantProps } from 'class-variance-authority';
 import { classMerge } from '@/lib/utils';
 
-const divVariants = cva(' flex flex-col w-[360px]', {
+/**기존 코드*/
+const inputVariants = cva('peer focus:outline-none bg-blue-50', {
   variants: {
     variant: {
-      primary: 'h-[46px]',
-      secondary: 'w-[320px] h-[100px] mb-[24px] ',
+      primary: '',
     },
   },
   defaultVariants: {
@@ -18,7 +18,7 @@ const divVariants = cva(' flex flex-col w-[360px]', {
 
 interface InputFieldProps
   extends ComponentProps<'div'>,
-    VariantProps<typeof divVariants> {
+    VariantProps<typeof inputVariants> {
   label: string;
   labelProps: ComponentProps<'label'>;
   inputProps: ComponentProps<'input'>;
@@ -33,11 +33,11 @@ const InputField = ({
   ...props
 }: InputFieldProps) => {
   return (
-    <div {...props} className={classMerge(divVariants({ variant }), className)}>
+    <div {...props} className="h-[46px] w-[230px]">
       <Label {...labelProps}>{label}</Label>
       <Input
         {...inputProps}
-        className="peer h-[20px] w-[236px] bg-blue-50 text-sm focus:outline-none"
+        className={classMerge(inputVariants({ variant }), className)}
       />
     </div>
   );
