@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import CompoundProvider from '@/provider/compoundProvider';
+import Toast from '@/components/molecules/toast';
 
 /**
  * Root layout component
@@ -9,7 +10,12 @@ import CompoundProvider from '@/provider/compoundProvider';
  * @constructor
  */
 const RootLayout = ({ children }: PropsWithChildren) => {
-  return <CompoundProvider>{children}</CompoundProvider>;
+  return (
+    <CompoundProvider>
+      {children}
+      <Toast />
+    </CompoundProvider>
+  );
 };
 
 export default RootLayout;

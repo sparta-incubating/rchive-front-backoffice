@@ -1,6 +1,8 @@
+'use client';
+
 import { ComponentProps, ReactNode } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
-import { classMerge } from '@/lib/utils';
+import { classMerge } from '@/utils/utils';
 
 const buttonVariants = cva(
   'rounded-full border cursor-pointer data-[disabled=true]:cursor-not-allowed',
