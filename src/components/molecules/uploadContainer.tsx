@@ -42,7 +42,7 @@ const UploadContainer = () => {
           <img
             src={ogImage}
             alt="OG 이미지"
-            className="h-full w-full object-fill"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
           <>

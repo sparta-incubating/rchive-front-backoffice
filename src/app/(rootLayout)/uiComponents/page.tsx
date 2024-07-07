@@ -1,6 +1,4 @@
 import Button from '@/components/atoms/button';
-import UploadThumbnail from '@/components/atoms/uploadThumbnail';
-import UploadThumbnailText from '@/components/atoms/uploadThumbnailText';
 import UploadContainer from '@/components/molecules/uploadContainer';
 
 const UiComponents = () => {
@@ -39,20 +37,14 @@ const UiComponents = () => {
 
       <div>
         <h1>Thumbnail test</h1>
-        <UploadThumbnail>
-          <UploadThumbnailText>썸네일</UploadThumbnailText>
-          <UploadThumbnailText>자동 업로드</UploadThumbnailText>
-        </UploadThumbnail>
-        <UploadThumbnail variant={'image'}>
-          <img
-            src={'/assets/test/img.png'}
-            alt={'test img'}
-            className="object-fill"
-          />
-        </UploadThumbnail>
-
         <UploadContainer />
       </div>
+
+      {/*<div>
+        <Modal>
+          <SignupModal></SignupModal>
+        </Modal>
+      </div>*/}
     </>
   );
 };

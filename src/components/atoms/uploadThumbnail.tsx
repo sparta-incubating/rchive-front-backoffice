@@ -2,12 +2,12 @@ import { ReactNode } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 
 const UploadThumbnailVariants = cva(
-  'flex max-w-[228px] min-w-[228px] flex-col items-center justify-center rounded-[8px] bg-blue-55 overflow-hidden',
+  'relative flex max-w-[228px] min-w-[228px] flex-col items-center justify-center rounded-[8px] bg-blue-55 overflow-hidden',
   {
     variants: {
       variant: {
         text: 'py-[45px] min-h-[42px]',
-        image: 'min-h-[132px]',
+        image: 'min-h-[132px] max-h-[132px]',
       },
     },
     defaultVariants: {
