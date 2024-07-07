@@ -1,7 +1,3 @@
-import Button from '@/components/atoms/button';
-import InputField from '@/components/molecules/InputField';
-import InputForm from '@/components/atoms/InputContainer';
-import Input from '@/components/atoms/input';
 import NameForm from '@/components/molecules/form/NameForm';
 import BirthdayForm from '@/components/molecules/form/BirthdayForm';
 import EmailForm from '@/components/molecules/form/EmailForm';
@@ -12,13 +8,12 @@ const Home = () => {
   return (
     <>
       {/* 회원가입 UI */}
-      <EmailForm />
-      <PasswordForm />
-      <NameForm />
-      <PhoneForm />
-      <BirthdayForm />
+      <EmailForm /> <br />
+      <PasswordForm /> <br />
+      <NameForm /> <br />
+      <PhoneForm /> <br />
+      <BirthdayForm /> <br />
     </>
   );
 };
-
 export default Home;

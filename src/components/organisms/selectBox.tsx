@@ -1,10 +1,10 @@
-import SelectContainer from '@/components/atoms/select/selectContainer';
-import SelectLayout from '@/components/atoms/select/selectLayout';
-import SelectLabel from '@/components/atoms/select/selectLabel';
-import SelectInput from '@/components/atoms/select/selectInput';
+import SelectContainer from '@/components/atoms/selectContainer';
+import SelectLayout from '@/components/atoms/selectLayout';
+import SelectLabel from '@/components/atoms/selectLabel';
+import SelectInput from '@/components/atoms/selectInput';
 import { SelectOptionType } from '@/types/signup.types';
-import SelectDropDown from '@/components/atoms/select/selectDropDown';
-import SelectItem from '@/components/atoms/select/selectItem';
+import SelectDropDown from '@/components/atoms/selectDropDown';
+import SelectItem from '@/components/atoms/selectItem';
 import { useState } from 'react';
 
 interface SelectBoxProps {

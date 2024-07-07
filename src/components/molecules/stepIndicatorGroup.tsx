@@ -1,4 +1,4 @@
-import StepIndicator from '@/components/atoms/select/stepIndicator';
+import StepIndicator from '@/components/atoms/stepIndicator';
 
 const StepIndicatorGroup = () => {
   return (

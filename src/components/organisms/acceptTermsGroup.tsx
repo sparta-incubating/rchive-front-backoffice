@@ -3,9 +3,9 @@
 import AcceptAllTerm from '@/components/molecules/acceptAllTerm';
 import AcceptTerm from '@/components/molecules/acceptTerm';
 import MoreLink from '@/components/atoms/moreLink';
-import useCheckBox from '@/hooks/useCheckBox';
 import { useState } from 'react';
 import { CheckListType } from '@/types/signup.types';
+import useCheckBox from '@/hooks/useCheckBox';
 
 const AcceptTermsGroup = () => {
   const [checkList, setCheckList] = useState<CheckListType[]>([
@@ -48,9 +48,8 @@ const AcceptTermsGroup = () => {
       <div className="flex flex-col gap-4">
         {checkList.map((check) => {
           return (
-            <div className="flex justify-between">
+            <div key={check.id} className="flex justify-between">
               <AcceptTerm
-                key={check.id}
                 checkBoxId={check.id}
                 isChecked={check.isChecked}
                 onChange={() => handleCheck(check.id)}

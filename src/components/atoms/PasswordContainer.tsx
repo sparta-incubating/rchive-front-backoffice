@@ -1,4 +1,4 @@
-import { classMerge } from '@/lib/utils';
+import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import React, { ComponentProps, PropsWithChildren } from 'react';
 

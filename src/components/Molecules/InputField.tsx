@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 import Label from '../atoms/label';
 import Input from '../atoms/input';
 import { cva, VariantProps } from 'class-variance-authority';
-import { classMerge } from '@/lib/utils';
+import { classMerge } from '@/utils/utils';
 
 const divVariants = cva(' flex flex-col w-[360px]', {
   variants: {
