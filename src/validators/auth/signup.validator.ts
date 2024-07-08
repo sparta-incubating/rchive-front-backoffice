@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const PASSWORD_REG = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+export const PASSWORD_REG = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
 export const signupSchema = z.object({
   email: z.string().email({ message: '올바른 이메일을 입력해주세요.' }),
