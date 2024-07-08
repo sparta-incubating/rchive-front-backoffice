@@ -51,7 +51,7 @@ const SelectBox = ({
         <SelectDropDown clicked={isOpen}>
           {options.map((option) => (
             <SelectItem
-              key={option.value}
+              key={option.value + option.label}
               data-value={option.value}
               selected={option.selected}
               variant={variant}

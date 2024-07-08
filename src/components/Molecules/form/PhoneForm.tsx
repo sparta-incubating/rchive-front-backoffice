@@ -1,32 +1,14 @@
 'use client';
 
-import { useCallback, useState } from 'react';
 import SelectBox from '@/components/organisms/selectBox';
-import { SelectOptionType } from '@/types/signup.types';
 import Input from '@/components/atoms/input';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import PhoneField from './PhoneField';
+import useSelectBox from '@/hooks/useSelectBox';
+import { phoneCountries } from '@/utils/phoneCountry';
 
 const PhoneForm = () => {
-  const [selectOptions, setSelectOptions] = useState<SelectOptionType[]>([
-    { value: '1', label: '대한민국 +82', selected: true },
-    { value: '2', label: 'Afghanistan +93', selected: false },
-    { value: '3', label: 'ALbania +355', selected: false },
-    { value: '4', label: 'Algeria +213', selected: false },
-    { value: '5', label: 'American Samoa +1', selected: false },
-    { value: '6', label: 'Andorra +376', selected: false },
-  ]);
-
-  const handleSelected = useCallback((value: SelectOptionType['value']) => {
-    setSelectOptions((prev) =>
-      prev.map((option) =>
-        option.value === value
-          ? { ...option, selected: true }
-          : { ...option, selected: false },
-      ),
-    );
-  }, []);
-
+  const { selectOptions, handleSelected } = useSelectBox(phoneCountries);
   return (
     <>
       <PasswordContainer variant="secondary">

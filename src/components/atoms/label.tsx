@@ -1,16 +1,11 @@
+import React, { ComponentProps, ReactNode } from 'react';
 
-import React, { ComponentProps } from 'react'
+interface LabelProps extends ComponentProps<'label'> {
+  children: ReactNode;
+}
 
-
-
-interface LabelProps extends ComponentProps<'label'>{}
-
-
-
-const Label = ({...props}:LabelProps) => {
-  return (
-   <label {...props}></label>
-  )
+const Label = ({ children, ...props }: LabelProps) => {
+  return <label {...props}>{children}</label>;
 };
 
 export default Label;
