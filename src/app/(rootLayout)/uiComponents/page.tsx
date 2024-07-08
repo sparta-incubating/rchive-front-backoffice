@@ -3,6 +3,11 @@
 import Button from '@/components/atoms/button';
 import UploadContainer from '@/components/molecules/uploadContainer';
 import { createToast } from '@/utils/toast';
+import NameForm from '@/components/molecules/form/NameForm';
+import BirthdayForm from '@/components/molecules/form/BirthdayForm';
+import EmailForm from '@/components/molecules/form/EmailForm';
+import PasswordForm from '@/components/molecules/form/PasswordForm';
+import PhoneForm from '@/components/molecules/form/PhoneForm';
 
 const UiComponents = () => {
   return (
@@ -37,18 +42,15 @@ const UiComponents = () => {
           submit
         </Button>
       </div>
-
       <div>
         <h1>Thumbnail test</h1>
         <UploadContainer />
       </div>
-
       {/*<div>
         <Modal>
           <SignupModal></SignupModal>
         </Modal>
       </div>*/}
-
       <div>
         <h1>toast test</h1>
         <Button
@@ -60,6 +62,11 @@ const UiComponents = () => {
           create Toast
         </Button>
       </div>
+      <EmailForm /> <br />
+      <PasswordForm /> <br />
+      <NameForm /> <br />
+      <PhoneForm /> <br />
+      <BirthdayForm /> <br />
     </>
   );
 };
