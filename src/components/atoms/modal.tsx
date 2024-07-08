@@ -11,7 +11,7 @@ const Modal = ({ children, inboardClassName }: ModalProps) => {
     <div className="fixed left-0 top-0 flex h-screen w-screen overflow-y-scroll bg-blue-55 py-6">
       <div
         className={classMerge(
-          `mx-auto flex h-[1290px] w-[408px] flex-col items-center rounded-xl bg-white`,
+          `mx-auto flex h-[1317px] w-[408px] flex-col items-center rounded-xl bg-white`,
           inboardClassName,
         )}
       >

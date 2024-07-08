@@ -2,11 +2,12 @@ import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import React, { ComponentProps } from 'react';
 
-const divVariants = cva('flex items-center bg-blue-50 ', {
+const divVariants = cva(' w-[360px]', {
   variants: {
     variant: {
-      primary: 'h-[84px] w-[360px] p-5 rounded-xl',
-      secondary: 'h-[68px] w-[320px]',
+      primary: 'h-[108px] ',
+      secondary: 'h-[205px] ',
+      tertiary: 'h-[274px]',
     },
   },
   defaultVariants: {
