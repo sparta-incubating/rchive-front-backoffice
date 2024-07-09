@@ -10,7 +10,7 @@ const SignIn = () => {
     <>
       <div className="flex h-[1024px] min-w-[1440px] max-w-[1920px] flex-row">
         <div className="w-[514px]">
-          <div className="flex justify-center">
+          <div className="mt-[148px] flex justify-center">
             <Image src={rtan} height={152} width={152} alt="르탄이" />
           </div>
           <div className="h-[200px]">
@@ -51,7 +51,7 @@ const SignIn = () => {
           </div>
         </div>
         <div className="flex flex-row">
-          <div className="bg-gradient-to-t from-secondary-400">
+          <div className="bg-custom-gradient">
             <Image
               src={backofficeMain}
               alt="백오피스"

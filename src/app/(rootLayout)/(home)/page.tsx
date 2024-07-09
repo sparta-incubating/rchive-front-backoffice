@@ -1,5 +1,11 @@
+import SignIn from '@/components/pages/SignIn';
+
 const Home = () => {
-  return <>Home</>;
+  return (
+    <>
+      <SignIn />
+    </>
+  );
 };
 
 export default Home;
