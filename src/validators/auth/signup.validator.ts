@@ -18,6 +18,10 @@ export const signupSchema = z.object({
       (value) => PASSWORD_REG.test(value),
       '비밀번호가 일치하지 않습니다.',
     ),
+  phone: z.string().min(8),
+  phoneConfirm: z.boolean().refine((value) => value, {
+    message: '휴대폰 인증은 필수입니다.',
+  }),
   age: z.boolean().refine((value) => value, {
     message: '만 14세 이상이어야 합니다.',
   }),

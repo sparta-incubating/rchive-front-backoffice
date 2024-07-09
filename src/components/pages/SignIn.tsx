@@ -1,18 +1,25 @@
 import Image from 'next/image';
 import React from 'react';
 import rtan from '@/../public/assets/icons/Group 1000004592.svg';
-import EmailForm from '../molecules/form/EmailForm';
 import Button from '../atoms/button';
 import backofficeMain from '@/../public/assets/icons/Frame 1171276232.svg';
+import InputContainer from '../atoms/InputContainer';
+import InputField from '../molecules/InputField';
+import Label from '../atoms/label';
+import Input from '../atoms/input';
 
 const SignIn = () => {
   return (
     <>
       <div className="flex h-[1024px] min-w-[1440px] max-w-[1920px] flex-row">
+        {/*1 */}
         <div className="w-[514px]">
+          {/*르탄이*/}
           <div className="mt-[148px] flex justify-center">
             <Image src={rtan} height={152} width={152} alt="르탄이" />
           </div>
+
+          {/*문구*/}
           <div className="h-[200px]">
             <div className="flex flex-col pt-[36px]">
               <p className="flex justify-center text-2xl font-bold">
@@ -32,13 +39,52 @@ const SignIn = () => {
             </div>
           </div>
 
+          {/*로그인*/}
           <div className="flex h-[228px] flex-col">
             <div className="mx-auto">
-              <EmailForm />
-              <br />
-              <EmailForm />
+              {/*이메일*/}
+              <InputContainer>
+                <InputField>
+                  <Label
+                    htmlFor="email"
+                    className="group-focus-within:text-primary-400"
+                  >
+                    이메일
+                  </Label>
+                  <Input
+                    //  {...register('email')}
+                    className="bold bg-blue-50 pt-[6px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                    placeholder="ex.123@email.com"
+                  />
+                </InputField>
+                <span className="text-sm text-primary-400">
+                  {/* {errors.email?.message} */}
+                </span>
+              </InputContainer>
+
+              {/*비밀번호*/}
+              <InputContainer>
+                <InputField>
+                  <Label
+                    htmlFor="email"
+                    className="group-focus-within:text-primary-400"
+                  >
+                    비밀번호
+                  </Label>
+                  <Input
+                    //  {...register('email')}
+                    className="bold bg-blue-50 pt-[6px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                    placeholder="비밀번호 입력"
+                  />
+                </InputField>
+                <span className="text-sm text-primary-400">
+                  {/* {errors.email?.message} */}
+                </span>
+              </InputContainer>
             </div>
           </div>
+
+          {/* 회원가입*/}
           <div className="flex justify-center py-5">
             <Button size="sm" className="w-[300px]" variant="submit">
               로그인
@@ -52,6 +98,8 @@ const SignIn = () => {
             </span>
           </div>
         </div>
+
+        {/*2 */}
         <div className="flex flex-row">
           <div className="bg-custom-gradient">
             <Image
