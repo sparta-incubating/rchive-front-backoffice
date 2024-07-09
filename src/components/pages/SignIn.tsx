@@ -45,9 +45,11 @@ const SignIn = () => {
             </Button>
           </div>
           <div className="mx-auto flex h-[53px] flex-row justify-center p-[16px] text-center">
-            <span className="font-sm w-[120px]">회원가입</span>
+            <span className="w-[120px] text-sm text-gray-500">회원가입</span>
             <div className="border" />
-            <span className="font-sm w-[120px]">비밀번호 찾기</span>
+            <span className="w-[120px] text-sm text-gray-500">
+              비밀번호 찾기
+            </span>
           </div>
         </div>
         <div className="flex flex-row">
