@@ -3,9 +3,6 @@
 import Button from '@/components/atoms/button';
 import UploadContainer from '@/components/molecules/uploadContainer';
 import { createToast } from '@/utils/toast';
-import NameForm from '@/components/molecules/form/NameForm';
-import BirthdayForm from '@/components/molecules/form/BirthdayForm';
-import PasswordForm from '@/components/molecules/form/PasswordForm';
 import PhoneForm from '@/components/molecules/form/PhoneForm';
 
 const UiComponents = () => {
@@ -61,10 +58,7 @@ const UiComponents = () => {
           create Toast
         </Button>
       </div>
-      <PasswordForm /> <br />
-      <NameForm /> <br />
       <PhoneForm /> <br />
-      <BirthdayForm /> <br />
     </>
   );
 };
