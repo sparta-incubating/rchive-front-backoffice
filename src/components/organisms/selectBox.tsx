@@ -5,23 +5,28 @@ import SelectInput from '@/components/atoms/selectInput';
 import { SelectOptionType } from '@/types/signup.types';
 import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectItem from '@/components/atoms/selectItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form';
 
-interface SelectBoxProps {
+interface SelectBoxProps<T extends FieldValues> {
   options: SelectOptionType[];
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
   variant?: 'primary' | 'secondary';
   className?: string;
+  setValue: UseFormSetValue<T>;
+  setValueName: Path<T>;
 }
 
-const SelectBox = ({
+const SelectBox = <T extends FieldValues>({
   options,
   label,
   onSelect,
   variant,
   className,
-}: SelectBoxProps) => {
+  setValue,
+  setValueName,
+}: SelectBoxProps<T>) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
     options.find((option) => option.selected) || null,
@@ -35,7 +40,20 @@ const SelectBox = ({
     setSelectedOption(option);
     setIsOpen(false);
     onSelect(option.value);
+    setValue(setValueName, option.value as PathValue<T, Path<T>>, {
+      shouldValidate: true,
+    });
   };
+
+  useEffect(() => {
+    const selected = options.find((option) => option.selected);
+    if (selected) {
+      setSelectedOption(selected);
+      setValue(setValueName, selected.value as PathValue<T, Path<T>>, {
+        shouldValidate: true,
+      });
+    }
+  }, []);
 
   return (
     <SelectContainer className={className}>

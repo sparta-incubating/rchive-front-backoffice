@@ -4,76 +4,30 @@ import SignupHeader from '@/components/molecules/signupHeader';
 import Button from '@/components/atoms/button';
 import Modal from '@/components/atoms/modal';
 import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
-import { useForm } from 'react-hook-form';
-import { signupSchema } from '@/validators/auth/signup.validator';
-import { zodResolver } from '@hookform/resolvers/zod';
 import PhoneForm from '@/components/molecules/form/PhoneForm';
 import InputContainer from '@/components/atoms/InputContainer';
 import InputField from '@/components/molecules/InputField';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Label from '@/components/atoms/label';
 import Input from '@/components/atoms/input';
 import FormSpan from '@/components/atoms/formSpan';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import { handleKeyPressOnlyNumber } from '@/utils/utils';
-import { emailUniqueResponseType, SignupFormData } from '@/types/signup.types';
-import axios from 'axios';
+import useSignupForm from '@/hooks/useSignupForm';
 
 const SignupModal = () => {
-  const [isEmailUnique, setIsEmailUnique] = useState<boolean>(false);
   const {
-    register,
     handleSubmit,
-    watch,
-    formState: { errors, isValid },
+    onSubmit,
+    register,
     getValues,
     setValue,
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
-    mode: 'onChange',
-    defaultValues: {
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      /*      phone: '',
-      phoneConfirm: false,*/
-      ad: false,
-      age: false,
-      privacy: false,
-      service: false,
-    },
-  });
-
-  const onSubmit = async (data: SignupFormData) => {
-    console.log('on Submit');
-    console.log({ data });
-  };
-
-  const checkEmail = async (email: string) => {
-    try {
-      const response = await axios.get<emailUniqueResponseType>(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/overlap/email?email=${email}`,
-      );
-      setIsEmailUnique(!!response.data.status);
-    } catch (error) {
-      console.error('Error checking email uniqueness', error);
-      setIsEmailUnique(false);
-    }
-  };
-
-  const email = watch('email');
-  useEffect(() => {
-    setIsEmailUnique(false);
-  }, [email]);
-
-  useEffect(() => {
-    console.log({ isEmailUnique });
-    console.log({ isValid });
-    console.log('ad = ', getValues('ad'));
-    console.log('privacy = ', getValues('privacy'));
-    console.log('service = ', getValues('service'));
-    console.log('age = ', getValues('age'));
-  }, [isEmailUnique, isValid, getValues]);
+    errors,
+    watch,
+    checkEmail,
+    isEmailUnique,
+    isValid,
+  } = useSignupForm();
 
   return (
     <Modal>
@@ -167,7 +121,7 @@ const SignupModal = () => {
         </section>
 
         {/* phone */}
-        <PhoneForm />
+        <PhoneForm setValue={setValue} register={register} />
 
         {/* birthday */}
         <section>
@@ -199,7 +153,7 @@ const SignupModal = () => {
         <div className="mt-5 flex w-full items-center justify-center">
           <Button
             type="submit"
-            disabled={!isValid || !isEmailUnique}
+            // disabled={!isValid || !isEmailUnique}
             className="mb-5 w-80 px-7"
           >
             다음

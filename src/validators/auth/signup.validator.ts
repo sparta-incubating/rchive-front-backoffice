@@ -22,8 +22,9 @@ export const signupSchema = z
         (value) => PASSWORD_REG.test(value),
         '비밀번호가 일치하지 않습니다.',
       ),
-    /* phone: z.string().min(8),
-    phoneConfirm: z.boolean().refine((value) => value, {
+    countryCode: z.string(),
+    phone: z.string().min(8),
+    /*phoneConfirm: z.boolean().refine((value) => value, {
       message: '휴대폰 인증은 필수입니다.',
     }),*/
     birth: z

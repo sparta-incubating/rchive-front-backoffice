@@ -4,8 +4,14 @@ import InputContainer from '@/components/atoms/InputContainer';
 import React, { useState } from 'react';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
+import { UseFormRegister } from 'react-hook-form';
+import { SignupFormData } from '@/types/signup.types';
 
-const PhoneField = () => {
+interface PhoneFieldProps {
+  register: UseFormRegister<SignupFormData>;
+}
+
+const PhoneField = ({ register }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
 
   return (
@@ -14,6 +20,7 @@ const PhoneField = () => {
         <Input
           className="my-5 w-[233px] bg-blue-50 pl-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="휴대폰 번호 입력 (-) 제외"
+          {...register('phone')}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setIsInputFilled(e.target.value)
           }

@@ -21,3 +21,20 @@ export type emailUniqueResponseType = {
 };
 
 export type SignupFormData = z.infer<typeof signupSchema>;
+
+export enum OAuthEnum {
+  LOCAL = 'LOCAL',
+  KAKAO = 'KAKAO',
+}
+
+export enum GenderEnum {
+  NONE = 'NONE',
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+}
+
+export enum UserRoleEnum {
+  USER = 'USER',
+  MANAGER = 'MANAGER',
+  ADMIN = 'ADMIN',
+}
