@@ -1,5 +1,6 @@
 'use client';
 
+import { client } from '@/axois/axiosClient';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import { loginSchema } from '@/validators/auth/login.validator';
@@ -16,38 +17,30 @@ const Home = () => {
   } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
   });
 
+  type USER = {
+    username: string;
+    password: string;
+  };
+
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     try {
-      console.log('제ㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔ발', data);
+      const loginInfo: USER = data;
+      console.log('data1', loginInfo);
+
+      client.post('/api/v1/users/login', loginInfo).then((res) => {
+        console.log(res, 'res');
+        console.log('data2', loginInfo);
+      });
     } catch (error) {
       console.error('런타임에러', error);
     }
-
-    // type USER = {
-    //   username: string;
-    //   password: string;
-    // };
   };
-  // const loginUser: USER = {
-  //   username: 'email,',
-  //   password: 'password',
-  // };
 
-  // client
-  // .post("/api/v1/users/login",loginUser)
-  // .then((res)=>{
-  //   const {accessToken} = res.data;
-  //   cookies.set("Login",accessToken,{
-  //     path : "/",
-  //     secure : true,
-  //     sameStie:"none",
-  //   })
-  // })
   return (
     <>
       {/* <div className="h-[1024px] w-[1440px] border">1440</div>
@@ -58,10 +51,10 @@ const Home = () => {
       <div>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <div className="border">
-            <Input type="text" placeholder="이메일" {...register('email')} />
+            <Input type="text" placeholder="이메일" {...register('username')} />
           </div>
           <br />
-          <span>{errors.email?.message}</span>
+          <span>{errors.username?.message}</span>
           <br />
           <div className="border">
             <Input
