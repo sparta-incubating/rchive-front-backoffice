@@ -3,66 +3,92 @@
 import AcceptAllTerm from '@/components/molecules/acceptAllTerm';
 import AcceptTerm from '@/components/molecules/acceptTerm';
 import MoreLink from '@/components/atoms/moreLink';
-import { useState } from 'react';
-import { CheckListType } from '@/types/signup.types';
-import useCheckBox from '@/hooks/useCheckBox';
+import { CheckListType, SignupFormData } from '@/types/signup.types';
+import {
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from 'react-hook-form';
+import FormSpan from '@/components/atoms/formSpan';
+import useSignupCheckBox from '@/hooks/useSignupCheckBox';
 
-const AcceptTermsGroup = () => {
-  const [checkList, setCheckList] = useState<CheckListType[]>([
-    { id: 'age', label: '[필수]만 14세 이상', isChecked: false },
+interface AcceptTermsGroupProps {
+  register: UseFormRegister<SignupFormData>;
+  setValue: UseFormSetValue<SignupFormData>;
+  getValues: UseFormGetValues<SignupFormData>;
+  errors: FieldErrors<SignupFormData>;
+}
+
+const AcceptTermsGroup = ({
+  register,
+  setValue,
+  getValues,
+  errors,
+}: AcceptTermsGroupProps) => {
+  const terms: CheckListType[] = [
+    { id: 'age', label: '[필수]만 14세 이상', isChecked: getValues('age') },
     {
       id: 'service',
       label: '[필수]서비스 약관 동의',
-      isChecked: false,
-      //TODO: 각 약관에 맞는 링크로 변경해야함.
+      isChecked: getValues('service'),
       link: 'https://teamsparta.notion.site/247d57da1322424d8e8c551df21a048e',
     },
     {
       id: 'privacy',
       label: '[필수]개인정보처리방침 및 제3자 제공 동의',
-      isChecked: false,
-      //TODO: 각 약관에 맞는 링크로 변경해야함.
+      isChecked: getValues('privacy'),
       link: 'https://teamsparta.notion.site/7b1dc644460946f08bab08b794de685f',
     },
-    { id: 'ad', label: '[선택]광고성 정보 수신 동의', isChecked: false },
-  ]);
+    {
+      id: 'ad',
+      label: '[선택]광고성 정보 수신 동의',
+      isChecked: getValues('ad'),
+    },
+  ];
 
-  const { handleCheck, handleCheckAll, handleAllCheckClick } = useCheckBox(
-    checkList,
-    setCheckList,
-  );
+  const {
+    state: checkList,
+    handleCheck,
+    handleCheckAll,
+  } = useSignupCheckBox(terms, setValue);
 
   return (
     <div className="flex w-full flex-col gap-[18px] px-6 pb-6">
       <AcceptAllTerm
         checkBoxId={'all'}
-        isChecked={checkList.every((check) => {
-          return check.isChecked;
-        })}
+        isChecked={checkList.every((check) => check.isChecked)}
         onChange={handleCheckAll}
-        onClick={handleAllCheckClick}
       >
         전체 약관 동의
       </AcceptAllTerm>
 
       <div className="flex flex-col gap-4">
-        {checkList.map((check) => {
-          return (
-            <div key={check.id} className="flex justify-between">
-              <AcceptTerm
-                checkBoxId={check.id}
-                isChecked={check.isChecked}
-                onChange={() => handleCheck(check.id)}
-              >
-                {check.label}
-              </AcceptTerm>
-              {check.id === 'service' || check.id === 'privacy' ? (
-                <MoreLink href={check.link} />
-              ) : null}
-            </div>
-          );
-        })}
+        {checkList.map((check) => (
+          <div key={check.id} className="flex justify-between">
+            <AcceptTerm
+              checkBoxId={check.id}
+              isChecked={check.isChecked}
+              register={register}
+              onChange={() => handleCheck(check.id)}
+            >
+              {check.label}
+            </AcceptTerm>
+            {(check.id === 'service' || check.id === 'privacy') && (
+              <MoreLink href={check.link} />
+            )}
+          </div>
+        ))}
       </div>
+      {errors.age?.message && (
+        <FormSpan variant="error">{errors.age.message}</FormSpan>
+      )}
+      {errors.service?.message && (
+        <FormSpan variant="error">{errors.service.message}</FormSpan>
+      )}
+      {errors.privacy?.message && (
+        <FormSpan variant="error">{errors.privacy.message}</FormSpan>
+      )}
     </div>
   );
 };

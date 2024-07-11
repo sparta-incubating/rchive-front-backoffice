@@ -2,209 +2,168 @@
 
 import SignupHeader from '@/components/molecules/signupHeader';
 import Modal from '@/components/atoms/modal';
-import StepIndicatorGroup from '@/components/molecules/stepIndicatorGroup';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { signupSchema } from '@/validators/auth/signup.validator';
-import { zodResolver } from '@hookform/resolvers/zod';
+import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
+import PhoneForm from '@/components/molecules/form/PhoneForm';
 import InputContainer from '@/components/atoms/InputContainer';
 import InputField from '@/components/molecules/InputField';
 import React from 'react';
 import Label from '@/components/atoms/label';
 import Input from '@/components/atoms/input';
-import AcceptTermsGroup from '../organisms/acceptTermsGroup';
+import FormSpan from '@/components/atoms/formSpan';
+import PasswordContainer from '@/components/atoms/PasswordContainer';
+import { handleKeyPressOnlyNumber } from '@/utils/utils';
+import useSignupForm from '@/hooks/useSignupForm';
+import { signupModalType } from '@/types/signup.types';
 import Button from '../atoms/button';
-import SelectBox from '../organisms/selectBox';
-import useSelectBox from '@/hooks/useSelectBox';
-import { phoneCountries } from '@/utils/phoneCountry';
 
-const SignupModal = () => {
-  const { selectOptions, handleSelected } = useSelectBox(phoneCountries);
+interface SignupModalProps {
+  signupModalType: signupModalType;
+}
+
+const SignupModal = ({ signupModalType }: SignupModalProps) => {
   const {
-    register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<z.infer<typeof signupSchema>>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      phone: '',
-      phoneConfirm: false,
-      ad: false,
-      age: false,
-      privacy: false,
-      service: false,
-    },
-  });
-
-  const onSubmit = (data: z.infer<typeof signupSchema>) => {
-    console.log({ data });
-  };
+    onSubmit,
+    register,
+    getValues,
+    setValue,
+    errors,
+    watch,
+    control,
+    checkEmail,
+    isEmailUnique,
+    isValid,
+  } = useSignupForm(signupModalType);
 
   return (
     <Modal>
       {/*modal 헤더*/}
       <SignupHeader />
 
-      {/*step 인디케이터*/}
-      <StepIndicatorGroup />
-
       <form
-        onSubmit={handleSubmit((data) => onSubmit(data))}
-        className="mt-10 flex flex-col gap-2"
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-10 flex flex-col gap-5"
       >
         <h1 className="text-center text-xl font-semibold">회원가입</h1>
-
         {/* email */}
-        <InputContainer>
-          <InputField>
-            <Label
-              htmlFor="email"
-              className="group-focus-within:text-primary-400"
-            >
-              이메일
-            </Label>
-            <Input
-              {...register('email')}
-              className="bold bg-blue-50 pt-[6px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-              placeholder="이메일 입력"
-            />
-            <Button
-              size="sm"
-              variant="submit"
-              disabled={true}
-              className="invisible absolute bottom-5 right-5 h-[42px] w-[85px] p-2 text-xs group-focus-within:visible"
-            >
-              중복 확인
-            </Button>
-            {/* {isInputFilled.length > 0 && (
+        <section>
+          <InputContainer>
+            <InputField>
+              <Label htmlFor="email">이메일</Label>
+              <Input
+                {...register('email')}
+                placeholder="이메일 입력"
+                className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+              />
+            </InputField>
+            {watch('email').length > 0 && (
               <Button
                 size="sm"
-                variant="submit"
-                disabled={true}
+                variant={'submit'}
+                type="button"
+                disabled={!!errors.email?.message}
                 className="h-[42px] w-[85px] p-2 text-xs"
+                onClick={() => checkEmail(getValues('email'))}
               >
                 중복 확인
               </Button>
-            )} */}
-          </InputField>
-          <span className="text-sm text-primary-400">
-            {errors.email?.message}
-          </span>
-        </InputContainer>
+            )}
+          </InputContainer>
+          {errors.email?.message && (
+            <FormSpan variant="error">{errors.email?.message}</FormSpan>
+          )}
+          {isEmailUnique && (
+            <FormSpan variant="success">사용가능한 이메일입니다.</FormSpan>
+          )}
+        </section>
 
         {/* password */}
-        <InputContainer variant="secondary">
-          <InputField variant="secondary">
-            <Label
-              htmlFor="password"
-              className="group-focus-within:text-primary-400"
-            >
-              비밀번호
-            </Label>
-            <Input
-              {...register('password')}
-              className="bold bg-blue-50 py-[24px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-              placeholder="6자 이상, 숫자와 영문자 조합"
-            />
+        <section>
+          <PasswordContainer>
+            <InputField variant="secondary">
+              <Label htmlFor="password">비밀번호</Label>
+              <Input
+                type="password"
+                {...register('password')}
+                placeholder="6자 이상, 숫자와 영문자 조합"
+                className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+              />
+            </InputField>
             <div className="border" />
             <Input
-              type="text"
+              type="password"
+              {...register('passwordConfirm')}
               placeholder="비밀번호 재입력"
               className="my-[28px] h-[20px] w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
             />
-          </InputField>
-          {/* <span className="text-sm text-primary-400">
-            {errors.email?.message}
-          </span> */}
-        </InputContainer>
+          </PasswordContainer>
+          <div className="flex flex-col gap-1">
+            {errors.password?.message && (
+              <FormSpan variant="error">{errors.password?.message}</FormSpan>
+            )}
+            {errors.passwordConfirm?.message && (
+              <FormSpan variant="error">
+                {errors.passwordConfirm.message}
+              </FormSpan>
+            )}
+          </div>
+        </section>
 
         {/* name */}
-        <InputContainer>
-          <InputField>
-            <Label
-              htmlFor="email"
-              className="group-focus-within:text-primary-400"
-            >
-              이름
-            </Label>
-            <Input
-              {...register('email')}
-              className="bold bg-blue-50 pt-[6px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-              placeholder="이름 입력"
-            />
-          </InputField>
-          {/* <span className="text-sm text-primary-400">
-            {errors.email?.message}
-          </span> */}
-        </InputContainer>
+        <section>
+          <InputContainer>
+            <InputField>
+              <Label htmlFor="userName">이름</Label>
+              <Input
+                {...register('name')}
+                placeholder="이름 입력"
+                className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+              />
+            </InputField>
+          </InputContainer>
+          {errors.name?.message && (
+            <FormSpan variant="error">{errors.name?.message}</FormSpan>
+          )}
+        </section>
 
         {/* phone */}
-        <InputContainer variant="tertiary">
-          <InputField variant="tertiary">
-            <SelectBox
-              options={selectOptions}
-              label="휴대폰 번호"
-              onSelect={handleSelected}
-            />
-
-            <div className="border" />
-            <Input
-              type="text"
-              placeholder="휴대폰 번호 입력(- 제외)"
-              className="h-[68px] bg-blue-50 py-[24px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-            />
-            <Button
-              size="sm"
-              variant="submit"
-              disabled={true}
-              className="invisible absolute bottom-[95px] right-5 h-[42px] w-[85px] p-2 text-xs group-focus-within:visible"
-            >
-              인증 요청
-            </Button>
-            <div className="border" />
-            <Input
-              type="text"
-              placeholder="인증번호 입력"
-              className="h-[20px] bg-blue-50 py-[40px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-            />
-          </InputField>
-          {/* <span className="text-sm text-primary-400">
-            {errors.email?.message}
-          </span> */}
-        </InputContainer>
+        <PhoneForm register={register} control={control} />
 
         {/* birthday */}
-        <InputContainer>
-          <InputField>
-            <Label
-              htmlFor="email"
-              className="group-focus-within:text-primary-400"
-            >
-              생년월일
-            </Label>
-            <Input
-              {...register('email')}
-              className="bold bg-blue-50 pt-[6px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-              placeholder="ex. 19990101"
-            />
-          </InputField>
-          {/* <span className="text-sm text-primary-400">
-            {errors.email?.message}
-          </span> */}
-        </InputContainer>
+        <section>
+          <InputContainer>
+            <InputField>
+              <Label htmlFor="birthdate">생년월일</Label>
+              <Input
+                {...register('birth')}
+                placeholder="ex.  19990101"
+                className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                onKeyDown={handleKeyPressOnlyNumber}
+              />
+            </InputField>
+          </InputContainer>
+          {errors.birth?.message && (
+            <FormSpan variant="error">{errors.birth?.message}</FormSpan>
+          )}
+        </section>
 
         {/*약관*/}
-        <AcceptTermsGroup />
+        <AcceptTermsGroup
+          register={register}
+          setValue={setValue}
+          errors={errors}
+          getValues={getValues}
+        />
 
         {/*submit button*/}
         <div className="mt-5 flex w-full items-center justify-center">
-          <Button type="submit" disabled={false} className="mb-5 w-80 px-7">
+          <Button
+            type="submit"
+            disabled={!isValid || !isEmailUnique}
+            className="mb-5 w-80 px-7"
+          >
             다음
           </Button>
-          {/* <button type="submit">테스트</button> */}
         </div>
       </form>
     </Modal>

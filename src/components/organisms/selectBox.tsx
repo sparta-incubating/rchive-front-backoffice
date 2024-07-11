@@ -6,25 +6,28 @@ import { SelectOptionType } from '@/types/signup.types';
 import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectItem from '@/components/atoms/selectItem';
 import { useState } from 'react';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
-interface SelectBoxProps {
+interface SelectBoxProps<T extends FieldValues> {
   options: SelectOptionType[];
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
   variant?: 'primary' | 'secondary';
   className?: string;
+  field: ControllerRenderProps<T>;
 }
 
-const SelectBox = ({
+const SelectBox = <T extends FieldValues>({
   options,
   label,
   onSelect,
   variant,
   className,
-}: SelectBoxProps) => {
+  field,
+}: SelectBoxProps<T>) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
-    options.find((option) => option.selected) || null,
+    options.find((option) => option.value === field.value) || null,
   );
 
   const handleClick = () => {
@@ -35,6 +38,7 @@ const SelectBox = ({
     setSelectedOption(option);
     setIsOpen(false);
     onSelect(option.value);
+    field.onChange(option.value);
   };
 
   return (
@@ -51,9 +55,9 @@ const SelectBox = ({
         <SelectDropDown clicked={isOpen}>
           {options.map((option) => (
             <SelectItem
-              key={option.value}
+              key={option.value + option.label}
               data-value={option.value}
-              selected={option.selected}
+              selected={option.value === selectedOption?.value}
               variant={variant}
               onClick={() => handleSelect(option)}
             >
