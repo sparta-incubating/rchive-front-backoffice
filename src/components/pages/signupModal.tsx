@@ -14,8 +14,13 @@ import FormSpan from '@/components/atoms/formSpan';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import { handleKeyPressOnlyNumber } from '@/utils/utils';
 import useSignupForm from '@/hooks/useSignupForm';
+import { signupModalType } from '@/types/signup.types';
 
-const SignupModal = () => {
+interface SignupModalProps {
+  signupModalType: signupModalType;
+}
+
+const SignupModal = ({ signupModalType }: SignupModalProps) => {
   const {
     handleSubmit,
     onSubmit,
@@ -24,10 +29,11 @@ const SignupModal = () => {
     setValue,
     errors,
     watch,
+    control,
     checkEmail,
     isEmailUnique,
     isValid,
-  } = useSignupForm();
+  } = useSignupForm(signupModalType);
 
   return (
     <Modal>
@@ -97,7 +103,7 @@ const SignupModal = () => {
             )}
             {errors.passwordConfirm?.message && (
               <FormSpan variant="error">
-                {errors.passwordConfirm?.message}
+                {errors.passwordConfirm.message}
               </FormSpan>
             )}
           </div>
@@ -121,7 +127,7 @@ const SignupModal = () => {
         </section>
 
         {/* phone */}
-        <PhoneForm setValue={setValue} register={register} />
+        <PhoneForm register={register} control={control} />
 
         {/* birthday */}
         <section>
@@ -153,7 +159,7 @@ const SignupModal = () => {
         <div className="mt-5 flex w-full items-center justify-center">
           <Button
             type="submit"
-            // disabled={!isValid || !isEmailUnique}
+            disabled={!isValid || !isEmailUnique}
             className="mb-5 w-80 px-7"
           >
             다음

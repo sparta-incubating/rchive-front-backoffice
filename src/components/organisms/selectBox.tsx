@@ -5,8 +5,8 @@ import SelectInput from '@/components/atoms/selectInput';
 import { SelectOptionType } from '@/types/signup.types';
 import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectItem from '@/components/atoms/selectItem';
-import { useEffect, useState } from 'react';
-import { FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form';
+import { useState } from 'react';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 interface SelectBoxProps<T extends FieldValues> {
   options: SelectOptionType[];
@@ -14,8 +14,7 @@ interface SelectBoxProps<T extends FieldValues> {
   onSelect: (value: SelectOptionType['value']) => void;
   variant?: 'primary' | 'secondary';
   className?: string;
-  setValue: UseFormSetValue<T>;
-  setValueName: Path<T>;
+  field: ControllerRenderProps<T>;
 }
 
 const SelectBox = <T extends FieldValues>({
@@ -24,12 +23,11 @@ const SelectBox = <T extends FieldValues>({
   onSelect,
   variant,
   className,
-  setValue,
-  setValueName,
+  field,
 }: SelectBoxProps<T>) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
-    options.find((option) => option.selected) || null,
+    options.find((option) => option.value === field.value) || null,
   );
 
   const handleClick = () => {
@@ -40,20 +38,8 @@ const SelectBox = <T extends FieldValues>({
     setSelectedOption(option);
     setIsOpen(false);
     onSelect(option.value);
-    setValue(setValueName, option.value as PathValue<T, Path<T>>, {
-      shouldValidate: true,
-    });
+    field.onChange(option.value);
   };
-
-  useEffect(() => {
-    const selected = options.find((option) => option.selected);
-    if (selected) {
-      setSelectedOption(selected);
-      setValue(setValueName, selected.value as PathValue<T, Path<T>>, {
-        shouldValidate: true,
-      });
-    }
-  }, []);
 
   return (
     <SelectContainer className={className}>
@@ -71,7 +57,7 @@ const SelectBox = <T extends FieldValues>({
             <SelectItem
               key={option.value + option.label}
               data-value={option.value}
-              selected={option.selected}
+              selected={option.value === selectedOption?.value}
               variant={variant}
               onClick={() => handleSelect(option)}
             >

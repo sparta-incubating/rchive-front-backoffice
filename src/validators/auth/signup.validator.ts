@@ -15,18 +15,9 @@ export const signupSchema = z
         (value) => PASSWORD_REG.test(value),
         '영문, 숫자 조합으로 6자 이상 입력해 주세요.',
       ),
-    passwordConfirm: z
-      .string()
-      .min(6, '비밀번호가 일치하지 않습니다.')
-      .refine(
-        (value) => PASSWORD_REG.test(value),
-        '비밀번호가 일치하지 않습니다.',
-      ),
+    passwordConfirm: z.string(),
     countryCode: z.string(),
     phone: z.string().min(8),
-    /*phoneConfirm: z.boolean().refine((value) => value, {
-      message: '휴대폰 인증은 필수입니다.',
-    }),*/
     birth: z
       .string()
       .min(8, '생년월일을 입력해주세요.')
@@ -45,12 +36,7 @@ export const signupSchema = z
     }),
     ad: z.boolean(),
   })
-  .superRefine(({ password, passwordConfirm }, ctx) => {
-    if (password !== passwordConfirm) {
-      ctx.addIssue({
-        code: 'custom',
-        message: '비밀번호가 다릅니다. 다시 입력해 주세요.',
-        path: ['passwordConfirm'],
-      });
-    }
+  .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
+    message: '비밀번호가 일치하지 않습니다. 다시 입력해 주세요.',
+    path: ['passwordConfirm'],
   });

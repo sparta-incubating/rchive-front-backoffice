@@ -38,3 +38,8 @@ export enum UserRoleEnum {
   MANAGER = 'MANAGER',
   ADMIN = 'ADMIN',
 }
+
+export enum signupModalType {
+  MANAGER = 'MANAGER',
+  USER = 'USER',
+}

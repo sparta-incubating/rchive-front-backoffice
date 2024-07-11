@@ -5,25 +5,29 @@ import {
   GenderEnum,
   OAuthEnum,
   SignupFormData,
+  signupModalType,
   UserRoleEnum,
 } from '@/types/signup.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema } from '@/validators/auth/signup.validator';
 import axios from 'axios';
-import { SignupForm } from '@/class/signup';
+import { Admin, User } from '@/class/signup';
+import { formatDate } from '@/utils/utils';
 
-const useSignupForm = () => {
+const useSignupForm = (signupType: signupModalType) => {
   const [isEmailUnique, setIsEmailUnique] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors, isValid },
     getValues,
     setValue,
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
-    mode: 'onChange',
+    mode: 'all',
+    reValidateMode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
@@ -38,23 +42,13 @@ const useSignupForm = () => {
   });
 
   const onSubmit = async (data: SignupFormData) => {
-    console.log('on Submit');
-    console.log({ data });
+    const signUpForm = createSignupForm(signupType, data);
 
-    const signUpForm = new SignupForm(
-      OAuthEnum.LOCAL,
-      data.email,
-      data.password,
-      data.birth,
-      data.phone,
-      GenderEnum.NONE,
-      '',
-      UserRoleEnum.ADMIN,
-      data.age,
-      data.service,
-      data.privacy,
-      data.ad,
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/signup`,
+      signUpForm,
     );
+    console.log(response.data);
   };
 
   const checkEmail = async (email: string) => {
@@ -82,10 +76,46 @@ const useSignupForm = () => {
     setValue,
     errors,
     watch,
+    control,
     checkEmail,
     isEmailUnique,
     isValid,
   };
 };
 
+const createSignupForm = (
+  signupType: signupModalType,
+  data: SignupFormData,
+) => {
+  if (signupType === signupModalType.MANAGER) {
+    return new Admin(
+      OAuthEnum.LOCAL,
+      data.email,
+      data.password,
+      formatDate(data.birth),
+      data.phone,
+      GenderEnum.NONE,
+      UserRoleEnum.MANAGER,
+      data.age,
+      data.service,
+      data.privacy,
+      data.ad,
+    );
+  } else {
+    return new User(
+      OAuthEnum.LOCAL,
+      data.email,
+      data.password,
+      formatDate(data.birth),
+      data.phone,
+      GenderEnum.NONE,
+      UserRoleEnum.USER,
+      data.age,
+      data.service,
+      data.privacy,
+      data.ad,
+      '',
+    );
+  }
+};
 export default useSignupForm;

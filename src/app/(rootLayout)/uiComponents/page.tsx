@@ -3,7 +3,6 @@
 import Button from '@/components/atoms/button';
 import UploadContainer from '@/components/molecules/uploadContainer';
 import { createToast } from '@/utils/toast';
-import PhoneForm from '@/components/molecules/form/PhoneForm';
 
 const UiComponents = () => {
   return (
@@ -58,7 +57,6 @@ const UiComponents = () => {
           create Toast
         </Button>
       </div>
-      <PhoneForm /> <br />
     </>
   );
 };
