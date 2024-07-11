@@ -30,11 +30,12 @@ const Home = () => {
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     try {
       const loginInfo: USER = data;
-      console.log('data1', loginInfo);
+      console.log('로그인정보', loginInfo);
 
       client.post('/api/v1/users/login', loginInfo).then((res) => {
-        console.log(res, 'res');
-        console.log('data2', loginInfo);
+        //토큰 저장
+        const accessToken = res.headers.authorization;
+        console.log(accessToken, '토큰');
       });
     } catch (error) {
       console.error('런타임에러', error);
