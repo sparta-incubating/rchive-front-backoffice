@@ -48,6 +48,7 @@ const Button = ({
     <button
       {...props}
       data-disabled={disabled}
+      disabled={disabled}
       className={classMerge(buttonVariants({ variant, size }), className)}
     >
       {children}

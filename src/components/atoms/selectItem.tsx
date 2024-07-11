@@ -28,7 +28,7 @@ const SelectItem = ({
   children,
   onClick,
   selected = false,
-  variant,
+  variant = 'primary',
 }: SelectItemProps) => {
   return (
     <div onClick={onClick} className={SelectItemVariants({ variant })}>

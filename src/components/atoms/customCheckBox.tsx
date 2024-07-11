@@ -1,4 +1,11 @@
 import { cva, VariantProps } from 'class-variance-authority';
+import React, {
+  ChangeEvent,
+  ComponentProps,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 
 const CustomCheckBoxVariants = cva('h-5 w-5 bg-center bg-no-repeat', {
   variants: {
@@ -14,28 +21,43 @@ const CustomCheckBoxVariants = cva('h-5 w-5 bg-center bg-no-repeat', {
 });
 
 interface CustomCheckBoxProps
-  extends VariantProps<typeof CustomCheckBoxVariants> {
+  extends VariantProps<typeof CustomCheckBoxVariants>,
+    ComponentProps<'input'> {
   id: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
   checked: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const CustomCheckBox = ({
-  id,
-  checked,
-  variant,
-  onClick,
-  ...props
-}: CustomCheckBoxProps) => {
-  return (
-    <div
-      data-checked={checked}
-      onClick={onClick}
-      className={CustomCheckBoxVariants({ variant })}
-    >
-      <input type="checkbox" className="hidden" id={id} {...props} />
-    </div>
-  );
-};
+const CustomCheckBox = forwardRef<HTMLInputElement, CustomCheckBoxProps>(
+  ({ id, checked, variant, onChange, ...props }, ref) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => inputRef.current!);
+
+    const handleClick = () => {
+      if (inputRef.current) {
+        inputRef.current.click();
+      }
+    };
+
+    return (
+      <div
+        data-checked={checked}
+        className={CustomCheckBoxVariants({ variant })}
+        onClick={handleClick}
+      >
+        <input
+          type="checkbox"
+          className="hidden"
+          id={id}
+          ref={inputRef}
+          checked={checked}
+          onChange={onChange}
+          {...props}
+        />
+      </div>
+    );
+  },
+);
 
 export default CustomCheckBox;

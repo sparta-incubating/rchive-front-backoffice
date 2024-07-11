@@ -1,42 +1,43 @@
 'use client';
 
-import { useCallback, useState } from 'react';
 import SelectBox from '@/components/organisms/selectBox';
-import { SelectOptionType } from '@/types/signup.types';
 import Input from '@/components/atoms/input';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import PhoneField from './PhoneField';
+import useSelectBox from '@/hooks/useSelectBox';
+import { phoneCountries } from '@/utils/phoneCountry';
+import { Control, Controller, UseFormRegister } from 'react-hook-form';
+import { SignupFormData } from '@/types/signup.types';
 
-const PhoneForm = () => {
-  const [selectOptions, setSelectOptions] = useState<SelectOptionType[]>([
-    { value: '1', label: '대한민국 +82', selected: true },
-    { value: '2', label: 'Afghanistan +93', selected: false },
-    { value: '3', label: 'ALbania +355', selected: false },
-    { value: '4', label: 'Algeria +213', selected: false },
-    { value: '5', label: 'American Samoa +1', selected: false },
-    { value: '6', label: 'Andorra +376', selected: false },
-  ]);
+interface PhoneFormProps {
+  control: Control<SignupFormData>;
+  register: UseFormRegister<SignupFormData>;
+}
 
-  const handleSelected = useCallback((value: SelectOptionType['value']) => {
-    setSelectOptions((prev) =>
-      prev.map((option) =>
-        option.value === value
-          ? { ...option, selected: true }
-          : { ...option, selected: false },
-      ),
-    );
-  }, []);
+const PhoneForm = ({ control, register }: PhoneFormProps) => {
+  const { selectOptions, handleSelected } = useSelectBox(phoneCountries);
 
   return (
     <>
       <PasswordContainer variant="secondary">
-        <SelectBox
-          options={selectOptions}
-          label="휴대폰 번호"
-          onSelect={handleSelected}
+        <Controller
+          name="countryCode"
+          control={control}
+          render={({ field }) => (
+            <SelectBox<SignupFormData>
+              options={selectOptions}
+              label="휴대폰 번호"
+              onSelect={(value) => {
+                handleSelected(value);
+                field.onChange(value);
+              }}
+              field={field}
+            />
+          )}
         />
         <div className="w-[320px] border" />
-        <PhoneField />
+        <PhoneField register={register} />
+
         <div className="w-[320px] border" />
         <Input
           className="w-80 bg-blue-50 p-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"

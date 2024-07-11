@@ -1,9 +1,23 @@
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
+import { classMerge } from '@/utils/utils';
 
-const Modal = ({ children }: PropsWithChildren) => {
+interface ModalProps {
+  children: ReactNode;
+  inboardClassName?: string;
+}
+
+const Modal = ({ children, inboardClassName }: ModalProps) => {
   return (
-    <div className="bg-blue-55 fixed left-0 top-0 flex h-screen w-screen">
-      {children}
+    <div className="fixed left-0 top-0 flex h-screen w-screen overflow-y-scroll bg-blue-55 py-6">
+      <div
+        className={classMerge(
+          `m-auto flex flex-col items-center rounded-xl bg-white`,
+          inboardClassName,
+        )}
+        style={{ width: 'auto', maxWidth: '100%', padding: '1rem' }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
