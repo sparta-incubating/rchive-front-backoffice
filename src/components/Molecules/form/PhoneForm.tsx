@@ -1,13 +1,13 @@
 'use client';
 
-import SelectBox from '@/components/organisms/selectBox';
 import Input from '@/components/atoms/input';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
-import PhoneField from './PhoneField';
+import SelectFormBox from '@/components/organisms/selectFormBox';
 import useSelectBox from '@/hooks/useSelectBox';
+import { SignupFormData } from '@/types/signup.types';
 import { phoneCountries } from '@/utils/phoneCountry';
 import { Control, Controller, UseFormRegister } from 'react-hook-form';
-import { SignupFormData } from '@/types/signup.types';
+import PhoneField from './PhoneField';
 
 interface PhoneFormProps {
   control: Control<SignupFormData>;
@@ -24,7 +24,7 @@ const PhoneForm = ({ control, register }: PhoneFormProps) => {
           name="countryCode"
           control={control}
           render={({ field }) => (
-            <SelectBox<SignupFormData>
+            <SelectFormBox<SignupFormData>
               options={selectOptions}
               label="휴대폰 번호"
               onSelect={(value) => {

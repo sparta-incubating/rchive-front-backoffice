@@ -1,17 +1,18 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
-import { cva, VariantProps } from 'class-variance-authority';
 import { classMerge } from '@/utils/utils';
+import { cva, VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
+import { PropsWithChildren } from 'react';
 
-const SelectInputVariants = cva(
+export const SelectInputVariants = cva(
   'relative flex justify-self-start text-md font-semibold',
   {
     variants: {
       variant: {
         unSelected: 'text-gray-300',
         selected: 'text-gray-900',
+        menubar: 'bg-primary-400 text-white',
       },
     },
     defaultVariants: {
@@ -44,7 +45,11 @@ const SelectInput = ({
         className="flex h-6 w-6 rotate-180 items-center justify-center transition-transform duration-500 ease-in-out data-[clicked=false]:rotate-0"
       >
         <Image
-          src={'/assets/icons/selectArrow.svg'}
+          src={
+            variant === 'menubar'
+              ? '/assets/icons/selectArrowWhite.svg'
+              : '/assets/icons/selectArrow.svg'
+          }
           alt={'select arrow icon'}
           fill
         />

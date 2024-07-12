@@ -1,3 +1,5 @@
+'use client';
+
 import { TagInputRef } from '@/types/tag.types';
 import { ComponentProps, forwardRef, useImperativeHandle, useRef } from 'react';
 

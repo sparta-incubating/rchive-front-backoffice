@@ -1,3 +1,5 @@
+'use client';
+
 import CloseButton from '@/components/atoms/closeButton';
 import TagInput from '@/components/atoms/tagInput';
 import TagCard from '@/components/molecules/tagCard';
