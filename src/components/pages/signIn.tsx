@@ -6,15 +6,15 @@ import permission from '@/../public/assets/icons/permissions-rtan.svg';
 import rtan from '@/../public/assets/icons/siginIn-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import SignupModal from '@/components/pages/signupModal';
-import { useModalContext } from '@/context/modalContext';
+import { useModalContext } from '@/context/modal.context';
+
+import { signupModalType } from '@/types/signup.types';
 import Image from 'next/image';
 import Button from '../atoms/button';
 import Input from '../atoms/input';
 import InputContainer from '../atoms/InputContainer';
 import Label from '../atoms/label';
 import InputField from '../molecules/InputField';
-
-import { signupModalType } from '@/types/signup.types';
 
 const SignIn = () => {
   const { open } = useModalContext();
@@ -99,8 +99,8 @@ const SignIn = () => {
           </aside>
 
           {/*2 */}
-          <section className="shadow-signInBox w-[calc(100%-500px)] bg-custom-gradient">
-            <section className="px-[110px] pb-[145px] pt-[138px] sub:px-[337px]">
+          <section className="shadow-signInBox bg-custom-gradient w-[calc(100%-500px)]">
+            <section className="sub:px-[337px] px-[110px] pb-[145px] pt-[138px]">
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
                   <Image
