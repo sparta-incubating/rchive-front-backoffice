@@ -1,21 +1,32 @@
-import Image from 'next/image';
-import React from 'react';
-import rtan from '@/../public/assets/icons/siginIn-rtan.svg';
-import Button from '../atoms/button';
-import backofficeMain from '@/../public/assets/icons/dashboard.svg';
-import InputContainer from '../atoms/InputContainer';
-import InputField from '../molecules/InputField';
-import Label from '../atoms/label';
-import Input from '../atoms/input';
+'use client';
+
 import board from '@/../public/assets/icons/board-rtan.svg';
+import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permissions-rtan.svg';
+import rtan from '@/../public/assets/icons/siginIn-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
+import SignupModal from '@/components/pages/signupModal';
+import { useModalContext } from '@/context/modalContext';
+import Image from 'next/image';
+import Button from '../atoms/button';
+import Input from '../atoms/input';
+import InputContainer from '../atoms/InputContainer';
+import Label from '../atoms/label';
+import InputField from '../molecules/InputField';
+
+import { signupModalType } from '@/types/signup.types';
 
 const SignIn = () => {
+  const { open } = useModalContext();
+
+  const handleSignupModalOpen = () => {
+    open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
+  };
+
   return (
     <>
-      <main className="h-screen w-screen min-w-[1440px]">
-        <section className="flex h-[1080px] flex-row">
+      <main className="min-w-main max-w-sub h-screen">
+        <section className="flex flex-row">
           {/*1 */}
           <aside className="w-[500px]">
             {/*르탄이*/}
@@ -77,7 +88,9 @@ const SignIn = () => {
               </Button>
             </section>
             <section className="mx-auto flex h-[53px] flex-row justify-center p-[16px] text-center">
-              <span className="w-[120px] text-sm text-gray-500">회원가입</span>
+              <span className="w-[120px] text-sm text-gray-500">
+                <button onClick={handleSignupModalOpen}>회원가입</button>
+              </span>
               <div className="border" />
               <span className="w-[120px] text-sm text-gray-500">
                 비밀번호 찾기
@@ -86,29 +99,30 @@ const SignIn = () => {
           </aside>
 
           {/*2 */}
-          <section className="w-[calc(100%-500px)] bg-custom-gradient">
-            <section className="px-[110px] sub:px-[337px]">
-              <section className="relative pt-[162px]">
+          <section className="shadow-signInBox w-[calc(100%-500px)] bg-custom-gradient">
+            <section className="px-[110px] pb-[145px] pt-[138px] sub:px-[337px]">
+              <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
                   <Image
                     src={write}
                     alt="권한르탄이"
                     width={237.79}
                     height={107.61}
-                    className="mb-[14px]"
+                    className="shadow-rtanBox mb-[14px] rounded-[14px]"
                   />
                   <Image
                     src={permission}
                     alt="게시물르탄이"
                     width={237.79}
                     height={107.61}
-                    className="mb-[14px]"
+                    className="shadow-rtanBox mb-[14px] rounded-[14px]"
                   />
                   <Image
                     src={board}
                     alt="작성르탄이"
                     width={237.79}
                     height={107.61}
+                    className="shadow-rtanBox rounded-[14px]"
                   />
                 </article>
                 <article className="mb-[30px] h-[80px] w-[330px]">
@@ -122,6 +136,7 @@ const SignIn = () => {
                     alt="백오피스"
                     width={817}
                     height={743}
+                    className="shadow-dashboardBox rounded-[22px]"
                   />
                 </article>
               </section>
