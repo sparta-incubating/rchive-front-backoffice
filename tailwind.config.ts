@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        main: '1440px',
+        sub: '1920px',
+      },
       colors: {
         'success-green': '#31B32E',
         'point-color': '#FF6C79',
@@ -140,9 +144,17 @@ const config = {
     boxShadow: {
       selectBox:
         '0px 2px 6px 0px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30)',
+      signInBox: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+      dashboardBox: '0px 40px 40px 0px rgba(65, 101, 112, 0.3)',
+      rtanBox: '0px 3.47px 26.03px 0px rgba(65, 101, 112, 0.3)',
+    },
+    backgroundImage: {
+      'custom-gradient':
+        ' linear-gradient(180deg, #E2F1FD 16.75%, #C3E2FB 40.96%, #4BA9F4 135.4%, #B9DDFB 135.4%)',
     },
   },
   plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar-hide')],
+  mode: 'jit',
 } satisfies Config;
 
 export default config;
