@@ -1,9 +1,6 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
 import QueryProvider from '@/provider/queryProvider/queryProvider';
-
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: '르카이브',
@@ -18,7 +15,7 @@ export default function HTMLLayout({
   return (
     <QueryProvider>
       <html lang="ko">
-        <body className={inter.className}>{children}</body>
+        <body>{children}</body>
       </html>
     </QueryProvider>
   );
