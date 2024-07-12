@@ -1,10 +1,11 @@
-import SignIn from '@/components/pages/signIn';
+import SignupTest from '@/components/pages/signupTest';
 
 const Home = () => {
   return (
-    <>
-      <SignIn />
-    </>
+    <div className="flex flex-col">
+      <h1>Home</h1>
+      <SignupTest />
+    </div>
   );
 };
 

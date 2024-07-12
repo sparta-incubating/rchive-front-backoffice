@@ -1,20 +1,19 @@
 'use client';
 
-import SignupHeader from '@/components/molecules/signupHeader';
 import Button from '@/components/atoms/button';
-import Modal from '@/components/atoms/modal';
-import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
-import PhoneForm from '@/components/molecules/form/PhoneForm';
-import InputContainer from '@/components/atoms/InputContainer';
-import InputField from '@/components/molecules/InputField';
-import React from 'react';
-import Label from '@/components/atoms/label';
-import Input from '@/components/atoms/input';
 import FormSpan from '@/components/atoms/formSpan';
+import Input from '@/components/atoms/input';
+import InputContainer from '@/components/atoms/InputContainer';
+import Label from '@/components/atoms/label';
+import Modal from '@/components/atoms/modal';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
-import { handleKeyPressOnlyNumber } from '@/utils/utils';
+import PhoneForm from '@/components/molecules/form/PhoneForm';
+import InputField from '@/components/molecules/InputField';
+import SignupHeader from '@/components/molecules/signupHeader';
+import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
 import useSignupForm from '@/hooks/useSignupForm';
 import { signupModalType } from '@/types/signup.types';
+import { handleKeyPressOnlyNumber } from '@/utils/utils';
 
 interface SignupModalProps {
   signupModalType: signupModalType;
