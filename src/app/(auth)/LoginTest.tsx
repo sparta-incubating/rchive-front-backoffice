@@ -3,10 +3,14 @@
 import { client } from '@/axois/axiosClient';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
+import { AppDispatch } from '@/redux/config/storeConfig';
+import { setTokens } from '@/redux/modules/authSlice';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
 export const LoginTest = () => {
@@ -22,31 +26,25 @@ export const LoginTest = () => {
     },
   });
 
-  type USER = {
-    username: string;
-    password: string;
-  };
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     try {
-      const loginInfo: USER = data;
-      console.log('로그인정보', loginInfo);
-
-      client.post('/api/v1/users/login', loginInfo).then((res) => {
-        //토큰 저장
-        const accessToken = res.headers.authorization;
-        console.log(accessToken, '토큰');
+      client.post('/api/v1/users/login', data).then((res) => {
+        const authToken = res.headers['authorization'];
+        // console.log(authToken, '토큰');
+        if (res.status === 200) {
+          dispatch(setTokens({ access: authToken }));
+          // router.push('/mypage');
+        }
       });
     } catch (error) {
       console.error('런타임에러', error);
     }
   };
-
   return (
     <>
-      {/* <div className="h-[1024px] w-[1440px] border">1440</div>
-      <div className="h-[1024px] w-[1920px] border">1920</div> */}
-
       <br />
       <br />
       <div>
@@ -55,7 +53,7 @@ export const LoginTest = () => {
             <Input type="text" placeholder="이메일" {...register('username')} />
           </div>
           <br />
-          <span>{errors.username?.message}</span>
+          <span className="text-primary-400">{errors.username?.message}</span>
           <br />
           <div className="border">
             <Input
@@ -64,7 +62,7 @@ export const LoginTest = () => {
               {...register('password')}
             />
             <br />
-            <span className="text-primary">{errors.password?.message}</span>
+            <span className="text-primary-400">{errors.password?.message}</span>
           </div>
 
           <br />

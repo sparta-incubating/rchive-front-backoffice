@@ -1,37 +1,33 @@
-'use client';
-
 import SelectContainer from '@/components/atoms/selectContainer';
 import SelectDropDown from '@/components/atoms/selectDropDown';
-import SelectInput, {
-  SelectInputVariants,
-} from '@/components/atoms/selectInput';
+import SelectInput from '@/components/atoms/selectInput';
 import SelectItem from '@/components/atoms/selectItem';
 import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
 import { SelectOptionType } from '@/types/signup.types';
-import { VariantProps } from 'class-variance-authority';
 import { useState } from 'react';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
-interface SelectBoxProps {
+interface SelectBoxProps<T extends FieldValues> {
   options: SelectOptionType[];
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
-  selectInputVariant: VariantProps<typeof SelectInputVariants>['variant'];
   variant?: 'primary' | 'secondary';
   className?: string;
+  field: ControllerRenderProps<T>;
 }
 
-const SelectFormBox = ({
+const SelectFormBox = <T extends FieldValues>({
   options,
   label,
   onSelect,
   variant,
-  selectInputVariant,
   className,
-}: SelectBoxProps) => {
+  field,
+}: SelectBoxProps<T>) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
-    options.find((option) => option.value === '0') || null,
+    options.find((option) => option.value === field.value) || null,
   );
 
   const handleClick = () => {
@@ -42,6 +38,7 @@ const SelectFormBox = ({
     setSelectedOption(option);
     setIsOpen(false);
     onSelect(option.value);
+    field.onChange(option.value);
   };
 
   return (
@@ -49,11 +46,11 @@ const SelectFormBox = ({
       <SelectLayout label={label}>
         <SelectLabel>{label}</SelectLabel>
         <SelectInput
-          variant={selectInputVariant}
+          variant={selectedOption ? 'selected' : 'unSelected'}
           onClick={handleClick}
           clicked={isOpen}
         >
-          {selectedOption ? selectedOption.label : options[0].label}
+          {selectedOption ? selectedOption.label : '선택안함'}
         </SelectInput>
         <SelectDropDown clicked={isOpen}>
           {options.map((option) => (

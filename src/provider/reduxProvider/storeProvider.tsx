@@ -1,7 +1,7 @@
 'use client';
 
+import { AppStore, store } from '@/redux/config/storeConfig';
 import { PropsWithChildren, useRef } from 'react';
-import { AppStore, store } from '@/redux/storeConfig';
 import { Provider } from 'react-redux';
 
 const StoreProvider = ({ children }: PropsWithChildren) => {
