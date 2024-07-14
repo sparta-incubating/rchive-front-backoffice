@@ -10,7 +10,7 @@ interface TagContainerProps {
 }
 
 const TagContainer = ({ placeholder }: TagContainerProps) => {
-  const { tags, deleteTag, inputRef, handleFocusTagInput } = useTagContext();
+  const { tags, deleteTag, handleFocusTagInput } = useTagContext();
 
   return (
     <div>
@@ -25,11 +25,7 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
             <CloseButton onClick={() => deleteTag(tag.id)} />
           </TagCard>
         ))}
-        <TagInput
-          ref={inputRef}
-          className="flex-shrink-0"
-          placeholder={placeholder}
-        />
+        <TagInput className="flex-shrink-0" placeholder={placeholder} />
       </div>
     </div>
   );

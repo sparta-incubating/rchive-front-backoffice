@@ -1,6 +1,7 @@
 'use client';
 
-import { Tag, TagInputRef } from '@/types/tag.types';
+import { Tag } from '@/types/tag.types';
+import { debounce } from 'lodash';
 import {
   createContext,
   PropsWithChildren,
@@ -16,8 +17,9 @@ interface TagContextType {
   tags: Tag[];
   addTag: (tag: string) => void;
   deleteTag: (tagId: number) => void;
-  inputRef: React.RefObject<TagInputRef>;
+  inputRef: React.RefObject<HTMLDivElement>;
   handleFocusTagInput: () => void;
+  handleInput: () => void;
 }
 
 const TagContext = createContext<TagContextType | undefined>(undefined);
@@ -32,7 +34,7 @@ export const useTagContext = () => {
 
 export const TagContextProvider = ({ children }: PropsWithChildren) => {
   const [tags, setTags] = useState<Tag[]>([]);
-  const inputRef = useRef<TagInputRef>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
 
   const addTag = useCallback((tag: string) => {
     const newTag = {
@@ -47,6 +49,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const removeLastTag = useCallback(() => {
+    console.log('지우라고!');
     setTags((prevState) => prevState.slice(0, -1));
   }, []);
 
@@ -56,6 +59,16 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
+  // debounce 적용하여 자동완성 dropdown 출력에 사용
+  const handleInput = useCallback(
+    debounce(() => {
+      if (inputRef.current) {
+        // console.log(inputRef.current.innerText);
+      }
+    }, 500),
+    [],
+  );
+
   useEffect(() => {
     const handleKeyDownComma = (event: Event) => {
       const target = event.target as HTMLDivElement;
@@ -64,22 +77,22 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         if (tag) {
           addTag(tag.replace(',', ''));
           if (inputRef.current) {
-            inputRef.current.setContent('');
+            inputRef.current.innerText = '';
           }
         }
       }
     };
 
     const handleKeyDownBackspace = (event: KeyboardEvent) => {
-      if (event.key === 'Backspace' && inputRef.current?.getContent()) {
-        const content = inputRef?.current?.getContent()?.innerText.trim();
+      if (event.key === 'Backspace' && !inputRef.current?.innerText) {
+        const content = inputRef?.current?.innerText.trim();
         if (content === '') {
           removeLastTag();
         }
       }
     };
 
-    const inputElement = inputRef.current?.getContent();
+    const inputElement = inputRef.current;
     if (inputElement) {
       inputElement.addEventListener('input', handleKeyDownComma);
       inputElement.addEventListener('keydown', handleKeyDownBackspace);
@@ -94,8 +107,15 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   }, [addTag, inputRef, removeLastTag]);
 
   const value = useMemo(
-    () => ({ tags, addTag, deleteTag, inputRef, handleFocusTagInput }),
-    [tags, addTag, deleteTag, handleFocusTagInput],
+    () => ({
+      tags,
+      addTag,
+      deleteTag,
+      inputRef,
+      handleFocusTagInput,
+      handleInput,
+    }),
+    [tags, addTag, deleteTag, handleFocusTagInput, handleInput],
   );
 
   return <TagContext.Provider value={value}>{children}</TagContext.Provider>;
