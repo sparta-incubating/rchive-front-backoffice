@@ -2,27 +2,24 @@ import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { PropsWithChildren } from 'react';
 
-const tagCardVariants = cva(
-  'mx-1 mt-1 mb-2 inline-block rounded-full pl-3 pr-1 py-1 border',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-black text-white border-black',
-        secondary: 'bg-gray-500 text-white border-gray-500',
-        ghost: 'bg-transparent text-black border-black',
-      },
-      size: {
-        sm: 'text-xs',
-        md: 'text-sm',
-        lg: 'text-base',
-      },
+const tagCardVariants = cva('inline-block rounded-full pl-3 pr-1 py-1', {
+  variants: {
+    variant: {
+      primary: 'bg-secondary-50 text-secondary-500',
+      secondary: 'bg-gray-500 text-white border-gray-500',
+      ghost: 'bg-transparent text-black border-black',
     },
-    defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+    size: {
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-base',
     },
   },
-);
+  defaultVariants: {
+    variant: 'primary',
+    size: 'md',
+  },
+});
 
 interface TagCardProps
   extends PropsWithChildren<VariantProps<typeof tagCardVariants>> {
@@ -31,12 +28,14 @@ interface TagCardProps
 
 function TagCard({ children, variant, size, className = '' }: TagCardProps) {
   return (
-    <span
+    <div
       onClick={(e) => e.stopPropagation()}
       className={classMerge(tagCardVariants({ variant, size }), className)}
     >
-      <div className="flex w-full justify-between gap-2">{children}</div>
-    </span>
+      <div className="flex w-full items-center justify-between gap-2">
+        {children}
+      </div>
+    </div>
   );
 }
 

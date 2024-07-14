@@ -5,21 +5,32 @@ import TagInput from '@/components/atoms/tagInput';
 import TagCard from '@/components/molecules/tagCard';
 import { useTagContext } from '@/context/tag.context';
 
-const TagContainer = () => {
+interface TagContainerProps {
+  placeholder: string;
+}
+
+const TagContainer = ({ placeholder }: TagContainerProps) => {
   const { tags, deleteTag, inputRef, handleFocusTagInput } = useTagContext();
 
   return (
-    <div
-      onClick={handleFocusTagInput}
-      className="group mx-auto min-h-60 w-1/2 rounded-md border border-black/50 p-2"
-    >
-      {tags.map((tag) => (
-        <TagCard key={tag.id}>
-          {tag.name}
-          <CloseButton onClick={() => deleteTag(tag.id)} />
-        </TagCard>
-      ))}
-      <TagInput ref={inputRef} />
+    <div>
+      <label className="text-md my-2 font-normal">태그</label>
+      <div
+        onClick={handleFocusTagInput}
+        className="group flex w-1/2 space-x-2 overflow-x-auto rounded-[12px] border border-blue-100 p-2 scrollbar-hide"
+      >
+        {tags.map((tag) => (
+          <TagCard key={tag.id} className="flex-shrink-0">
+            {tag.name}
+            <CloseButton onClick={() => deleteTag(tag.id)} />
+          </TagCard>
+        ))}
+        <TagInput
+          ref={inputRef}
+          className="flex-shrink-0"
+          placeholder={placeholder}
+        />
+      </div>
     </div>
   );
 };
