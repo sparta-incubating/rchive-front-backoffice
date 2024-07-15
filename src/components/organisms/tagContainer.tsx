@@ -38,17 +38,19 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
         <TagInput className="flex-shrink-0" placeholder={placeholder} />
       </div>
 
-      <DropDownContainer disable={searchTags === null}>
-        {searchTags?.map((tag) => (
-          <DropDownItem
-            key={tag.tagId}
-            variant="secondary"
-            onClick={() => handleClickBackDropData(tag.tagName)}
-          >
-            {tag.tagName}
-          </DropDownItem>
-        ))}
-      </DropDownContainer>
+      {searchTags !== null && searchTags.length > 0 && (
+        <DropDownContainer disable={false}>
+          {searchTags?.map((tag) => (
+            <DropDownItem
+              key={tag.tagId}
+              variant="secondary"
+              onClick={() => handleClickBackDropData(tag.tagName)}
+            >
+              {tag.tagName}
+            </DropDownItem>
+          ))}
+        </DropDownContainer>
+      )}
     </div>
   );
 };

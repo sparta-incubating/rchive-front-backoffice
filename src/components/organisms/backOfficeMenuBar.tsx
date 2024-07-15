@@ -32,6 +32,7 @@ const BackOfficeMenuBar = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const Logout = () => {
+    // client.delete('/api/v1/users/logout');
     dispatch(clearTokens());
     localStorage.removeItem('token');
   };

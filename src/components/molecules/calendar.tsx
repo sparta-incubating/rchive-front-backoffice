@@ -29,7 +29,8 @@ const Calendar = () => {
           {date ? dayjs(date).format('YYYY-MM-DD') : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+
+      <PopoverContent className="top-0 w-auto p-0" sideOffset={-1020}>
         <CalendarComponent
           mode="single"
           selected={date}

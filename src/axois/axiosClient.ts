@@ -41,21 +41,9 @@ client.interceptors.response.use(
     const errorResponse = error.response;
     const statusCode = errorResponse.status;
     console.log(statusCode);
-    switch (statusCode) {
-      case 404:
-        alert('해당 이메일로된 아이가 없습니다');
-        break;
-      case 401:
-        alert('비밀번호가 틀렸습니다.');
-        break;
-      case 400:
-        alert('Bad request (요청 형식이 잘못됨)');
-        break;
-      case 403:
-        alert('엑세스 토큰 만료');
-        client.post('/api/v1/users/reissue');
-        break;
-    }
+
+    // client.post('/api/v1/users/reissue');
+
     return Promise.reject(error);
   },
 );
