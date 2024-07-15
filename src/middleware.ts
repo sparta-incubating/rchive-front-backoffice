@@ -4,9 +4,13 @@ import { NextResponse } from 'next/server';
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const cookie = request.cookies.get('nextjs');
-  console.log(cookie, '꾸키'); // => { name: 'nextjs', value: 'fast', Path: '/' }
+  console.log(cookie); // => { name: 'nextjs', value: 'fast', Path: '/' }
   const allCookies = request.cookies.getAll();
   console.log(allCookies);
+
+  request.cookies.has('nextjs'); // => true
+  request.cookies.delete('nextjs');
+  request.cookies.has('nextjs'); // => false
 
   return NextResponse.redirect(new URL('/', request.url));
 }

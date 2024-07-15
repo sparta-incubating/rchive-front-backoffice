@@ -7,7 +7,6 @@ import { AppDispatch } from '@/redux/config/storeConfig';
 import { setTokens } from '@/redux/modules/authSlice';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -26,7 +25,7 @@ export const LoginTest = () => {
     },
   });
 
-  const router = useRouter();
+  // const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
