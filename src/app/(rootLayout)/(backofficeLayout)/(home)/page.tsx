@@ -1,6 +1,5 @@
 import TagContainer from '@/components/organisms/tagContainer';
 import SignupTest from '@/components/pages/signupTest';
-
 const Home = () => {
   return (
     <div className="w-full">
