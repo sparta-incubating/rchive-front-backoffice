@@ -6,15 +6,15 @@ import permission from '@/../public/assets/icons/permissions-rtan.svg';
 import rtan from '@/../public/assets/icons/siginIn-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import SignupModal from '@/components/pages/signupModal';
-import { useModalContext } from '@/context/modalContext';
+import { useModalContext } from '@/context/modal.context';
+
+import { signupModalType } from '@/types/signup.types';
 import Image from 'next/image';
 import Button from '../atoms/button';
 import Input from '../atoms/input';
 import InputContainer from '../atoms/InputContainer';
 import Label from '../atoms/label';
 import InputField from '../molecules/InputField';
-
-import { signupModalType } from '@/types/signup.types';
 
 const SignIn = () => {
   const { open } = useModalContext();

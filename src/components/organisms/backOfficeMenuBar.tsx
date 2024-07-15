@@ -4,8 +4,11 @@ import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
 import SelectBox from '@/components/organisms/selectBox';
+import { AppDispatch } from '@/redux/config/storeConfig';
+import { clearTokens } from '@/redux/modules/authSlice';
 import { Links } from '@/types/menubar.types';
 import { SelectOptionType } from '@/types/signup.types';
+import { useDispatch } from 'react-redux';
 
 const options: SelectOptionType[] = [
   { value: '0', label: '르탄이의 바로 가기', selected: false },
@@ -24,6 +27,13 @@ const links: Links[] = [
 const BackOfficeMenuBar = () => {
   const handleSelect = (value: SelectOptionType['value']) => {
     console.log({ value });
+  };
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const Logout = () => {
+    dispatch(clearTokens());
+    localStorage.removeItem('token');
   };
 
   return (
@@ -52,7 +62,7 @@ const BackOfficeMenuBar = () => {
 
       <Spacer className="h-16" />
       {/* logout */}
-      <MenubarLogout>로그아웃</MenubarLogout>
+      <MenubarLogout onClick={Logout}>로그아웃</MenubarLogout>
     </aside>
   );
 };

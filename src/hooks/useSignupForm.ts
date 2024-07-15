@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { getMailCheck, postSignup } from '@/api/authApi';
+import { Admin, User } from '@/class/signup';
 import {
-  emailUniqueResponseType,
   GenderEnum,
   OAuthEnum,
   SignupFormData,
   signupModalType,
   UserRoleEnum,
 } from '@/types/signup.types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signupSchema } from '@/validators/auth/signup.validator';
-import axios from 'axios';
-import { Admin, User } from '@/class/signup';
 import { formatDate } from '@/utils/utils';
+import { signupSchema } from '@/validators/auth/signup.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const useSignupForm = (signupType: signupModalType) => {
-  const [isEmailUnique, setIsEmailUnique] = useState<boolean>(false);
+  const [isEmailUnique, setIsEmailUnique] = useState<boolean | undefined>(
+    undefined,
+  );
   const {
     register,
     handleSubmit,
@@ -42,21 +43,15 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormData) => {
-    const signUpForm = createSignupForm(signupType, data);
+    const signUpFormData = createSignupForm(signupType, data);
 
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/signup`,
-      signUpForm,
-    );
-    console.log(response.data);
+    await postSignup(signUpFormData);
   };
 
   const checkEmail = async (email: string) => {
     try {
-      const response = await axios.get<emailUniqueResponseType>(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/overlap/email?email=${email}`,
-      );
-      setIsEmailUnique(!!response.data.status);
+      const data = await getMailCheck(email);
+      setIsEmailUnique(data.data);
     } catch (error) {
       console.error('Error checking email uniqueness', error);
       setIsEmailUnique(false);
@@ -65,7 +60,7 @@ const useSignupForm = (signupType: signupModalType) => {
 
   const email = watch('email');
   useEffect(() => {
-    setIsEmailUnique(false);
+    setIsEmailUnique(undefined);
   }, [email]);
 
   return {

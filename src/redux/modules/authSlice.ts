@@ -14,10 +14,11 @@ const authSlice = createSlice({
   reducers: {
     setTokens: (state, action: PayloadAction<{ access: string }>) => {
       state.access = action.payload.access;
-      console.log(state.access, 'aaaa');
+      console.log(state.access, 'token');
     },
     clearTokens: (state) => {
       state.access = null;
+      console.log(state.access, 'clean');
     },
   },
 });

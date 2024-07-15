@@ -15,9 +15,6 @@ export const client = axios.create({
 client.interceptors.request.use(
   (config) => {
     console.log('인터셉트 성공');
-
-    // const token = store.getState();
-
     const accessToken = localStorage.getItem('token');
     client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
@@ -40,9 +37,7 @@ client.interceptors.response.use(
   (error) => {
     console.log('응답 에러');
 
-    // if (error.response.status === 403) {
-    //   client.post('/api/v1/users/reissue');
-    // }
+    // status에 따른 Error Handling
     const errorResponse = error.response;
     const statusCode = errorResponse.status;
     console.log(statusCode);
