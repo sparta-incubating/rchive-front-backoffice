@@ -6,8 +6,19 @@ export const getTags = async (keyword: string) => {
       `/api/v1/posts/tags?tagName=${keyword}`,
     );
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error('태그를 불러오는데 실패했습니다.');
+  }
+};
+
+export const postTag = async (tagName: string) => {
+  try {
+    const response = await axiosAPI.post('/api/v1/posts/tags', {
+      tagName,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('태그 저장에 실패했습니다.');
   }
 };

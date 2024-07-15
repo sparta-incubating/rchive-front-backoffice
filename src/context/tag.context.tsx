@@ -1,5 +1,6 @@
 'use client';
 
+import { getTags, postTag } from '@/api/postApi';
 import useComposition from '@/hooks/useComposition';
 import { TagType } from '@/types/tag.types';
 import { debounce } from 'lodash';
@@ -46,13 +47,24 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   const { isComposing } = useComposition(inputRef);
 
   const addTag = useCallback(
-    (tag: string) => {
+    async (tag: string) => {
       if (
         tags.find(
           (tagState) => tagState.tagName.toUpperCase() === tag.toUpperCase(),
         )
       ) {
         return;
+      }
+
+      if (searchTags) {
+        if (
+          !searchTags.some(
+            (searchTag) =>
+              searchTag.tagName.toUpperCase() === tag.toUpperCase(),
+          )
+        ) {
+          await postTag(tag);
+        }
       }
 
       const newTag: TagType = {
@@ -67,16 +79,8 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
           tagContainerRef.current.scrollWidth;
       }
     },
-    [tags],
+    [searchTags, tags],
   );
-
-  const openBackDrop = (data: TagType[] | string) => {
-    if (typeof data === 'string' && data === '') {
-      setSearchTags(null);
-    } else if (Array.isArray(data)) {
-      setSearchTags(data);
-    }
-  };
 
   const closeBackDrop = () => {
     setSearchTags(null);
@@ -107,26 +111,8 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         return;
       }
 
-      /*const data = await getTags(keyword);
-      setSearchTags(data);*/
-      openBackDrop([
-        {
-          tagId: Date.now(),
-          tagName: 'Java',
-        },
-        {
-          tagId: Date.now() + 2,
-          tagName: 'JavaScript',
-        },
-        {
-          tagId: Date.now() + 3,
-          tagName: 'React',
-        },
-        {
-          tagId: Date.now() + 4,
-          tagName: 'Spring',
-        },
-      ]);
+      const data = await getTags(keyword);
+      setSearchTags(data);
     }
   }, 300);
 
