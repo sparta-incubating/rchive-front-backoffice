@@ -33,13 +33,13 @@ const TagInput = ({
     if (inputRef.current && inputRef.current.innerText.trim() === '') {
       inputRef.current.classList.add(styles['empty-placeholder']);
     }
-  }, []);
+  }, [inputRef]);
 
   return (
     <div
       {...props}
       ref={inputRef}
-      className={`relative flex w-full max-w-full items-center font-medium outline-none ${props.className || ''}`}
+      className={`relative flex w-auto min-w-[280px] max-w-full items-center font-medium outline-none ${props.className || ''}`}
       contentEditable="true"
       role="textbox"
       aria-multiline="false"

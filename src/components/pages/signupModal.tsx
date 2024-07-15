@@ -71,8 +71,11 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           {errors.email?.message && (
             <FormSpan variant="error">{errors.email?.message}</FormSpan>
           )}
-          {isEmailUnique && (
+          {isEmailUnique === false && (
             <FormSpan variant="success">사용가능한 이메일입니다.</FormSpan>
+          )}
+          {isEmailUnique && (
+            <FormSpan variant="error">이미 사용중인 이메일입니다.</FormSpan>
           )}
         </section>
 
