@@ -2,7 +2,7 @@
 
 import SignupModal from '@/components/pages/signupModal';
 import { Button } from '@/components/ui/button';
-import { useModalContext } from '@/context/modalContext';
+import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
 
 const SignupTest = () => {

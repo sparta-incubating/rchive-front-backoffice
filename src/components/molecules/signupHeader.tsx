@@ -1,5 +1,5 @@
 import IconButton from '@/components/atoms/iconButton';
-import { useModalContext } from '@/context/modalContext';
+import { useModalContext } from '@/context/modal.context';
 
 const SignupHeader = () => {
   const { close } = useModalContext();

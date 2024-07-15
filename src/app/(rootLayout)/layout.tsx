@@ -1,6 +1,6 @@
-import { PropsWithChildren } from 'react';
-import CompoundProvider from '@/provider/compoundProvider';
 import Toast from '@/components/molecules/toast';
+import CompoundProvider from '@/provider/compoundProvider';
+import { PropsWithChildren } from 'react';
 
 /**
  * Root layout component
