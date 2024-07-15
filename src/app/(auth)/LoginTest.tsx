@@ -3,14 +3,11 @@
 import { client } from '@/axois/axiosClient';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
-import { AppDispatch } from '@/redux/config/storeConfig';
-import { setTokens } from '@/redux/modules/authSlice';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
 export const LoginTest = () => {
@@ -27,16 +24,17 @@ export const LoginTest = () => {
   });
 
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     try {
       client.post('/api/v1/users/login', data).then((res) => {
-        const authToken = res.headers['authorization'];
-        // console.log(authToken, '토큰');
+        const authToken = res.headers['authorization'].replace('Bearer ', '');
+
         if (res.status === 200) {
-          dispatch(setTokens({ access: authToken }));
-          // router.push('/mypage');
+          localStorage.setItem('token', authToken);
+          // dispatch(setTokens({ access: authToken }));
+          router.push('/permission');
         }
       });
     } catch (error) {

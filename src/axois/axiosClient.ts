@@ -16,8 +16,10 @@ client.interceptors.request.use(
   (config) => {
     console.log('인터셉트 성공');
 
-    // const { accessToken } = ;
-    // client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    // const token = store.getState();
+
+    const accessToken = localStorage.getItem('token');
+    client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     return config;
   },
@@ -38,12 +40,27 @@ client.interceptors.response.use(
   (error) => {
     console.log('응답 에러');
 
-    // if (error.response.status === 401) {
+    // if (error.response.status === 403) {
     //   client.post('/api/v1/users/reissue');
-    // }else if(){
-    //console.log("다시 로그인 해주세요")
-    //}
-
+    // }
+    const errorResponse = error.response;
+    const statusCode = errorResponse.status;
+    console.log(statusCode);
+    switch (statusCode) {
+      case 404:
+        alert('해당 이메일로된 아이가 없습니다');
+        break;
+      case 401:
+        alert('비밀번호가 틀렸습니다.');
+        break;
+      case 400:
+        alert('Bad request (요청 형식이 잘못됨)');
+        break;
+      case 403:
+        alert('엑세스 토큰 만료');
+        client.post('/api/v1/users/reissue');
+        break;
+    }
     return Promise.reject(error);
   },
 );
