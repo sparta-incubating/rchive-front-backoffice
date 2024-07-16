@@ -39,6 +39,7 @@ export const useTagContext = () => {
 };
 
 export const TagContextProvider = ({ children }: PropsWithChildren) => {
+  //TODO: submit 할 떄
   const [tags, setTags] = useState<TagType[]>([]);
   const [searchTags, setSearchTags] = useState<TagType[] | null>(null);
 

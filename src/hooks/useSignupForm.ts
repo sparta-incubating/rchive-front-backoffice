@@ -31,6 +31,7 @@ const useSignupForm = (signupType: signupModalType) => {
     reValidateMode: 'onChange',
     defaultValues: {
       email: '',
+      username: '',
       password: '',
       passwordConfirm: '',
       phone: '',
@@ -86,6 +87,7 @@ const createSignupForm = (
     return new Admin(
       OAuthEnum.LOCAL,
       data.email,
+      data.username,
       data.password,
       formatDate(data.birth),
       data.phone,
@@ -100,6 +102,7 @@ const createSignupForm = (
     return new User(
       OAuthEnum.LOCAL,
       data.email,
+      data.username,
       data.password,
       formatDate(data.birth),
       data.phone,

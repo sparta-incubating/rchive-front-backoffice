@@ -3,6 +3,7 @@ import { GenderEnum, OAuthEnum, UserRoleEnum } from '@/types/signup.types';
 class SignupUserForm {
   oAuthType: OAuthEnum;
   email: string;
+  username: string;
   password: string;
   birth: string;
   phone: string;
@@ -16,6 +17,7 @@ class SignupUserForm {
   constructor(
     oAuthType: OAuthEnum,
     email: string,
+    username: string,
     password: string,
     birth: string,
     phone: string,
@@ -28,6 +30,7 @@ class SignupUserForm {
   ) {
     this.oAuthType = oAuthType;
     this.email = email;
+    this.username = username;
     this.password = password;
     this.birth = birth;
     this.phone = phone;
@@ -44,6 +47,7 @@ export class Admin extends SignupUserForm {
   constructor(
     oAuthType: OAuthEnum,
     email: string,
+    username: string,
     password: string,
     birth: string,
     phone: string,
@@ -57,6 +61,7 @@ export class Admin extends SignupUserForm {
     super(
       oAuthType,
       email,
+      username,
       password,
       birth,
       phone,
@@ -76,6 +81,7 @@ export class User extends SignupUserForm {
   constructor(
     oAuthType: OAuthEnum,
     email: string,
+    username: string,
     password: string,
     birth: string,
     phone: string,
@@ -90,6 +96,7 @@ export class User extends SignupUserForm {
     super(
       oAuthType,
       email,
+      username,
       password,
       birth,
       phone,
