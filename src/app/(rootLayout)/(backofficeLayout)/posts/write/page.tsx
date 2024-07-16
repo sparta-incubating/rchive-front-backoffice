@@ -1,22 +1,15 @@
 'use client';
 
-import Button from '@/components/atoms/button';
-import Calendar from '@/components/molecules/calendar';
-import { createToast } from '@/utils/toast';
+import ThumbnailContainer from '@/components/molecules/thumbnailContainer';
+import BackofficePage from '@/components/pages/backofficePage';
 
 const Post = () => {
   return (
-    <div>
-      Post
-      <Button
-        size="sm"
-        onClick={() => createToast('게시물 작성이 완료되었습니다.', 'primary')}
-      >
-        토스트 실험
-      </Button>
-      <div className="h-[40vh]"></div>
-      <Calendar />
-    </div>
+    <BackofficePage>
+      <div className="m-4 flex flex-col gap-4 rounded-[14px] bg-white px-9 py-8">
+        <ThumbnailContainer />
+      </div>
+    </BackofficePage>
   );
 };
 export default Post;

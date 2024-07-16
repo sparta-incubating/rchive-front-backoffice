@@ -4,7 +4,6 @@ import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
 import SelectBox from '@/components/organisms/selectBox';
-import { Links } from '@/types/menubar.types';
 import { SelectOptionType } from '@/types/signup.types';
 
 const options: SelectOptionType[] = [
@@ -12,13 +11,6 @@ const options: SelectOptionType[] = [
   { value: '1', label: '옵션1', selected: false },
   { value: '2', label: '옵션2', selected: false },
   { value: '3', label: '옵션3', selected: false },
-];
-
-const links: Links[] = [
-  { href: '/admin', title: '권한 관리' },
-  { href: '/posts/write', title: '게시물 작성' },
-  { href: '/posts', title: '게시물 관리' },
-  { href: '/profile', title: '프로필 관리' },
 ];
 
 const BackOfficeMenuBar = () => {
@@ -48,7 +40,7 @@ const BackOfficeMenuBar = () => {
       </section>
 
       {/* nav */}
-      <MenubarLinks links={links} />
+      <MenubarLinks />
 
       <Spacer className="h-16" />
       {/* logout */}
