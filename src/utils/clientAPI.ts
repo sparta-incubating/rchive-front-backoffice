@@ -16,12 +16,12 @@ client.interceptors.request.use(
     console.log('인터셉트 성공');
     const session = await getSession();
     console.log(session, 'session');
-    // if (session) {
-    //   request.headers = {
-    //     ...request.headers,
-    //     Authorization: `Bearer ${session.jwt}`,
-    //   };
-    // }
+    if (session) {
+      request.headers = {
+        ...request.headers,
+        Authorization: `Bearer ${session.jwt}`,
+      };
+    }
     // client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     return config;

@@ -30,7 +30,7 @@ const SignIn = () => {
       username: username,
       password: password,
       redirect: true,
-      callbackUrl: '/',
+      callbackUrl: '/posts',
     });
 
     console.log(result, 'result');
