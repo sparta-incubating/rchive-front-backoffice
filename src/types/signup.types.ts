@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { signupSchema } from '@/validators/auth/signup.validator';
+import { z } from 'zod';
 
 export type CheckListType = {
   id: string;

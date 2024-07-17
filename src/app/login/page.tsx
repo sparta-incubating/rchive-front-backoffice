@@ -6,14 +6,16 @@ import Input from '@/components/atoms/input';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
+import React from 'react';
 
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const SignIn = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -23,21 +25,26 @@ const SignIn = () => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result = await trigger(['username', 'password']);
+
     try {
-      const result = await signIn('credentials', {
-        username: data.username,
-        password: data.password,
-        redirect: false,
-        callbackUrl: '/',
-      });
-      console.log(result, '로그인 계정');
-      if (result?.error) {
-        console.error('Login failed:', result.error);
-        // 에러 메시지를 사용자에게 표시
-      } else {
-        // 로그인 성공 처리 (예: 리다이렉트)
+      if (result) {
+        await handleSubmit((data: z.infer<typeof loginSchema>) => {
+          const username = data.username;
+          const password = data.password;
+
+          signIn('credentials', {
+            username,
+            password,
+            redirect: false,
+            callbackUrl: '/',
+          });
+        })();
       }
+      console.log(result, '로그인 계정');
     } catch (error) {
       console.error('Unexpected error during sign in:', error);
       // 예상치 못한 오류 처리
@@ -48,7 +55,7 @@ const SignIn = () => {
       <br />
       <br />
       <div>
-        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <form onSubmit={onSubmit}>
           <div className="border">
             <Input type="text" placeholder="이메일" {...register('username')} />
           </div>
@@ -75,4 +82,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;
