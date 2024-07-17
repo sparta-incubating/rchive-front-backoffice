@@ -14,6 +14,7 @@ export const client = axios.create({
 client.interceptors.request.use(
   async (config) => {
     console.log('인터셉트 성공');
+
     const session = await getSession();
     console.log(session, 'session');
     if (session) {

@@ -2,6 +2,7 @@
 
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
+import { AuthError } from 'next-auth';
 
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +11,7 @@ import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const SignIn = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
@@ -25,22 +26,21 @@ const SignIn = () => {
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
-      const result = await signIn('credentials', {
+      await signIn('credentials', {
         username: data.username,
         password: data.password,
-        redirect: false,
-        callbackUrl: '/',
+        redirectTo: '/',
       });
-      console.log(result, '로그인 계정');
-      if (result?.error) {
-        console.error('Login failed:', result.error);
-        // 에러 메시지를 사용자에게 표시
-      } else {
-        // 로그인 성공 처리 (예: 리다이렉트)
-      }
     } catch (error) {
-      console.error('Unexpected error during sign in:', error);
-      // 예상치 못한 오류 처리
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case 'CredentialsSignin':
+            return { error: 'Invalid credentials!' };
+          default:
+            return { error: '오류' };
+        }
+      }
+      throw error;
     }
   };
   return (
@@ -75,4 +75,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;
