@@ -1,58 +1,62 @@
 import NextAuth from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      id: 'user-credentials',
       name: 'Credentials',
       credentials: {
-        username: {
-          label: 'username',
-          type: 'text',
-          placeholder: '이메일을 입력하세요',
-        },
+        username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-
       async authorize(credentials, req) {
         try {
           const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/login`,
             {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(credentials),
+              headers: {
+                'Content-Type': 'application/json',
+                Origin: 'http://localhost:3000',
+              },
             },
           );
-          if (res.status === 401) {
-            console.log('에러에러에러 없는 유저다');
-            throw new Error('로그인 실패');
+
+          const data = await res.json();
+          console.log('Received response from backend:', data);
+
+          if (res.ok && data) {
+            // Any object returned will be saved in `user` property of the JWT
+            return data;
           } else {
-            const user = await res.json();
-            console.log(user, 'user');
-            const jwt = user.accessToken;
-            return { ...credentials, user, jwt };
+            // If you return null or false then the credentials will be rejected
+            return null;
+            // You can also Reject this callback with an Error or with a URL:
+            // throw new Error('error message') // Redirect to error page
+            // throw '/path/to/redirect'        // Redirect to a URL
           }
         } catch (error) {
-          return null;
+          console.log(error);
+          throw new Error('error message');
         }
       },
     }),
   ],
+  debug: true,
   callbacks: {
-    async jwt({ token, user }) {
-      return {
-        ...token,
-        ...user,
-      };
+    async jwt({ token, user }: { token: JWT; user: any }) {
+      if (user) {
+        token.accessToken = user.token;
+      }
+      return token;
     },
-
-    async session({ session, token }) {
-      session.user = token;
+    async session({ session, token }: { session: any; token: JWT }) {
+      session.accessToken = token.accessToken;
       return session;
     },
   },
-
   pages: {
     signIn: '/signin',
   },

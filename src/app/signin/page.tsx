@@ -24,16 +24,24 @@ const SignIn = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const { username, password } = data;
-    // console.log(data);
-    const result = await signIn('credentials', {
-      username: username,
-      password: password,
-      redirect: true,
-      callbackUrl: '/posts',
-    });
-
-    console.log(result, 'result');
+    try {
+      const result = await signIn('credentials', {
+        username: data.username,
+        password: data.password,
+        redirect: false,
+        callbackUrl: '/',
+      });
+      console.log(result, '로그인 계정');
+      if (result?.error) {
+        console.error('Login failed:', result.error);
+        // 에러 메시지를 사용자에게 표시
+      } else {
+        // 로그인 성공 처리 (예: 리다이렉트)
+      }
+    } catch (error) {
+      console.error('Unexpected error during sign in:', error);
+      // 예상치 못한 오류 처리
+    }
   };
   return (
     <>
