@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { signupSchema } from '@/validators/auth/signup.validator';
+import { z } from 'zod';
 
 export type CheckListType = {
   id: string;
@@ -20,7 +20,7 @@ export type emailUniqueResponseType = {
   data: false;
 };
 
-export type SignupFormData = z.infer<typeof signupSchema>;
+export type SignupFormSchema = z.infer<typeof signupSchema>;
 
 export enum OAuthEnum {
   LOCAL = 'LOCAL',

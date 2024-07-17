@@ -17,7 +17,7 @@ const InquiryButton = ({ ...props }: InquiryButtonProps) => {
             fill
           />
         </div>
-        <span className="text-sm font-medium">문의 바로가기</span>
+        <span className="text-sm font-medium">문의하기</span>
       </div>
     </button>
   );

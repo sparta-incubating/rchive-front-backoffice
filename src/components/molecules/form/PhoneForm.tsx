@@ -4,14 +4,14 @@ import Input from '@/components/atoms/input';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useSelectBox from '@/hooks/useSelectBox';
-import { SignupFormData } from '@/types/signup.types';
+import { SignupFormSchema } from '@/types/signup.types';
 import { phoneCountries } from '@/utils/phoneCountry';
 import { Control, Controller, UseFormRegister } from 'react-hook-form';
 import PhoneField from './PhoneField';
 
 interface PhoneFormProps {
-  control: Control<SignupFormData>;
-  register: UseFormRegister<SignupFormData>;
+  control: Control<SignupFormSchema>;
+  register: UseFormRegister<SignupFormSchema>;
 }
 
 const PhoneForm = ({ control, register }: PhoneFormProps) => {
@@ -19,12 +19,13 @@ const PhoneForm = ({ control, register }: PhoneFormProps) => {
 
   return (
     <>
+      {/*TODO: margin 맞추기*/}
       <PasswordContainer variant="secondary">
         <Controller
           name="countryCode"
           control={control}
           render={({ field }) => (
-            <SelectFormBox<SignupFormData>
+            <SelectFormBox<SignupFormSchema>
               options={selectOptions}
               label="휴대폰 번호"
               onSelect={(value) => {

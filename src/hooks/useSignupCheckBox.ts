@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { CheckListType, SignupFormData } from '@/types/signup.types';
+import { CheckListType, SignupFormSchema } from '@/types/signup.types';
 import { updateSignupFormCheckList } from '@/utils/checkBox';
+import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 const useSignupCheckBox = (
   checkList: CheckListType[],
-  setValue: UseFormSetValue<SignupFormData>,
+  setValue: UseFormSetValue<SignupFormSchema>,
 ) => {
   const [state, setState] = useState<CheckListType[]>(checkList);
 
@@ -32,7 +32,7 @@ const useSignupCheckBox = (
 
   useEffect(() => {
     checkList.forEach((check) => {
-      setValue(check.id as keyof SignupFormData, check.isChecked);
+      setValue(check.id as keyof SignupFormSchema, check.isChecked);
     });
   }, [checkList, setValue]);
 

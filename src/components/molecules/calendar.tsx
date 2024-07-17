@@ -12,7 +12,11 @@ import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 
-const Calendar = () => {
+interface CalendarProps {
+  className?: string;
+}
+
+const Calendar = ({ className }: CalendarProps) => {
   const [date, setDate] = React.useState<Date>();
 
   return (
@@ -23,10 +27,15 @@ const Calendar = () => {
           className={cn(
             'w-[280px] justify-start text-left font-normal',
             !date && 'text-muted-foreground',
+            className,
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? dayjs(date).format('YYYY-MM-DD') : <span>Pick a date</span>}
+          {date ? (
+            dayjs(date).format('YYYY-MM-DD')
+          ) : (
+            <span>날짜를 선택해주세요.</span>
+          )}
         </Button>
       </PopoverTrigger>
 

@@ -3,7 +3,7 @@ import InquiryButton from '@/components/atoms/inquiryButton';
 
 const BackofficeHeader = () => {
   return (
-    <header className="mt-12 flex items-center justify-between px-24">
+    <header className="mx-auto mt-12 flex w-full max-w-[1102px] items-center justify-between">
       <BackofficeHeaderTitle />
       <InquiryButton />
     </header>

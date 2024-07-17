@@ -1,14 +1,14 @@
 'use client';
 
-import InputContainer from '@/components/atoms/InputContainer';
-import React, { useState } from 'react';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
+import InputContainer from '@/components/atoms/InputContainer';
+import { SignupFormSchema } from '@/types/signup.types';
+import React, { useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
-import { SignupFormData } from '@/types/signup.types';
 
 interface PhoneFieldProps {
-  register: UseFormRegister<SignupFormData>;
+  register: UseFormRegister<SignupFormSchema>;
 }
 
 const PhoneField = ({ register }: PhoneFieldProps) => {

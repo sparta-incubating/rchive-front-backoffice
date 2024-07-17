@@ -1,9 +1,9 @@
-import { getMailCheck, postSignup } from '@/api/authApi';
+import { getMailCheck } from '@/api/authApi';
 import { Admin, User } from '@/class/signup';
 import {
   GenderEnum,
   OAuthEnum,
-  SignupFormData,
+  SignupFormSchema,
   signupModalType,
   UserRoleEnum,
 } from '@/types/signup.types';
@@ -25,7 +25,7 @@ const useSignupForm = (signupType: signupModalType) => {
     formState: { errors, isValid },
     getValues,
     setValue,
-  } = useForm<SignupFormData>({
+  } = useForm<SignupFormSchema>({
     resolver: zodResolver(signupSchema),
     mode: 'all',
     reValidateMode: 'onChange',
@@ -43,10 +43,11 @@ const useSignupForm = (signupType: signupModalType) => {
     },
   });
 
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = async (data: SignupFormSchema) => {
+    console.log({ data });
     const signUpFormData = createSignupForm(signupType, data);
 
-    await postSignup(signUpFormData);
+    // await postSignup(signUpFormData);
   };
 
   const checkEmail = async (email: string) => {
@@ -81,7 +82,7 @@ const useSignupForm = (signupType: signupModalType) => {
 
 const createSignupForm = (
   signupType: signupModalType,
-  data: SignupFormData,
+  data: SignupFormSchema,
 ) => {
   if (signupType === signupModalType.MANAGER) {
     return new Admin(
