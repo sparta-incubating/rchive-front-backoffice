@@ -18,7 +18,7 @@ const PhoneField = ({ register }: PhoneFieldProps) => {
     <>
       <InputContainer variant="secondary">
         <Input
-          className="my-5 w-[233px] bg-blue-50 pl-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          className="my-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="휴대폰 번호 입력 (-) 제외"
           {...register('phone')}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

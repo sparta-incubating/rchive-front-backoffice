@@ -28,7 +28,6 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     setValue,
     errors,
     watch,
-    control,
     checkEmail,
     isEmailUnique,
     isValid,
@@ -126,7 +125,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
         </section>
 
         {/* phone */}
-        <PhoneForm register={register} control={control} />
+        <PhoneForm register={register} />
 
         {/* birthday */}
         <section>
