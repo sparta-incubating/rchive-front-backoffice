@@ -14,16 +14,11 @@ export const client = axios.create({
 client.interceptors.request.use(
   async (config) => {
     console.log('인터셉트 성공');
-
     const session = await getSession();
-    console.log(session, 'session');
-    if (session) {
-      request.headers = {
-        ...request.headers,
-        Authorization: `Bearer ${session.jwt}`,
-      };
-    }
-    // client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+    const accessToken = session?.accessToken;
+    console.log(accessToken, '세션이다요');
+    client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     return config;
   },
@@ -45,9 +40,9 @@ client.interceptors.response.use(
     console.log('응답 에러');
 
     // status에 따른 Error Handling
-    const errorResponse = error.response;
-    const statusCode = errorResponse.status;
-    console.log(statusCode);
+    // const errorResponse = error.response;
+    // const statusCode = errorResponse.status;
+    // console.log(statusCode);
 
     // client.post('/api/v1/users/reissue');
 

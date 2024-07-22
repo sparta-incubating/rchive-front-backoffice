@@ -26,19 +26,18 @@ const handler = NextAuth({
             },
           );
 
-          if (res.status === 401) {
-            console.log('아이디 및 비밀번호를 확인하세요');
-            throw new Error('로그인 실패');
-          } else {
-            const user = res;
+          if (res.ok) {
+            const authorizationHeader = res.headers.get('authorization');
+            const accessToken = authorizationHeader
+              ? authorizationHeader.replace('Bearer ', '')
+              : '';
 
-            const accessToken = res.headers.get('authorization');
-            const refreshToken = res.headers
-              .get('set-cookie')
-              ?.split(';')[0]
-              .split('=')[1];
+            const cookies = res.headers.get('set-cookie');
+            const refreshToken = cookies
+              ? cookies.split(';')[0].split('=')[1]
+              : '';
 
-            return { ...user, accessToken, refreshToken };
+            return { accessToken, refreshToken };
           }
         } catch (error) {
           console.error('Authorization error:', error);
@@ -47,27 +46,22 @@ const handler = NextAuth({
       },
     }),
   ],
-  //   debug: true,
   callbacks: {
-    // async signIn({ user, account, profile, email, credentials }) {
-    //   console.log('유저유저유저입미다아앙2222', user);
-
-    //   // 여기서 추가적인 검증을 수행할 수 있습니다.
-    //   return true; // 로그인 허용
-    // },
-    async jwt({ token, user }: { token: JWT; user: any }) {
+    async jwt({ token, user }) {
+      // console.log('JWT callback - token:', token);
+      // console.log('JWT callback - user:', user);
       if (user) {
-        console.log(user, 'user');
-        token.authToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-        console.log('토큰', token.authToken);
+        token.accessToken = user?.accessToken;
+        token.refreshToken = user?.refreshToken;
       }
-      return { ...token, ...user };
+      return token;
     },
-    async session({ session, token }: { session: any; token: JWT }) {
-      session.accessToken = token.accessToken;
-      console.log('세션', session.accessToken);
-      return { ...token, ...session };
+
+    async session({ session, token }) {
+      session.accessToken = token?.accessToken;
+      session.refreshToken = token?.refreshToken;
+      // console.log('Session callback - updated session:', session);
+      return session;
     },
   },
   pages: {

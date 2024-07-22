@@ -2,7 +2,6 @@
 
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
-import { AuthError } from 'next-auth';
 
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,7 +28,7 @@ const Login = () => {
       await signIn('credentials', {
         username: data.username,
         password: data.password,
-        redirectTo: '/',
+        callbackUrl: '/posts',
       });
     } catch (error) {
       if (error instanceof AuthError) {
