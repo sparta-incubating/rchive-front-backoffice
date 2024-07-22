@@ -6,6 +6,7 @@ import Input from '@/components/atoms/input';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -23,29 +24,25 @@ const Login = () => {
     },
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
-      await signIn('credentials', {
+      const res = await signIn('credentials', {
         username: data.username,
         password: data.password,
-        callbackUrl: '/posts',
+        redirect: false,
       });
-    } catch (error) {
-      if (error instanceof AuthError) {
-        switch (error.type) {
-          case 'CredentialsSignin':
-            return { error: 'Invalid credentials!' };
-          default:
-            return { error: '오류' };
-        }
+
+      if (res?.status === 200) {
+        router.push('/');
       }
-      throw error;
+    } catch (error) {
+      console.log(error, 'error');
     }
   };
   return (
     <>
-      <br />
-      <br />
       <div>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <div className="border">

@@ -9,7 +9,12 @@ import SignupModal from '@/components/pages/signupModal';
 import { useModalContext } from '@/context/modal.context';
 
 import { signupModalType } from '@/types/signup.types';
+import { loginSchema } from '@/validators/auth/login.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import Button from '../atoms/button';
 import Input from '../atoms/input';
 import InputContainer from '../atoms/InputContainer';
@@ -23,6 +28,29 @@ const SignIn = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    try {
+      await signIn('credentials', {
+        username: data.username,
+        password: data.password,
+        callbackUrl: '/',
+      });
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  };
   return (
     <>
       <main className="min-w-main max-w-sub h-screen">
@@ -45,48 +73,50 @@ const SignIn = () => {
                 </p>
               </section>
             </section>
-
-            <section className="flex h-[228px] flex-col gap-5 pt-5">
-              <section className="mx-auto">
-                {/*이메일*/}
-                <InputContainer>
-                  <InputField>
-                    <Label htmlFor="email">이메일</Label>
-                    <Input
-                      // {...register('email')}
-                      placeholder="ex.123@eamil.com"
-                      className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                    />
-                  </InputField>
-                </InputContainer>{' '}
-                <span className="text-sm text-primary-400">
-                  {/* {errors.email?.message} */}
-                </span>
+            <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+              <section className="flex h-[228px] flex-col gap-5 pt-5">
+                <section className="mx-auto">
+                  {/*이메일*/}
+                  <InputContainer>
+                    <InputField>
+                      <Label htmlFor="username">이메일</Label>
+                      <Input
+                        {...register('username')}
+                        placeholder="ex.123@eamil.com"
+                        className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                      />
+                    </InputField>
+                  </InputContainer>{' '}
+                  <span className="text-sm text-primary-400">
+                    {errors.username?.message}
+                  </span>
+                </section>
+                <section className="mx-auto">
+                  {/*비밀번호*/}
+                  <InputContainer>
+                    <InputField>
+                      <Label htmlFor="password">비밀번호</Label>
+                      <Input
+                        {...register('password')}
+                        placeholder="비밀번호 입력"
+                        type="password"
+                        className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                      />
+                    </InputField>
+                  </InputContainer>{' '}
+                  <span className="text-sm text-primary-400">
+                    {errors.password?.message}
+                  </span>
+                </section>
               </section>
-              <section className="mx-auto">
-                {/*비밀번호*/}
-                <InputContainer>
-                  <InputField>
-                    <Label htmlFor="email">비밀번호</Label>
-                    <Input
-                      // {...register('email')}
-                      placeholder="비밀번호 입력"
-                      className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                    />
-                  </InputField>
-                </InputContainer>{' '}
-                <span className="text-sm text-primary-400">
-                  {/* {errors.email?.message} */}
-                </span>
-              </section>
-            </section>
 
-            {/* 회원가입*/}
-            <section className="flex justify-center py-5">
-              <Button size="sm" className="w-[300px]" variant="submit">
-                로그인
-              </Button>
-            </section>
+              {/* 회원가입*/}
+              <section className="flex justify-center py-5">
+                <Button size="sm" className="w-[300px]" variant="submit">
+                  로그인
+                </Button>
+              </section>
+            </form>
             <section className="mx-auto flex h-[53px] flex-row justify-center p-[16px] text-center">
               <span className="w-[120px] text-sm text-gray-500">
                 <button onClick={handleSignupModalOpen}>회원가입</button>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -15,18 +15,14 @@ client.interceptors.request.use(
   async (config) => {
     console.log('인터셉트 성공');
     const session = await getSession();
-
     const accessToken = session?.accessToken;
-    console.log(accessToken, '세션이다요');
-    client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
     return config;
   },
 
-  (error) => {
-    console.log('요청 에러');
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
 client.interceptors.response.use(
@@ -36,15 +32,36 @@ client.interceptors.response.use(
     return response;
   },
 
-  (error) => {
-    console.log('응답 에러');
+  async (error) => {
+    const originalRequest = error.config;
 
-    // status에 따른 Error Handling
-    // const errorResponse = error.response;
-    // const statusCode = errorResponse.status;
-    // console.log(statusCode);
+    if (error.response.status === 401) {
+      console.log('비밀번호를 확인해주세요');
+    } else if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const session = await getSession();
 
-    // client.post('/api/v1/users/reissue');
+        if (session && session?.refreshToken) {
+          const res = await client.post('/api/v1/users/reissue', {
+            withCredentials: true,
+          });
+
+          const newToken = res.data.accessToken;
+
+          // 새로운 액세스 토큰을 세션에 저장합니다.
+          const updatedSession = await getSession();
+          updatedSession.accessToken = newToken;
+          client.defaults.headers.common['Authorization'] =
+            `Bearer ${newToken}`;
+
+          return client(originalRequest);
+        }
+      } catch (error) {
+        // 리프레시 토큰도 만료 시
+        signOut();
+      }
+    }
 
     return Promise.reject(error);
   },

@@ -1,4 +1,6 @@
-import NextAuth from 'next-auth';
+import { AuthToken, LoginUser } from '@/types/login.types';
+import NextAuth, { Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const handler = NextAuth({
@@ -9,7 +11,11 @@ const handler = NextAuth({
         username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials: LoginUser | undefined) {
+        if (!credentials) {
+          throw new Error('Credentials are required');
+        }
+
         try {
           const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/login`,
@@ -47,9 +53,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      // console.log('JWT callback - token:', token);
-      // console.log('JWT callback - user:', user);
+    async jwt({ token, user }: { token: JWT; user: AuthToken }) {
       if (user) {
         token.accessToken = user?.accessToken;
         token.refreshToken = user?.refreshToken;
@@ -57,10 +61,12 @@ const handler = NextAuth({
       return token;
     },
 
-    async session({ session, token }) {
-      session.accessToken = token?.accessToken;
-      session.refreshToken = token?.refreshToken;
-      // console.log('Session callback - updated session:', session);
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token) {
+        session.accessToken = token?.accessToken;
+        session.refreshToken = token?.refreshToken;
+      }
+
       return session;
     },
   },
