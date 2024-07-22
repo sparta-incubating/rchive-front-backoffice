@@ -2,8 +2,8 @@
 
 import board from '@/../public/assets/icons/board-rtan.svg';
 import backofficeMain from '@/../public/assets/icons/dashboard.svg';
-import permission from '@/../public/assets/icons/permissions-rtan.svg';
-import rtan from '@/../public/assets/icons/siginIn-rtan.svg';
+import permission from '@/../public/assets/icons/permission-rtan.svg';
+import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import SignupModal from '@/components/pages/signupModal';
 import { useModalContext } from '@/context/modal.context';
@@ -61,6 +61,7 @@ const SignIn = () => {
                 </InputContainer>{' '}
                 <span className="text-sm text-primary-400">
                   {/* {errors.email?.message} */}
+                  에러메시지
                 </span>
               </section>
               <section className="mx-auto">
@@ -77,6 +78,7 @@ const SignIn = () => {
                 </InputContainer>{' '}
                 <span className="text-sm text-primary-400">
                   {/* {errors.email?.message} */}
+                  에러메시지
                 </span>
               </section>
             </section>
@@ -99,30 +101,30 @@ const SignIn = () => {
           </aside>
 
           {/*2 */}
-          <section className="shadow-signInBox bg-custom-gradient w-[calc(100%-500px)]">
-            <section className="sub:px-[337px] px-[110px] pb-[145px] pt-[138px]">
+          <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
+            <section className="px-[110px] pb-[145px] pt-[138px] sub:px-[337px]">
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
-                  <Image
-                    src={write}
-                    alt="권한르탄이"
-                    width={237.79}
-                    height={107.61}
-                    className="shadow-rtanBox mb-[14px] rounded-[14px]"
-                  />
                   <Image
                     src={permission}
                     alt="게시물르탄이"
                     width={237.79}
                     height={107.61}
-                    className="shadow-rtanBox mb-[14px] rounded-[14px]"
+                    className="mb-[14px] rounded-[14px] shadow-rtanBox"
+                  />
+                  <Image
+                    src={write}
+                    alt="권한르탄이"
+                    width={237.79}
+                    height={107.61}
+                    className="mb-[14px] rounded-[14px] shadow-rtanBox"
                   />
                   <Image
                     src={board}
                     alt="작성르탄이"
                     width={237.79}
                     height={107.61}
-                    className="shadow-rtanBox rounded-[14px]"
+                    className="rounded-[14px] shadow-rtanBox"
                   />
                 </article>
                 <article className="mb-[30px] h-[80px] w-[330px]">
@@ -136,7 +138,7 @@ const SignIn = () => {
                     alt="백오피스"
                     width={817}
                     height={743}
-                    className="shadow-dashboardBox rounded-[22px]"
+                    // className="rounded-[22px] shadow-dashboardBox"
                   />
                 </article>
               </section>
