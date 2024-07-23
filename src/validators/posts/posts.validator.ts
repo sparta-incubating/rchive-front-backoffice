@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+const notionPattern = /^(https?:\/\/)(www\.)?notion\.so\/.+$/;
+
 const trackEnum = z.enum([
   'UNITY',
   'NODEJS',
@@ -13,14 +16,21 @@ const trackEnum = z.enum([
   'UXUI',
 ]);
 
-const postTypeEnum = z.enum([
-  'Sparta_Lecture',
-  'Special_Lecture',
-  'Level_Challenge',
-  'Level_Standard',
-  'Level_Basic',
-  'Project_Description',
-]);
+const postTypeEnum = z.enum(
+  [
+    'Sparta_Lecture',
+    'Special_Lecture',
+    'Level_Challenge',
+    'Level_Standard',
+    'Level_Basic',
+    'Project_Description',
+  ],
+  { required_error: '카테고리를 선택해주세요.' },
+);
+
+const isOpenEnum = z.enum(['true', 'false'], {
+  required_error: '',
+});
 
 const tagSchema = z.object({
   tagId: z.number(),
@@ -28,15 +38,25 @@ const tagSchema = z.object({
 });
 
 export const postsSchema = z.object({
-  postType: postTypeEnum,
   title: z.string().min(1, '최소 1글자 이상의 제목을 입력해주세요.'),
-  tutor: z.string(),
+  tutor: z.string().optional(),
   thumbnail: z.string().optional(),
-  contentLink: z.string().optional(),
-  videoLink: z.string().optional(),
+  contentLink: z
+    .string()
+    .optional()
+    .refine((url) => !url || notionPattern.test(url), {
+      message: '노션 링크가 맞는지 확인해주세요.',
+    }),
+  videoLink: z
+    .string()
+    .optional()
+    .refine((url) => !url || youtubePattern.test(url), {
+      message: '유튜브 링크가 맞는지 확인해주세요.',
+    }),
   tagNameList: z.array(tagSchema).max(10, '태그는 10개까지 입력가능합니다.'),
-  uploadedAt: z.string(),
+  uploadedAt: z.date().optional(),
   trackName: trackEnum,
-  period: z.number(),
-  isOpened: z.boolean(),
+  postType: postTypeEnum,
+  period: z.string().min(1, '기수를 선택해주세요.'),
+  isOpened: isOpenEnum,
 });

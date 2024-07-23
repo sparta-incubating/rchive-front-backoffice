@@ -1,38 +1,35 @@
 import { radioType } from '@/types/radio.types';
 import Image from 'next/image';
-import { useState } from 'react';
 
 interface CustomRadioProps {
   values: radioType[];
+  value: string;
+  onChange: () => void;
 }
 
-const CustomRadio = ({ values }: CustomRadioProps) => {
-  const [selected, setSelected] = useState(values[0].value);
-
-  const handleRadioChange = (value: string) => {
-    setSelected(value);
-  };
+const CustomRadio = ({ values, value, onChange }: CustomRadioProps) => {
+  console.log({ value });
 
   return (
     <div className="flex space-x-4">
-      {values.map((value) => (
+      {values.map((radioValue) => (
         <label
-          key={value.value}
+          key={radioValue.value}
           className="flex cursor-pointer items-center space-x-2"
         >
           <input
             type="radio"
             name="custom-radio"
-            value={value.value}
-            checked={selected === value.value}
-            onChange={() => handleRadioChange(value.value)}
+            value={radioValue.value}
+            checked={value === radioValue.value}
+            onChange={onChange}
             className="hidden"
           />
 
           <div className="relative h-5 w-5">
             <Image
               src={
-                selected === value.value
+                value === radioValue.value
                   ? '/assets/icons/radioChecked.svg'
                   : '/assets/icons/radioUnchecked.svg'
               }
@@ -40,7 +37,7 @@ const CustomRadio = ({ values }: CustomRadioProps) => {
               fill
             />
           </div>
-          <span>{value.label}</span>
+          <span>{radioValue.label}</span>
         </label>
       ))}
     </div>

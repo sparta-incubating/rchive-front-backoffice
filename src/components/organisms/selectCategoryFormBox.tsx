@@ -1,40 +1,37 @@
-'use client';
-
 import SelectContainer from '@/components/atoms/selectContainer';
 import SelectDropDown from '@/components/atoms/selectDropDown';
-import SelectInput, {
-  SelectInputVariants,
-} from '@/components/atoms/selectInput';
+import SelectDumyItem from '@/components/atoms/selectDumyItem';
+import SelectInput from '@/components/atoms/selectInput';
 import SelectItem from '@/components/atoms/selectItem';
 import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
 import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
-import { VariantProps } from 'class-variance-authority';
 import { useState } from 'react';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
-interface SelectBoxProps {
+interface SelectBoxProps<T extends FieldValues> {
   options: SelectOptionType[];
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
-  selectInputVariant: VariantProps<typeof SelectInputVariants>['variant'];
   variant?: 'primary' | 'secondary';
   className?: string;
+  field: ControllerRenderProps<T>;
 }
 
-const SelectFormBox = ({
+const SelectFormBox = <T extends FieldValues>({
   options,
   label,
   onSelect,
   variant,
-  selectInputVariant,
   className,
-}: SelectBoxProps) => {
+  field,
+}: SelectBoxProps<T>) => {
   const { isOpen, setIsOpen, dropdownRef, handleClick } =
     useDropDownOutsideClick();
 
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
-    options.find((option) => option.value === '0') || null,
+    options.find((option) => option.value === field.value) || null,
   );
 
   const handleSelect = (option: SelectOptionType) => {
@@ -48,23 +45,28 @@ const SelectFormBox = ({
       <SelectLayout label={label}>
         <SelectLabel>{label}</SelectLabel>
         <SelectInput
-          variant={selectInputVariant}
+          variant={selectedOption ? 'selected' : 'unSelected'}
           onClick={handleClick}
           clicked={isOpen}
         >
-          {selectedOption ? selectedOption.label : options[0].label}
+          {selectedOption ? selectedOption.label : '선택안함'}
         </SelectInput>
         <SelectDropDown clicked={isOpen} ref={dropdownRef}>
-          {options.map((option) => (
-            <SelectItem
-              key={option.value + option.label}
-              data-value={option.value}
-              selected={option.value === selectedOption?.value}
-              variant={variant}
-              onClick={() => handleSelect(option)}
-            >
-              {option.label}
-            </SelectItem>
+          {options.map((option, index) => (
+            <>
+              {index === 1 && <SelectDumyItem title="수준별 강의" />}
+              {index === 4 && <SelectDumyItem />}
+
+              <SelectItem
+                key={option.value + option.label}
+                data-value={option.value}
+                selected={option.value === selectedOption?.value}
+                variant={variant}
+                onClick={() => handleSelect(option)}
+              >
+                {option.label}
+              </SelectItem>
+            </>
           ))}
         </SelectDropDown>
       </SelectLayout>

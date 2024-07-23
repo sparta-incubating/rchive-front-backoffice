@@ -1,10 +1,19 @@
+'use client';
+
+import { getPeriod } from '@/api/postApi';
+import FormSpan from '@/components/atoms/formSpan';
 import UploadInput from '@/components/atoms/uploadInput';
 import TitleContainer from '@/components/molecules/post/titleContainer';
+import SelectCategoryFormBox from '@/components/organisms/selectCategoryFormBox';
 import SelectFormBox from '@/components/organisms/selectFormBox';
-import { PostsFormSchema } from '@/types/posts.types';
+import useSelectBox from '@/hooks/useSelectBox';
+import { PostsFormSchema, postTypeList } from '@/types/posts.types';
+import { SelectOptionType } from '@/types/signup.types';
+import { useQuery } from '@tanstack/react-query';
 import {
   Control,
   Controller,
+  FieldErrors,
   UseFormRegister,
   UseFormWatch,
 } from 'react-hook-form';
@@ -13,30 +22,54 @@ interface PostInputContainerProps {
   control: Control<PostsFormSchema>;
   register: UseFormRegister<PostsFormSchema>;
   watch: UseFormWatch<PostsFormSchema>;
+  errors: FieldErrors<PostsFormSchema>;
 }
 
 const PostInfoContainer = ({
   control,
   register,
   watch,
+  errors,
 }: PostInputContainerProps) => {
+  const { data: period } = useQuery({
+    queryKey: ['period'],
+    queryFn: () => getPeriod<SelectOptionType[]>('UNITY'),
+    retry: 3,
+    staleTime: Infinity,
+  });
+
+  const { handleSelected: handlePeriodSelected } = useSelectBox(
+    period ? period : [],
+  );
+
+  const {
+    selectOptions: postTypeSelectedOptions,
+    handleSelected: handlePostTypeSelected,
+  } = useSelectBox(postTypeList);
+
   return (
     <section className="flex gap-4">
       <TitleContainer title="기수">
         <Controller
           name="period"
           control={control}
-          render={({ field }) => (
+          render={({ field: { onChange, value } }) => (
             <SelectFormBox<PostsFormSchema>
-              options={[{ value: '1', label: '1기', selected: true }]}
+              options={period ? period : []}
               label={''}
-              onSelect={(value) => {}}
+              onSelect={(value) => {
+                handlePeriodSelected(value);
+                onChange(value);
+              }}
               variant="secondary"
               className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
-              field={field}
+              value={value}
             />
           )}
         />
+        {errors.period?.message && (
+          <FormSpan variant="error">{errors.period.message}</FormSpan>
+        )}
       </TitleContainer>
 
       <TitleContainer title="카테고리">
@@ -44,24 +77,29 @@ const PostInfoContainer = ({
           name="postType"
           control={control}
           render={({ field }) => (
-            <SelectFormBox<PostsFormSchema>
-              options={[
-                { value: '1', label: '특강/실시간섹션', selected: true },
-              ]}
+            <SelectCategoryFormBox<PostsFormSchema>
+              options={postTypeSelectedOptions}
               label={''}
-              onSelect={(value) => {}}
+              onSelect={(value) => {
+                handlePostTypeSelected(value);
+                field.onChange(value);
+              }}
               variant="secondary"
               className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
               field={field}
             />
           )}
         />
+        {errors.postType?.message && (
+          <FormSpan variant="error">{errors.postType.message}</FormSpan>
+        )}
       </TitleContainer>
 
       <TitleContainer title="튜터">
         <UploadInput
           {...register('tutor')}
           watch={watch('tutor')}
+          isUseButton={false}
           placeholder="튜터명을 입력해주세요."
         />
       </TitleContainer>

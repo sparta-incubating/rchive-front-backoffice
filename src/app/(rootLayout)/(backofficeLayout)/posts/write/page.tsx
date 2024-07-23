@@ -13,7 +13,7 @@ import { PostsFormSchema } from '@/types/posts.types';
 import { radioType } from '@/types/radio.types';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 const isOpenRadios: radioType[] = [
   { value: 'true', label: '공개' },
@@ -41,10 +41,10 @@ const Post = () => {
       contentLink: '',
       videoLink: '',
       tagNameList: [],
-      uploadedAt: '',
+      uploadedAt: new Date(),
       trackName: 'ANDROID',
-      period: 0,
-      isOpened: false,
+      period: '0',
+      isOpened: 'true',
     },
   });
 
@@ -72,6 +72,7 @@ const Post = () => {
               control={control}
               register={register}
               watch={watch}
+              errors={errors}
             />
 
             {/* Tag */}
@@ -79,10 +80,23 @@ const Post = () => {
 
             {/* calendar and Radio button */}
             <div className="flex gap-4">
-              <CalendarContainer />
+              <CalendarContainer control={control} />
+
               <TitleContainer title="공개여부">
                 <div className="flex h-[64px] items-center">
-                  <CustomRadio values={isOpenRadios} />
+                  <div className="flex space-x-4">
+                    <Controller
+                      name="isOpened"
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <CustomRadio
+                          values={isOpenRadios}
+                          onChange={onChange}
+                          value={value}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
               </TitleContainer>
             </div>
