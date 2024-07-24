@@ -3,7 +3,7 @@
 import { getPeriod } from '@/api/postApi';
 import FormSpan from '@/components/atoms/formSpan';
 import TitleContainer from '@/components/molecules/post/titleContainer';
-import TutorContainer from '@/components/molecules/tutorContainer';
+import TutorContainer from '@/components/molecules/post/tutorContainer';
 import SelectCategoryFormBox from '@/components/organisms/selectCategoryFormBox';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useSelectBox from '@/hooks/useSelectBox';
@@ -15,10 +15,12 @@ import {
   Controller,
   FieldErrors,
   UseFormRegister,
+  UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
 
 interface PostInputContainerProps {
+  setValue: UseFormSetValue<PostsFormSchema>;
   control: Control<PostsFormSchema>;
   register: UseFormRegister<PostsFormSchema>;
   watch: UseFormWatch<PostsFormSchema>;
@@ -26,6 +28,7 @@ interface PostInputContainerProps {
 }
 
 const PostInfoContainer = ({
+  setValue,
   control,
   register,
   watch,
@@ -96,7 +99,7 @@ const PostInfoContainer = ({
       </TitleContainer>
 
       {/* 튜터 */}
-      <TutorContainer></TutorContainer>
+      <TutorContainer setValue={setValue} watch={watch} errors={errors} />
     </section>
   );
 };

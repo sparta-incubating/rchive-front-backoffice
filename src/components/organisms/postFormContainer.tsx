@@ -31,7 +31,7 @@ const PostFormContainer = () => {
     reValidateMode: 'onChange',
     defaultValues: {
       title: '',
-      tutor: '',
+      tutor: null,
       thumbnail: '',
       contentLink: '',
       videoLink: '',
@@ -63,6 +63,7 @@ const PostFormContainer = () => {
 
           {/* Info */}
           <PostInfoContainer
+            setValue={setValue}
             control={control}
             register={register}
             watch={watch}
