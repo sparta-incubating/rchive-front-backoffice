@@ -25,15 +25,16 @@ const SignIn = () => {
 
   return (
     <>
-      <main className="min-w-main max-w-sub h-screen">
+      {/* <main className="min-w-main max-w-sub h-screen"> */}
+      {/* <main className="min-w-main max-w-sub"> */}
+      <main className="w-screen">
         <section className="flex flex-row">
           {/*1 */}
-          <aside className="w-[500px]">
+          <aside className="h-screen w-[500px]">
             {/*르탄이*/}
             <figure className="mt-[183.5px] flex justify-center">
               <Image src={rtan} height={152} width={152} alt="르탄이" />
             </figure>
-
             {/*문구*/}
             <section className="h-[120px]">
               <section className="flex flex-col pb-[20px] pt-[36px]">
@@ -46,7 +47,8 @@ const SignIn = () => {
               </section>
             </section>
 
-            <section className="flex h-[228px] flex-col gap-5 pt-5">
+            {/* <section className="flex flex-col h-[228px] gap-5 pt-5">  */}
+            <section className="flex flex-col gap-5 pt-5">
               <section className="mx-auto">
                 {/*이메일*/}
                 <InputContainer>
@@ -58,7 +60,7 @@ const SignIn = () => {
                       className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
                     />
                   </InputField>
-                </InputContainer>{' '}
+                </InputContainer>
                 <span className="text-sm text-primary-400">
                   {/* {errors.email?.message} */}
                   에러메시지
@@ -82,7 +84,6 @@ const SignIn = () => {
                 </span>
               </section>
             </section>
-
             {/* 회원가입*/}
             <section className="flex justify-center py-5">
               <Button size="sm" className="w-[300px]" variant="submit">
@@ -102,7 +103,8 @@ const SignIn = () => {
 
           {/*2 */}
           <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
-            <section className="px-[110px] pb-[145px] pt-[138px] sub:px-[337px]">
+            <section className="flex justify-center pt-[138px]">
+              {/* <section className="px-[110px] pb-[145px] pt-[138px] sub:px-[337px]"> */}
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
                   <Image
@@ -127,8 +129,8 @@ const SignIn = () => {
                     className="rounded-[14px] shadow-rtanBox"
                   />
                 </article>
-                <article className="mb-[30px] h-[80px] w-[330px]">
-                  <p className="text-2xl font-bold text-gray-700">
+                <article className="mb-[30px] h-[80px] w-[338px]">
+                  <p className="pl-[28px] text-2xl font-bold text-gray-700">
                     르탄이의 아카이브에 올릴 자료들을 쉽고 편리하게 관리해보세요
                   </p>
                 </article>
@@ -136,8 +138,8 @@ const SignIn = () => {
                   <Image
                     src={backofficeMain}
                     alt="백오피스"
-                    width={817}
-                    height={743}
+                    width={1633}
+                    height={1486}
                     // className="rounded-[22px] shadow-dashboardBox"
                   />
                 </article>
