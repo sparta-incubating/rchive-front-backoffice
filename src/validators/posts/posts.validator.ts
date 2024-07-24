@@ -59,4 +59,5 @@ export const postsSchema = z.object({
   postType: postTypeEnum,
   period: z.string().min(1, '기수를 선택해주세요.'),
   isOpened: isOpenEnum,
+  imageUpload: z.string().optional(),
 });

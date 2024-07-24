@@ -20,3 +20,5 @@ export type trackPeriodResponse = {
   status: number;
   data: { trackPeriodList: trackPeriodList };
 };
+
+export type TutorType = { tutorId: number; tutorName: string };

@@ -1,5 +1,5 @@
+import CustomDropDown from '@/components/atoms/customDropDown';
 import SelectContainer from '@/components/atoms/selectContainer';
-import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectDumyItem from '@/components/atoms/selectDumyItem';
 import SelectInput from '@/components/atoms/selectInput';
 import SelectItem from '@/components/atoms/selectItem';
@@ -51,7 +51,7 @@ const SelectFormBox = <T extends FieldValues>({
         >
           {selectedOption ? selectedOption.label : '선택안함'}
         </SelectInput>
-        <SelectDropDown clicked={isOpen} ref={dropdownRef}>
+        <CustomDropDown clicked={isOpen} ref={dropdownRef}>
           {options.map((option, index) => (
             <>
               {index === 1 && <SelectDumyItem title="수준별 강의" />}
@@ -68,7 +68,7 @@ const SelectFormBox = <T extends FieldValues>({
               </SelectItem>
             </>
           ))}
-        </SelectDropDown>
+        </CustomDropDown>
       </SelectLayout>
     </SelectContainer>
   );

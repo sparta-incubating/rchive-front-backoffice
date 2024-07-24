@@ -2,8 +2,8 @@
 
 import { getPeriod } from '@/api/postApi';
 import FormSpan from '@/components/atoms/formSpan';
-import UploadInput from '@/components/atoms/uploadInput';
 import TitleContainer from '@/components/molecules/post/titleContainer';
+import TutorContainer from '@/components/molecules/tutorContainer';
 import SelectCategoryFormBox from '@/components/organisms/selectCategoryFormBox';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useSelectBox from '@/hooks/useSelectBox';
@@ -95,14 +95,8 @@ const PostInfoContainer = ({
         )}
       </TitleContainer>
 
-      <TitleContainer title="튜터">
-        <UploadInput
-          {...register('tutor')}
-          watch={watch('tutor')}
-          isUseButton={false}
-          placeholder="튜터명을 입력해주세요."
-        />
-      </TitleContainer>
+      {/* 튜터 */}
+      <TutorContainer></TutorContainer>
     </section>
   );
 };

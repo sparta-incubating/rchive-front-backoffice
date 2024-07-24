@@ -19,7 +19,7 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
     deleteTag,
     handleFocusTagInput,
     searchTags,
-    handleClickBackDropData,
+    handleClickDropDownData,
   } = useTagContext();
 
   return (
@@ -44,7 +44,7 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
             <DropDownItem
               key={tag.tagId}
               variant="secondary"
-              onClick={() => handleClickBackDropData(tag.tagName)}
+              onClick={() => handleClickDropDownData(tag.tagName)}
             >
               {tag.tagName}
             </DropDownItem>

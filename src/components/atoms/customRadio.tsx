@@ -8,8 +8,6 @@ interface CustomRadioProps {
 }
 
 const CustomRadio = ({ values, value, onChange }: CustomRadioProps) => {
-  console.log({ value });
-
   return (
     <div className="flex space-x-4">
       {values.map((radioValue) => (

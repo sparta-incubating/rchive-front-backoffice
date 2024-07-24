@@ -1,7 +1,7 @@
 'use client';
 
+import CustomDropDown from '@/components/atoms/customDropDown';
 import SelectContainer from '@/components/atoms/selectContainer';
-import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectInput, {
   SelectInputVariants,
 } from '@/components/atoms/selectInput';
@@ -54,7 +54,7 @@ const SelectFormBox = ({
         >
           {selectedOption ? selectedOption.label : options[0].label}
         </SelectInput>
-        <SelectDropDown clicked={isOpen} ref={dropdownRef}>
+        <CustomDropDown clicked={isOpen} ref={dropdownRef}>
           {options.map((option) => (
             <SelectItem
               key={option.value + option.label}
@@ -66,7 +66,7 @@ const SelectFormBox = ({
               {option.label}
             </SelectItem>
           ))}
-        </SelectDropDown>
+        </CustomDropDown>
       </SelectLayout>
     </SelectContainer>
   );

@@ -1,7 +1,6 @@
 'use client';
 
 import Button from '@/components/atoms/button';
-import Calendar from '@/components/molecules/calendar';
 import BackofficePage from '@/components/pages/backofficePage';
 import { createToast } from '@/utils/toast';
 
@@ -15,7 +14,6 @@ const Post = () => {
         토스트 실험
       </Button>
       <div className="h-[40vh]"></div>
-      <Calendar />
     </BackofficePage>
   );
 };

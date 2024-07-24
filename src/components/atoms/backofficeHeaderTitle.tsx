@@ -1,3 +1,5 @@
+'use client';
+
 import { links } from '@/constants/backoffcicePath.constant';
 import { usePathname } from 'next/navigation';
 

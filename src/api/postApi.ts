@@ -43,3 +43,24 @@ export const getPeriod = async <T>(track: string): Promise<T> => {
     throw new Error('기수 호출에 실패했습니다.');
   }
 };
+
+// Thumbnail upload
+export const postThumbnailUpload = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axiosAPI.post(
+      '/api/v1/s3/thumbnail/upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    console.log({ response });
+  } catch (error) {
+    throw new Error('file 업로드에 실패했습니다.');
+  }
+};
