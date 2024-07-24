@@ -1,3 +1,4 @@
+import { TutorType } from '@/types/posts.types';
 import axiosAPI from '@/utils/axiosAPI';
 
 // 태그 검색 함수
@@ -63,4 +64,25 @@ export const postThumbnailUpload = async (file: File) => {
   } catch (error) {
     throw new Error('file 업로드에 실패했습니다.');
   }
+};
+
+// 튜터 검색
+export const getSearchTutor = async (keyword: string): Promise<TutorType[]> => {
+  return await new Promise((resolve) => {
+    resolve([
+      { tutorId: 1, tutorName: 'test' },
+      { tutorId: 2, tutorName: '테스트' },
+      { tutorId: 3, tutorName: '김테스' },
+      { tutorId: 4, tutorName: '김스트' },
+    ]);
+  });
+  /*try {
+    const response = await axiosAPI.get(
+      `/api/v1/posts/tags?tagName=${keyword}`,
+    );
+
+    return response.data.data;
+  } catch (error) {
+    throw new Error('태그를 불러오는데 실패했습니다.');
+  }*/
 };

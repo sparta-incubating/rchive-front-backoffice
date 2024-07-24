@@ -1,52 +1,69 @@
-import { getTags } from '@/api/postApi';
+import { getSearchTutor } from '@/api/postApi';
+import CloseButton from '@/components/atoms/closeButton';
 import DropDownItem from '@/components/atoms/dropDownItem';
 import TutorInput from '@/components/atoms/tutorInput';
 import DropDownContainer from '@/components/molecules/dropDownContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
+import TutorCard from '@/components/molecules/tutorCard';
 import { TutorType } from '@/types/posts.types';
-import { TagType } from '@/types/tag.types';
 import { debounce } from 'lodash';
 import { useRef, useState } from 'react';
 
 const TutorContainer = () => {
   const inputRef = useRef<HTMLDivElement>(null);
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [searchTags, setSearchTags] = useState<TagType[] | null>(null);
-  const [searchTutors, setSearchTutors] = useState<TutorType[]>();
+  const [searchTuTors, setSearchTuTors] = useState<TutorType[] | null>(null);
+  const [selectTutor, setSelectTutor] = useState<TutorType | null>(null);
 
   const handleInput = debounce(async () => {
     if (inputRef.current) {
       const keyword = inputRef.current.innerText;
 
-      // text가 없을때 backDrop 숨김
       if (keyword.trim() === '') {
         setIsOpened(false);
         return;
       }
 
-      const data = await getTags(keyword);
-      setSearchTags(data);
+      const data = await getSearchTutor(keyword);
+      setSearchTuTors(data);
     }
   }, 300);
 
+  const deleteTutor = () => {
+    setSelectTutor(null);
+  };
+
   return (
     <TitleContainer title="튜터">
-      <div className="group relative flex h-auto w-full flex-wrap gap-2 rounded-[12px] border border-blue-100 p-5">
-        <TutorInput
-          key="tutor"
-          handleInput={handleInput}
-          placeholder="튜터를 입력해주세요."
-          ref={inputRef}
-        />
-        {searchTags !== null && searchTags.length > 0 && (
+      <div className="group relative flex h-[61px] w-[293px] flex-wrap gap-2 rounded-[12px] border border-blue-100 p-5">
+        {!!selectTutor && (
+          <TutorCard>
+            {selectTutor.tutorName}
+            <CloseButton onClick={() => deleteTutor()} />
+          </TutorCard>
+        )}
+
+        {!selectTutor && (
+          <TutorInput
+            key="tutor"
+            handleInput={handleInput}
+            placeholder="튜터를 입력해주세요."
+            ref={inputRef}
+          />
+        )}
+
+        {searchTuTors !== null && searchTuTors.length > 0 && (
           <DropDownContainer disable={false} className="ml-0">
-            {searchTags?.map((tag) => (
+            {searchTuTors?.map((tutor) => (
               <DropDownItem
-                key={tag.tagId}
+                key={tutor.tutorId}
                 variant="secondary"
-                onClick={() => {}}
+                onClick={() => {
+                  setSelectTutor(tutor);
+                  setSearchTuTors(null);
+                }}
               >
-                {tag.tagName}
+                {tutor.tutorName}
               </DropDownItem>
             ))}
           </DropDownContainer>
