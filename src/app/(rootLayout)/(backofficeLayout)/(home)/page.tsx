@@ -4,11 +4,9 @@ import Button from '@/components/atoms/button';
 import TagContainer from '@/components/organisms/tagContainer';
 import SignupTest from '@/components/pages/signupTest';
 import { client } from '@/utils/clientAPI';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 const Home = () => {
-  const session = useSession();
-  console.log(session.data, '1');
   const Logout = async () => {
     try {
       const res = await client.delete('/api/v1/users/logout');
@@ -28,7 +26,6 @@ const Home = () => {
   };
   const HandleTest = async () => {
     try {
-      console.log('2', session?.refreshToken);
       const response = await client.post(
         '/api/v1/users/reissue',
         {},

@@ -1,17 +1,14 @@
 // middleware.ts
-import { getToken } from 'next-auth/jwt';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-  if (token && req.nextUrl.pathname.startsWith('/login')) {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
-
-  if (!token && !req.nextUrl.pathname.startsWith('/login')) {
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
+  // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // if (token && req.nextUrl.pathname.startsWith('/login')) {
+  //   return NextResponse.redirect(new URL('/', req.url));
+  // }
+  // if (!token && !req.nextUrl.pathname.startsWith('/login')) {
+  //   return NextResponse.redirect(new URL('/login', req.url));
+  // }
 }
 
 export const config = {

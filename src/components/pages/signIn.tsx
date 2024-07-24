@@ -8,9 +8,9 @@ import write from '@/../public/assets/icons/write-rtan.svg';
 
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
+import { client } from '@/utils/clientAPI';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -39,13 +39,18 @@ const SignIn = () => {
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
-      const res = await signIn('credentials', {
+      const res = await client.post('/api/v1/users/login', {
         username: data.username,
         password: data.password,
-        redirect: false,
       });
+      const accessToken = res.headers.authorization.replace('Bearer ', '');
 
       if (res?.status === 200) {
+        // setCookie('AT', accessToken, {
+        //   expires: 7,
+        //   secure: true,
+        //   sameSite: 'strict',
+        // });
         router.push('/');
       }
     } catch (error) {
