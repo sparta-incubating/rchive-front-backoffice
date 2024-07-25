@@ -11,9 +11,9 @@ import { signupModalType } from '@/types/signup.types';
 import { client } from '@/utils/clientAPI';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { setCookie } from 'nookies';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
@@ -44,19 +44,15 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    console.log(data, 'data');
     try {
       const res = await client.post('/api/v1/users/login', {
         username: data.username,
         password: data.password,
       });
       const accessToken = res.headers.authorization.replace('Bearer ', '');
-
       if (res?.status === 200) {
-        setCookie(null, 'accessToken', accessToken, {
-          maxAge: 60 * 60 * 24 * 7,
-          path: '/',
-          sameSite: 'strict',
-        });
+        setCookie('AT', accessToken);
         router.push('/');
       }
     } catch (error) {
@@ -113,6 +109,7 @@ const SignIn = () => {
                         placeholder="비밀번호 입력"
                         type="password"
                         className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                        autoComplete="current-password"
                       />
                     </InputField>
                   </InputContainer>
@@ -141,7 +138,7 @@ const SignIn = () => {
 
           {/*2 */}
           <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
-            <section className="flex justify-center pt-[138px]">
+            <section className="flex items-center justify-center pt-[138px]">
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
                   <Image
@@ -166,8 +163,8 @@ const SignIn = () => {
                     className="rounded-[14px] shadow-rtanBox"
                   />
                 </article>
-                <article className="mb-[30px] h-[80px] w-[338px]">
-                  <p className="pl-[28px] text-2xl font-bold text-gray-700">
+                <article className="mb-[31px] h-[80px] w-[330px]">
+                  <p className="text-2xl font-bold text-gray-700">
                     르탄이의 아카이브에 올릴 자료들을 쉽고 편리하게 관리해보세요
                   </p>
                 </article>

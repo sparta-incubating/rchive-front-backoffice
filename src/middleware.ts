@@ -1,12 +1,11 @@
 // middleware.ts
+import { getCookie } from 'cookies-next';
 import { NextRequest, NextResponse } from 'next/server';
-import { parseCookies } from 'nookies';
 
 export async function middleware(req: NextRequest) {
-  const cookieHeader = req.headers.get('cookie') || '';
-  const cookies = parseCookies({ req: { headers: { cookie: cookieHeader } } });
+  const res = NextResponse.next();
+  const token = getCookie('AT', { res, req });
 
-  const token = cookies.accessToken;
   if (token && req.nextUrl.pathname.startsWith('/login')) {
     return NextResponse.redirect(new URL('/', req.url));
   }
