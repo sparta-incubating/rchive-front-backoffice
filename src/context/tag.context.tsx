@@ -39,7 +39,6 @@ export const useTagContext = () => {
 };
 
 export const TagContextProvider = ({ children }: PropsWithChildren) => {
-  //TODO: submit 할 떄 tag 객체 배열로 보내기
   const [tags, setTags] = useState<TagType[]>([]);
   const [searchTags, setSearchTags] = useState<TagType[] | null>(null);
 
