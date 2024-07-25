@@ -1,4 +1,4 @@
-import { postThumbnailUpload } from '@/api/postApi';
+import { getThumbnailDelete, postThumbnailUpload } from '@/api/postApi';
 import Button from '@/components/atoms/button';
 import FormSpan from '@/components/atoms/formSpan';
 import UploadThumbnail from '@/components/atoms/uploadThumbnail';
@@ -15,13 +15,25 @@ interface ThumbnailContainerProps {
 }
 
 const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
+  const [uploadState, setUploadState] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileUploadError, setFileUploadError] = useState<string | null>();
   const { mutate: thumbnailMutate, data } = useMutation({
     mutationFn: postThumbnailUpload,
+    onSuccess: (data) => {
+      setUploadState(true);
+      setValue('imageUpload', data.data);
+    },
+  });
+  const { mutate: thumbnailDeleteMutate } = useMutation({
+    mutationFn: getThumbnailDelete,
+    onSuccess: () => {
+      setUploadState(false);
+      setValue('imageUpload', '');
+    },
   });
 
-  const handleUploadButtonClick = () => {
+  const handleUploadThumbnail = () => {
     fileInputRef.current?.click();
   };
 
@@ -34,9 +46,6 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
       if (file.size <= maxSize) {
         setFileUploadError(null);
         thumbnailMutate(file);
-
-        console.log({ data });
-        setValue('imageUpload', file.name);
       } else {
         setFileUploadError('파일 사이즈는 3MB 이하만 업로드 가능합니다.');
         createToast('파일 사이즈는 3MB 이하만 업로드 가능합니다.', 'primary');
@@ -44,14 +53,28 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
     }
   };
 
+  const handleDeleteThumbnail = () => {
+    thumbnailDeleteMutate(data.data);
+  };
+
   return (
     <TitleContainer title="썸네일">
       {/* thumbnail section */}
       <section className="flex gap-6">
-        <UploadThumbnail>
-          <UploadThumbnailText>썸네일</UploadThumbnailText>
-          <UploadThumbnailText>자동 업로드</UploadThumbnailText>
-        </UploadThumbnail>
+        {!uploadState ? (
+          <UploadThumbnail>
+            <UploadThumbnailText>썸네일</UploadThumbnailText>
+            <UploadThumbnailText>자동 업로드</UploadThumbnailText>
+          </UploadThumbnail>
+        ) : (
+          <UploadThumbnail variant="image">
+            <img
+              src={data?.data}
+              alt={'upload image'}
+              className="object-fill"
+            />
+          </UploadThumbnail>
+        )}
 
         <input
           type="file"
@@ -65,27 +88,31 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
           <span>이미지를 업로드하지 않은 경우 기본 이미지로 보여집니다.</span>
           <span>최대 이미지 용량: 3MB</span>
           <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              className="px-5 py-3"
-              onClick={handleUploadButtonClick}
-            >
-              <span className="flex w-[66px] items-center justify-center">
-                업로드
-              </span>
-            </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              className="px-5 py-3 text-primary-400"
-            >
-              <span className="flex w-[66px] items-center justify-center">
-                삭제
-              </span>
-            </Button>
+            {!uploadState ? (
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="px-5 py-3"
+                onClick={handleUploadThumbnail}
+              >
+                <span className="flex w-[66px] items-center justify-center">
+                  업로드
+                </span>
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="px-5 py-3 text-primary-400"
+                onClick={handleDeleteThumbnail}
+              >
+                <span className="flex w-[66px] items-center justify-center">
+                  삭제
+                </span>
+              </Button>
+            )}
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import { TutorType } from '@/types/posts.types';
 import axiosAPI from '@/utils/axiosAPI';
+import { client } from '@/utils/clientAPI';
 import { getCookie } from 'cookies-next';
 
 // 태그 검색 함수
@@ -49,7 +50,7 @@ export const getPeriod = async <T>(track: string): Promise<T> => {
 // Thumbnail upload
 export const postThumbnailUpload = async (file: File) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('thumbnail', file);
 
   const accessToken = getCookie('AT');
 
@@ -59,14 +60,26 @@ export const postThumbnailUpload = async (file: File) => {
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${accessToken}`,
         },
       },
     );
-    console.log({ response });
+    return response.data;
   } catch (error) {
-    throw new Error('file 업로드에 실패했습니다.');
+    throw new Error('파일 업로드에 실패했습니다.');
+  }
+};
+
+// Thumbnail delete
+export const getThumbnailDelete = async (thumbnailUrl: string) => {
+  try {
+    const response = await client.get(
+      `http://15.165.242.59:8080/api/v1/s3/thumnail/delete?thumbnailUrl=${thumbnailUrl}`,
+    );
+    console.log({ response });
+    return response;
+  } catch (error) {
+    throw new Error('파일 삭제에 실패했습니다.');
   }
 };
 
