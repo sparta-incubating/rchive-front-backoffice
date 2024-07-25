@@ -30,7 +30,6 @@ interface PostInputContainerProps {
 const PostInfoContainer = ({
   setValue,
   control,
-  register,
   watch,
   errors,
 }: PostInputContainerProps) => {
@@ -57,7 +56,7 @@ const PostInfoContainer = ({
           name="period"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <SelectFormBox<PostsFormSchema>
+            <SelectFormBox
               options={period ? period : []}
               label={''}
               onSelect={(value) => {

@@ -7,7 +7,7 @@ import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
 import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 interface SelectBoxProps<T extends FieldValues> {
@@ -19,7 +19,7 @@ interface SelectBoxProps<T extends FieldValues> {
   field: ControllerRenderProps<T>;
 }
 
-const SelectFormBox = <T extends FieldValues>({
+const SelectCategoryFormBox = <T extends FieldValues>({
   options,
   label,
   onSelect,
@@ -53,12 +53,11 @@ const SelectFormBox = <T extends FieldValues>({
         </SelectInput>
         <CustomDropDown clicked={isOpen} ref={dropdownRef}>
           {options.map((option, index) => (
-            <>
+            <Fragment key={option.value}>
               {index === 1 && <SelectDumyItem title="수준별 강의" />}
               {index === 4 && <SelectDumyItem />}
 
               <SelectItem
-                key={option.value + option.label}
                 data-value={option.value}
                 selected={option.value === selectedOption?.value}
                 variant={variant}
@@ -66,7 +65,7 @@ const SelectFormBox = <T extends FieldValues>({
               >
                 {option.label}
               </SelectItem>
-            </>
+            </Fragment>
           ))}
         </CustomDropDown>
       </SelectLayout>
@@ -74,4 +73,4 @@ const SelectFormBox = <T extends FieldValues>({
   );
 };
 
-export default SelectFormBox;
+export default SelectCategoryFormBox;

@@ -1,3 +1,5 @@
+'use client';
+
 import CustomDropDown from '@/components/atoms/customDropDown';
 import SelectContainer from '@/components/atoms/selectContainer';
 import SelectInput from '@/components/atoms/selectInput';
@@ -7,9 +9,8 @@ import SelectLayout from '@/components/atoms/selectLayout';
 import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
 import { useState } from 'react';
-import { FieldValues } from 'react-hook-form';
 
-interface SelectBoxProps<T extends FieldValues> {
+interface SelectBoxProps {
   options: SelectOptionType[];
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
@@ -18,14 +19,14 @@ interface SelectBoxProps<T extends FieldValues> {
   value: string;
 }
 
-const SelectFormBox = <T extends FieldValues>({
+const SelectFormBox = ({
   options,
   label,
   onSelect,
   variant,
   className,
   value,
-}: SelectBoxProps<T>) => {
+}: SelectBoxProps) => {
   const { isOpen, setIsOpen, dropdownRef, handleClick } =
     useDropDownOutsideClick();
 
