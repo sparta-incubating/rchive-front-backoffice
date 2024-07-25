@@ -13,6 +13,7 @@ import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { setCookie } from 'nookies';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
@@ -23,6 +24,12 @@ import InputField from '../molecules/InputField';
 import SignupModal from './signupModal';
 
 const SignIn = () => {
+  const { open } = useModalContext();
+
+  const handleSignupModalOpen = () => {
+    open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
+  };
+
   const {
     register,
     handleSubmit,
@@ -36,7 +43,6 @@ const SignIn = () => {
   });
 
   const router = useRouter();
-
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const res = await client.post('/api/v1/users/login', {
@@ -46,22 +52,18 @@ const SignIn = () => {
       const accessToken = res.headers.authorization.replace('Bearer ', '');
 
       if (res?.status === 200) {
-        // setCookie('AT', accessToken, {
-        //   expires: 7,
-        //   secure: true,
-        //   sameSite: 'strict',
-        // });
+        setCookie(null, 'accessToken', accessToken, {
+          maxAge: 60 * 60 * 24 * 7,
+          path: '/',
+          sameSite: 'strict',
+        });
         router.push('/');
       }
     } catch (error) {
-      console.log(error, 'error');
+      console.log(error, '로그인 오류');
     }
   };
-  const { open } = useModalContext();
 
-  const handleSignupModalOpen = () => {
-    open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
-  };
   return (
     <>
       <main className="w-screen">

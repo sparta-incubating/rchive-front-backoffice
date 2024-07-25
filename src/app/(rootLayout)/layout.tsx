@@ -1,5 +1,4 @@
 import Toast from '@/components/molecules/toast';
-import AuthProvider from '@/provider/AuthProvider';
 import CompoundProvider from '@/provider/compoundProvider';
 
 import { PropsWithChildren } from 'react';
@@ -12,12 +11,10 @@ import { PropsWithChildren } from 'react';
  */
 const RootLayout = ({ children }: PropsWithChildren) => {
   return (
-    <AuthProvider>
-      <CompoundProvider>
-        {children}
-        <Toast />
-      </CompoundProvider>
-    </AuthProvider>
+    <CompoundProvider>
+      {children}
+      <Toast />
+    </CompoundProvider>
   );
 };
 
