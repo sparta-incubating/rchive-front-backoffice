@@ -8,44 +8,13 @@ import PostInputContainer from '@/components/molecules/post/postInputContainer';
 import ThumbnailContainer from '@/components/molecules/post/thumbnailContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TagContainer from '@/components/organisms/tagContainer';
-import { useTagContext } from '@/context/tag.context';
-import { PostsFormSchema } from '@/types/posts.types';
+import usePostWriteForm from '@/hooks/usePostWriteForm';
 import { radioType } from '@/types/radio.types';
-import { postsSchema } from '@/validators/posts/posts.validator';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 const PostFormContainer = () => {
-  const { tags } = useTagContext();
-
-  const {
-    register,
-    watch,
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<PostsFormSchema>({
-    resolver: zodResolver(postsSchema),
-    mode: 'all',
-    reValidateMode: 'onChange',
-    defaultValues: {
-      title: '',
-      tutor: null,
-      thumbnail: '',
-      contentLink: '',
-      videoLink: '',
-      tagNameList: [],
-      uploadedAt: new Date(),
-      trackName: 'ANDROID',
-      period: '',
-      isOpened: 'true',
-    },
-  });
-
-  const onSubmit = (data: PostsFormSchema) => {
-    console.log('form data = ', data);
-  };
+  const { register, watch, control, handleSubmit, setValue, errors, onSubmit } =
+    usePostWriteForm();
 
   return (
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
