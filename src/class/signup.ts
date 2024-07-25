@@ -13,6 +13,7 @@ class SignupUserForm {
   termUseService: boolean;
   termPersonalInfo: boolean;
   termAdvertisement: boolean;
+  profileImg: string;
 
   constructor(
     oAuthType: OAuthEnum,
@@ -27,6 +28,7 @@ class SignupUserForm {
     termUseService: boolean,
     termPersonalInfo: boolean,
     termAdvertisement: boolean,
+    profileImg: string,
   ) {
     this.oAuthType = oAuthType;
     this.email = email;
@@ -40,6 +42,7 @@ class SignupUserForm {
     this.termUseService = termUseService;
     this.termPersonalInfo = termPersonalInfo;
     this.termAdvertisement = termAdvertisement;
+    this.profileImg = profileImg;
   }
 }
 
@@ -57,6 +60,7 @@ export class Admin extends SignupUserForm {
     termUseService: boolean,
     termPersonalInfo: boolean,
     termAdvertisement: boolean,
+    profileImg: string,
   ) {
     super(
       oAuthType,
@@ -71,6 +75,7 @@ export class Admin extends SignupUserForm {
       termUseService,
       termPersonalInfo,
       termAdvertisement,
+      profileImg,
     );
   }
 }
@@ -92,6 +97,7 @@ export class User extends SignupUserForm {
     termPersonalInfo: boolean,
     termAdvertisement: boolean,
     nickname: string,
+    profileImg: string,
   ) {
     super(
       oAuthType,
@@ -106,6 +112,7 @@ export class User extends SignupUserForm {
       termUseService,
       termPersonalInfo,
       termAdvertisement,
+      profileImg,
     );
     this.nickname = nickname;
   }

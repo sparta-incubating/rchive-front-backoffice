@@ -16,7 +16,6 @@ export const signupSchema = z
         '영문, 숫자 조합으로 6자 이상 입력해 주세요.',
       ),
     passwordConfirm: z.string(),
-    countryCode: z.string(),
     phone: z.string().min(8),
     birth: z
       .string()

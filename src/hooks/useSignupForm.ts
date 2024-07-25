@@ -1,5 +1,6 @@
-import { getMailCheck } from '@/api/authApi';
+import { getMailCheck, postSignup } from '@/api/authApi';
 import { Admin, User } from '@/class/signup';
+import { useModalContext } from '@/context/modal.context';
 import {
   GenderEnum,
   OAuthEnum,
@@ -17,6 +18,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const [isEmailUnique, setIsEmailUnique] = useState<boolean | undefined>(
     undefined,
   );
+  const { close } = useModalContext();
   const {
     register,
     handleSubmit,
@@ -35,6 +37,7 @@ const useSignupForm = (signupType: signupModalType) => {
       password: '',
       passwordConfirm: '',
       phone: '',
+      birth: '',
       // phoneConfirm: false,
       ad: false,
       age: false,
@@ -44,10 +47,9 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormSchema) => {
-    console.log({ data });
     const signUpFormData = createSignupForm(signupType, data);
-
-    // await postSignup(signUpFormData);
+    await postSignup(signUpFormData);
+    close();
   };
 
   const checkEmail = async (email: string) => {
@@ -98,6 +100,7 @@ const createSignupForm = (
       data.service,
       data.privacy,
       data.ad,
+      '',
     );
   } else {
     return new User(
@@ -113,6 +116,7 @@ const createSignupForm = (
       data.service,
       data.privacy,
       data.ad,
+      '',
       '',
     );
   }

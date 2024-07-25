@@ -1,5 +1,6 @@
 import { TutorType } from '@/types/posts.types';
 import axiosAPI from '@/utils/axiosAPI';
+import { getCookie } from 'cookies-next';
 
 // 태그 검색 함수
 export const getTags = async (keyword: string) => {
@@ -50,6 +51,8 @@ export const postThumbnailUpload = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
 
+  const accessToken = getCookie('AT');
+
   try {
     const response = await axiosAPI.post(
       '/api/v1/s3/thumbnail/upload',
@@ -57,6 +60,7 @@ export const postThumbnailUpload = async (file: File) => {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
         },
       },
     );
