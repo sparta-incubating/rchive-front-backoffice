@@ -65,6 +65,7 @@ export const postsSchema = z
     period: z.string().min(1, '기수를 선택해주세요.'),
     isOpened: isOpenEnum,
     imageUpload: z.string().optional(),
+    content: z.string().optional(),
   })
   .refine((data) => data.tutor !== null, {
     message: '튜터를 선택해주세요.',
