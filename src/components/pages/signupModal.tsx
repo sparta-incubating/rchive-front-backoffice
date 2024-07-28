@@ -37,14 +37,6 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     <Modal>
       {/*modal 헤더*/}
       <SignupHeader />
-      <div>
-        <p>email: {watch('email')}</p>
-        <p>username: {watch('username')}</p>
-        <p>password: {watch('password')}</p>
-        <p>passwordConfirm: {watch('passwordConfirm')}</p>
-        <p>phone: {watch('phone')}</p>
-        <p>birth: {watch('birth')}</p>
-      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <h1 className="text-center text-xl font-semibold">회원가입</h1>

@@ -1,6 +1,7 @@
 import { TutorType } from '@/types/posts.types';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
 // 태그 검색 함수
@@ -102,4 +103,17 @@ export const getSearchTutor = async (keyword: string): Promise<TutorType[]> => {
   } catch (error) {
     throw new Error('태그를 불러오는데 실패했습니다.');
   }*/
+};
+
+// notion 게시물 데이터 가져오기
+export const getNotionPageData = async (pageId: string) => {
+  try {
+    const response = await axios.get(`/api/notion/content?url=${pageId}`);
+
+    console.log(response.data.result);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('notion Page Data호출에 실패했습니다.');
+  }
 };
