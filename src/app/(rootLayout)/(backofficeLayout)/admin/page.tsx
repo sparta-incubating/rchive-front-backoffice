@@ -1,5 +1,3 @@
-import BackOfficeButton from '@/components/atoms/backOfficeButton';
-import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 
 const Admin = () => {
@@ -14,13 +12,14 @@ const Admin = () => {
           <SearchBar />
         </section>
         <br />
-        <section>
+        {/* <section>
           <PermissionBoard>
             <BackOfficeButton>승인</BackOfficeButton>
             <BackOfficeButton variant="secondary">거절</BackOfficeButton>
             <BackOfficeButton variant="nondisclosure">비공개</BackOfficeButton>
           </PermissionBoard>
-        </section>
+        </section> */}
+        <br />
       </main>
     </>
   );
