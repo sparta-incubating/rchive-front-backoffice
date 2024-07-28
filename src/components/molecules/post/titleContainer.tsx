@@ -1,13 +1,19 @@
+import { classMerge } from '@/utils/utils';
 import { ReactNode } from 'react';
 
 interface TitleContainerProps {
   title: string;
   children: ReactNode;
+  className?: string;
 }
 
-const TitleContainer = ({ title, children }: TitleContainerProps) => {
+const TitleContainer = ({
+  title,
+  children,
+  className,
+}: TitleContainerProps) => {
   return (
-    <div className="relative w-full">
+    <div className={classMerge('relative', className)}>
       <div className="flex items-center py-2">
         <span className="text-base font-medium">{title}</span>
       </div>
