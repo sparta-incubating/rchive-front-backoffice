@@ -43,7 +43,6 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data, 'data');
     try {
       const res = await client.post('/api/v1/users/login', {
         username: data.username,

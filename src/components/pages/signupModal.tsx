@@ -157,7 +157,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
         <div className="mt-5 flex w-full items-center justify-center">
           <Button
             type="submit"
-            // disabled={!isValid || !isEmailUnique}
+            disabled={!isValid || !isEmailUnique}
             className="mb-5 w-80 px-7"
           >
             다음
