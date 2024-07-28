@@ -9,16 +9,16 @@ const SearchBar = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <label className="relative block">
         <span className="sr-only">Search</span>
-        <span className="absolute inset-y-0 left-0 ml-[20px] flex items-center">
-          <Image src={search} width={18} height={18} alt="돋보기" />
-        </span>
         <input
           {...props}
           ref={ref}
           type="text"
-          placeholder="이름 도는 이메일로 사용자 검색"
-          className="h-[62px] w-[1084px] rounded-xl border-2 border-blue-100 pl-[48px] placeholder:text-sm"
+          placeholder="이름 또는 이메일로 사용자 검색"
+          className="h-[62px] w-[1084px] rounded-xl border-2 border-blue-100 pl-12 pr-4 placeholder:text-sm"
         />
+        <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-[20px]">
+          <Image src={search} width={18} height={18} alt="돋보기" />
+        </span>
       </label>
     );
   },
