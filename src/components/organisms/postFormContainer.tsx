@@ -13,8 +13,17 @@ import { radioType } from '@/types/radio.types';
 import { Controller } from 'react-hook-form';
 
 const PostFormContainer = () => {
-  const { register, watch, control, handleSubmit, setValue, errors, onSubmit } =
-    usePostWriteForm();
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    setValue,
+    errors,
+    onSubmit,
+    notionValidateState,
+    setNotionValidateState,
+  } = usePostWriteForm();
 
   return (
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
@@ -28,6 +37,8 @@ const PostFormContainer = () => {
             register={register}
             watch={watch}
             errors={errors}
+            notionValidateState={notionValidateState}
+            setNotionValidateState={setNotionValidateState}
           />
 
           {/* Info */}

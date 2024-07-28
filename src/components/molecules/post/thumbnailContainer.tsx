@@ -22,14 +22,14 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
     mutationFn: postThumbnailUpload,
     onSuccess: (data) => {
       setUploadState(true);
-      setValue('imageUpload', data.data);
+      setValue('thumbnailUrl', data.data);
     },
   });
   const { mutate: thumbnailDeleteMutate } = useMutation({
     mutationFn: getThumbnailDelete,
     onSuccess: () => {
       setUploadState(false);
-      setValue('imageUpload', '');
+      setValue('thumbnailUrl', '');
     },
   });
 

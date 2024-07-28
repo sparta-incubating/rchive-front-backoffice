@@ -45,7 +45,6 @@ export const postsSchema = z
   .object({
     title: z.string().min(1, '최소 1글자 이상의 제목을 입력해주세요.'),
     tutor: tutor.nullable().optional(),
-    thumbnail: z.string().optional(),
     contentLink: z
       .string()
       .optional()
@@ -64,7 +63,7 @@ export const postsSchema = z
     postType: postTypeEnum,
     period: z.string().min(1, '기수를 선택해주세요.'),
     isOpened: isOpenEnum,
-    imageUpload: z.string().optional(),
+    thumbnailUrl: z.string().optional(),
     content: z.string().optional(),
   })
   .refine((data) => data.tutor !== null, {
