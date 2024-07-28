@@ -5,16 +5,23 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import SignupModal from '@/components/pages/signupModal';
-import { useModalContext } from '@/context/modal.context';
 
+import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
+import { client } from '@/utils/clientAPI';
+import { loginSchema } from '@/validators/auth/login.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { setCookie } from 'cookies-next';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import Button from '../atoms/button';
 import Input from '../atoms/input';
 import InputContainer from '../atoms/InputContainer';
 import Label from '../atoms/label';
 import InputField from '../molecules/InputField';
+import SignupModal from './signupModal';
 
 const SignIn = () => {
   const { open } = useModalContext();
@@ -23,10 +30,38 @@ const SignIn = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+
+  const router = useRouter();
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    console.log(data, 'data');
+    try {
+      const res = await client.post('/api/v1/users/login', {
+        username: data.username,
+        password: data.password,
+      });
+      const accessToken = res.headers.authorization.replace('Bearer ', '');
+      if (res?.status === 200) {
+        setCookie('AT', accessToken);
+        router.push('/');
+      }
+    } catch (error) {
+      console.log(error, '로그인 오류');
+    }
+  };
+
   return (
     <>
-      {/* <main className="min-w-main max-w-sub h-screen"> */}
-      {/* <main className="min-w-main max-w-sub"> */}
       <main className="w-screen">
         <section className="flex flex-row">
           {/*1 */}
@@ -46,50 +81,50 @@ const SignIn = () => {
                 </p>
               </section>
             </section>
-
-            {/* <section className="flex flex-col h-[228px] gap-5 pt-5">  */}
-            <section className="flex flex-col gap-5 pt-5">
-              <section className="mx-auto">
-                {/*이메일*/}
-                <InputContainer>
-                  <InputField>
-                    <Label htmlFor="email">이메일</Label>
-                    <Input
-                      // {...register('email')}
-                      placeholder="ex.123@eamil.com"
-                      className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                    />
-                  </InputField>
-                </InputContainer>
-                <span className="text-sm text-primary-400">
-                  {/* {errors.email?.message} */}
-                  에러메시지
-                </span>
+            <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+              <section className="flex flex-col gap-5 pt-5">
+                <section className="mx-auto">
+                  {/*이메일*/}
+                  <InputContainer>
+                    <InputField>
+                      <Label htmlFor="username">이메일</Label>
+                      <Input
+                        {...register('username')}
+                        placeholder="ex.123@eamil.com"
+                        className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                      />
+                    </InputField>
+                  </InputContainer>
+                  <span className="text-sm text-primary-400">
+                    {errors.username?.message}
+                  </span>
+                </section>
+                <section className="mx-auto">
+                  {/*비밀번호*/}
+                  <InputContainer>
+                    <InputField>
+                      <Label htmlFor="password">비밀번호</Label>
+                      <Input
+                        {...register('password')}
+                        placeholder="비밀번호 입력"
+                        type="password"
+                        className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                        autoComplete="current-password"
+                      />
+                    </InputField>
+                  </InputContainer>
+                  <span className="text-sm text-primary-400">
+                    {errors.password?.message}
+                  </span>
+                </section>
               </section>
-              <section className="mx-auto">
-                {/*비밀번호*/}
-                <InputContainer>
-                  <InputField>
-                    <Label htmlFor="email">비밀번호</Label>
-                    <Input
-                      // {...register('email')}
-                      placeholder="비밀번호 입력"
-                      className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                    />
-                  </InputField>
-                </InputContainer>{' '}
-                <span className="text-sm text-primary-400">
-                  {/* {errors.email?.message} */}
-                  에러메시지
-                </span>
+              {/* 회원가입*/}
+              <section className="flex justify-center py-5">
+                <Button size="sm" className="w-[300px]" variant="submit">
+                  로그인
+                </Button>
               </section>
-            </section>
-            {/* 회원가입*/}
-            <section className="flex justify-center py-5">
-              <Button size="sm" className="w-[300px]" variant="submit">
-                로그인
-              </Button>
-            </section>
+            </form>
             <section className="mx-auto flex h-[53px] flex-row justify-center p-[16px] text-center">
               <span className="w-[120px] text-sm text-gray-500">
                 <button onClick={handleSignupModalOpen}>회원가입</button>
@@ -103,8 +138,7 @@ const SignIn = () => {
 
           {/*2 */}
           <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
-            <section className="flex justify-center pt-[138px]">
-              {/* <section className="px-[110px] pb-[145px] pt-[138px] sub:px-[337px]"> */}
+            <section className="flex items-center justify-center pt-[138px]">
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
                   <Image
@@ -129,8 +163,8 @@ const SignIn = () => {
                     className="rounded-[14px] shadow-rtanBox"
                   />
                 </article>
-                <article className="mb-[30px] h-[80px] w-[338px]">
-                  <p className="pl-[28px] text-2xl font-bold text-gray-700">
+                <article className="mb-[31px] h-[80px] w-[330px]">
+                  <p className="text-2xl font-bold text-gray-700">
                     르탄이의 아카이브에 올릴 자료들을 쉽고 편리하게 관리해보세요
                   </p>
                 </article>
@@ -140,7 +174,6 @@ const SignIn = () => {
                     alt="백오피스"
                     width={1633}
                     height={1486}
-                    // className="rounded-[22px] shadow-dashboardBox"
                   />
                 </article>
               </section>
