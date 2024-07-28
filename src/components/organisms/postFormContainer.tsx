@@ -8,16 +8,11 @@ import PostInputContainer from '@/components/molecules/post/postInputContainer';
 import ThumbnailContainer from '@/components/molecules/post/thumbnailContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TagContainer from '@/components/organisms/tagContainer';
-import ProgressModal from '@/components/pages/progressModal';
-import { useModalContext } from '@/context/modal.context';
 import usePostWriteForm from '@/hooks/usePostWriteForm';
 import { radioType } from '@/types/radio.types';
-import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
 const PostFormContainer = () => {
-  const { open, close } = useModalContext();
-
   const {
     register,
     watch,
@@ -28,13 +23,7 @@ const PostFormContainer = () => {
     onSubmit,
     notionValidateState,
     setNotionValidateState,
-    isSubmitLoading,
   } = usePostWriteForm();
-
-  useEffect(() => {
-    if (isSubmitLoading) open(<ProgressModal />, false);
-    else if (!isSubmitLoading) close();
-  }, [isSubmitLoading, open, close]);
 
   return (
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
@@ -79,6 +68,7 @@ const PostFormContainer = () => {
                         values={isOpenRadios}
                         onChange={onChange}
                         value={value}
+                        key={value}
                       />
                     )}
                   />

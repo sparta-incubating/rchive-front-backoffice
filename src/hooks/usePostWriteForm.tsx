@@ -1,15 +1,19 @@
 import { getNotionPageData } from '@/api/postApi';
+import ProgressModal from '@/components/pages/progressModal';
+import { useModalContext } from '@/context/modal.context';
 import { useTagContext } from '@/context/tag.context';
 import { PostsFormSchema } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notionAPI';
+import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const usePostWriteForm = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const { tags } = useTagContext();
+  const { open, close } = useModalContext();
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
 
@@ -60,7 +64,14 @@ const usePostWriteForm = () => {
 
     console.log({ formData });
     setIsSubmitLoading(false);
+    createToast('게시물 등록이 완료되었습니다.', 'primary');
   };
+
+  // loading modal을 제어하는 useEffect
+  useEffect(() => {
+    if (isSubmitLoading) open(<ProgressModal />, false);
+    else if (!isSubmitLoading) close();
+  }, [isSubmitLoading, open, close]);
 
   return {
     register,
@@ -72,7 +83,6 @@ const usePostWriteForm = () => {
     onSubmit,
     notionValidateState,
     setNotionValidateState,
-    isSubmitLoading,
   };
 };
 
