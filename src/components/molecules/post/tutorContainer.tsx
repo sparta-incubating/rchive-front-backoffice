@@ -50,7 +50,7 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
 
   return (
     <TitleContainer title="튜터">
-      <div className="group relative flex h-[61px] w-[293px] flex-wrap gap-2 rounded-[12px] border border-blue-100 p-5">
+      <div className="group relative flex h-[61px] w-full items-center gap-2 rounded-[12px] border border-blue-100 px-5">
         {tutor ? (
           <TutorCard>
             {tutor.tutorName}

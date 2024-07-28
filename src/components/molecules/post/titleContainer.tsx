@@ -7,7 +7,7 @@ interface TitleContainerProps {
 
 const TitleContainer = ({ title, children }: TitleContainerProps) => {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <div className="flex items-center py-2">
         <span className="text-base font-medium">{title}</span>
       </div>
