@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/popover';
 import { PostsFormSchema } from '@/types/posts.types';
 import { cn } from '@/utils/utils';
+import { ko } from 'date-fns/locale';
 import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
@@ -50,6 +51,7 @@ const Calendar = ({ control, className }: CalendarProps) => {
                 mode="single"
                 selected={value}
                 onSelect={onChange}
+                locale={ko}
                 initialFocus
               />
             </PopoverContent>
