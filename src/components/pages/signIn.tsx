@@ -5,7 +5,6 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
 import { client } from '@/utils/clientAPI';
@@ -44,7 +43,6 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data, 'data');
     try {
       const res = await client.post('/api/v1/users/login', {
         username: data.username,

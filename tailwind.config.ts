@@ -149,6 +149,7 @@ const config = {
       rtanBox: '0px 3.47px 26.03px 0px rgba(65, 101, 112, 0.3)',
       dropDownBox:
         '0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 1px 10px 0px rgba(0, 0, 0, 0.15)',
+      inquiryButton: ' 0px 4px 6px 0px rgba(0, 0, 0, 0.02)',
     },
     backgroundImage: {
       'custom-gradient':

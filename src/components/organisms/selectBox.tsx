@@ -1,13 +1,14 @@
 'use client';
 
+import CustomDropDown from '@/components/atoms/customDropDown';
 import SelectContainer from '@/components/atoms/selectContainer';
-import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectInput, {
   SelectInputVariants,
 } from '@/components/atoms/selectInput';
 import SelectItem from '@/components/atoms/selectItem';
 import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
 import { VariantProps } from 'class-variance-authority';
 import { useState } from 'react';
@@ -29,14 +30,12 @@ const SelectFormBox = ({
   selectInputVariant,
   className,
 }: SelectBoxProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isOpen, setIsOpen, dropdownRef, handleClick } =
+    useDropDownOutsideClick();
+
   const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
     options.find((option) => option.value === '0') || null,
   );
-
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleSelect = (option: SelectOptionType) => {
     setSelectedOption(option);
@@ -55,7 +54,7 @@ const SelectFormBox = ({
         >
           {selectedOption ? selectedOption.label : options[0].label}
         </SelectInput>
-        <SelectDropDown clicked={isOpen}>
+        <CustomDropDown clicked={isOpen} ref={dropdownRef}>
           {options.map((option) => (
             <SelectItem
               key={option.value + option.label}
@@ -67,7 +66,7 @@ const SelectFormBox = ({
               {option.label}
             </SelectItem>
           ))}
-        </SelectDropDown>
+        </CustomDropDown>
       </SelectLayout>
     </SelectContainer>
   );

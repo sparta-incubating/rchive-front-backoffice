@@ -3,7 +3,7 @@
 import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 export const SelectInputVariants = cva(
   'relative flex justify-self-start text-md font-semibold',
@@ -25,7 +25,7 @@ interface SelectInputProps
   extends PropsWithChildren<VariantProps<typeof SelectInputVariants>> {
   className?: string;
   clicked: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 }
 
 const SelectInput = ({

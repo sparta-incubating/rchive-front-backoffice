@@ -28,7 +28,6 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     setValue,
     errors,
     watch,
-    control,
     checkEmail,
     isEmailUnique,
     isValid,
@@ -39,10 +38,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
       {/*modal 헤더*/}
       <SignupHeader />
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-10 flex flex-col gap-5"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <h1 className="text-center text-xl font-semibold">회원가입</h1>
         {/* email */}
         <section>
@@ -117,19 +113,19 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             <InputField>
               <Label htmlFor="userName">이름</Label>
               <Input
-                {...register('name')}
+                {...register('username')}
                 placeholder="이름 입력"
                 className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
               />
             </InputField>
           </InputContainer>
-          {errors.name?.message && (
-            <FormSpan variant="error">{errors.name?.message}</FormSpan>
+          {errors.username?.message && (
+            <FormSpan variant="error">{errors.username?.message}</FormSpan>
           )}
         </section>
 
         {/* phone */}
-        <PhoneForm register={register} control={control} />
+        <PhoneForm register={register} />
 
         {/* birthday */}
         <section>

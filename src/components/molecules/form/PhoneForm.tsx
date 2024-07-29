@@ -1,50 +1,32 @@
 'use client';
 
 import Input from '@/components/atoms/input';
+import Label from '@/components/atoms/label';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
-import SelectFormBox from '@/components/organisms/selectFormBox';
-import useSelectBox from '@/hooks/useSelectBox';
-import { SignupFormData } from '@/types/signup.types';
-import { phoneCountries } from '@/utils/phoneCountry';
-import { Control, Controller, UseFormRegister } from 'react-hook-form';
+import InputField from '@/components/molecules/InputField';
+import { SignupFormSchema } from '@/types/signup.types';
+import React from 'react';
+import { UseFormRegister } from 'react-hook-form';
 import PhoneField from './PhoneField';
 
 interface PhoneFormProps {
-  control: Control<SignupFormData>;
-  register: UseFormRegister<SignupFormData>;
+  register: UseFormRegister<SignupFormSchema>;
 }
 
-const PhoneForm = ({ control, register }: PhoneFormProps) => {
-  const { selectOptions, handleSelected } = useSelectBox(phoneCountries);
-
+const PhoneForm = ({ register }: PhoneFormProps) => {
   return (
-    <>
-      <PasswordContainer variant="secondary">
-        <Controller
-          name="countryCode"
-          control={control}
-          render={({ field }) => (
-            <SelectFormBox<SignupFormData>
-              options={selectOptions}
-              label="휴대폰 번호"
-              onSelect={(value) => {
-                handleSelected(value);
-                field.onChange(value);
-              }}
-              field={field}
-            />
-          )}
-        />
-        <div className="w-[320px] border" />
+    <PasswordContainer variant="primary">
+      <InputField>
+        <Label htmlFor="phone">비밀번호</Label>
         <PhoneField register={register} />
-
         <div className="w-[320px] border" />
         <Input
-          className="w-80 bg-blue-50 p-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          name="phone"
+          className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
         />
-      </PasswordContainer>
-    </>
+      </InputField>
+    </PasswordContainer>
   );
 };
 

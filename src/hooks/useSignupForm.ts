@@ -1,9 +1,10 @@
 import { getMailCheck, postSignup } from '@/api/authApi';
 import { Admin, User } from '@/class/signup';
+import { useModalContext } from '@/context/modal.context';
 import {
   GenderEnum,
   OAuthEnum,
-  SignupFormData,
+  SignupFormSchema,
   signupModalType,
   UserRoleEnum,
 } from '@/types/signup.types';
@@ -17,6 +18,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const [isEmailUnique, setIsEmailUnique] = useState<boolean | undefined>(
     undefined,
   );
+  const { close } = useModalContext();
   const {
     register,
     handleSubmit,
@@ -25,15 +27,17 @@ const useSignupForm = (signupType: signupModalType) => {
     formState: { errors, isValid },
     getValues,
     setValue,
-  } = useForm<SignupFormData>({
+  } = useForm<SignupFormSchema>({
     resolver: zodResolver(signupSchema),
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: {
       email: '',
+      username: '',
       password: '',
       passwordConfirm: '',
       phone: '',
+      birth: '',
       // phoneConfirm: false,
       ad: false,
       age: false,
@@ -42,10 +46,10 @@ const useSignupForm = (signupType: signupModalType) => {
     },
   });
 
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = async (data: SignupFormSchema) => {
     const signUpFormData = createSignupForm(signupType, data);
-
     await postSignup(signUpFormData);
+    close();
   };
 
   const checkEmail = async (email: string) => {
@@ -80,12 +84,13 @@ const useSignupForm = (signupType: signupModalType) => {
 
 const createSignupForm = (
   signupType: signupModalType,
-  data: SignupFormData,
+  data: SignupFormSchema,
 ) => {
   if (signupType === signupModalType.MANAGER) {
     return new Admin(
       OAuthEnum.LOCAL,
       data.email,
+      data.username,
       data.password,
       formatDate(data.birth),
       data.phone,
@@ -95,11 +100,13 @@ const createSignupForm = (
       data.service,
       data.privacy,
       data.ad,
+      '',
     );
   } else {
     return new User(
       OAuthEnum.LOCAL,
       data.email,
+      data.username,
       data.password,
       formatDate(data.birth),
       data.phone,
@@ -109,6 +116,7 @@ const createSignupForm = (
       data.service,
       data.privacy,
       data.ad,
+      '',
       '',
     );
   }

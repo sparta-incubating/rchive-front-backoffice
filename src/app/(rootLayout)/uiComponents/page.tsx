@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/components/atoms/button';
-import UploadContainer from '@/components/molecules/uploadContainer';
+import UploadContainer from '@/components/molecules/post/uploadContainer';
 import { createToast } from '@/utils/toast';
 
 const UiComponents = () => {

@@ -1,11 +1,7 @@
 import MenuLinkCard from '@/components/molecules/menuLinkCard';
-import { Links } from '@/types/menubar.types';
+import { links } from '@/constants/backoffcicePath.constant';
 
-interface MenubarLinksProps {
-  links: Links[];
-}
-
-const MenubarLinks = ({ links }: MenubarLinksProps) => {
+const MenubarLinks = () => {
   return (
     <nav>
       {links.map((link, index) => (

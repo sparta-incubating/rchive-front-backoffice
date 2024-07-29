@@ -1,38 +1,63 @@
 'use client';
 
 import Button from '@/components/atoms/button';
-import { ChangeEvent } from 'react';
+import Image from 'next/image';
+import React, { ComponentProps } from 'react';
 
-interface UploadInputProps {
-  value: string;
-  onChange: (value: string) => void;
+interface UploadInputProps extends ComponentProps<'input'> {
+  watch: string | undefined;
+  isUseButton?: boolean;
+  buttonLabel?: string;
+  onClick?: () => void;
+  isLoading?: boolean;
+  validate?: boolean;
 }
 
-const UploadInput = ({ value, onChange }: UploadInputProps) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-  };
-
-  return (
-    <div className="flex h-[100vh] max-h-[60px] w-full max-w-[360px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
-      <input
-        type="text"
-        value={value}
-        onChange={handleChange}
-        className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap outline-none"
-        placeholder="자료 링크를 입력해주세요."
-      />
-      {value && (
-        <Button
-          size="sm"
-          variant="secondary"
-          className="right-2 top-1/2 h-[44px] min-w-[74px] px-5 py-3 text-xs font-semibold"
-        >
-          업로드
-        </Button>
-      )}
-    </div>
-  );
-};
+const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
+  (
+    {
+      watch,
+      isUseButton = true,
+      buttonLabel,
+      isLoading,
+      validate,
+      onClick,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <div className="flex h-[62px] w-[334px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
+        <input
+          type="text"
+          ref={ref}
+          {...props}
+          className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap outline-none"
+        />
+        {!validate && isUseButton && watch && (
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={onClick}
+            className="right-2 top-1/2 flex h-[44px] w-full min-w-[74px] max-w-[84px] items-center justify-center px-5 py-3 text-xs font-semibold"
+            disabled={!!isLoading}
+          >
+            {isLoading ? (
+              <div className="relative h-5 w-5">
+                <Image
+                  src={'/assets/icons/gif/secondaryProgress.gif'}
+                  alt={'progress gif'}
+                  fill
+                />
+              </div>
+            ) : (
+              buttonLabel
+            )}
+          </Button>
+        )}
+      </div>
+    );
+  },
+);
 
 export default UploadInput;
