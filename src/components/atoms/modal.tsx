@@ -47,7 +47,6 @@ const Modal = ({
           `m-auto flex flex-col items-center rounded-xl bg-white`,
           inboardClassName,
         )}
-        style={{ width: 'auto', maxWidth: '100%', padding: '1rem' }}
       >
         {children}
       </div>
