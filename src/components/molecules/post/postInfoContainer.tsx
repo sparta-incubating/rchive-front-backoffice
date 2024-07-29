@@ -35,6 +35,7 @@ const PostInfoContainer = ({
 }: PostInputContainerProps) => {
   const { data: period } = useQuery({
     queryKey: ['period'],
+    // track은 login 정보에서 가져와야함
     queryFn: () => getPeriod<SelectOptionType[]>('UNITY'),
     retry: 3,
     staleTime: Infinity,

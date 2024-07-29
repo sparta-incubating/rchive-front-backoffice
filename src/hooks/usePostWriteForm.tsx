@@ -36,7 +36,7 @@ const usePostWriteForm = () => {
       videoLink: '',
       tagNameList: [],
       uploadedAt: new Date(),
-      trackName: 'ANDROID',
+      trackName: 'UNITY',
       period: '',
       isOpened: 'true',
     },
