@@ -85,7 +85,7 @@ const PostInputContainer = ({
             {...register('contentLink')}
             watch={watch('contentLink')}
             placeholder="노션 링크를 입력해주세요."
-            buttonLabel="링크검증"
+            buttonLabel="주소확인"
             onClick={handleNotionUrlValidate}
             validate={notionValidateState}
             isLoading={validateIsLoading}
