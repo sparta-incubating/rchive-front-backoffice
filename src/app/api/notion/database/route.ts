@@ -20,8 +20,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: 'Notion 데이터베이스 접근 오류',
-        message:
-          'notion database에 등록한 게시물인지 확인하시고 다시 시도해주세요.',
+        message: '노션 데이터베이스 안에 작성해주세요.',
       },
       { status: 404 },
     );
