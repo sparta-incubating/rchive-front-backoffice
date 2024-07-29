@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/atoms/button';
+import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import UploadContainer from '@/components/molecules/post/uploadContainer';
 import { createToast } from '@/utils/toast';
 
@@ -56,6 +57,9 @@ const UiComponents = () => {
         >
           create Toast
         </Button>
+      </div>
+      <div>
+        <DateRangePicker />
       </div>
     </>
   );
