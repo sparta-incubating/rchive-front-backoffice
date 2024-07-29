@@ -22,7 +22,7 @@ interface SelectBoxProps {
   className?: string;
 }
 
-const SelectFormBox = ({
+const SelectBox = ({
   options,
   label,
   onSelect,
@@ -72,4 +72,4 @@ const SelectFormBox = ({
   );
 };
 
-export default SelectFormBox;
+export default SelectBox;
