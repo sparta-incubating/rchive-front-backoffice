@@ -1,32 +1,32 @@
 'use client';
 
-import SelectBox from '@/components/organisms/selectBox';
-import { SelectOptionType } from '@/types/signup.types';
-
-const options: SelectOptionType[] = [
-  { value: '0', label: '최신순', selected: false },
-  { value: '1', label: '옵션1', selected: false },
-  { value: '2', label: '옵션2', selected: false },
-  { value: '3', label: '옵션3', selected: false },
-];
+import CategoryContainer from './categoryContainer';
+import SelectLabel from './selectLabel';
 
 const OfficeCategory = () => {
-  const handleSelect = (value: SelectOptionType['value']) => {
-    console.log({ value });
-  };
   return (
     <>
+      ddd
       <section className="mb-8 flex items-center justify-center">
-        <SelectBox
+        {/* <SelectBox
           options={options}
           label={''}
           onSelect={handleSelect}
           selectInputVariant={'menubar'}
           className="w-[67px] px-4"
-        />
+        /> */}
+        <div className="flex flex-col">
+          <CategoryContainer>
+            <SelectLabel>최신순</SelectLabel>
+          </CategoryContainer>
+          <br />
+          <br />
+          <CategoryContainer variant="submit">
+            <SelectLabel>대기</SelectLabel>
+          </CategoryContainer>
+        </div>
       </section>
     </>
   );
 };
-
 export default OfficeCategory;

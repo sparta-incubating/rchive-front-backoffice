@@ -1,3 +1,4 @@
+import OfficeCategory from '@/components/atoms/officeCategory';
 import SearchBar from '@/components/atoms/searchBar';
 
 const Admin = () => {
@@ -20,6 +21,7 @@ const Admin = () => {
           </PermissionBoard>
         </section> */}
         <br />
+        <OfficeCategory />
       </main>
     </>
   );
