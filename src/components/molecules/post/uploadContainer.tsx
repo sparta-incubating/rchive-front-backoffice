@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import UploadThumbnail from '@/components/atoms/uploadThumbnail';
 import UploadThumbnailText from '@/components/atoms/uploadThumbnailText';
-import UploadInput from '@/components/atoms/uploadInput';
 import useDebounce from '@/hooks/useDebounce';
+import { useEffect, useState } from 'react';
 
 const UploadContainer = () => {
   const [url, setUrl] = useState('');
@@ -51,7 +50,7 @@ const UploadContainer = () => {
           </>
         )}
       </UploadThumbnail>
-      <UploadInput value={url} onChange={handleUrlChange} />
+      {/*<UploadInput value={url} onChange={handleUrlChange} />*/}
     </div>
   );
 };

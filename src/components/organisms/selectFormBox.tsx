@@ -1,44 +1,43 @@
+'use client';
+
+import CustomDropDown from '@/components/atoms/customDropDown';
 import SelectContainer from '@/components/atoms/selectContainer';
-import SelectDropDown from '@/components/atoms/selectDropDown';
 import SelectInput from '@/components/atoms/selectInput';
 import SelectItem from '@/components/atoms/selectItem';
 import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
 import { useState } from 'react';
-import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
-interface SelectBoxProps<T extends FieldValues> {
+interface SelectBoxProps {
   options: SelectOptionType[];
   label: string;
   onSelect: (value: SelectOptionType['value']) => void;
   variant?: 'primary' | 'secondary';
   className?: string;
-  field: ControllerRenderProps<T>;
+  value: string;
 }
 
-const SelectFormBox = <T extends FieldValues>({
+const SelectFormBox = ({
   options,
   label,
   onSelect,
   variant,
   className,
-  field,
-}: SelectBoxProps<T>) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
-    options.find((option) => option.value === field.value) || null,
-  );
+  value,
+}: SelectBoxProps) => {
+  const { isOpen, setIsOpen, dropdownRef, handleClick } =
+    useDropDownOutsideClick();
 
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-  };
+  const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
+    options.find((option) => option.value === value) || null,
+  );
 
   const handleSelect = (option: SelectOptionType) => {
     setSelectedOption(option);
     setIsOpen(false);
     onSelect(option.value);
-    field.onChange(option.value);
   };
 
   return (
@@ -52,7 +51,7 @@ const SelectFormBox = <T extends FieldValues>({
         >
           {selectedOption ? selectedOption.label : '선택안함'}
         </SelectInput>
-        <SelectDropDown clicked={isOpen}>
+        <CustomDropDown ref={dropdownRef} clicked={isOpen}>
           {options.map((option) => (
             <SelectItem
               key={option.value + option.label}
@@ -64,7 +63,7 @@ const SelectFormBox = <T extends FieldValues>({
               {option.label}
             </SelectItem>
           ))}
-        </SelectDropDown>
+        </CustomDropDown>
       </SelectLayout>
     </SelectContainer>
   );

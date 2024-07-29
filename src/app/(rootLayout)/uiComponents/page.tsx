@@ -3,7 +3,7 @@
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import Button from '@/components/atoms/button';
 import SearchBar from '@/components/atoms/searchBar';
-import UploadContainer from '@/components/molecules/uploadContainer';
+import UploadContainer from '@/components/molecules/post/uploadContainer';
 import { createToast } from '@/utils/toast';
 
 const UiComponents = () => {

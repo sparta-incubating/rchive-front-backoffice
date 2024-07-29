@@ -11,14 +11,14 @@ const MenuLinkCard = ({ link }: MenuLinkCardProps) => {
   const isActive = pathName === link.href;
 
   return (
-    <article
-      data-active={isActive}
-      className="group h-16 w-[292px] rounded-[12px] px-9 py-5 hover:bg-[#1F2122] data-[active=true]:bg-[#1F2122]"
-    >
-      <MenubarLink active={isActive} href={link.href}>
+    <MenubarLink active={isActive} href={link.href}>
+      <article
+        data-active={isActive}
+        className="group h-16 w-[292px] rounded-[12px] px-9 py-5 hover:bg-[#1F2122] data-[active=true]:bg-[#1F2122]"
+      >
         {link.title}
-      </MenubarLink>
-    </article>
+      </article>
+    </MenubarLink>
   );
 };
 

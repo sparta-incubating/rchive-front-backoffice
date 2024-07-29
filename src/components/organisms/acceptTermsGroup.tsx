@@ -1,23 +1,23 @@
 'use client';
 
+import FormSpan from '@/components/atoms/formSpan';
+import MoreLink from '@/components/atoms/moreLink';
 import AcceptAllTerm from '@/components/molecules/acceptAllTerm';
 import AcceptTerm from '@/components/molecules/acceptTerm';
-import MoreLink from '@/components/atoms/moreLink';
-import { CheckListType, SignupFormData } from '@/types/signup.types';
+import useSignupCheckBox from '@/hooks/useSignupCheckBox';
+import { CheckListType, SignupFormSchema } from '@/types/signup.types';
 import {
   FieldErrors,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from 'react-hook-form';
-import FormSpan from '@/components/atoms/formSpan';
-import useSignupCheckBox from '@/hooks/useSignupCheckBox';
 
 interface AcceptTermsGroupProps {
-  register: UseFormRegister<SignupFormData>;
-  setValue: UseFormSetValue<SignupFormData>;
-  getValues: UseFormGetValues<SignupFormData>;
-  errors: FieldErrors<SignupFormData>;
+  register: UseFormRegister<SignupFormSchema>;
+  setValue: UseFormSetValue<SignupFormSchema>;
+  getValues: UseFormGetValues<SignupFormSchema>;
+  errors: FieldErrors<SignupFormSchema>;
 }
 
 const AcceptTermsGroup = ({

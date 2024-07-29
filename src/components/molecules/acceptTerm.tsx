@@ -1,16 +1,16 @@
 'use client';
 
 import CustomCheckBox from '@/components/atoms/customCheckBox';
+import { SignupFormSchema } from '@/types/signup.types';
 import { ReactNode } from 'react';
 import { UseFormRegister } from 'react-hook-form';
-import { SignupFormData } from '@/types/signup.types';
 
 interface AcceptTermsProps {
   children: ReactNode;
   checkBoxId: string;
   isChecked: boolean;
   onChange: () => void;
-  register: UseFormRegister<SignupFormData>;
+  register: UseFormRegister<SignupFormSchema>;
 }
 
 const AcceptTerms = ({
@@ -26,7 +26,7 @@ const AcceptTerms = ({
         id={checkBoxId}
         variant={'checked'}
         checked={isChecked}
-        {...register(checkBoxId as keyof SignupFormData, {
+        {...register(checkBoxId as keyof SignupFormSchema, {
           onChange: (e) => {
             e.target.checked = !e.target.checked;
             onChange();

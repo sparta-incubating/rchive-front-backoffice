@@ -25,7 +25,7 @@ interface TagContextType {
   handleFocusTagInput: () => void;
   handleInput: () => void;
   searchTags: TagType[] | null;
-  handleClickBackDropData: (label: string) => void;
+  handleClickDropDownData: (label: string) => void;
 }
 
 const TagContext = createContext<TagContextType | undefined>(undefined);
@@ -50,7 +50,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
     async (tag: string) => {
       if (
         tags.find(
-          (tagState) => tagState.tagName.toUpperCase() === tag.toUpperCase(),
+          (tagState) => tagState.tagName.toLowerCase() === tag.toLowerCase(),
         )
       ) {
         return;
@@ -60,7 +60,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         if (
           !searchTags.some(
             (searchTag) =>
-              searchTag.tagName.toUpperCase() === tag.toUpperCase(),
+              searchTag.tagName.toLowerCase() === tag.toLowerCase(),
           )
         ) {
           await postTag(tag);
@@ -120,9 +120,9 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
    * backDrop data를 클릭했을때 사용하는 함수
    * addTag를 호출하여 태그를 생성하고 backDrop을 닫는다.
    */
-  const handleClickBackDropData = useCallback(
-    (label: string) => {
-      addTag(label);
+  const handleClickDropDownData = useCallback(
+    async (label: string) => {
+      await addTag(label);
       if (inputRef.current) {
         inputRef.current.innerText = '';
       }
@@ -132,12 +132,12 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   );
 
   const handleKeyDownComma = useCallback(
-    (event: Event) => {
+    async (event: Event) => {
       const target = event.target as HTMLDivElement;
       if (target.innerText.includes(',')) {
         const tag = target.innerText.replace(',', '').trim();
         if (tag) {
-          addTag(tag.replace(',', ''));
+          await addTag(tag.replace(',', ''));
           if (inputRef.current) {
             inputRef.current.innerText = '';
             closeBackDrop();
@@ -161,11 +161,11 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   );
 
   const handleKeyDownEnter = useCallback(
-    (event: KeyboardEvent) => {
+    async (event: KeyboardEvent) => {
       if (event.key === 'Enter' && !isComposing && inputRef.current) {
         const tag = inputRef.current.innerText.trim();
         if (tag) {
-          addTag(tag);
+          await addTag(tag);
           if (inputRef.current) {
             inputRef.current.innerText = '';
           }
@@ -211,7 +211,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       handleFocusTagInput,
       handleInput,
       searchTags,
-      handleClickBackDropData,
+      handleClickDropDownData,
     }),
     [
       tags,
@@ -220,7 +220,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       handleFocusTagInput,
       handleInput,
       searchTags,
-      handleClickBackDropData,
+      handleClickDropDownData,
     ],
   );
 
