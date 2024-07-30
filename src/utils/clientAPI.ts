@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import { deleteCookie, getCookie } from 'cookies-next';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -34,6 +34,10 @@ client.interceptors.response.use(
   async (error) => {
     console.error('API 오류:', error.response?.status, error.response?.data);
     // 토큰 재발행 로직 추가 예정
+
+    if (error.response?.status === 401) {
+      deleteCookie('AT');
+    }
     return Promise.reject(error);
   },
 );
