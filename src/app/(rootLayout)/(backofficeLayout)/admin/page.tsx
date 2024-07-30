@@ -12,10 +12,11 @@ const Admin = () => {
       <main className="flex w-full flex-col items-center bg-blue-55 p-4">
         <section className="mx-auto">
           {/* 헤더 */}
-          <PermissionHeader />
+          <PermissionHeader>
+            <span>권한설정</span>
+          </PermissionHeader>
 
           {/* 검색바 */}
-
           <SearchBar />
 
           {/* 게시판 */}
