@@ -54,7 +54,7 @@ const PostInfoContainer = ({
     <section className="flex gap-4">
       <TitleContainer title="기수">
         <Controller
-          name="period"
+          name="postPeriod"
           control={control}
           render={({ field: { onChange, value } }) => (
             <SelectFormBox
@@ -70,8 +70,8 @@ const PostInfoContainer = ({
             />
           )}
         />
-        {errors.period?.message && (
-          <FormSpan variant="error">{errors.period.message}</FormSpan>
+        {errors.postPeriod?.message && (
+          <FormSpan variant="error">{errors.postPeriod.message}</FormSpan>
         )}
       </TitleContainer>
 

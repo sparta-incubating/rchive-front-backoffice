@@ -19,10 +19,18 @@ interface TutorContainerProps {
 
 const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
   const inputRef = useRef<HTMLDivElement>(null);
+  const [periodError, setPeriodError] = useState<string>('');
   const [searchTutors, setSearchTutors] = useState<TutorType[] | null>(null);
   const tutor = watch('tutor');
 
   const handleInput = debounce(async () => {
+    const period = watch('postPeriod');
+    if (!period) {
+      setPeriodError('기수를 먼저 선택해주세요.');
+      return;
+    }
+
+    setPeriodError('');
     if (inputRef.current) {
       const keyword = inputRef.current.innerText;
 
@@ -31,8 +39,13 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
         return;
       }
 
-      const data = await getSearchTutor(keyword);
-      setSearchTutors(data);
+      const response = await getSearchTutor(
+        watch('trackName'),
+        0,
+        Number(period),
+        keyword,
+      );
+      setSearchTutors(response.data);
     }
   }, 300);
 
@@ -79,6 +92,7 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
           </DropDownContainer>
         )}
       </div>
+      {periodError && <FormSpan variant="error">{periodError}</FormSpan>}
       {errors.tutor?.message && (
         <FormSpan variant="error">{errors.tutor.message}</FormSpan>
       )}

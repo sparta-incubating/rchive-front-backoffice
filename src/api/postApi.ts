@@ -1,4 +1,8 @@
-import { TutorType } from '@/types/posts.types';
+import {
+  postsEndPointFormData,
+  TrackType,
+  tutorApiType,
+} from '@/types/posts.types';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
 import axios from 'axios';
@@ -74,35 +78,30 @@ export const postThumbnailUpload = async (file: File) => {
 // Thumbnail delete
 export const getThumbnailDelete = async (thumbnailUrl: string) => {
   try {
-    const response = await client.get(
-      `http://15.165.242.59:8080/api/v1/s3/thumnail/delete?thumbnailUrl=${thumbnailUrl}`,
+    return await client.get(
+      `api/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
     );
-    console.log({ response });
-    return response;
   } catch (error) {
     throw new Error('파일 삭제에 실패했습니다.');
   }
 };
 
 // 튜터 검색
-export const getSearchTutor = async (keyword: string): Promise<TutorType[]> => {
-  return await new Promise((resolve) => {
-    resolve([
-      { tutorId: 1, tutorName: 'test' },
-      { tutorId: 2, tutorName: '테스트' },
-      { tutorId: 3, tutorName: '김테스' },
-      { tutorId: 4, tutorName: '김스트' },
-    ]);
-  });
-  /*try {
-    const response = await axiosAPI.get(
-      `/api/v1/posts/tags?tagName=${keyword}`,
+export const getSearchTutor = async (
+  track: TrackType,
+  loginPeriod: number,
+  inputPeriod: number,
+  keyword: string,
+): Promise<tutorApiType> => {
+  try {
+    const response = await client.get<tutorApiType>(
+      `/api/v1/posts/tutors?trackName=${track}&loginPeriod=${loginPeriod}&inputPeriod=${inputPeriod}&tutorName=${keyword}`,
     );
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error('태그를 불러오는데 실패했습니다.');
-  }*/
+  }
 };
 
 // notion 게시물 데이터 가져오기
@@ -110,10 +109,26 @@ export const getNotionPageData = async (pageId: string) => {
   try {
     const response = await axios.get(`/api/notion/content?url=${pageId}`);
 
-    console.log(response.data.result);
+    return response.data.result.replace('"', '');
+  } catch (error) {
+    throw new Error('notion Page Data호출에 실패했습니다.');
+  }
+};
+
+// 게시물 등록 endpoint
+export const postDataPost = async (
+  trackName: string,
+  period: number,
+  data: postsEndPointFormData,
+) => {
+  try {
+    const response = await client.post(
+      `/api/v1/posts?trackName=${trackName}&loginPeriod=${period}`,
+      data,
+    );
 
     return response.data;
   } catch (error) {
-    throw new Error('notion Page Data호출에 실패했습니다.');
+    throw new Error('게시물 등록에 실패했습니다.');
   }
 };

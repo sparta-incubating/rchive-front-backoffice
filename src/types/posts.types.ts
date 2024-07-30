@@ -22,3 +22,43 @@ export type trackPeriodResponse = {
 };
 
 export type TutorType = { tutorId: number; tutorName: string };
+
+export type TrackType =
+  | 'UNITY'
+  | 'NODEJS'
+  | 'SPRING_JAVA'
+  | 'SPRING_KOTLIN'
+  | 'FRONT_REACT'
+  | 'WEB'
+  | 'ANDROID'
+  | 'IOS'
+  | 'DATA'
+  | 'UXUI';
+
+export type PostType =
+  | 'Sparta_Lecture'
+  | 'Special_Lecture'
+  | 'Level_Challenge'
+  | 'Level_Standard'
+  | 'Level_Basic'
+  | 'Project_Description';
+
+export type tutorApiType = {
+  data: TutorType[];
+  message: string;
+  status: number;
+};
+
+export type postsEndPointFormData = {
+  title: string;
+  tutorId: number;
+  contentLink: string;
+  videoLink: string;
+  tagNameList: string[];
+  uploadedAt: string;
+  postType: PostType;
+  postPeriod: number;
+  isOpened: boolean;
+  thumbnailUrl: string;
+  content: string;
+};
