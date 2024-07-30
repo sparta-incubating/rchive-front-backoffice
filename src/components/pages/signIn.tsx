@@ -44,6 +44,16 @@ const SignIn = () => {
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const response = await postSignIn(data);
 
+    /*
+    - 최초 로그인시
+    - 로그인 -> 마지막 선택 권한 조회 -> 에러 -> 권한신청 / 1차 마무리
+    - 로그인 -> 마지막 선택 권한 조회 -> 에러 -> 권한신청 -> 결과조회 -> 메인페이지로 가면서 마지막 선택 권한으로 등록
+
+    - 기존 회원 로그인시
+    - 로그인 -> 마지막 선택 권한 조회 -> 그걸로 접속
+    
+    */
+
     console.log({ response });
   };
 

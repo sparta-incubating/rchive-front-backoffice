@@ -1,5 +1,6 @@
 import { getMailCheck, postSignup } from '@/api/authApi';
 import { Admin, User } from '@/class/signup';
+import SignUpCompleteModal from '@/components/pages/signUpCompleteModal';
 import { useModalContext } from '@/context/modal.context';
 import {
   GenderEnum,
@@ -18,7 +19,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const [isEmailUnique, setIsEmailUnique] = useState<boolean | undefined>(
     undefined,
   );
-  const { close } = useModalContext();
+  const { open } = useModalContext();
   const {
     register,
     handleSubmit,
@@ -31,6 +32,7 @@ const useSignupForm = (signupType: signupModalType) => {
     resolver: zodResolver(signupSchema),
     mode: 'all',
     reValidateMode: 'onChange',
+    shouldFocusError: false,
     defaultValues: {
       email: '',
       username: '',
@@ -49,7 +51,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const onSubmit = async (data: SignupFormSchema) => {
     const signUpFormData = createSignupForm(signupType, data);
     await postSignup(signUpFormData);
-    close();
+    open(<SignUpCompleteModal />);
   };
 
   const checkEmail = async (email: string) => {

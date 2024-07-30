@@ -34,10 +34,9 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
   } = useSignupForm(signupModalType);
 
   return (
-    <Modal>
+    <Modal inboardClassName="w-auto max-w-full p-4">
       {/*modal 헤더*/}
       <SignupHeader />
-
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <h1 className="text-center text-xl font-semibold">회원가입</h1>
         {/* email */}
@@ -157,7 +156,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
         <div className="mt-5 flex w-full items-center justify-center">
           <Button
             type="submit"
-            disabled={!isValid || !isEmailUnique}
+            disabled={!isValid || isEmailUnique}
             className="mb-5 w-80 px-7"
           >
             다음
