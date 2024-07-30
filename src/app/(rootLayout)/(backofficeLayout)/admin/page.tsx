@@ -1,8 +1,10 @@
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
-import InquiryButton from '@/components/atoms/inquiryButton';
-import OfficeCategory from '@/components/atoms/officeCategory';
+import PageNation from '@/components/atoms/category/pageNation';
+import PermissionList from '@/components/atoms/category/permissionList';
+import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
+import PermissionHeader from '@/components/molecules/permissionHeader';
 
 const Admin = () => {
   return (
@@ -10,35 +12,37 @@ const Admin = () => {
       <main className="flex w-full flex-col items-center bg-blue-55 p-4">
         <section className="mx-auto">
           {/* 헤더 */}
-          <section className="flex h-[96px] w-[1084px] items-center justify-between">
-            <p className="pt-[40px] text-[28px] font-bold">권한 설정</p>
-            <InquiryButton />
-          </section>
-          {/* 헤더 */}
+          <PermissionHeader />
+
           {/* 검색바 */}
-          <section>
-            <SearchBar />
-          </section>
-          {/* 검색바 */}
-          <br />
-          <section>
-            {/* 게시판 */}
-            <PermissionBoard>
+
+          <SearchBar />
+
+          {/* 게시판 */}
+          <PermissionBoard>
+            {/* 탭메뉴*/}
+            <TapMenu />
+            {/* 카테고리 */}
+            <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between border">
               {/* 카테고리 */}
-              <section>
-                <OfficeCategory />
-              </section>
+              {/* <OfficeCategory /> */}
+              <p>카테고리</p>
               {/* 버튼 */}
-              <section>
+              <section className="flex flex-row gap-[8px]">
+                <p className="flex h-[37px] w-[83px] items-center text-secondary-500">
+                  1개 선택됨
+                </p>
                 <BackOfficeButton>승인</BackOfficeButton>
                 <BackOfficeButton variant="secondary">거절</BackOfficeButton>
-                <BackOfficeButton variant="nondisclosure">
-                  비공개
-                </BackOfficeButton>
               </section>
-            </PermissionBoard>
-            {/* 게시판 */}
-          </section>
+            </section>
+
+            {/* 조회*/}
+            <PermissionList />
+
+            {/* 페이지네이션*/}
+            <PageNation />
+          </PermissionBoard>
         </section>
       </main>
     </>

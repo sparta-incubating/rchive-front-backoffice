@@ -3,21 +3,41 @@
 import green from '@/../public/assets/icons/rectangle-green.svg';
 import orange from '@/../public/assets/icons/rectangle-orange.svg';
 import red from '@/../public/assets/icons/rectangle-red.svg';
+import select from '@/../public/assets/icons/select-blue.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
 import Image from 'next/image';
-import CategoryContainer from './categoryContainer';
-import CategoryLayout from './categoryLayout';
+import { useState } from 'react';
+import CategoryContainer from './category/categoryContainer';
+import CategoryDropDown from './category/categoryDropDown';
+import CategoryLayout from './category/categoryLayout';
 import SelectLabel from './selectLabel';
 
-const optionData = [
-  { key: 1, value: 'Option 1', imgSrc: red },
-  { key: 2, value: 'Option 2', imgSrc: green },
-  { key: 3, value: 'Option 3', imgSrc: orange },
+type PermissionType = {
+  key: number;
+  value: string;
+  imgSrc: string;
+};
+
+const permissionData = [
+  { key: 1, value: '대기', imgSrc: orange },
+  { key: 2, value: '거절', imgSrc: red },
+  { key: 3, value: '승인', imgSrc: green },
+];
+
+const categoryData = [
+  { key: 1, value: 'APM' },
+  { key: 2, value: 'PM' },
 ];
 
 const OfficeCategory = () => {
-  const handleClick = () => {
-    alert('test');
+  const [isClicked, setIsClicked] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [currentValue, setCurrentValue] = useState(permissionData[0].value);
+  const [currentImg, setCurrentImg] = useState(permissionData[0].imgSrc);
+  const handleClick = (data: PermissionType) => {
+    setCurrentValue(data.value);
+    setCurrentImg(data.imgSrc);
+    setIsClicked(!isClicked);
   };
   return (
     <>
@@ -25,81 +45,66 @@ const OfficeCategory = () => {
       <section className="mb-8 flex items-center justify-center">
         <div className="flex flex-col">
           {/* 카테고리1 */}
-          <CategoryContainer onClick={handleClick}>
+          <CategoryContainer>
             <CategoryLayout>
-              <SelectLabel>최신순</SelectLabel>
-              <Image src={arrow} width={13} height={15} alt="화살표" />
-            </CategoryLayout>
-
-            {optionData.map((e) => (
-              <p>{e.value}</p>
-            ))}
-            <div className="absolute right-0 top-[35px] data-[clicked=false]:hidden">
-              <div className="flex h-[100px] w-[160px] flex-col items-center justify-center rounded-[14px] border">
-                {/* 드롭다운아이템 */}
-                <div className="h-[36px] w-[136px] rounded-[8px] hover:bg-secondary-55">
-                  1
-                </div>
-                <div className="h-[36px] w-[136px] rounded-[8px] hover:bg-secondary-55">
-                  2
-                </div>
-              </div>
-            </div>
-          </CategoryContainer>
-          <br />
-          <br /> <br /> <br /> <br /> <br />
-          {/* 카테고리2 */}
-          <CategoryContainer variant="submit">
-            <CategoryLayout>
-              <Image src={red} width={8} height={8} alt="레드" />
-              <SelectLabel>대기</SelectLabel>
+              <SelectLabel>직책</SelectLabel>
               <Image src={arrow} width={12} height={12} alt="화살표" />
             </CategoryLayout>
             {/* 드롭다운 컨테이너 */}
-            <div className="absolute right-0 top-[26px]">
-              <div className="flex h-[100px] w-[160px] flex-col items-center justify-center rounded-[14px] border">
-                {/* 드롭다운아이템 */}
-                <div className="h-[36px] w-[136px] rounded-[8px] hover:bg-secondary-55">
-                  <span className="text-center">1</span>
+            <CategoryDropDown show={true}>
+              {categoryData.map((data) => (
+                <div
+                  className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
+                  data-clicked={isClicked}
+                >
+                  <p className="mx-[14px] w-[84px] text-sm data-[clicked=false]:text-black data-[clicked=true]:text-secondary-500">
+                    {data.value}
+                  </p>
+                  {isClicked ? (
+                    <Image src={select} width={16} height={12} alt="선택됨" />
+                  ) : (
+                    ''
+                  )}
                 </div>
-                <div className="h-[36px] w-[136px] rounded-[8px] hover:bg-secondary-55">
-                  2
-                </div>
-              </div>
-            </div>
+              ))}
+            </CategoryDropDown>
           </CategoryContainer>
           <br />
           <br />
-          <br /> <br />
           <br />
           <br />
-          {/* 카테고리3 */}
-          <CategoryContainer onClick={handleClick}>
+          <br />
+          {/* 카테고리2 */}
+          <CategoryContainer
+            variant="submit"
+            onClick={() => setShowOptions((prev) => !prev)}
+          >
             <CategoryLayout>
-              <SelectLabel>최신순</SelectLabel>
-              <Image src={arrow} width={13} height={15} alt="화살표" />
+              <Image src={currentImg} width={8} height={8} alt="레드" />
+              <SelectLabel> {currentValue}</SelectLabel>
+              <Image src={arrow} width={12} height={12} alt="화살표" />
             </CategoryLayout>
-
-            <div className="absolute right-0 top-[35px] data-[clicked=false]:hidden">
-              <div className="flex h-[100px] w-[160px] flex-col items-center justify-center rounded-[14px] border">
-                {/* 드롭다운아이템 */}
-                {optionData.map((data) => (
+            {/* 드롭다운 컨테이너 */}
+            <CategoryDropDown variant="category" show={showOptions}>
+              {permissionData
+                .filter((data) => data.value !== permissionData[0].value)
+                .map((data) => (
                   <div
-                    className="h-[36px] w-[136px] rounded-[8px] hover:bg-secondary-55"
+                    className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
                     key={data.key}
+                    onClick={() => handleClick(data)}
                   >
                     <Image
                       src={data.imgSrc}
                       alt={data.value}
-                      className="mr-2 h-6 w-6"
                       width={8}
                       height={8}
+                      className="mx-[14px]"
                     />
-                    {data.value}
+                    <p className="text-sm">{data.value}</p>
                   </div>
                 ))}
-              </div>
-            </div>
+            </CategoryDropDown>
           </CategoryContainer>
         </div>
       </section>

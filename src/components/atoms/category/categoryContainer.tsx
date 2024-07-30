@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
 const divVariants = cva(
-  'relative flex items-center justify-center hover:cursor-pointer',
+  'relative flex items-center justify-center hover:cursor-pointer ',
   {
     variants: {
       variant: {
@@ -28,7 +28,6 @@ interface CategoryContainerProps
 const CategoryContainer = ({
   children,
   className,
-
   variant,
   ...props
 }: CategoryContainerProps) => {

@@ -6,7 +6,7 @@ interface SelectLabelProps extends ComponentProps<'label'> {
 
 const SelectLabel = ({ children, ...props }: SelectLabelProps) => {
   return (
-    <label className="text-sm font-normal text-gray-900" {...props}>
+    <label className="text-sm font-bold text-gray-900" {...props}>
       {children}
     </label>
   );
