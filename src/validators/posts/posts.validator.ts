@@ -61,7 +61,7 @@ export const postsSchema = z
     uploadedAt: z.date().optional(),
     trackName: trackEnum,
     postType: postTypeEnum,
-    period: z.string().min(1, '기수를 선택해주세요.'),
+    postPeriod: z.string().min(1, '기수를 선택해주세요.'),
     isOpened: isOpenEnum,
     thumbnailUrl: z.string().optional(),
     content: z.string().optional(),

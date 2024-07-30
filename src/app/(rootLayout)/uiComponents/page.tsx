@@ -2,7 +2,11 @@
 
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import Button from '@/components/atoms/button';
+<<<<<<< HEAD
 import SearchBar from '@/components/atoms/searchBar';
+=======
+import { DateRangePicker } from '@/components/molecules/dateRangePicker';
+>>>>>>> 48347bc91e49042f79341101158437e491ad45eb
 import UploadContainer from '@/components/molecules/post/uploadContainer';
 import { createToast } from '@/utils/toast';
 
@@ -64,6 +68,9 @@ const UiComponents = () => {
         <BackOfficeButton variant="secondary">거절</BackOfficeButton>
         <BackOfficeButton variant="nondisclosure">비공개</BackOfficeButton>
         <SearchBar />
+      </div>
+      <div>
+        <DateRangePicker />
       </div>
     </>
   );

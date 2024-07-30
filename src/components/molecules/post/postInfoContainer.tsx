@@ -35,6 +35,7 @@ const PostInfoContainer = ({
 }: PostInputContainerProps) => {
   const { data: period } = useQuery({
     queryKey: ['period'],
+    // track은 login 정보에서 가져와야함
     queryFn: () => getPeriod<SelectOptionType[]>('UNITY'),
     retry: 3,
     staleTime: Infinity,
@@ -53,7 +54,7 @@ const PostInfoContainer = ({
     <section className="flex gap-4">
       <TitleContainer title="기수">
         <Controller
-          name="period"
+          name="postPeriod"
           control={control}
           render={({ field: { onChange, value } }) => (
             <SelectFormBox
@@ -69,8 +70,8 @@ const PostInfoContainer = ({
             />
           )}
         />
-        {errors.period?.message && (
-          <FormSpan variant="error">{errors.period.message}</FormSpan>
+        {errors.postPeriod?.message && (
+          <FormSpan variant="error">{errors.postPeriod.message}</FormSpan>
         )}
       </TitleContainer>
 

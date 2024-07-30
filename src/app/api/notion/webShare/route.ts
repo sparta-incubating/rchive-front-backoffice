@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: 'Notion 웹 공유 설정 오류',
-        message: 'web 공유 설정을 확인하시고 다시 시도해주세요.',
+        message: '접근할 수 있도록 웹에 게시해주세요.',
       },
       { status: 404 },
     );
