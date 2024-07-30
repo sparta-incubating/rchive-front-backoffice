@@ -5,9 +5,10 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import { postSignIn } from '@/api/authApi';
+import { getLastConnectRole, postSignIn } from '@/api/authApi';
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
+import { isTeamSpartaEmail } from '@/utils/utils';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
@@ -42,8 +43,7 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const response = await postSignIn(data);
-
+    await postSignIn(data);
     /*
     - 최초 로그인시
     - 로그인 -> 마지막 선택 권한 조회 -> 에러 -> 권한신청 / 1차 마무리
@@ -51,10 +51,29 @@ const SignIn = () => {
 
     - 기존 회원 로그인시
     - 로그인 -> 마지막 선택 권한 조회 -> 그걸로 접속
-    
     */
 
-    console.log({ response });
+    // 마지막 선택 권한 조회
+    try {
+      // 선택 권한이 있으니까 그 정보를 전역상태관리를 이용하자
+      // 그런데 새로고침하면? 어쩔껀가.. 다시 이 과정을 수행해야겠군. 어디서?
+      const lastRoleRes = await getLastConnectRole();
+      console.log({ lastRoleRes });
+    } catch (error) {
+      // 우선 여기부터 합시다
+      // 마지막 선택 권한 조회가 에러가났을때 여기로 온다.
+      // 그러면 트랙 선택으로간다.
+      // - PM(teamsparta.co) : 트랙 선택
+      // - APM: 트랙 & 기수선택
+
+      if (isTeamSpartaEmail(data.username)) {
+        console.log('PM');
+        router.push('/role/PM');
+      } else {
+        console.log('APM');
+        router.push('/role/APM');
+      }
+    }
   };
 
   return (

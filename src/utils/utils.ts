@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,4 +41,14 @@ export function formatDate(dateStr: string) {
  */
 export const containsCharacter = (str: string, char: string): boolean => {
   return str.includes(char);
+};
+
+/**
+ * 이메일이 @teamsparta.co 도메인인지 확인하는 함수
+ * @param{string} email 이메일 주소 문자열
+ * @returns 해당 도메인의 이메일인 경우 true, 그렇지 않은 경우 false
+ */
+export const isTeamSpartaEmail = (email: string): boolean => {
+  const teamSpartaEmailPattern = /^[a-zA-Z0-9._%+-]+@teamsparta\.co$/;
+  return teamSpartaEmailPattern.test(email);
 };

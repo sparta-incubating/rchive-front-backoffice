@@ -1,4 +1,5 @@
 import { Admin, User } from '@/class/signup';
+import { LastConnectRoleResponseType } from '@/types/auth.types';
 import { emailUniqueResponseType } from '@/types/signup.types';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
@@ -40,5 +41,16 @@ export const postSignIn = async (data: {
     return res;
   } catch (error) {
     console.log(error, '로그인 오류');
+  }
+};
+
+export const getLastConnectRole = async () => {
+  try {
+    const response = await client.get<LastConnectRoleResponseType>(
+      '/api/v1/role/select/last',
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('마지막 권환 조회에 실패했습니다.');
   }
 };
