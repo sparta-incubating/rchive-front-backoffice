@@ -1,20 +1,8 @@
+import { trackEnum } from '@/validators/commons';
 import { z } from 'zod';
 
 const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
 const notionPattern = /^(https?:\/\/)(www\.)?notion\.so\/.+$/;
-
-const trackEnum = z.enum([
-  'UNITY',
-  'NODEJS',
-  'SPRING_JAVA',
-  'SPRING_KOTLIN',
-  'FRONT_REACT',
-  'WEB',
-  'ANDROID',
-  'IOS',
-  'DATA',
-  'UXUI',
-]);
 
 const postTypeEnum = z.enum(
   [

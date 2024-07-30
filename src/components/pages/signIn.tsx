@@ -5,12 +5,17 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import { getLastConnectRole, postSignIn } from '@/api/authApi';
+import {
+  getLastConnectRole,
+  getRoleApplyResult,
+  getRoleApplyStatus,
+  postSignIn,
+} from '@/api/authApi';
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
-import { isTeamSpartaEmail } from '@/utils/utils';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -57,21 +62,32 @@ const SignIn = () => {
     try {
       // 선택 권한이 있으니까 그 정보를 전역상태관리를 이용하자
       // 그런데 새로고침하면? 어쩔껀가.. 다시 이 과정을 수행해야겠군. 어디서?
+
+      // 여기에 왔다는건 트랙 권한이 있고 그 권한으로 접속을 했다.
       const lastRoleRes = await getLastConnectRole();
       console.log({ lastRoleRes });
     } catch (error) {
-      // 우선 여기부터 합시다
-      // 마지막 선택 권한 조회가 에러가났을때 여기로 온다.
-      // 그러면 트랙 선택으로간다.
-      // - PM(teamsparta.co) : 트랙 선택
-      // - APM: 트랙 & 기수선택
+      // 여기에 왔다는건 트랙 권한이 없거나 신청 대기중일때 옴.
 
-      if (isTeamSpartaEmail(data.username)) {
-        console.log('PM');
-        router.push('/role/PM');
+      // 권한 신청 조회
+      // true이면 권한 진행 중 또는 권한 부여가 완료된것을 의미
+      const roleApplyStatusResponse = await getRoleApplyStatus();
+      if (roleApplyStatusResponse) {
+        // 권한 진행 중 이거나 권한이 부여되었다.
+        // 권한 신청 결과 조회
+        const roleApplyResult = await getRoleApplyResult();
+        // 권한 진행 중일때 wait페이지로
+        if (roleApplyResult === 'WAIT') {
+          router.push('/role/wait');
+        } else if (roleApplyResult === 'REJECT') {
+          // 거절 page로
+        } else if (roleApplyResult === 'APPROVE') {
+          // 메인 페이지로 보내는데 user 정보를 입력해서 보내자.
+        }
       } else {
-        console.log('APM');
-        router.push('/role/APM');
+        // 권한이 없을때 여기로.
+        setCookie('loginId', data.username);
+        router.push('/role');
       }
     }
   };
