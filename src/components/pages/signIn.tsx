@@ -7,7 +7,6 @@ import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import {
   getLastConnectRole,
-  getRoleApplyResult,
   getRoleApplyStatus,
   postSignIn,
 } from '@/api/authApi';
@@ -49,43 +48,23 @@ const SignIn = () => {
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     await postSignIn(data);
-    /*
-    - 최초 로그인시
-    - 로그인 -> 마지막 선택 권한 조회 -> 에러 -> 권한신청 / 1차 마무리
-    - 로그인 -> 마지막 선택 권한 조회 -> 에러 -> 권한신청 -> 결과조회 -> 메인페이지로 가면서 마지막 선택 권한으로 등록
 
-    - 기존 회원 로그인시
-    - 로그인 -> 마지막 선택 권한 조회 -> 그걸로 접속
-    */
-
-    // 마지막 선택 권한 조회
     try {
-      // 선택 권한이 있으니까 그 정보를 전역상태관리를 이용하자
-      // 그런데 새로고침하면? 어쩔껀가.. 다시 이 과정을 수행해야겠군. 어디서?
-
-      // 여기에 왔다는건 트랙 권한이 있고 그 권한으로 접속을 했다.
+      // 선택 권한이 있으니까 그 정보를 전역상태 or cookie?
+      // cookie를 쓰면 middleware에서 접근이 가능.
+      // server side에서 Login 정보가 필요한가?
       const lastRoleRes = await getLastConnectRole();
       console.log({ lastRoleRes });
     } catch (error) {
-      // 여기에 왔다는건 트랙 권한이 없거나 신청 대기중일때 옴.
-
-      // 권한 신청 조회
-      // true이면 권한 진행 중 또는 권한 부여가 완료된것을 의미
+      // 마지막 접속 권한이 없으면..
+      // 트랙 기수 신청 확인
       const roleApplyStatusResponse = await getRoleApplyStatus();
       if (roleApplyStatusResponse) {
-        // 권한 진행 중 이거나 권한이 부여되었다.
-        // 권한 신청 결과 조회
-        const roleApplyResult = await getRoleApplyResult();
-        // 권한 진행 중일때 wait페이지로
-        if (roleApplyResult === 'WAIT') {
-          router.push('/role/wait');
-        } else if (roleApplyResult === 'REJECT') {
-          // 거절 page로
-        } else if (roleApplyResult === 'APPROVE') {
-          // 메인 페이지로 보내는데 user 정보를 입력해서 보내자.
-        }
+        // 신청 이력이 있으면..
+        setCookie('loginId', data.username);
+        router.push(`/role/result`);
       } else {
-        // 권한이 없을때 여기로.
+        // 신청 이력이 없으면..
         setCookie('loginId', data.username);
         router.push('/role');
       }

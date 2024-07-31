@@ -8,14 +8,15 @@ import { RoleFormSchema } from '@/types/role.types';
 import { SelectOptionType } from '@/types/signup.types';
 import { roleSchema } from '@/validators/auth/role.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface RoleSelectFormProps {
   trackRole: string;
+  children: ReactNode;
 }
 
-const RoleSelectForm = ({ trackRole }: RoleSelectFormProps) => {
+const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
   const {
     control,
     handleSubmit,
@@ -37,15 +38,15 @@ const RoleSelectForm = ({ trackRole }: RoleSelectFormProps) => {
 
   const onSubmit = async (data: RoleFormSchema) => {
     const response = await postRoleApply(data);
-    console.log({ response });
+    if (response.status === 200) {
+      window.location.href = '/role/result';
+    }
   };
 
   return (
     <form className="m-auto" onSubmit={handleSubmit(onSubmit)}>
       <section className="flex w-[520px] flex-col items-center gap-5 rounded-[12px] bg-white pb-7 pt-14">
-        <span className="text-center text-xl font-medium text-gray-900">
-          {trackRole === 'PM' ? '트랙 선택' : '트랙 및 기수 선택'}
-        </span>
+        {children}
         <Controller
           name="trackName"
           control={control}

@@ -60,7 +60,8 @@ export const getLastConnectRole = async () => {
 // 권한 신청 endpoint
 export const postRoleApply = async (data: RoleFormSchema) => {
   try {
-    return await client.post('/api/v1/role', data);
+    const response = await client.post('/api/v1/role', data);
+    return response.data;
   } catch (error) {
     throw new Error('권한 신청에 실패했습니다.');
   }
