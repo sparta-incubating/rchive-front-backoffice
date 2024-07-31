@@ -1,11 +1,52 @@
-const TapMenu = () => {
+'use client';
+
+import { useState } from 'react';
+
+type TabProps = {
+  data: {
+    id: number;
+    title: string;
+    className: string;
+    content: React.JSX.Element;
+    count: number;
+  }[];
+  activeTab: number;
+  setActiveTab: (idx: number) => void;
+};
+
+const TapMenu = ({ data, activeTab, setActiveTab }: TabProps) => {
+  const [isActive, setIsActive] = useState(activeTab);
+
+  // 현재 활성화된 탭에 따라 갯수를 업데이트
+  const handleTabChange = (idx: number) => {
+    setActiveTab(idx);
+    setIsActive(idx);
+  };
+
   return (
     <section className="h-[64px] w-full border-b-2">
-      <div className="flex gap-[6px] pt-[16px]">
-        <div className="h-[48px] w-[104px] border">전체</div>
-        <div className="h-[48px] w-[119px] border">대기중</div>
-        <div className="h-[48px] w-[104px] border">승인</div>
+      <div className="ml-[36px] flex gap-[6px] pt-[16px]">
+        {/* 1 */}
+        {data &&
+          data.map((item, idx) => {
+            return (
+              <button
+                className={`flex h-[48px] items-center justify-center gap-[10px] border-b-2 ${item.className} ${
+                  activeTab === idx ? 'border-gray-900' : ''
+                }`}
+                key={item.id}
+                type="button"
+                onClick={() => handleTabChange(idx)}
+              >
+                <p className="h-[20px] text-sm">{item.title}</p>
+                <div className="flex h-[28px] w-[33px] items-center justify-center rounded-[8px] bg-blue-55">
+                  <p className="text-blue-400">{item.count}</p>
+                </div>
+              </button>
+            );
+          })}
       </div>
+      <div className="p-[16px]">{data[isActive].content}</div>
     </section>
   );
 };

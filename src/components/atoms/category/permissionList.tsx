@@ -55,9 +55,13 @@ const mockData = [
 ];
 interface PermissionListProps {
   onCheckedNumChange: (num: number) => void;
+  activeTab: number;
 }
 
-const PermissionList = ({ onCheckedNumChange }: PermissionListProps) => {
+const PermissionList = ({
+  onCheckedNumChange,
+  activeTab,
+}: PermissionListProps) => {
   const [listData, setListData] = useState(mockData);
   const [checkedListById, setCheckedListById] = useState<number[]>([]);
   const checkedNum = checkedListById.length;
@@ -79,6 +83,14 @@ const PermissionList = ({ onCheckedNumChange }: PermissionListProps) => {
   };
 
   const isAllChecked = listData.length > 0 && checkedNum === listData.length;
+
+  const filteredListData = listData.filter((item) => {
+    if (activeTab === 0) return true;
+    if (activeTab === 1) return item.permission === '대기';
+    if (activeTab === 2) return item.permission === '승인';
+    return false;
+  });
+
   // const { boardList, isError, isPending } = usePermissionDataQuery();
 
   // if (isError) {
@@ -102,8 +114,8 @@ const PermissionList = ({ onCheckedNumChange }: PermissionListProps) => {
             isAllChecked={isAllChecked}
           />
           <tbody>
-            {listData.length > 0 ? (
-              listData.map((item) => (
+            {filteredListData.length > 0 ? (
+              filteredListData.map((item) => (
                 <TableRow
                   key={item.id}
                   data={item}
