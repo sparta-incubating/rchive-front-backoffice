@@ -78,8 +78,7 @@ const PermissionList = ({ onCheckedNumChange }: PermissionListProps) => {
     onCheckedNumChange(newCheckedList.length);
   };
 
-  console.log(checkedNum, '???');
-
+  const isAllChecked = listData.length > 0 && checkedNum === listData.length;
   // const { boardList, isError, isPending } = usePermissionDataQuery();
 
   // if (isError) {
@@ -100,10 +99,10 @@ const PermissionList = ({ onCheckedNumChange }: PermissionListProps) => {
           <TableHeader
             headers={permissionHeaders}
             handleAllCheck={handleAllCheck}
-            isAllChecked={checkedNum === listData.length}
+            isAllChecked={isAllChecked}
           />
           <tbody>
-            {listData ? (
+            {listData.length > 0 ? (
               listData.map((item) => (
                 <TableRow
                   key={item.id}

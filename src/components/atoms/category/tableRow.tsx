@@ -1,7 +1,26 @@
 import { TableHeaderItem } from '@/constants/permission.constant';
+import { cva, VariantProps } from 'class-variance-authority';
+import { ComponentProps } from 'react';
 import CategoryBox from './categoryBox';
 
-interface TableRowProps {
+const TableRowVariants = cva(
+  'flex h-[64px] flex-row items-center border-b-2 hover:bg-blue-50',
+  {
+    variants: {
+      variant: {
+        permissionList: 'gap-[42px]',
+        postList: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'permissionList',
+    },
+  },
+);
+
+interface TableRowProps
+  extends VariantProps<typeof TableRowVariants>,
+    ComponentProps<'div'> {
   data: Record<string, any>;
   headers: TableHeaderItem[];
   checkedListById: number[];
@@ -12,17 +31,16 @@ const TableRow = ({
   data,
   headers,
   checkedListById,
+  variant,
   onCheckChange,
 }: TableRowProps) => {
   const isChecked = checkedListById.includes(data.id);
 
   return (
     <tr
-      className={`flex h-[64px] flex-row items-center gap-[42px] border-b-2 hover:bg-blue-50 ${
-        isChecked ? 'bg-secondary-55' : ''
-      }`}
+      className={`${TableRowVariants({ variant })} ${isChecked ? 'bg-secondary-55' : ''}`}
     >
-      <td className="w-[56px]">
+      <td className="flex w-[56px] items-center justify-center">
         <CategoryBox
           onChange={() => onCheckChange(data.id)}
           checked={checkedListById.includes(data.id)}

@@ -1,20 +1,56 @@
 'use client';
 
-import Button from '@/components/atoms/button';
+import BackOfficeButton from '@/components/atoms/backOfficeButton';
+import PageNation from '@/components/atoms/category/pageNation';
+import PostList from '@/components/atoms/category/postList';
+import TapMenu from '@/components/atoms/category/tapMenu';
+import PermissionBoard from '@/components/atoms/permissionBoard';
+import SearchBar from '@/components/atoms/searchBar';
 import BackofficePage from '@/components/pages/backofficePage';
-import { createToast } from '@/utils/toast';
+import { useState } from 'react';
 
 const Post = () => {
+  const [checkedNum, setCheckedNum] = useState<number>(0);
+
   return (
-    <BackofficePage>
-      <Button
-        size="sm"
-        onClick={() => createToast('게시물 작성이 완료되었습니다.', 'primary')}
-      >
-        토스트 실험
-      </Button>
-      <div className="h-[40vh]"></div>
-    </BackofficePage>
+    <>
+      <BackofficePage>
+        <SearchBar />
+
+        {/* 게시판 */}
+        <PermissionBoard>
+          {/* 탭메뉴*/}
+          <TapMenu />
+          {/* 카테고리 */}
+          <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between border">
+            {/* 카테고리 */}
+            {/* <OfficeCategory /> */}
+            <p>카테고리</p>
+
+            {/* 버튼 */}
+            <section className="flex flex-row gap-[8px]">
+              {checkedNum ? (
+                <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
+                  {checkedNum}개 선택
+                </p>
+              ) : (
+                ''
+              )}
+              <BackOfficeButton>공개</BackOfficeButton>
+              <BackOfficeButton variant="nondisclosure">
+                비공개
+              </BackOfficeButton>
+            </section>
+          </section>
+
+          {/* 조회*/}
+          <PostList onCheckedNumChange={setCheckedNum} />
+
+          {/* 페이지네이션*/}
+          <PageNation />
+        </PermissionBoard>
+      </BackofficePage>
+    </>
   );
 };
 export default Post;
