@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { deleteCookie, getCookie } from 'cookies-next';
+import { redirect } from 'next/navigation';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -37,7 +38,9 @@ client.interceptors.response.use(
 
     if (error.response?.status === 401) {
       deleteCookie('AT');
+      redirect('/login');
     }
+
     return Promise.reject(error);
   },
 );
