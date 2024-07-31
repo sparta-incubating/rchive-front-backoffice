@@ -7,27 +7,12 @@ import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import BackofficePage from '@/components/pages/backofficePage';
+import { tabArr } from '@/constants/permission.constant';
 import { useState } from 'react';
 
 const Admin = () => {
   const [checkedNum, setCheckedNum] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<number>(0);
-
-  const tabArr = [
-    {
-      id: 0,
-      title: '전체',
-      className: 'w-[104px]',
-      count: 5,
-    },
-    {
-      id: 1,
-      title: '대기 중',
-      className: 'w-[114px]',
-      count: 2,
-    },
-    { id: 3, title: '승인', className: 'w-[104px]', count: 3 },
-  ];
 
   return (
     <>

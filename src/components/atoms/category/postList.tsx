@@ -8,9 +8,10 @@ import TableRow from './tableRow';
 
 interface PermissionListProps {
   onCheckedNumChange: (num: number) => void;
+  activeTab: number;
 }
 
-const PostList = ({ onCheckedNumChange }: PermissionListProps) => {
+const PostList = ({ onCheckedNumChange, activeTab }: PermissionListProps) => {
   const [listData, setListData] = useState('');
   const [checkedListById, setCheckedListById] = useState<number[]>([]);
   const checkedNum = checkedListById.length;

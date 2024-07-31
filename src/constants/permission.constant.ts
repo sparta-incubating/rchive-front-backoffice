@@ -62,3 +62,35 @@ export const postHeaders: TableHeaderItem[] = [
     className: 'w-[106px]  text-gray-400',
   },
 ];
+
+export const tabArr = [
+  {
+    id: 0,
+    title: '전체',
+    className: 'w-[104px]',
+    count: 5,
+  },
+  {
+    id: 1,
+    title: '대기 중',
+    className: 'w-[114px]',
+    count: 2,
+  },
+  { id: 3, title: '승인', className: 'w-[104px]', count: 3 },
+];
+
+export const subArr = [
+  {
+    id: 0,
+    title: '전체',
+    className: 'w-[61px]',
+  },
+  {
+    id: 1,
+    title: '강의자료',
+    className: 'w-[85px]',
+  },
+  { id: 2, title: '수준별 강의', className: 'w-[123px]' },
+  { id: 3, title: '과제 해설', className: 'w-[88px]' },
+  { id: 4, title: '특강/실시간 세션', className: 'w-[129px]' },
+];

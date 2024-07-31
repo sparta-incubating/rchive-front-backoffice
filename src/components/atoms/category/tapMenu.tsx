@@ -7,8 +7,7 @@ type TabProps = {
     id: number;
     title: string;
     className: string;
-    content: React.JSX.Element;
-    count: number;
+    count?: number;
   }[];
   activeTab: number;
   setActiveTab: (idx: number) => void;
@@ -39,14 +38,16 @@ const TapMenu = ({ data, activeTab, setActiveTab }: TabProps) => {
                 onClick={() => handleTabChange(idx)}
               >
                 <p className="h-[20px] text-sm">{item.title}</p>
-                <div className="flex h-[28px] w-[33px] items-center justify-center rounded-[8px] bg-blue-55">
-                  <p className="text-blue-400">{item.count}</p>
-                </div>
+                {item.count !== undefined && (
+                  <div className="flex h-[28px] w-[33px] items-center justify-center rounded-[8px] bg-blue-55">
+                    <p className="text-blue-400">{item.count}</p>
+                  </div>
+                )}
               </button>
             );
           })}
       </div>
-      <div className="p-[16px]">{data[isActive].content}</div>
+      <div className="p-[16px]">{data[isActive]?.content}</div>
     </section>
   );
 };
