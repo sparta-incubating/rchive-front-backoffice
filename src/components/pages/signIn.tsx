@@ -56,6 +56,7 @@ const SignIn = () => {
       // server side에서 Login 정보가 필요한가?
       const lastRoleRes = await getLastConnectRole();
       console.log({ lastRoleRes });
+      router.push('/');
     } catch (error) {
       // 마지막 접속 권한이 없으면..
       // 트랙 기수 신청 확인
