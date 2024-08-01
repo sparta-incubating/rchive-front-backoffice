@@ -47,7 +47,8 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await postSignIn(data);
+    const loginData = await postSignIn(data);
+    console.log({ loginData });
 
     try {
       // 선택 권한이 있으니까 그 정보를 전역상태 or cookie?

@@ -41,16 +41,14 @@ const RoleResultPage = async () => {
         )}
 
         {roleApplyResult === RoleResultEnum.REJECT && (
-          <>
-            <RoleSelectForm trackRole={trackRole}>
-              <span className="text-center text-xl font-medium text-gray-900">
-                승인이 거절되었습니다.
-              </span>
-              <span className="text-sm text-gray-900">
-                해당하는 트랙과 기수를 다시 선택해주세요.
-              </span>
-            </RoleSelectForm>
-          </>
+          <RoleSelectForm trackRole={trackRole}>
+            <span className="text-center text-xl font-medium text-gray-900">
+              승인이 거절되었습니다.
+            </span>
+            <span className="text-sm text-gray-900">
+              해당하는 트랙과 기수를 다시 선택해주세요.
+            </span>
+          </RoleSelectForm>
         )}
 
         {roleApplyResult === RoleResultEnum.APPROVE && (

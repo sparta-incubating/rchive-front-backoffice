@@ -63,8 +63,7 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
       <section className="flex gap-6">
         {!uploadState ? (
           <UploadThumbnail>
-            <UploadThumbnailText>썸네일</UploadThumbnailText>
-            <UploadThumbnailText>자동 업로드</UploadThumbnailText>
+            <UploadThumbnailText>썸네일 업로드</UploadThumbnailText>
           </UploadThumbnail>
         ) : (
           <UploadThumbnail variant="image">
