@@ -126,7 +126,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       backgroundColor: {
-        ['image-black']: 'rgba(9, 9, 9, 0.40)',
+        ['image-black']: 'rgba(74, 74, 74, 0.6)',
       },
     },
     fontFamily: {

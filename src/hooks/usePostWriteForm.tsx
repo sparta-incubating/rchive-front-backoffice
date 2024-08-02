@@ -25,7 +25,7 @@ const usePostWriteForm = () => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<PostsFormSchema>({
     resolver: zodResolver(postsSchema),
     mode: 'all',
@@ -37,7 +37,7 @@ const usePostWriteForm = () => {
       contentLink: '',
       videoLink: '',
       tagNameList: [],
-      uploadedAt: new Date(),
+      uploadedAt: null,
       trackName: 'UNITY',
       postPeriod: '',
       isOpened: 'true',
@@ -99,6 +99,7 @@ const usePostWriteForm = () => {
     onSubmit,
     notionValidateState,
     setNotionValidateState,
+    isValid,
   };
 };
 
