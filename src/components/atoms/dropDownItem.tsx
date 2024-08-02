@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
 const dropDownItemVariants = cva(
-  'relative mx-3 flex cursor-pointer justify-between rounded-[12px] px-[14px] py-[9px]',
+  'relative group flex cursor-pointer justify-between rounded-[12px] px-[14px] py-[9px]',
   {
     variants: {
       variant: {
@@ -24,7 +24,9 @@ interface DropDownItemProps extends VariantProps<typeof dropDownItemVariants> {
 const DropDownItem = ({ children, onClick, variant }: DropDownItemProps) => {
   return (
     <div onClick={onClick} className={dropDownItemVariants({ variant })}>
-      <span className="text-gary-900 text-xs font-normal">{children}</span>
+      <span className="text-gary-900 text-xs font-normal group-hover:font-bold">
+        {children}
+      </span>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const SelectItem = ({ title = '', variant = 'primary' }: SelectItemProps) => {
       {title !== '' && (
         <>
           <div className="flex w-[55px] items-center justify-center">
-            <SelectDumyItemSpan selected={false} variant={variant} size="xs">
+            <SelectDumyItemSpan selected={false} size="xs">
               {title}
             </SelectDumyItemSpan>
           </div>
