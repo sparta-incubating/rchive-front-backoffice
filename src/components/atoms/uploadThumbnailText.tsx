@@ -1,8 +1,19 @@
+import Image from 'next/image';
 import { PropsWithChildren } from 'react';
 
 const UploadThumbnailText = ({ children }: PropsWithChildren) => {
   return (
-    <p className="text-center text-sm font-medium text-blue-200">{children}</p>
+    <div className="relative flex h-full w-full items-center justify-center">
+      <Image
+        src={'/assets/icons/defaultThumbnail.png'}
+        alt="기본 썸네일"
+        fill
+      />
+      <div className="bg-image-black absolute inset-0"></div>
+      <div className="relative z-10 text-center text-sm font-medium text-gray-50">
+        {children}
+      </div>
+    </div>
   );
 };
 
