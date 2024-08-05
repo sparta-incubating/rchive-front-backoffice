@@ -2,6 +2,7 @@
 
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import Button from '@/components/atoms/button';
+import OfficeCategory from '@/components/atoms/officeCategory';
 import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import UploadContainer from '@/components/molecules/post/uploadContainer';
@@ -68,6 +69,9 @@ const UiComponents = () => {
       </div>
       <div>
         <DateRangePicker />
+      </div>
+      <div>
+        <OfficeCategory />
       </div>
     </>
   );

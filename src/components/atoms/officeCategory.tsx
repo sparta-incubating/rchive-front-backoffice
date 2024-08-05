@@ -5,15 +5,10 @@ import PermissionCategory from './category/permissionCategory';
 
 const OfficeCategory = () => {
   return (
-    <>
-      <section className="mb-8 flex items-center justify-center">
-        <div className="flex flex-col">
-          <PermissionCategory />
-          <br /> <br /> <br /> <br /> <br />
-          <FilterCategory />
-        </div>
-      </section>
-    </>
+    <div className="flex flex-row">
+      <FilterCategory />
+      <PermissionCategory />
+    </div>
   );
 };
 export default OfficeCategory;
