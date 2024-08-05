@@ -1,9 +1,10 @@
 import { Admin, User } from '@/class/signup';
-import { LastConnectRoleResponseType } from '@/types/auth.types';
 import { RoleFormSchema } from '@/types/role.types';
 import { emailUniqueResponseType } from '@/types/signup.types';
+import { logoutCookie } from '@/utils/auth.util';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
+import axios from 'axios';
 import { setCookie } from 'cookies-next';
 
 export const postSignup = async (userData: User | Admin) => {
@@ -48,10 +49,7 @@ export const postSignIn = async (data: {
 // 마지막 접속 권한 endpoint
 export const getLastConnectRole = async () => {
   try {
-    const response = await client.get<LastConnectRoleResponseType>(
-      '/api/v1/role/select/last',
-    );
-    return response.data;
+    await axios.get('/api/auth/lastConnectRole');
   } catch (error) {
     throw new Error('마지막 권환 조회에 실패했습니다.');
   }
@@ -84,5 +82,20 @@ export const getRoleApplyResult = async () => {
     return response.data.data;
   } catch (error) {
     throw new Error('권한 신청 결과 조회에 실패했습니다.');
+  }
+};
+
+// logout endpoint
+export const logout = async () => {
+  try {
+    const res = await client.delete('/api/v1/users/logout');
+    if (res.data.status === 200) {
+      logoutCookie();
+      return res.data.status;
+    } else {
+      console.log(res.data.message);
+    }
+  } catch (error) {
+    console.error('로그아웃 중 오류 발생:', error);
   }
 };

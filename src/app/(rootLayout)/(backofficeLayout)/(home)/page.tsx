@@ -1,5 +1,3 @@
-'use client';
-
 import TagContainer from '@/components/organisms/tagContainer';
 
 const Home = () => {
