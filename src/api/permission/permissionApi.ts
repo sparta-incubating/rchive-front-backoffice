@@ -10,3 +10,20 @@ export const getBoardList = async () => {
     throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
   }
 };
+
+type USERDATA = {
+  trackName: string;
+  period: number;
+  trackRole: string;
+  email: string;
+};
+
+//권한수락
+export const postUserRole = async () => {
+  try {
+    const res = await client.post('/api/v1/backoffice/role/approve');
+    return res.data;
+  } catch (error) {
+    throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
+  }
+};

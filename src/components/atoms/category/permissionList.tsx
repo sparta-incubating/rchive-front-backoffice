@@ -1,6 +1,6 @@
 'use client';
 
-import { mockData, permissionHeaders } from '@/constants/permission.constant';
+import { permissionHeaders } from '@/constants/permission.constant';
 import { useState } from 'react';
 import NoDataList from './noDataList';
 import TableHeader from './tableHeader';
@@ -16,8 +16,9 @@ interface PermissionListProps {
 const PermissionList = ({
   onCheckedNumChange,
   activeTab,
+  listData,
+  setListData,
 }: PermissionListProps) => {
-  const [listData, setListData] = useState(mockData);
   const [checkedListById, setCheckedListById] = useState<number[]>([]);
   const checkedNum = checkedListById.length;
 
@@ -37,6 +38,14 @@ const PermissionList = ({
     onCheckedNumChange(newCheckedList.length);
   };
 
+  const handlePermissionChange = (id: number, newPermission: string) => {
+    setListData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, permission: newPermission } : item,
+      ),
+    );
+  };
+
   const isAllChecked = listData.length > 0 && checkedNum === listData.length;
 
   const filteredListData = listData.filter((item) => {
@@ -45,7 +54,6 @@ const PermissionList = ({
     if (activeTab === 2) return item.permission === '승인';
     return false;
   });
-
   // const { boardList, isError, isPending } = usePermissionDataQuery();
 
   // if (isError) {
@@ -77,6 +85,7 @@ const PermissionList = ({
                   headers={permissionHeaders}
                   checkedListById={checkedListById}
                   onCheckChange={handleCheckChange}
+                  onPermissionChange={handlePermissionChange}
                 />
               ))
             ) : (

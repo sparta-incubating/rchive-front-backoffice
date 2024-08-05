@@ -2,7 +2,7 @@ import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
-const divVariants = cva('absolute right-0 ', {
+const divVariants = cva('absolute right-0', {
   variants: {
     variant: {
       permission: 'top-[35px]',
@@ -20,6 +20,7 @@ interface DivProps
   children: ReactNode;
   className?: string;
   show: boolean;
+  isClicked?: boolean;
 }
 
 const CategoryDropDown = ({
@@ -27,6 +28,7 @@ const CategoryDropDown = ({
   className,
   variant,
   show,
+  isClicked = false,
   ...props
 }: DivProps) => {
   return (
@@ -35,10 +37,15 @@ const CategoryDropDown = ({
       className={classMerge(
         divVariants({ variant }),
         className,
-        show ? 'block' : 'hidden',
+        show ? 'z-[999] block' : 'hidden',
       )}
     >
-      <div className="flex h-[100px] w-[160px] flex-col items-center justify-center rounded-[14px] border">
+      <div
+        className={`flex w-[160px] flex-col items-center justify-center rounded-[14px] border bg-white ${
+          isClicked ? 'h-[64px]' : 'h-[100px]'
+        }`}
+        data-clicked={isClicked}
+      >
         {children}
       </div>
     </div>
