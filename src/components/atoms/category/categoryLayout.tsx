@@ -1,4 +1,3 @@
-import { classMerge } from '@/utils/utils';
 import { ReactNode } from 'react';
 
 interface CategoryLayoutProps {
@@ -6,8 +5,11 @@ interface CategoryLayoutProps {
 }
 
 const CategoryLayout = ({ children }: CategoryLayoutProps) => {
-  const baseStyle = classMerge('flex flex-row space-x-2 ');
-  return <div className={baseStyle}>{children}</div>;
+  return (
+    <div className="space-x flex w-auto w-full flex-row items-center">
+      {children}
+    </div>
+  );
 };
 
 export default CategoryLayout;

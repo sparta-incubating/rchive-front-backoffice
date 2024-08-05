@@ -39,8 +39,10 @@ const TapMenu = ({ data, activeTab, setActiveTab }: TabProps) => {
               >
                 <p className="h-[20px] text-sm">{item.title}</p>
                 {item.count !== undefined && (
-                  <div className="flex h-[28px] w-[33px] items-center justify-center rounded-[8px] bg-blue-55">
-                    <p className="text-blue-400">{item.count}</p>
+                  <div
+                    className={`flex h-[28px] w-[33px] items-center justify-center ${item?.bgColor} rounded-[8px]`}
+                  >
+                    <p className={item?.textColor}>{item.count}</p>
                   </div>
                 )}
               </button>

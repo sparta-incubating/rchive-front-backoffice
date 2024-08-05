@@ -69,14 +69,25 @@ export const tabArr = [
     title: '전체',
     className: 'w-[104px]',
     count: 5,
+    bgColor: 'bg-blue-55',
+    textColor: 'text-blue-400',
   },
   {
     id: 1,
     title: '대기 중',
     className: 'w-[114px]',
     count: 2,
+    bgColor: 'bg-[#ff9900]/10',
+    textColor: 'text-[#FF9900]',
   },
-  { id: 3, title: '승인', className: 'w-[104px]', count: 3 },
+  {
+    id: 3,
+    title: '승인',
+    className: 'w-[104px]',
+    count: 3,
+    bgColor: 'bg-[#58b32e]/10',
+    textColor: 'text-success-green',
+  },
 ];
 
 export const subArr = [

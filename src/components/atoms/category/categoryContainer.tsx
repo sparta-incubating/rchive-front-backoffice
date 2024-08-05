@@ -3,13 +3,12 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
 const divVariants = cva(
-  'relative flex items-center justify-center hover:cursor-pointer ',
+  'relative flex items-center justify-center hover:cursor-pointer px-[10px]',
   {
     variants: {
       variant: {
-        secondary: 'rounded-[16px] border-2 blue-100 w-[79px] h-[37px]',
-        submit:
-          'rounded-[19px] border-2 border-blue-100 bg-white w-[81px] h-[28px]',
+        secondary: 'rounded-[19px] border-2 blue-100 h-[37px]',
+        submit: 'rounded-[16px] border-2 border-blue-100 bg-white h-[28px]',
       },
     },
     defaultVariants: {
