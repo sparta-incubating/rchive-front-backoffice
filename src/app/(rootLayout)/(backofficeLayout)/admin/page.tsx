@@ -15,7 +15,6 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [listData, setListData] = useState(mockData);
 
-  // 활성 탭에 따른 필터링된 데이터
   const filteredListData = useMemo(() => {
     if (activeTab === 0) return listData;
     if (activeTab === 1)

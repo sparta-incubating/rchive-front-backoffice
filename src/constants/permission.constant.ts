@@ -167,22 +167,4 @@ export const mockData = [
     date: '2024-07-27',
     permission: '대기',
   },
-  {
-    id: 8,
-    name: '최수빈',
-    job: '사원',
-    track: '5기',
-    email: 'choi@example.com',
-    date: '2024-07-27',
-    permission: '대기',
-  },
-  {
-    id: 9,
-    name: '최수빈',
-    job: '사원',
-    track: '5기',
-    email: 'choi@example.com',
-    date: '2024-07-27',
-    permission: '대기',
-  },
 ];
