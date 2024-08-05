@@ -6,10 +6,18 @@ import AccountInfo from '@/components/pages/accountInfo';
 import BackofficePage from '@/components/pages/backofficePage';
 import UserInfo from '@/components/pages/userInfo';
 
+export interface USERPROFILE {
+  username: string;
+  trackName: string;
+  period: string;
+  trackRole: string;
+  email: string;
+  phone: string;
+}
+
 const Profile = () => {
   const { userData, isError, isPending } = useUserInfoDataQuery();
-  const { username, trackName, period, trackRole, email, phone } =
-    userData.data;
+
   if (isError) {
     return <div>에러입니다</div>;
   }
@@ -18,6 +26,8 @@ const Profile = () => {
     return <div>에러입니다</div>;
   }
 
+  const { username, trackName, period, trackRole, email, phone } =
+    userData.data;
   return (
     <BackofficePage>
       <PermissionBoard variant="userInfo">

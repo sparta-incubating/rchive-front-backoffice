@@ -2,11 +2,29 @@
 
 import refresh from '@/../public/assets/icons/refresh-button.svg';
 import Image from 'next/image';
+interface UserInfoProps {
+  username: string;
+  trackName: string;
+  period: string;
+  trackRole: string;
+}
 
-const UserInfo = ({ username, trackName, period, trackRole }) => {
+const UserInfo: React.FC<UserInfoProps> = ({
+  username,
+  trackName,
+  period,
+  trackRole,
+}) => {
   return (
     <div className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
-      <p className="h-[24px] w-[1020px] text-base">회원정보</p>
+      <div className="flex w-[1020px] flex-row items-center justify-between border text-base">
+        <p className="flex h-[24px] border">회원정보</p>
+        {trackRole === 'APM' && (
+          <button className="h-[42px] w-[108px] rounded-[8px] border-2">
+            권한수정요청
+          </button>
+        )}
+      </div>
 
       {/* 회원 정보 */}
       <div className="flex h-[186px] w-[1020px] flex-col gap-[8px]">
@@ -17,21 +35,49 @@ const UserInfo = ({ username, trackName, period, trackRole }) => {
             <div className="h-[60px] w-[332px]">
               <p className="text-[32px] font-bold">{username}</p>
             </div>
-
-            <div className="flex w-[824px] flex-row gap-[16px]">
-              <div className="h-[100px] w-[404px]">
-                <p className="font-base h-[40px] w-[348px]">트랙</p>
-                <div className="h-[60px] w-[404px] rounded-[12px] border-2">
-                  {trackName}
-                </div>
-              </div>
-              <div className="h-[100px] w-[404px]">
-                <p className="font-base h-[40px] w-[348px]">기수</p>
-                <div className="h-[60px] w-[404px] rounded-[12px] border-2">
-                  {period}
-                </div>
-              </div>
+            {/*APM여부*/}
+            <div className="flex w-[824px] flex-row gap-[16px] border">
+              {trackRole === 'PM' ? (
+                <>
+                  <div className="h-[100px] w-[404px]">
+                    <p className="font-base h-[40px] w-[264px]">트랙</p>
+                    <div className="h-[60px] w-[404px] rounded-[12px] border-2">
+                      {trackName}
+                    </div>
+                  </div>
+                  <div className="h-[100px] w-[404px]">
+                    <p className="font-base h-[40px] w-[348px]">기수</p>
+                    <div className="h-[60px] w-[404px] rounded-[12px] border-2">
+                      {period}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex w-[824px] flex-row gap-[16px] border">
+                    <div className="h-[100px] w-[404px]">
+                      <p className="font-base h-[40px] w-[264px]">트랙</p>
+                      <div className="h-[60px] w-[264px] rounded-[12px] border-2">
+                        trackName
+                      </div>
+                    </div>
+                    <div className="h-[100px] w-[404px]">
+                      <p className="font-base h-[40px] w-[264px]">기수</p>
+                      <div className="h-[60px] w-[264px] rounded-[12px] border-2">
+                        period
+                      </div>
+                    </div>
+                    <div className="h-[100px] w-[404px]">
+                      <p className="font-base h-[40px] w-[264px]">기수</p>
+                      <div className="h-[60px] w-[264px] rounded-[12px] border-2">
+                        trackRole
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
+            {/*APM여부*/}
           </div>
         </div>
         {/* 프로필*/}
