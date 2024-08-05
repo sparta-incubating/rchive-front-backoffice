@@ -5,7 +5,7 @@ import { deleteCookie, setCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export const setServerCookieRole = (data: LastConnectRoleDataType) => {
+export const setServerCookieRole = async (data: LastConnectRoleDataType) => {
   const { trackId, trackRole, trackName, period } = data;
 
   setCookie('trackId', trackId, { cookies });
@@ -14,19 +14,19 @@ export const setServerCookieRole = (data: LastConnectRoleDataType) => {
   setCookie('period', period, { cookies });
 };
 
-export const deleteServerCookieRole = () => {
+export const deleteServerCookieRole = async () => {
   deleteCookie('trackId', { cookies });
   deleteCookie('trackRole', { cookies });
   deleteCookie('trackName', { cookies });
   deleteCookie('period', { cookies });
 };
 
-export const serverLogout = () => {
+export const serverLogout = async () => {
   deleteCookie('AT', { cookies });
-  deleteServerCookieRole();
+  await deleteServerCookieRole();
   redirect('/login');
 };
 
-export const setServerCookieLogin = (accessToken: string) => {
+export const setServerCookieLogin = async (accessToken: string) => {
   setCookie('AT', accessToken, { cookies });
 };
