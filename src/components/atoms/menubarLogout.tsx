@@ -1,7 +1,6 @@
 'use client';
 
-import { client } from '@/utils/clientAPI';
-import { deleteCookie } from 'cookies-next';
+import { logout } from '@/api/authApi';
 import { useRouter } from 'next/navigation';
 import { ComponentProps, ReactNode } from 'react';
 
@@ -13,17 +12,8 @@ const MenubarLogout = ({ children, ...props }: MenubarLogoutProps) => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    try {
-      const res = await client.delete('/api/v1/users/logout');
-      if (res.status === 200) {
-        deleteCookie('AT');
-        router.push('/login');
-      } else {
-        console.log('로그아웃 실패');
-      }
-    } catch (error) {
-      console.error('로그아웃 중 오류 발생:', error);
-    }
+    const status = await logout();
+    if (status === 200) router.push('/login');
   };
 
   return (

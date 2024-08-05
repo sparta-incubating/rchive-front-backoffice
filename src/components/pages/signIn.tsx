@@ -5,11 +5,12 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
+import { getLastConnectRole, getRoleApplyStatus } from '@/api/authApi';
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
-import { client } from '@/utils/clientAPI';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -43,18 +44,20 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    await axios.post('/api/auth/login', data);
+
     try {
-      const res = await client.post('/api/v1/users/login', {
-        username: data.username,
-        password: data.password,
-      });
-      const accessToken = res.headers.authorization.replace('Bearer ', '');
-      if (res?.status === 200) {
-        setCookie('AT', accessToken);
-        router.push('/');
-      }
+      await getLastConnectRole();
+      router.push('/');
     } catch (error) {
-      console.log(error, '로그인 오류');
+      const roleApplyStatusResponse = await getRoleApplyStatus();
+      setCookie('loginId', data.username);
+
+      if (roleApplyStatusResponse) {
+        router.push(`/role/result`);
+      } else {
+        router.push('/role');
+      }
     }
   };
 

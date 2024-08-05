@@ -24,6 +24,7 @@ export type trackPeriodResponse = {
 export type TutorType = { tutorId: number; tutorName: string };
 
 export type TrackType =
+  | ''
   | 'UNITY'
   | 'NODEJS'
   | 'SPRING_JAVA'

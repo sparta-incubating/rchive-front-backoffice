@@ -1,61 +1,16 @@
 'use client';
 
-import { permissionHeaders } from '@/constants/permission.constant';
+import { mockData, permissionHeaders } from '@/constants/permission.constant';
 import { useState } from 'react';
 import NoDataList from './noDataList';
 import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 
-const mockData = [
-  {
-    id: 1,
-    name: '홍길동',
-    job: '팀장',
-    track: '1기',
-    email: 'hong@example.com',
-    date: '2024-07-31',
-    permission: '승인',
-  },
-  {
-    id: 2,
-    name: '김철수',
-    job: '사원',
-    track: '2기',
-    email: 'kim@example.com',
-    date: '2024-07-30',
-    permission: '대기',
-  },
-  {
-    id: 3,
-    name: '이영희',
-    job: '부장',
-    track: '3기',
-    email: 'lee@example.com',
-    date: '2024-07-29',
-    permission: '거부',
-  },
-  {
-    id: 4,
-    name: '박지민',
-    job: '대리',
-    track: '4기',
-    email: 'park@example.com',
-    date: '2024-07-28',
-    permission: '승인',
-  },
-  {
-    id: 5,
-    name: '최수빈',
-    job: '사원',
-    track: '5기',
-    email: 'choi@example.com',
-    date: '2024-07-27',
-    permission: '대기',
-  },
-];
 interface PermissionListProps {
   onCheckedNumChange: (num: number) => void;
   activeTab: number;
+  listData: any[];
+  setListData: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const PermissionList = ({

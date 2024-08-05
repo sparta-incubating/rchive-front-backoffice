@@ -1,15 +1,13 @@
 'use client';
 
-import { getPeriod } from '@/api/postApi';
 import FormSpan from '@/components/atoms/formSpan';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TutorContainer from '@/components/molecules/post/tutorContainer';
 import SelectCategoryFormBox from '@/components/organisms/selectCategoryFormBox';
 import SelectFormBox from '@/components/organisms/selectFormBox';
+import useGetPeriod from '@/hooks/useGetPeriod';
 import useSelectBox from '@/hooks/useSelectBox';
 import { PostsFormSchema, postTypeList } from '@/types/posts.types';
-import { SelectOptionType } from '@/types/signup.types';
-import { useQuery } from '@tanstack/react-query';
 import {
   Control,
   Controller,
@@ -33,14 +31,7 @@ const PostInfoContainer = ({
   watch,
   errors,
 }: PostInputContainerProps) => {
-  const { data: period } = useQuery({
-    queryKey: ['period'],
-    // track은 login 정보에서 가져와야함
-    queryFn: () => getPeriod<SelectOptionType[]>('UNITY'),
-    retry: 3,
-    staleTime: Infinity,
-  });
-
+  const period = useGetPeriod('UNITY');
   const { handleSelected: handlePeriodSelected } = useSelectBox(
     period ? period : [],
   );

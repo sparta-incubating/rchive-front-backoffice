@@ -7,12 +7,25 @@ import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import BackofficePage from '@/components/pages/backofficePage';
-import { tabArr } from '@/constants/permission.constant';
-import { useState } from 'react';
+import { mockData, tabArr } from '@/constants/permission.constant';
+import { useMemo, useState } from 'react';
 
 const Admin = () => {
   const [checkedNum, setCheckedNum] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [listData, setListData] = useState(mockData);
+
+  // 활성 탭에 따른 필터링된 데이터
+  const filteredListData = useMemo(() => {
+    if (activeTab === 0) return listData;
+    if (activeTab === 1)
+      return listData.filter((item) => item.permission === '대기');
+    if (activeTab === 2)
+      return listData.filter((item) => item.permission === '승인');
+    return [];
+  }, [listData, activeTab]);
+
+  const currentTabTotal = filteredListData.length;
 
   return (
     <>
@@ -27,6 +40,7 @@ const Admin = () => {
             data={tabArr}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
+            listData={listData}
           />
           {/* 카테고리 */}
           <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between border">
@@ -36,15 +50,15 @@ const Admin = () => {
 
             {/* 버튼 */}
             <section className="flex flex-row gap-[8px]">
-              {checkedNum ? (
-                <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
-                  {checkedNum}개 선택
-                </p>
-              ) : (
-                ''
+              {checkedNum > 0 && (
+                <>
+                  <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
+                    {currentTabTotal}개 선택
+                  </p>
+                  <BackOfficeButton>승인</BackOfficeButton>
+                  <BackOfficeButton variant="secondary">거절</BackOfficeButton>
+                </>
               )}
-              <BackOfficeButton>승인</BackOfficeButton>
-              <BackOfficeButton variant="secondary">거절</BackOfficeButton>
             </section>
           </section>
 
@@ -52,6 +66,8 @@ const Admin = () => {
           <PermissionList
             activeTab={activeTab}
             onCheckedNumChange={setCheckedNum}
+            listData={filteredListData}
+            setListData={setListData}
           />
 
           {/* 페이지네이션*/}

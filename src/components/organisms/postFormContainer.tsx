@@ -23,6 +23,7 @@ const PostFormContainer = () => {
     onSubmit,
     notionValidateState,
     setNotionValidateState,
+    isValid,
   } = usePostWriteForm();
 
   return (
@@ -78,8 +79,13 @@ const PostFormContainer = () => {
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit" variant="submit" className="w-[178px]">
-              작성하기
+            <Button
+              type="submit"
+              variant="submit"
+              disabled={!isValid}
+              className="w-[178px]"
+            >
+              게시하기
             </Button>
           </div>
         </div>

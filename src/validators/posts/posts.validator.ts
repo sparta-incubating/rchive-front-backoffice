@@ -1,20 +1,8 @@
+import { trackEnum } from '@/validators/commons';
 import { z } from 'zod';
 
 const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
 const notionPattern = /^(https?:\/\/)(www\.)?notion\.so\/.+$/;
-
-const trackEnum = z.enum([
-  'UNITY',
-  'NODEJS',
-  'SPRING_JAVA',
-  'SPRING_KOTLIN',
-  'FRONT_REACT',
-  'WEB',
-  'ANDROID',
-  'IOS',
-  'DATA',
-  'UXUI',
-]);
 
 const postTypeEnum = z.enum(
   [
@@ -58,7 +46,7 @@ export const postsSchema = z
         message: '유튜브 링크가 맞는지 확인해주세요.',
       }),
     tagNameList: z.array(tagSchema).max(10, '태그는 10개까지 입력가능합니다.'),
-    uploadedAt: z.date().optional(),
+    uploadedAt: z.date().nullable(),
     trackName: trackEnum,
     postType: postTypeEnum,
     postPeriod: z.string().min(1, '기수를 선택해주세요.'),

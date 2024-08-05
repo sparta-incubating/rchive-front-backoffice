@@ -125,6 +125,9 @@ const config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      backgroundColor: {
+        ['image-black']: 'rgba(74, 74, 74, 0.6)',
+      },
     },
     fontFamily: {
       main: ['Pretendard-Regular'],

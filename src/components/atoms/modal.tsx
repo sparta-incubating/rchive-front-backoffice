@@ -44,7 +44,7 @@ const Modal = ({
     >
       <div
         className={classMerge(
-          `m-auto flex flex-col items-center rounded-xl bg-white`,
+          'm-auto flex flex-col items-center rounded-xl bg-white',
           inboardClassName,
         )}
       >

@@ -38,6 +38,7 @@ const categoryData3 = [
 const OfficeCategory = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+
   const [currentValue, setCurrentValue] = useState(permissionData[0].value);
   const [currentImg, setCurrentImg] = useState(permissionData[0].imgSrc);
   const handleClick = (data: PermissionType) => {
