@@ -2,7 +2,12 @@ import { getNotionPageData, postDataPost } from '@/api/postApi';
 import ProgressModal from '@/components/pages/progressModal';
 import { useModalContext } from '@/context/modal.context';
 import { useTagContext } from '@/context/tag.context';
-import { postsEndPointFormData, PostsFormSchema } from '@/types/posts.types';
+import { useAppSelector } from '@/redux/storeConfig';
+import {
+  postsEndPointFormData,
+  PostsFormSchema,
+  TrackType,
+} from '@/types/posts.types';
 import { extractPageId } from '@/utils/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
@@ -12,10 +17,17 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const usePostWriteForm = () => {
+  const {
+    trackRole,
+    period: loginPeriod,
+    trackName,
+  } = useAppSelector((state) => state.authSlice);
+
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [LoadingMessage, setLoadingMessage] = useState<string>('');
   const { tags } = useTagContext();
   const { open, close } = useModalContext();
+
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
 
@@ -38,8 +50,8 @@ const usePostWriteForm = () => {
       videoLink: '',
       tagNameList: [],
       uploadedAt: null,
-      trackName: 'UNITY',
-      postPeriod: '',
+      trackName: trackName as TrackType,
+      postPeriod: trackRole === 'APM' ? loginPeriod : '',
       isOpened: 'true',
     },
   });
