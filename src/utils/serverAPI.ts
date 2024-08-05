@@ -1,11 +1,11 @@
-import { logout } from '@/utils/auth.util';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
+import { serverLogout } from './auth.server.util';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const client = axios.create({
+export const serverAPI = axios.create({
   baseURL: BACKEND_URL,
   withCredentials: true,
   headers: {
@@ -13,9 +13,10 @@ export const client = axios.create({
   },
 });
 
-client.interceptors.request.use(
+serverAPI.interceptors.request.use(
   async (config) => {
-    const accessToken = getCookie('AT');
+    const accessToken = getCookie('AT', { cookies });
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     } else {
@@ -27,7 +28,7 @@ client.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-client.interceptors.response.use(
+serverAPI.interceptors.response.use(
   (response) => {
     console.log('응답 받음:', response.status, response.config.url);
     return response;
@@ -38,8 +39,7 @@ client.interceptors.response.use(
     // 토큰 재발행 로직 추가 예정
 
     if (error.response?.status === 401) {
-      logout();
-      redirect('/login');
+      serverLogout();
     }
 
     return Promise.reject(error);

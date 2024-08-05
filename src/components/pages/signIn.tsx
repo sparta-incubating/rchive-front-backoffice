@@ -5,15 +5,12 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import {
-  getLastConnectRole,
-  getRoleApplyStatus,
-  postSignIn,
-} from '@/api/authApi';
+import { getRoleApplyStatus } from '@/api/authApi';
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -47,26 +44,19 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const loginData = await postSignIn(data);
-    console.log({ loginData });
+    await axios.post('/api/auth/login', data);
 
     try {
-      // 선택 권한이 있으니까 그 정보를 전역상태 or cookie?
-      // cookie를 쓰면 middleware에서 접근이 가능.
-      // server side에서 Login 정보가 필요한가?
-      const lastRoleRes = await getLastConnectRole();
-      console.log({ lastRoleRes });
+      await axios.get('/api/auth/lastConnectRole');
+
       router.push('/');
     } catch (error) {
-      // 마지막 접속 권한이 없으면..
-      // 트랙 기수 신청 확인
       const roleApplyStatusResponse = await getRoleApplyStatus();
+
       if (roleApplyStatusResponse) {
-        // 신청 이력이 있으면..
         setCookie('loginId', data.username);
         router.push(`/role/result`);
       } else {
-        // 신청 이력이 없으면..
         setCookie('loginId', data.username);
         router.push('/role');
       }

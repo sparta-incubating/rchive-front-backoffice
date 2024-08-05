@@ -52,3 +52,10 @@ export const isTeamSpartaEmail = (email: string): boolean => {
   const teamSpartaEmailPattern = /^[a-zA-Z0-9._%+-]+@teamsparta\.co$/;
   return teamSpartaEmailPattern.test(email);
 };
+
+/**
+ * client인지 server인지 체크하는 함수
+ * true: client
+ * false: server
+ */
+export const isBrowser = () => typeof window !== 'undefined';
