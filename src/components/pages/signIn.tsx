@@ -52,12 +52,11 @@ const SignIn = () => {
       router.push('/');
     } catch (error) {
       const roleApplyStatusResponse = await getRoleApplyStatus();
+      setCookie('loginId', data.username);
 
       if (roleApplyStatusResponse) {
-        setCookie('loginId', data.username);
         router.push(`/role/result`);
       } else {
-        setCookie('loginId', data.username);
         router.push('/role');
       }
     }

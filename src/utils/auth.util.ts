@@ -20,3 +20,7 @@ export const logoutCookie = () => {
   deleteCookie('AT');
   deleteCookieRole();
 };
+
+export const deleteLoginIdCookie = () => {
+  deleteCookie('loginId');
+};

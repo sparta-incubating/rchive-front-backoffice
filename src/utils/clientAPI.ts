@@ -1,4 +1,4 @@
-import { logout } from '@/utils/auth.util';
+import { logout } from '@/api/authApi';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { redirect } from 'next/navigation';
@@ -38,7 +38,7 @@ client.interceptors.response.use(
     // 토큰 재발행 로직 추가 예정
 
     if (error.response?.status === 401) {
-      logout();
+      await logout();
       redirect('/login');
     }
 

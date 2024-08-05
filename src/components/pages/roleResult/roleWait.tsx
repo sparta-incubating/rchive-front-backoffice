@@ -1,8 +1,17 @@
+'use client';
+
 import Button from '@/components/atoms/button';
-import Link from 'next/link';
+import { deleteLoginIdCookie } from '@/utils/auth.util';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const RoleWait = () => {
+  const router = useRouter();
+  const handleGoToLogin = () => {
+    router.push('/login');
+    deleteLoginIdCookie();
+  };
+
   return (
     <>
       <div className="flex flex-col items-center gap-2.5">
@@ -14,11 +23,13 @@ const RoleWait = () => {
         </a>
       </div>
 
-      <Link href={'/login'}>
-        <Button variant="primary" className="mt-4 w-[360px]">
-          확인
-        </Button>
-      </Link>
+      <Button
+        variant="primary"
+        className="mt-4 w-[360px]"
+        onClick={handleGoToLogin}
+      >
+        확인
+      </Button>
     </>
   );
 };
