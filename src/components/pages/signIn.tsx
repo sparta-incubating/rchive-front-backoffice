@@ -48,7 +48,6 @@ const SignIn = () => {
 
     try {
       await getLastConnectRole();
-
       router.push('/');
     } catch (error) {
       const roleApplyStatusResponse = await getRoleApplyStatus();

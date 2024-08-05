@@ -2,7 +2,7 @@ import RoleSelectForm from '@/components/organisms/roleSelectForm';
 import RoleContainerPage from '@/components/pages/roleContainerPage';
 import RoleWait from '@/components/pages/roleResult/roleWait';
 import { RoleResultEnum } from '@/types/role.types';
-import { serverAPI } from '@/utils/serverAPI';
+import { createServerAPI } from '@/utils/serverAPI';
 import { isTeamSpartaEmail } from '@/utils/utils';
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
@@ -14,6 +14,9 @@ const RoleResultPage = async () => {
 
   // 권한 신청 결과 조회 endpoint
   const getRoleApplyResult = async () => {
+    const accessToken = getCookie('AT', { cookies });
+    const serverAPI = createServerAPI(String(accessToken));
+
     try {
       const response = await serverAPI.get('/api/v1/role/result');
       return response.data.data;

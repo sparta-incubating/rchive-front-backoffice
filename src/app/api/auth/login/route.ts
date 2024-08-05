@@ -1,9 +1,10 @@
 import { setServerCookieLogin } from '@/utils/auth.server.util';
-import { serverAPI } from '@/utils/serverAPI';
+import { createServerAPI } from '@/utils/serverAPI';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
+  const serverAPI = createServerAPI('');
 
   try {
     const response = await serverAPI.post('/api/v1/users/login', {
@@ -12,7 +13,7 @@ export async function POST(req: NextRequest) {
     });
     const accessToken = response.headers.authorization.replace('Bearer ', '');
     if (response?.status === 200) {
-      setServerCookieLogin(accessToken);
+      await setServerCookieLogin(accessToken);
 
       return new NextResponse('로그인 성공', { status: 200 });
     } else {
