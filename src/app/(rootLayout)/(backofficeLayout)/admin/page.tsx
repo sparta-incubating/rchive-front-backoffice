@@ -1,6 +1,7 @@
 'use client';
 
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
+import FilterCategory from '@/components/atoms/category/filterCategory';
 import PageNation from '@/components/atoms/category/pageNation';
 import PermissionList from '@/components/atoms/category/permissionList';
 import TapMenu from '@/components/atoms/category/tapMenu';
@@ -42,10 +43,12 @@ const Admin = () => {
             listData={listData}
           />
           {/* 카테고리 */}
-          <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between border">
-            {/* 카테고리 */}
-            {/* <OfficeCategory /> */}
-            <p>카테고리</p>
+          <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between">
+            <section className="flex flex-row gap-[10px]">
+              <FilterCategory />
+              <FilterCategory />
+              <FilterCategory />
+            </section>
 
             {/* 버튼 */}
             <section className="flex flex-row gap-[8px]">

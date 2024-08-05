@@ -30,36 +30,32 @@ const FilterCategory = () => {
 
   return (
     <>
-      <section className="mb-8 flex items-center justify-center">
-        <div className="flex flex-col">
-          <CategoryContainer onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-            <CategoryLayout>
-              <SelectLabel>
-                {selectedItem ? selectedItem.value : '직책'}
-              </SelectLabel>
-              <Image src={arrow} width={12} height={12} alt="화살표" />
-            </CategoryLayout>
-            <CategoryDropDown show={isDropdownOpen}>
-              {categoryData1.map((data) => (
-                <div
-                  className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-                  key={data.key}
-                  onClick={() => handleClick(data)}
-                >
-                  <p
-                    className={`mx-[14px] w-[84px] text-sm ${selectedItem?.key === data.key ? 'text-secondary-500' : 'text-black'}`}
-                  >
-                    {data.value}
-                  </p>
-                  {selectedItem?.key === data.key && (
-                    <Image src={select} width={16} height={12} alt="선택됨" />
-                  )}
-                </div>
-              ))}
-            </CategoryDropDown>
-          </CategoryContainer>
-        </div>
-      </section>
+      <CategoryContainer onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+        <CategoryLayout>
+          <SelectLabel>
+            {selectedItem ? selectedItem.value : '직책'}
+          </SelectLabel>
+          <Image src={arrow} width={12} height={12} alt="화살표" />
+        </CategoryLayout>
+        <CategoryDropDown show={isDropdownOpen}>
+          {categoryData1.map((data) => (
+            <div
+              className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
+              key={data.key}
+              onClick={() => handleClick(data)}
+            >
+              <p
+                className={`mx-[14px] w-[84px] text-sm ${selectedItem?.key === data.key ? 'text-secondary-500' : 'text-black'}`}
+              >
+                {data.value}
+              </p>
+              {selectedItem?.key === data.key && (
+                <Image src={select} width={16} height={12} alt="선택됨" />
+              )}
+            </div>
+          ))}
+        </CategoryDropDown>
+      </CategoryContainer>
     </>
   );
 };
