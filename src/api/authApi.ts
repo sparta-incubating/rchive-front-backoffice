@@ -4,8 +4,10 @@ import { emailUniqueResponseType } from '@/types/signup.types';
 import { logoutCookie } from '@/utils/auth.util';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
+import { createServerAPI } from '@/utils/serverAPI';
 import axios from 'axios';
-import { setCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const postSignup = async (userData: User | Admin) => {
   try {
@@ -81,6 +83,22 @@ export const logout = async () => {
     const res = await client.delete('/api/v1/users/logout');
     if (res.data.status === 200) {
       logoutCookie();
+      return res.data.status;
+    } else {
+      console.log(res.data.message);
+    }
+  } catch (error) {
+    console.error('로그아웃 중 오류 발생:', error);
+  }
+};
+
+export const serverLogout = async (req: NextRequest) => {
+  const res = new NextResponse();
+  const accessToken = getCookie('AT', { req, res });
+  const serverAPI = createServerAPI(String(accessToken));
+  try {
+    const res = await serverAPI.delete('/api/v1/users/logout');
+    if (res.data.status === 200) {
       return res.data.status;
     } else {
       console.log(res.data.message);

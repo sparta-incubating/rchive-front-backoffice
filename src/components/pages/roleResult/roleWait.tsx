@@ -8,11 +8,10 @@ import React from 'react';
 
 const RoleWait = () => {
   const router = useRouter();
-
   const handleGoToLogin = async () => {
-    router.push('/login');
-    deleteLoginIdCookie();
     await logout();
+    deleteLoginIdCookie();
+    router.push('/login');
   };
 
   return (
