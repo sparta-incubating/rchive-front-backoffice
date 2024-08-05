@@ -4,6 +4,7 @@ import { emailUniqueResponseType } from '@/types/signup.types';
 import { logoutCookie } from '@/utils/auth.util';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
+import axios from 'axios';
 import { setCookie } from 'cookies-next';
 
 export const postSignup = async (userData: User | Admin) => {
@@ -46,10 +47,9 @@ export const postSignIn = async (data: {
 };
 
 // 마지막 접속 권한 endpoint
-export const getLastConnectRole = async <T>() => {
+export const getLastConnectRole = async () => {
   try {
-    const response = await client.get<T>('/api/v1/role/select/last');
-    return response.data;
+    await axios.get('/api/auth/lastConnectRole');
   } catch (error) {
     throw new Error('마지막 권환 조회에 실패했습니다.');
   }

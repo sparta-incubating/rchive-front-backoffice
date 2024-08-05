@@ -5,7 +5,7 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import { getRoleApplyStatus } from '@/api/authApi';
+import { getLastConnectRole, getRoleApplyStatus } from '@/api/authApi';
 import { useModalContext } from '@/context/modal.context';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
@@ -47,7 +47,7 @@ const SignIn = () => {
     await axios.post('/api/auth/login', data);
 
     try {
-      await axios.get('/api/auth/lastConnectRole');
+      await getLastConnectRole();
 
       router.push('/');
     } catch (error) {
