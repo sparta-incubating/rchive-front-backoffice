@@ -1,22 +1,23 @@
 import MenubarLink from '@/components/atoms/menubarLink';
-import { Links } from '@/types/menubar.types';
 import { usePathname } from 'next/navigation';
+import { ReactNode } from 'react';
 
 interface MenuLinkCardProps {
-  link: Links;
+  url: string;
+  children: ReactNode;
 }
 
-const MenuLinkCard = ({ link }: MenuLinkCardProps) => {
+const MenuLinkCard = ({ url, children }: MenuLinkCardProps) => {
   const pathName = usePathname();
-  const isActive = pathName === link.href;
+  const isActive = pathName === url;
 
   return (
-    <MenubarLink active={isActive} href={link.href}>
+    <MenubarLink active={isActive} href={url}>
       <article
         data-active={isActive}
         className="group h-16 w-[292px] rounded-[12px] px-9 py-5 hover:bg-[#1F2122] data-[active=true]:bg-[#1F2122]"
       >
-        {link.title}
+        {children}
       </article>
     </MenubarLink>
   );
