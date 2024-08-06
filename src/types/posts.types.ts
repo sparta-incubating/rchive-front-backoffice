@@ -63,3 +63,17 @@ export type postsEndPointFormData = {
   thumbnailUrl: string;
   content: string;
 };
+
+export type SearchParamsType = {
+  trackName: string | undefined;
+  period: string | undefined;
+  postType: string | undefined;
+  startDate: string | undefined;
+  endDate: string | undefined;
+  searchPeriod: string | undefined;
+  isOpened: string | undefined;
+  tutorId: string | undefined;
+  page: string | undefined;
+  size: string | undefined;
+  keyword: string | undefined;
+};

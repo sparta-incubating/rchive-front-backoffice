@@ -1,6 +1,9 @@
 'use client';
 
+import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import Button from '@/components/atoms/button';
+import OfficeCategory from '@/components/atoms/officeCategory';
+import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import UploadContainer from '@/components/molecules/post/uploadContainer';
 import { createToast } from '@/utils/toast';
@@ -57,9 +60,18 @@ const UiComponents = () => {
         >
           create Toast
         </Button>
+
+        <h1>백오피스</h1>
+        <BackOfficeButton>승인</BackOfficeButton>
+        <BackOfficeButton variant="secondary">거절</BackOfficeButton>
+        <BackOfficeButton variant="nondisclosure">비공개</BackOfficeButton>
+        <SearchBar />
       </div>
       <div>
         <DateRangePicker />
+      </div>
+      <div>
+        <OfficeCategory />
       </div>
     </>
   );

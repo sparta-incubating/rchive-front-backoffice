@@ -160,6 +160,7 @@ const config = {
     },
   },
   plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar-hide')],
+
   mode: 'jit',
 } satisfies Config;
 
