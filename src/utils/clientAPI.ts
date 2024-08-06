@@ -1,7 +1,5 @@
-import { logout } from '@/api/authApi';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { redirect } from 'next/navigation';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -37,9 +35,9 @@ client.interceptors.response.use(
     console.error('API 오류:', error.response?.status, error.response?.data);
     // 토큰 재발행 로직 추가 예정
 
-    if (error.response?.status === 401) {
-      await logout();
-      redirect('/login');
+    if (error.response?.data === 'access token expired') {
+      // await logout();
+      window.dispatchEvent(new CustomEvent('AUTH_ERROR'));
     }
 
     return Promise.reject(error);

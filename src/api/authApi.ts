@@ -1,7 +1,6 @@
 import { Admin, User } from '@/class/signup';
 import { RoleFormSchema } from '@/types/role.types';
 import { emailUniqueResponseType } from '@/types/signup.types';
-import { logoutCookie } from '@/utils/auth.util';
 import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
 import { createServerAPI } from '@/utils/serverAPI';
@@ -82,7 +81,6 @@ export const logout = async () => {
   try {
     const res = await client.delete('/api/v1/users/logout');
     if (res.data.status === 200) {
-      logoutCookie();
       return res.data.status;
     } else {
       console.log(res.data.message);
