@@ -1,7 +1,6 @@
 'use client';
 
 import { logout } from '@/api/authApi';
-import { useRouter } from 'next/navigation';
 import { ComponentProps, ReactNode } from 'react';
 
 interface MenubarLogoutProps extends ComponentProps<'button'> {
@@ -9,11 +8,9 @@ interface MenubarLogoutProps extends ComponentProps<'button'> {
 }
 
 const MenubarLogout = ({ children, ...props }: MenubarLogoutProps) => {
-  const router = useRouter();
-
   const handleLogout = async () => {
     const status = await logout();
-    if (status === 200) router.push('/login');
+    if (status === 200) window.location.href = '/login';
   };
 
   return (

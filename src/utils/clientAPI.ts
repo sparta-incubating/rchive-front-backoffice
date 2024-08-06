@@ -1,7 +1,5 @@
-import { logout } from '@/api/authApi';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { redirect } from 'next/navigation';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -38,8 +36,8 @@ client.interceptors.response.use(
     // 토큰 재발행 로직 추가 예정
 
     if (error.response?.status === 401) {
-      await logout();
-      redirect('/login');
+      // await logout();
+      // redirect('/login');
     }
 
     return Promise.reject(error);

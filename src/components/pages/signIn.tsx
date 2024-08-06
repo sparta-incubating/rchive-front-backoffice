@@ -48,7 +48,7 @@ const SignIn = () => {
 
     try {
       await getLastConnectRole();
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       const roleApplyStatusResponse = await getRoleApplyStatus();
       setCookie('loginId', data.username);
