@@ -2,6 +2,7 @@
 
 import refresh from '@/../public/assets/icons/refresh-button.svg';
 import Image from 'next/image';
+import { useState } from 'react';
 interface UserInfoProps {
   username: string;
   trackName: string;
@@ -15,16 +16,24 @@ const UserInfo: React.FC<UserInfoProps> = ({
   period,
   trackRole,
 }) => {
-  const profileImages = ['/assets/icons/MRT_1.svg', '/assets/icons/TRT_9.svg'];
+  const profileImages = [
+    '/assets/icons/MRT_1.svg',
+    '/assets/icons/MRT_2.svg',
+    '/assets/icons/MRT_3.svg',
+    '/assets/icons/MRT_4.svg',
+    '/assets/icons/MRT_5.svg',
+    '/assets/icons/MRT_6.svg',
+    '/assets/icons/MRT_7.svg',
+    '/assets/icons/MRT_8.svg',
+    '/assets/icons/MRT_9.svg',
+  ];
 
-  // 랜덤 이미지 선택 함수
+  const [initImg, setInitImg] = useState(0);
+
   const handleRandomImg = () => {
-    const randomIndex = Math.floor(Math.random() * profileImages.length);
-    console.log(randomIndex, 'imgIndx');
-    return profileImages[randomIndex];
+    setInitImg((initImg) => (initImg + 1) % profileImages.length);
   };
 
-  const profileImage = handleRandomImg();
   return (
     <div className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
       <div className="flex w-[1020px] flex-row items-center justify-between text-base">
@@ -42,7 +51,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <div className="flex h-[160px] flex-row">
           <div className="w-[calc(100%-824px)]">
             <Image
-              src={profileImage}
+              src={profileImages[initImg]}
               height={160}
               width={160}
               alt="랜덤프로필"
@@ -64,9 +73,9 @@ const UserInfo: React.FC<UserInfoProps> = ({
                     </div>
                   </div>
                   <div className="h-[100px] w-[404px]">
-                    <p className="font-base h-[40px] w-[348px]">기수</p>
+                    <p className="font-base h-[40px] w-[348px]">직책</p>
                     <div className="h-[60px] w-[404px] rounded-[12px] border-2">
-                      {period}
+                      {trackRole}
                     </div>
                   </div>
                 </>
@@ -76,19 +85,19 @@ const UserInfo: React.FC<UserInfoProps> = ({
                     <div className="h-[100px] w-[404px]">
                       <p className="font-base h-[40px] w-[264px]">트랙</p>
                       <div className="h-[60px] w-[264px] rounded-[12px] border-2">
-                        trackName
+                        {trackName}
                       </div>
                     </div>
                     <div className="h-[100px] w-[404px]">
                       <p className="font-base h-[40px] w-[264px]">기수</p>
                       <div className="h-[60px] w-[264px] rounded-[12px] border-2">
-                        period
+                        {period}
                       </div>
                     </div>
                     <div className="h-[100px] w-[404px]">
-                      <p className="font-base h-[40px] w-[264px]">기수</p>
+                      <p className="font-base h-[40px] w-[264px]">직책</p>
                       <div className="h-[60px] w-[264px] rounded-[12px] border-2">
-                        trackRole
+                        {trackRole}
                       </div>
                     </div>
                   </div>

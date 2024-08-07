@@ -4,7 +4,6 @@ import { logout } from '@/api/authApi';
 import Button from '@/components/atoms/button';
 import { deleteLoginIdCookie } from '@/utils/auth.util';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 const RoleWait = () => {
   const router = useRouter();

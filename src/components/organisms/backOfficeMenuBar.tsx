@@ -41,6 +41,7 @@ const BackOfficeMenuBar = () => {
       <MenubarLinks />
 
       <Spacer className="h-16" />
+
       {/* logout */}
       <MenubarLogout>로그아웃</MenubarLogout>
     </aside>

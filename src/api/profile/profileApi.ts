@@ -16,9 +16,11 @@ export const getUserInfo = async () => {
   }
 };
 
-export const updatePhone = async (phoneNumber: string) => {
+export const updatePhoneNumber = async (phoneNumber: string) => {
   try {
-    const res = await client.patch(`/api/v1/profile/${phoneNumber}`);
+    const res = await client.patch(`/api/v1/profile/phone`, {
+      phone: phoneNumber,
+    });
     return res.data;
   } catch (error) {
     throw new Error('휴대폰 번호 변경에 실패했습니다. 다시 시도해주세요.');
@@ -26,8 +28,14 @@ export const updatePhone = async (phoneNumber: string) => {
 };
 
 export const updatePassword = async (password: string) => {
+  const { rePw, newPw } = password;
+  console.log(rePw, '기존비밀번호');
+  console.log(newPw, '변경할 비밀번호');
   try {
-    const res = await client.patch(`/api/v1/profile/${password}`);
+    const res = await client.patch(`/api/v1/profile/password`, {
+      originPassword: rePw,
+      newPassword: newPw,
+    });
     return res.data;
   } catch (error) {
     throw new Error('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');

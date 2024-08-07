@@ -53,7 +53,7 @@ export const getLastConnectRole = async () => {
   try {
     await axios.get('/api/auth/lastConnectRole');
   } catch (error) {
-    throw new Error('마지막 권환 조회에 실패했습니다.');
+    throw new Error('마지막 권한 조회에 실패했습니다.');
   }
 };
 
