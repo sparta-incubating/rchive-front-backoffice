@@ -1,4 +1,5 @@
 import { SelectOptionType } from '@/types/signup.types';
+import { TagType } from '@/types/tag.types';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { z } from 'zod';
 
@@ -65,8 +66,6 @@ export type postsEndPointFormData = {
 };
 
 export type SearchParamsType = {
-  trackName: string | undefined;
-  period: string | undefined;
   postType: string | undefined;
   startDate: string | undefined;
   endDate: string | undefined;
@@ -75,5 +74,53 @@ export type SearchParamsType = {
   tutorId: string | undefined;
   page: string | undefined;
   size: string | undefined;
-  keyword: string | undefined;
+  title: string | undefined;
+};
+
+export type PostFilterType = {
+  key: number;
+  value: string;
+};
+
+export type PostListResponse = {
+  status: number;
+  message: string;
+  data: {
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    content: PostContentType[];
+    number: number;
+    sort: { empty: boolean; sorted: boolean; unsorted: boolean };
+    numberOfElements: 7;
+    pageable: {
+      sort: SortType;
+      offset: number;
+      pageNumber: number;
+      pageSize: number;
+      paged: boolean;
+      unpaged: boolean;
+    };
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
+};
+
+export type PostContentType = {
+  postId: number;
+  thumbnailUrl: string;
+  title: string;
+  postType: PostType;
+  tutor: string;
+  period: number;
+  isOpened: boolean;
+  uploadedAt: string;
+  tagInfoList: TagType[];
+};
+
+export type SortType = {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
 };

@@ -2,7 +2,7 @@ import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
-const divVariants = cva('absolute right-0', {
+const divVariants = cva('absolute left-0', {
   variants: {
     variant: {
       permission: 'top-[35px]',
@@ -37,7 +37,7 @@ const CategoryDropDown = ({
       className={classMerge(
         divVariants({ variant }),
         className,
-        show ? 'z-[999] block' : 'hidden',
+        show ? 'z-30 block' : 'hidden',
       )}
     >
       <div

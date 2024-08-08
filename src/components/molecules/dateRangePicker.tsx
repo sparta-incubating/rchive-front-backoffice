@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -11,12 +13,35 @@ import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { DateRange } from 'react-day-picker';
+
+interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
+  handleDateChange: (startDate: string, endDate: string) => void;
+  startDate?: string;
+  endDate?: string;
+}
 
 export function DateRangePicker({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>();
+  handleDateChange,
+  startDate,
+  endDate,
+}: DateRangePickerProps) {
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    startDate && endDate
+      ? {
+          from: new Date(startDate),
+          to: new Date(endDate),
+        }
+      : undefined,
+  );
+
+  useEffect(() => {
+    const startDate = date ? dayjs(date?.from).format('YYYY-MM-DD') : '';
+    const endDate = date ? dayjs(date?.to).format('YYYY-MM-DD') : '';
+    handleDateChange(startDate, endDate);
+  }, [date, handleDateChange]);
 
   return (
     <div className={classMerge('grid gap-2', className)}>
@@ -26,23 +51,28 @@ export function DateRangePicker({
             id="date"
             variant={'outline'}
             className={classMerge(
-              'flex w-fit min-w-[100px] items-center justify-between rounded-full px-2.5 py-2 text-left font-normal',
+              'flex h-[39px] w-fit min-w-[100px] items-center justify-between rounded-full px-2.5 py-0 text-left font-normal',
               !date && 'text-muted-foreground',
             )}
           >
-            <div className="flex gap-2.5 text-xs">
+            <div className="flex items-center gap-2.5">
               <CalendarIcon className="h-4 w-4" />
               {date?.from ? (
                 date.to ? (
                   <>
-                    {dayjs(date.from).format('YY/MM/DD')} -{' '}
-                    {dayjs(date.to).format('YY/MM/DD')}
+                    <span className="text-sm font-semibold">
+                      {dayjs(date.from).format('YY/MM/DD')}
+                    </span>{' '}
+                    -{' '}
+                    <span className="text-sm font-semibold">
+                      {dayjs(date.to).format('YY/MM/DD')}
+                    </span>
                   </>
                 ) : (
                   dayjs(date.from).format('YY/MM/DD')
                 )
               ) : (
-                <span>기간</span>
+                <span className="text-sm font-semibold">기간</span>
               )}
               <div className="relative h-5 w-5">
                 <Image

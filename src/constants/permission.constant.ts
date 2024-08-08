@@ -61,6 +61,11 @@ export const postHeaders: TableHeaderItem[] = [
     key: 'date',
     className: 'w-[106px]  text-gray-400',
   },
+  {
+    label: '업데이트',
+    key: 'update',
+    className: 'w-[106px]  text-gray-400',
+  },
 ];
 
 export const tabArr = [

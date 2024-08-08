@@ -7,9 +7,10 @@ const divVariants = cva(
   {
     variants: {
       variant: {
-        secondary: 'rounded-[19px] border-2 blue-100 w-[79px] h-[37px]',
+        secondary:
+          'rounded-[19px] border blue-100 w-auto min-w-[69px] h-[39px] px-2.5',
         submit:
-          'rounded-[16px] border-2 border-blue-100 bg-white w-[81px] h-[28px]',
+          'rounded-[16px] border border-blue-100 bg-white w-auto min-w-[69px] h-[39px]',
       },
     },
     defaultVariants: {
