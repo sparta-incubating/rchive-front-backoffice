@@ -28,6 +28,7 @@ const Profile = () => {
 
   const { username, trackName, period, trackRole, email, phone } =
     userData.data;
+
   return (
     <BackofficePage>
       <PermissionBoard variant="userInfo">

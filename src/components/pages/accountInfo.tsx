@@ -1,6 +1,7 @@
 'use client ';
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import TitleContainer from '../molecules/post/titleContainer';
+import ProfileContainer from '../atoms/profileContainer';
+
 const AccountInfo = ({ email, phone }) => {
   const { updatePasswordMutate, updatePhoneNumberMutate } = useProfileUpdate();
 
@@ -8,54 +9,40 @@ const AccountInfo = ({ email, phone }) => {
     const rePw = 'manager1';
     const newPw = 'manager1@';
     const password = { rePw, newPw };
-    const res = updatePasswordMutate.mutate(password);
-    console.log(res, '휴대폰 변경');
+    updatePasswordMutate.mutate(password);
   };
   const handleChangePhoneNumber = () => {
-    const newPhoneNumber = '01077778888';
-    const res = updatePhoneNumberMutate.mutate(newPhoneNumber);
-    console.log(res, '휴대폰 변경2');
+    const newPhoneNumber = '01011112222';
+    updatePhoneNumberMutate.mutate(newPhoneNumber);
   };
   return (
-    <div className="flex h-[236px] w-[1084px] flex-col items-center justify-center gap-[24px]">
-      <div className="flex h-[40px] w-[1012px] items-center">
+    <main className="flex h-[236px] w-[1084px] flex-col items-center justify-center gap-[24px]">
+      {/* 계정정보 Title*/}
+      <section className="flex h-[40px] w-[1012px] items-center">
         <p className="h-[24px] w-[1020px] text-base">계정정보</p>
-      </div>
-      <div className="h-[108px] w-[1012px]">
-        <div className="flex h-[24px] w-[1020px] flex-row gap-[16px] text-base">
-          {/*정보1 */}
-          <div className="h-[108px] w-[326.67px] border">
-            <TitleContainer title="이메일">
-              <div className="h-[60px] w-[332px] rounded-[12px] border-2">
-                {email}
-              </div>
-            </TitleContainer>
-          </div>
+      </section>
 
+      {/* 계정정보 */}
+      <section className="w-[1012px ] h-[108px]">
+        <article className="flex h-[24px] w-[1020px] flex-row gap-[16px] text-base">
+          {/*정보1 */}
+          <ProfileContainer label="이메일" data={email} showButton={false} />
           {/*정보2 */}
-          <div className="h-[108px] w-[326.67px]">
-            <TitleContainer title="비밀번호">
-              <div className="h-[60px] w-[332px] rounded-[12px] border-2">
-                <p className="text-gray-300">주기적으로 변경해주세요</p>
-                <button onClick={handleChangePassword}>변경하기</button>
-              </div>
-            </TitleContainer>
-          </div>
-
+          <ProfileContainer
+            className="text-gray-300"
+            label="비밀번호"
+            data="주기적으로 변경해주세요"
+            onClick={handleChangePassword}
+          />
           {/*정보3 */}
-          <div className="h-[108px] w-[326.67px]">
-            <TitleContainer title="휴대폰번호">
-              <div className="h-[60px] w-[332px] rounded-[12px] border-2">
-                {phone}
-              </div>
-              <button onClick={handleChangePhoneNumber}>변경하기</button>{' '}
-            </TitleContainer>
-          </div>
-
-          {/*정보1 */}
-        </div>
-      </div>
-    </div>
+          <ProfileContainer
+            label="전화번호"
+            data={phone}
+            onClick={handleChangePhoneNumber}
+          />
+        </article>
+      </section>
+    </main>
   );
 };
 

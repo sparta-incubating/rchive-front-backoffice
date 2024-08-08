@@ -3,6 +3,7 @@
 import refresh from '@/../public/assets/icons/refresh-button.svg';
 import Image from 'next/image';
 import { useState } from 'react';
+import UserInfoContainer from '../atoms/userInfoContainer';
 interface UserInfoProps {
   username: string;
   trackName: string;
@@ -35,78 +36,63 @@ const UserInfo: React.FC<UserInfoProps> = ({
   };
 
   return (
-    <div className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
-      <div className="flex w-[1020px] flex-row items-center justify-between text-base">
+    <main className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
+      <section className="flex w-[1020px] flex-row items-center justify-between text-base">
         <p className="flex h-[24px]">회원정보</p>
         {trackRole === 'APM' && (
           <button className="h-[42px] w-[108px] rounded-[8px] border-2">
             권한수정요청
           </button>
         )}
-      </div>
+      </section>
 
       {/* 회원 정보 */}
-      <div className="flex h-[186px] w-[1020px] flex-col gap-[8px]">
+      <section className="flex h-[186px] w-[1020px] flex-col gap-[8px]">
         {/* 프로필*/}
-        <div className="flex h-[160px] flex-row">
-          <div className="w-[calc(100%-824px)]">
+        <article className="flex h-[160px] flex-row">
+          <figure className="w-[calc(100%-824px)]">
             <Image
               src={profileImages[initImg]}
               height={160}
               width={160}
               alt="랜덤프로필"
             />
-            {/* <Image src={pmImg} height={161} width={160} alt="랜덤프로필" /> */}
-          </div>
-          <div className="w-[824px]">
-            <div className="h-[60px] w-[332px]">
+          </figure>
+          <figcaption className="w-[824px]">
+            <section className="h-[60px] w-[332px]">
               <p className="text-[32px] font-bold">{username}</p>
-            </div>
-            {/*APM여부*/}
-            <div className="flex w-[824px] flex-row gap-[16px]">
+            </section>
+
+            <section className="flex w-[824px] flex-row gap-[16px]">
               {trackRole === 'PM' ? (
                 <>
-                  <div className="h-[100px] w-[404px]">
-                    <p className="font-base h-[40px] w-[264px]">트랙</p>
-                    <div className="h-[60px] w-[404px] rounded-[12px] border-2">
-                      {trackName}
-                    </div>
-                  </div>
-                  <div className="h-[100px] w-[404px]">
-                    <p className="font-base h-[40px] w-[348px]">직책</p>
-                    <div className="h-[60px] w-[404px] rounded-[12px] border-2">
-                      {trackRole}
-                    </div>
-                  </div>
+                  <UserInfoContainer label="트랙" data={trackName} />
+
+                  <UserInfoContainer label="직책" data={trackRole} />
                 </>
               ) : (
                 <>
-                  <div className="flex w-[824px] flex-row gap-[16px] border">
-                    <div className="h-[100px] w-[404px]">
-                      <p className="font-base h-[40px] w-[264px]">트랙</p>
-                      <div className="h-[60px] w-[264px] rounded-[12px] border-2">
-                        {trackName}
-                      </div>
-                    </div>
-                    <div className="h-[100px] w-[404px]">
-                      <p className="font-base h-[40px] w-[264px]">기수</p>
-                      <div className="h-[60px] w-[264px] rounded-[12px] border-2">
-                        {period}
-                      </div>
-                    </div>
-                    <div className="h-[100px] w-[404px]">
-                      <p className="font-base h-[40px] w-[264px]">직책</p>
-                      <div className="h-[60px] w-[264px] rounded-[12px] border-2">
-                        {trackRole}
-                      </div>
-                    </div>
-                  </div>
+                  <UserInfoContainer
+                    label="트랙"
+                    data={trackName}
+                    className="w-[264px]"
+                  />
+                  <UserInfoContainer
+                    label="기수"
+                    data={period}
+                    className="w-[264px]"
+                  />
+                  <UserInfoContainer
+                    label="직책"
+                    data={trackRole}
+                    className="w-[264px]"
+                  />
                 </>
               )}
-            </div>
+            </section>
             {/*APM여부*/}
-          </div>
-        </div>
+          </figcaption>
+        </article>
         {/* 프로필*/}
 
         {/* 리프레시버튼 */}
@@ -117,9 +103,9 @@ const UserInfo: React.FC<UserInfoProps> = ({
           </div>
         </button>
         {/* 리프레시버튼 */}
-      </div>
+      </section>
       {/* 회원 정보 */}
-    </div>
+    </main>
   );
 };
 
