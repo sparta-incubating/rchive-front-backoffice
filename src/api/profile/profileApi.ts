@@ -41,3 +41,26 @@ export const updatePassword = async (password: string) => {
     throw new Error('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
   }
 };
+
+interface RoleChange {
+  trackName: string;
+  period: number;
+  trackRole: string;
+}
+
+export const updateRole = async (roleInfo: RoleChange) => {
+  const { trackName, period, trackRole } = roleInfo;
+  console.log(trackName, 'n');
+  console.log(period, 'p');
+  console.log(trackRole, 'r');
+  try {
+    const res = await client.post(`/api/v1/role`, {
+      trackName,
+      period,
+      trackRole,
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('권한수정 요청에 실패했습니다. 다시 시도해주세요.');
+  }
+};

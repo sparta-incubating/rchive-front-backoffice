@@ -1,7 +1,7 @@
 import { queryClient } from '@/provider/tanstackQueryProvider/TanstackQueryProvider';
 import { useMutation } from '@tanstack/react-query';
 import { PROFILE_QUERY_KEYS } from './keys.constant';
-import { updatePassword, updatePhoneNumber } from './profileApi';
+import { updatePassword, updatePhoneNumber, updateRole } from './profileApi';
 
 export const useProfileUpdate = () => {
   const updatePhoneNumberMutate = useMutation({
@@ -20,5 +20,12 @@ export const useProfileUpdate = () => {
       }),
   });
 
-  return { updatePhoneNumberMutate, updatePasswordMutate };
+  const updateRoleMutate = useMutation({
+    mutationFn: updateRole,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [PROFILE_QUERY_KEYS.PROFILE],
+      }),
+  });
+  return { updatePhoneNumberMutate, updatePasswordMutate, updateRoleMutate };
 };

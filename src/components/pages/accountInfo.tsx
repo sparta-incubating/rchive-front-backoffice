@@ -1,6 +1,6 @@
 'use client ';
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import ProfileContainer from '../atoms/profileContainer';
+import ProfileContainer from '../molecules/profileContainer';
 
 const AccountInfo = ({ email, phone }) => {
   const { updatePasswordMutate, updatePhoneNumberMutate } = useProfileUpdate();
@@ -12,7 +12,7 @@ const AccountInfo = ({ email, phone }) => {
     updatePasswordMutate.mutate(password);
   };
   const handleChangePhoneNumber = () => {
-    const newPhoneNumber = '01011112222';
+    const newPhoneNumber = '01055555555';
     updatePhoneNumberMutate.mutate(newPhoneNumber);
   };
   return (
