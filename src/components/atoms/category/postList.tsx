@@ -9,13 +9,11 @@ import { useState } from 'react';
 
 interface PermissionListProps {
   onCheckedNumChange: (num: number) => void;
-  activeTab: number;
   postListData: PostListResponse;
 }
 
 const PostList = ({
   onCheckedNumChange,
-  activeTab,
   postListData,
 }: PermissionListProps) => {
   const [checkedListById, setCheckedListById] = useState<number[]>([]);

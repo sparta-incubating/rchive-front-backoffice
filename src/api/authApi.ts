@@ -13,6 +13,7 @@ export const postSignup = async (userData: User | Admin) => {
     const response = await axiosAPI.post('/api/v1/users/signup', userData);
     return response.data;
   } catch (error) {
+    console.log({ error });
     throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
   }
 };

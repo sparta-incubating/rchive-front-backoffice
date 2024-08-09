@@ -1,3 +1,5 @@
+import { PostTabType } from '@/types/posts.types';
+
 export interface TableHeaderItem {
   label: string;
   key: string;
@@ -89,6 +91,37 @@ export const tabArr = [
     className: 'w-[104px]',
     bgColor: 'bg-[#58b32e]/10',
     textColor: 'text-success-green',
+  },
+];
+
+export const postTabArr: PostTabType[] = [
+  {
+    id: 'all',
+    title: '전체',
+  },
+  {
+    id: 'Sparta_Lecture',
+    title: '강의자료',
+  },
+  {
+    id: 'Level_Challenge',
+    title: '챌린지',
+  },
+  {
+    id: 'Level_Standard',
+    title: '스탠다드',
+  },
+  {
+    id: 'Level_Basic',
+    title: '베이직',
+  },
+  {
+    id: 'Project_Description',
+    title: '과제해설',
+  },
+  {
+    id: 'Special_Lecture',
+    title: '특강/실시간 세션',
   },
 ];
 

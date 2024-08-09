@@ -43,7 +43,8 @@ export type PostType =
   | 'Level_Challenge'
   | 'Level_Standard'
   | 'Level_Basic'
-  | 'Project_Description';
+  | 'Project_Description'
+  | 'all';
 
 export type tutorApiType = {
   data: TutorType[];
@@ -123,4 +124,9 @@ export type SortType = {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
+};
+
+export type PostTabType = {
+  id: PostType;
+  title: string;
 };

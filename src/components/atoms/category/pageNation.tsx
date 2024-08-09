@@ -20,7 +20,7 @@ const PageNation = ({
   const pagination = new Pagination(totalPages, currentPage, 5);
 
   return (
-    <section className="mx-auto h-[32px] w-[1012px] border">
+    <section className="mx-auto h-[32px] w-full">
       <div className="flex flex-row justify-center">
         {pagination.hasPreviousGroup() && (
           <button

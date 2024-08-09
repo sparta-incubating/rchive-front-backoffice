@@ -3,12 +3,12 @@
 import PageNation from '@/components/atoms/category/pageNation';
 import PostFilterCategory from '@/components/atoms/category/postFilterCategory';
 import PostList from '@/components/atoms/category/postList';
-import TapMenu from '@/components/atoms/category/tapMenu';
+import PostTapMenu from '@/components/atoms/category/postTapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import BackofficePage from '@/components/pages/backofficePage';
-import { tabArr } from '@/constants/permission.constant';
+import { postTabArr } from '@/constants/permission.constant';
 import useSearchKeyword from '@/hooks/useSearchKeyword';
 import useSearchTutor from '@/hooks/useSearchTutor';
 import { useAppSelector } from '@/redux/storeConfig';
@@ -39,7 +39,14 @@ const PostListPage = ({
   } = useAppSelector((state) => state.authSlice);
 
   const [checkedNum, setCheckedNum] = useState<number>(0);
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<string>(
+    searchParams?.postType || 'all',
+  );
+
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab);
+    updateQueryParams('postType', newTab); // tab이 바뀔 때 쿼리스트링 업데이트
+  };
 
   // 기수
   const [searchPeriod, setSearchPeriod] = useState<string>(
@@ -58,8 +65,9 @@ const PostListPage = ({
   ];
 
   // 제목
-  const { searchInputRef, searchKeyword, handleSearchKeyDown } =
-    useSearchKeyword(searchParams?.title);
+  const { searchInputRef, handleSearchKeyDown } = useSearchKeyword(
+    searchParams?.title,
+  );
 
   // 기간 조회
   const [date, setDate] = useState<DateRange | undefined>();
@@ -120,11 +128,10 @@ const PostListPage = ({
       {/* 게시판 */}
       <PermissionBoard>
         {/* 탭메뉴 */}
-        <TapMenu
-          data={tabArr}
+        <PostTapMenu
+          data={postTabArr}
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          listData={[]}
+          setActiveTab={handleTabChange}
         />
 
         <section className="px-9 py-6">
@@ -174,7 +181,6 @@ const PostListPage = ({
 
           {/* 조회 */}
           <PostList
-            activeTab={activeTab}
             onCheckedNumChange={setCheckedNum}
             postListData={postListData}
           />
