@@ -14,8 +14,10 @@ import useSearchTutor from '@/hooks/useSearchTutor';
 import { useAppSelector } from '@/redux/storeConfig';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { DateRange } from 'react-day-picker';
 
 interface PostListProps {
   searchParams: SearchParamsType;
@@ -47,7 +49,6 @@ const PostListPage = ({
 
   // 튜터
   const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);
-  const [tutor, setTutor] = useState<string>(searchParams?.tutorId || '0');
 
   // 공개여부
   const isOpenedOptionsData: SelectOptionType[] = [
@@ -56,46 +57,52 @@ const PostListPage = ({
     { value: 'false', label: '비공개', selected: false },
   ];
 
-  const [isOpened, setIsOpened] = useState<string>(
-    searchParams?.isOpened || '0',
-  );
   // 제목
   const { searchInputRef, searchKeyword, handleSearchKeyDown } =
     useSearchKeyword(searchParams?.title);
 
   // 기간 조회
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [date, setDate] = useState<DateRange | undefined>();
 
-  const handleDateChange = useCallback((start: string, end: string) => {
-    setStartDate(start);
-    setEndDate(end);
-  }, []);
+  const handleDateChange = (date: DateRange | undefined) => {
+    setDate(date);
+    updateQueryParams('date', date);
+  };
 
-  const updateQueryParams = useCallback(() => {
-    const query = new URLSearchParams();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-    if (searchPeriod !== '0') query.set('searchPeriod', searchPeriod);
-    if (tutor !== '0') query.set('tutor', tutor);
-    if (isOpened !== '0') query.set('isOpened', isOpened);
-    if (searchKeyword) query.set('title', searchKeyword);
-    if (startDate) query.set('startDate', startDate);
-    if (endDate) query.set('endDate', endDate);
+  // 페이지 변경 핸들러
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    updateQueryParams('page', page);
+  };
+
+  // URL 파라미터를 유지하면서 업데이트하는 함수
+  const updateQueryParams = (
+    key: string,
+    value: string | number | DateRange | undefined,
+  ) => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (key === 'date' && value) {
+      const dateRange = value as DateRange;
+      if (dateRange.from)
+        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
+      if (dateRange.to)
+        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
+    } else if (value) {
+      query.set(key, String(value));
+    } else {
+      query.delete(key);
+    }
+
+    if (key !== 'page') {
+      setCurrentPage(1);
+      query.set('page', '1'); // 필터 변경 시 페이지를 1로 초기화
+    }
 
     router.push(`/posts?${query.toString()}`);
-  }, [
-    searchPeriod,
-    tutor,
-    isOpened,
-    searchKeyword,
-    startDate,
-    endDate,
-    router,
-  ]);
-
-  useEffect(() => {
-    updateQueryParams();
-  }, [searchPeriod, tutor, isOpened, startDate, endDate, updateQueryParams]);
+  };
 
   return (
     <BackofficePage>
@@ -104,7 +111,9 @@ const PostListPage = ({
         ref={searchInputRef}
         onKeyDown={(e) => {
           handleSearchKeyDown(e);
-          updateQueryParams();
+          if (e.key === 'Enter') {
+            updateQueryParams('title', e.currentTarget.value);
+          }
         }}
       />
 
@@ -130,6 +139,7 @@ const PostListPage = ({
                   defaultValue={searchParams?.searchPeriod || '0'}
                   setValue={(value) => {
                     setSearchPeriod(value);
+                    updateQueryParams('searchPeriod', value);
                   }}
                 />
               )}
@@ -140,7 +150,7 @@ const PostListPage = ({
                 filterData={getFetchTutors || []}
                 defaultValue={searchParams?.tutorId || '0'}
                 setValue={(value) => {
-                  setTutor(value);
+                  updateQueryParams('tutorId', value);
                 }}
                 disabled={
                   loginTrackRole === 'PM' ? searchPeriod === '0' : false
@@ -148,11 +158,7 @@ const PostListPage = ({
               />
 
               {/* range date */}
-              <DateRangePicker
-                handleDateChange={handleDateChange}
-                startDate={searchParams?.startDate}
-                endDate={searchParams?.endDate}
-              />
+              <DateRangePicker date={date} setDate={handleDateChange} />
 
               {/* isOpened */}
               <PostFilterCategory
@@ -160,7 +166,7 @@ const PostListPage = ({
                 filterData={isOpenedOptionsData}
                 defaultValue={searchParams?.isOpened || '0'}
                 setValue={(value) => {
-                  setIsOpened(value);
+                  updateQueryParams('isOpened', value);
                 }}
               />
             </section>
@@ -174,7 +180,12 @@ const PostListPage = ({
           />
 
           {/* 페이지네이션 */}
-          <PageNation />
+          <PageNation
+            currentPage={currentPage}
+            totalElements={postListData.data.totalElements}
+            size={postListData.data.size}
+            onPageChange={handlePageChange}
+          />
         </section>
       </PermissionBoard>
     </BackofficePage>

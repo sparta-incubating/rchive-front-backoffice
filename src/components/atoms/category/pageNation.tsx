@@ -1,33 +1,84 @@
 'use client';
-import init from '@/../public/assets/icons/initPage.svg';
-import nonNext from '@/../public/assets/icons/nonNext.svg';
+
+import Pagination from '@/utils/pageNation.util';
 import Image from 'next/image';
 
-const PageNation = () => {
+interface PageNationProps {
+  currentPage: number;
+  totalElements: number;
+  size: number;
+  onPageChange: (page: number) => void;
+}
+
+const PageNation = ({
+  currentPage,
+  totalElements,
+  size,
+  onPageChange,
+}: PageNationProps) => {
+  const totalPages = Math.ceil(totalElements / size);
+  const pagination = new Pagination(totalPages, currentPage, 5);
+
   return (
     <section className="mx-auto h-[32px] w-[1012px] border">
       <div className="flex flex-row justify-center">
-        <button>
-          <Image src={init} width={32} height={32} alt="페이지네이션" />
-        </button>
-        <div className="flex h-[32px] w-[32px] items-center rounded-full bg-blue-55">
-          <p className="w-[32px] text-center">1</p>
-        </div>
+        {pagination.hasPreviousGroup() && (
+          <button
+            onClick={() => onPageChange(pagination.getPreviousGroupFirstPage())}
+          >
+            <Image
+              src={'/assets/icons/initPage.svg'}
+              width={32}
+              height={32}
+              alt="이전 그룹"
+            />
+          </button>
+        )}
+        {pagination.hasPreviousPage() && (
+          <button onClick={() => onPageChange(pagination.getPreviousPage())}>
+            <Image
+              src={'/assets/icons/prevPage.svg'}
+              width={32}
+              height={32}
+              alt="이전 페이지"
+            />
+          </button>
+        )}
 
-        {/* <button>
-          <Image src={prev} width={32} height={32} alt="페이지네이션" />
-        </button>
+        {pagination.getPageNumbers().map((page) => {
+          return (
+            <div
+              key={page}
+              className={`flex h-[32px] w-[32px] items-center rounded-full ${
+                page === currentPage ? 'bg-blue-55' : ''
+              }`}
+              onClick={() => onPageChange(page)}
+            >
+              <p className="w-[32px] text-center">{page}</p>
+            </div>
+          );
+        })}
 
-        <button>
-          <Image src={end} width={32} height={32} alt="페이지네이션" />
-        </button>
-
-        <button>
-          <Image src={next} width={32} height={32} alt="페이지네이션" />
-        </button> */}
-        <button>
-          <Image src={nonNext} width={32} height={32} alt="페이지네이션" />
-        </button>
+        {pagination.hasNextPage() && (
+          <button onClick={() => onPageChange(pagination.getNextPage())}>
+            <Image
+              src={'/assets/icons/nextPage.svg'}
+              width={32}
+              height={32}
+              alt="다음 페이지"
+            />
+          </button>
+        )}
+        {pagination.hasNextGroup() && (
+          <button onClick={() => onPageChange(pagination.getLastPage())}>
+            <Image
+              src={'/assets/icons/nonNext.svg'}
+              width={32}
+              height={32}
+              alt="마지막 페이지"
+            />
+          </button>
+        )}
       </div>
     </section>
   );

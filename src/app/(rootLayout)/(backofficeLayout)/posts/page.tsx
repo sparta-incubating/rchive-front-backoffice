@@ -35,20 +35,16 @@ const Post = async ({ searchParams }: PostProps) => {
   if (searchParamsData.endDate) query.set('endDate', searchParamsData.endDate);
   if (searchParamsData.searchPeriod)
     query.set('searchPeriod', searchParamsData.searchPeriod);
-  if (searchParamsData.isOpened)
+  if (searchParamsData.isOpened && searchParams.isOpened !== 'all')
     query.set('isOpened', searchParamsData.isOpened);
   if (searchParamsData.tutorId) query.set('tutorId', searchParamsData.tutorId);
   if (searchParamsData.title) query.set('title', searchParamsData.title);
   query.set('page', searchParamsData.page || '1');
-  query.set('size', searchParamsData.size || '10');
+  query.set('size', searchParamsData.size || '5');
 
   const postListResponse = await serverAPI.get<PostListResponse>(
     `/api/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
   );
-
-  /*const postListResponse = await serverAPI.get(
-    `/api/v1/backoffice/post/search?trackName=${trackName}&period=${period}&page=1&size=10`,
-  );*/
 
   const periodResponse = await serverAPI.get(
     `/api/v1/role/track/period?trackName=${trackName}`,

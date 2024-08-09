@@ -13,36 +13,18 @@ import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
-import { useEffect } from 'react';
 import { DateRange } from 'react-day-picker';
 
 interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
-  handleDateChange: (startDate: string, endDate: string) => void;
-  startDate?: string;
-  endDate?: string;
+  setDate: (value: DateRange | undefined) => void;
+  date: DateRange | undefined;
 }
 
 export function DateRangePicker({
+  date,
+  setDate,
   className,
-  handleDateChange,
-  startDate,
-  endDate,
 }: DateRangePickerProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>(
-    startDate && endDate
-      ? {
-          from: new Date(startDate),
-          to: new Date(endDate),
-        }
-      : undefined,
-  );
-
-  useEffect(() => {
-    const startDate = date ? dayjs(date?.from).format('YYYY-MM-DD') : '';
-    const endDate = date ? dayjs(date?.to).format('YYYY-MM-DD') : '';
-    handleDateChange(startDate, endDate);
-  }, [date, handleDateChange]);
-
   return (
     <div className={classMerge('grid gap-2', className)}>
       <Popover>
