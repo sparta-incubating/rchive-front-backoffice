@@ -16,7 +16,7 @@ import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 interface PostListProps {
@@ -45,7 +45,7 @@ const PostListPage = ({
 
   const handleTabChange = (newTab: string) => {
     setActiveTab(newTab);
-    updateQueryParams('postType', newTab); // tab이 바뀔 때 쿼리스트링 업데이트
+    updateQueryParams('postType', newTab);
   };
 
   // 기수
@@ -56,6 +56,21 @@ const PostListPage = ({
 
   // 튜터
   const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);
+  const [tutor, setTutor] = useState<string>('0');
+
+  useEffect(() => {
+    if (getFetchTutors) {
+      if (getFetchTutors.length > 0 && tutor === '0') {
+        const defaultTutor = getFetchTutors.find(
+          (tutor) => tutor.value === searchParams?.tutorId,
+        );
+        if (defaultTutor) {
+          setTutor(defaultTutor.value);
+          updateQueryParams('tutorId', defaultTutor.value);
+        }
+      }
+    }
+  }, [getFetchTutors, tutor, searchParams?.tutorId]);
 
   // 공개여부
   const isOpenedOptionsData: SelectOptionType[] = [
@@ -70,7 +85,12 @@ const PostListPage = ({
   );
 
   // 기간 조회
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: searchParams?.startDate
+      ? new Date(searchParams.startDate)
+      : undefined,
+    to: searchParams?.endDate ? new Date(searchParams.endDate) : undefined,
+  });
 
   const handleDateChange = (date: DateRange | undefined) => {
     setDate(date);
@@ -155,8 +175,9 @@ const PostListPage = ({
               <PostFilterCategory
                 label="튜터"
                 filterData={getFetchTutors || []}
-                defaultValue={searchParams?.tutorId || '0'}
+                defaultValue={tutor}
                 setValue={(value) => {
+                  setTutor(value);
                   updateQueryParams('tutorId', value);
                 }}
                 disabled={
