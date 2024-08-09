@@ -6,6 +6,9 @@ on:
   push:
     branches: [ "dev" ]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,7 +38,7 @@ jobs:
       run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:dev
 
     - name: SSH to EC2 and deploy
-      uses: appleboy/ssh-action@v0.5.0
+      uses: appleboy/ssh-action@master
       id: deploy
       with:
         host: ${{secrets.HOST_DEV}}
