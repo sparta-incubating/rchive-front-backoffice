@@ -51,8 +51,8 @@ const PageNation = ({
               key={page}
               className={`flex h-[32px] w-[32px] items-center rounded-full ${
                 page === currentPage ? 'bg-blue-55' : ''
-              }`}
-              onClick={() => onPageChange(page)}
+              } ${page !== currentPage ? 'cursor-pointer' : 'cursor-auto'}`}
+              onClick={() => page !== currentPage && onPageChange(page)}
             >
               <p className="w-[32px] text-center">{page}</p>
             </div>

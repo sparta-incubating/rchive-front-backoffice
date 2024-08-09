@@ -38,7 +38,6 @@ const PostListPage = ({
     trackRole: loginTrackRole,
   } = useAppSelector((state) => state.authSlice);
 
-  const [checkedNum, setCheckedNum] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<string>(
     searchParams?.postType || 'all',
   );
@@ -201,10 +200,7 @@ const PostListPage = ({
           </section>
 
           {/* 조회 */}
-          <PostList
-            onCheckedNumChange={setCheckedNum}
-            postListData={postListData}
-          />
+          <PostList postListData={postListData} />
 
           {/* 페이지네이션 */}
           <PageNation

@@ -1,21 +1,40 @@
+'use client';
+
 import CategoryBox from '@/components/atoms/category/categoryBox';
+import { setPostId } from '@/redux/slice/postCheckBox.slice';
+import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
 import { getNameCategory } from '@/utils/setAuthInfo/post.util';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface PostsTableRowProps {
   postData: PostContentType;
 }
 
 const PostsTableRow = ({ postData }: PostsTableRowProps) => {
+  const dispatch = useAppDispatch();
+  const postIds = useAppSelector((state) => state.postCheckBoxSlice.postIds);
+
+  const [checked, setChecked] = useState<boolean>(false);
+
+  const handleCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(e.target.checked);
+    dispatch(setPostId({ postId: postData.postId }));
+  };
+
+  useEffect(() => {
+    setChecked(postIds.includes(postData.postId));
+  }, [postIds, postData.postId]);
+
   return (
     <tr
       key={postData.postId}
       className="flex h-[64px] items-center border-b text-sm hover:bg-blue-50"
     >
       <td className="ml-6 mr-7 flex h-5 w-5 items-center justify-center">
-        <CategoryBox text="" />
+        <CategoryBox text="" onChange={handleCheckChange} checked={checked} />
       </td>
       <td className="w-[65.5px] text-gray-400">
         <div className="relative h-[38px] w-full">

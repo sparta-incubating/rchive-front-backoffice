@@ -36,7 +36,7 @@ export const postTag = async (tagName: string) => {
 // 기수 검색 함수
 export const getPeriod = async <T>(track: string): Promise<T> => {
   try {
-    const response = await axiosAPI.get(
+    const response = await client.get(
       `/api/v1/role/track/period?trackName=${track}`,
     );
 
