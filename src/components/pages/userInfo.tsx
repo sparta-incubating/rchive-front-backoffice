@@ -5,6 +5,7 @@ import { useProfileUpdate } from '@/api/profile/useMutation';
 import Image from 'next/image';
 import { useState } from 'react';
 import UserInfoContainer from '../molecules/userInfoContainer';
+import ProfileChangeForm from '../organisms/profileChangeForm';
 interface UserInfoProps {
   username: string;
   trackName: string;
@@ -116,6 +117,10 @@ const UserInfo: React.FC<UserInfoProps> = ({
         {/* 리프레시버튼 */}
       </section>
       {/* 회원 정보 */}
+
+      <ProfileChangeForm trackRole={trackRole}>
+        권한수정 요청하기
+      </ProfileChangeForm>
     </main>
   );
 };
