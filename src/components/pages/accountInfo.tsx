@@ -12,7 +12,7 @@ const AccountInfo = ({ email, phone }) => {
     updatePasswordMutate.mutate(password);
   };
   const handleChangePhoneNumber = () => {
-    const newPhoneNumber = '01055555555';
+    const newPhoneNumber = '01012345678';
     updatePhoneNumberMutate.mutate(newPhoneNumber);
   };
   return (

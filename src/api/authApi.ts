@@ -38,13 +38,19 @@ export const postSignIn = async (data: {
       username: data.username,
       password: data.password,
     });
-    const accessToken = res.headers.authorization.replace('Bearer ', '');
-    if (res?.status === 200) {
+
+    if (res.status === 200) {
+      const accessToken = res.headers.authorization.replace('Bearer ', '');
       setCookie('AT', accessToken);
+      console.log('로그인 성공');
+    } else if (res.status === 401) {
+      alert('비밀번호를 다시 확인해주세요');
+    } else {
+      alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
-    return res;
   } catch (error) {
-    console.log(error, '로그인 오류');
+    console.error('로그인 오류:', error);
+    alert('로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
   }
 };
 

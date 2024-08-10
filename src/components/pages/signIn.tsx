@@ -14,6 +14,7 @@ import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
@@ -24,6 +25,7 @@ import InputField from '../molecules/InputField';
 import SignupModal from './signupModal';
 
 const SignIn = () => {
+  const [pwErrorMsg, setpwErrorMsg] = useState<string>('');
   const { open } = useModalContext();
 
   const handleSignupModalOpen = () => {
@@ -44,19 +46,29 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await axios.post('/api/auth/login', data);
-
     try {
-      await getLastConnectRole();
-      router.push('/');
-    } catch (error) {
-      const roleApplyStatusResponse = await getRoleApplyStatus();
-      setCookie('loginId', data.username);
+      await axios.post('/api/auth/login', data);
+      try {
+        await getLastConnectRole();
+        router.push('/');
+      } catch (error) {
+        const roleApplyStatusResponse = await getRoleApplyStatus();
+        setCookie('loginId', data.username);
 
-      if (roleApplyStatusResponse) {
-        router.push(`/role/result`);
+        if (roleApplyStatusResponse) {
+          router.push(`/role/result`);
+        } else {
+          router.push('/role');
+        }
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        setpwErrorMsg(
+          '가입되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.',
+        );
       } else {
-        router.push('/role');
+        console.error('로그인 중 오류 발생:', error);
+        alert('로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
     }
   };
@@ -115,7 +127,7 @@ const SignIn = () => {
                     </InputField>
                   </InputContainer>
                   <span className="text-sm text-primary-400">
-                    {errors.password?.message}
+                    {errors.password?.message || pwErrorMsg}
                   </span>
                 </section>
               </section>
