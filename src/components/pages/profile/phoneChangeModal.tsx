@@ -1,6 +1,6 @@
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import IconButton from '@/components/atoms/iconButton';
 import PhoneForm from '@/components/molecules/form/PhoneForm';
+import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -34,31 +34,12 @@ const PhoneChangeModal = ({ onClose }: PasswordChangeModalProps) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex w-[520px] flex-col items-center rounded-[14px] bg-white">
-        {/* 나가기버튼 */}
-        <div className="flex h-[72px] w-full justify-end p-[28px]">
-          <IconButton onClick={onClose}>
-            <div className="relative h-5 w-5">
-              <div className="relative flex h-5 w-5 items-center justify-center bg-[url('/assets/icons/close.svg')] bg-center bg-no-repeat"></div>
-            </div>
-          </IconButton>
+      <ProfileChangeForm label="전화번호 변경" onClose={onClose}>
+        <div className="flex flex-col gap-[10px]">
+          <PhoneForm register={register} />
+          {errors.phone && <span>{errors.phone.message}</span>}
         </div>
-        {/* 제목 */}
-        <div className="h-[50px]">
-          <p className="text-center text-xl">휴대폰 변경</p>
-        </div>
-        <div className="h-[250px] px-[24px]">
-          <div className="flex flex-col gap-[10px]">
-            <PhoneForm register={register} />
-            {errors.phone && <span>{errors.phone.message}</span>}
-          </div>
-        </div>
-        <div className="h-[106px]">
-          <button type="submit" className="w-[360px] border">
-            완료
-          </button>
-        </div>
-      </div>
+      </ProfileChangeForm>
     </form>
   );
 };

@@ -1,3 +1,4 @@
+import Button from '../atoms/button';
 import IconButton from '../atoms/iconButton';
 
 interface ProfileChangeFormProps {
@@ -28,11 +29,11 @@ const ProfileChangeForm = ({
       <div className="h-[250px] px-[24px]">
         <div className="flex flex-col gap-[10px]">{children}</div>
       </div>
-      {/* <div className="h-[106px]">
-        <button type="submit" className="w-[360px]">
+      <div className="h-[106px]">
+        <Button variant="primary" className="mt-4 w-[360px]">
           완료
-        </button>
-      </div> */}
+        </Button>
+      </div>
     </div>
   );
 };
