@@ -1,16 +1,15 @@
 'use client';
 
 import refresh from '@/../public/assets/icons/refresh-button.svg';
-import { useProfileUpdate } from '@/api/profile/useMutation';
 import Image from 'next/image';
 import { useState } from 'react';
 import UserInfoContainer from '../molecules/userInfoContainer';
-import ProfileChangeForm from '../organisms/profileChangeForm';
 interface UserInfoProps {
   username: string;
   trackName: string;
   period: string;
   trackRole: string;
+  handleChangeRole: () => void;
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({
@@ -18,8 +17,9 @@ const UserInfo: React.FC<UserInfoProps> = ({
   trackName,
   period,
   trackRole,
+  handleChangeRole,
 }) => {
-  const { updateRoleMutate } = useProfileUpdate();
+  // const { updateRoleMutate } = useProfileUpdate();
   const profileImages = [
     '/assets/icons/MRT_1.svg',
     '/assets/icons/MRT_2.svg',
@@ -37,18 +37,18 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const handleRandomImg = () => {
     setInitImg((initImg) => (initImg + 1) % profileImages.length);
   };
-  const handleChangeRole = () => {
-    const trackName = 'WEB';
-    const period = 0;
-    const trackRole = 'PM';
-    const roleInfo = { trackName, period, trackRole };
-    updateRoleMutate.mutate(roleInfo);
-  };
+  // const handleChangeRole = () => {
+  //   const trackName = 'WEB';
+  //   const period = 0;
+  //   const trackRole = 'PM';
+  //   const roleInfo = { trackName, period, trackRole };
+  //   updateRoleMutate.mutate(roleInfo);
+  // };
   return (
     <main className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
       <section className="flex w-[1020px] flex-row items-center justify-between text-base">
         <p className="flex h-[24px]">회원정보</p>
-        {trackRole === 'APM' && (
+        {trackRole === 'PM' && (
           <button
             className="h-[42px] w-[108px] rounded-[8px] border-2"
             onClick={handleChangeRole}
@@ -117,10 +117,6 @@ const UserInfo: React.FC<UserInfoProps> = ({
         {/* 리프레시버튼 */}
       </section>
       {/* 회원 정보 */}
-
-      <ProfileChangeForm trackRole={trackRole}>
-        권한수정 요청하기
-      </ProfileChangeForm>
     </main>
   );
 };
