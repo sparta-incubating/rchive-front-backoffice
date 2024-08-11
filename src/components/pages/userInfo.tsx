@@ -37,13 +37,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const handleRandomImg = () => {
     setInitImg((initImg) => (initImg + 1) % profileImages.length);
   };
-  // const handleChangeRole = () => {
-  //   const trackName = 'WEB';
-  //   const period = 0;
-  //   const trackRole = 'PM';
-  //   const roleInfo = { trackName, period, trackRole };
-  //   updateRoleMutate.mutate(roleInfo);
-  // };
+
   return (
     <main className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
       <section className="flex w-[1020px] flex-row items-center justify-between text-base">

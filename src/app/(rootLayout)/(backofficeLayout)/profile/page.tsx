@@ -1,11 +1,12 @@
 'use client';
 
-import { useProfileUpdate } from '@/api/profile/useMutation';
 import { useUserInfoDataQuery } from '@/api/profile/useQuery';
 import PermissionBoard from '@/components/atoms/permissionBoard';
-import ProfileModal from '@/components/organisms/profileModal';
 import AccountInfo from '@/components/pages/accountInfo';
 import BackofficePage from '@/components/pages/backofficePage';
+import PasswordChangeModal from '@/components/pages/profile/passwordChangeModal';
+import PhoneChangeModal from '@/components/pages/profile/phoneChangeModal';
+import RoleChangeModal from '@/components/pages/profile/roleChangeModal';
 import UserInfo from '@/components/pages/userInfo';
 import { useState } from 'react';
 
@@ -19,50 +20,21 @@ export interface USERPROFILE {
 }
 
 const Profile = () => {
-  const { updatePasswordMutate, updatePhoneNumberMutate, updateRoleMutate } =
-    useProfileUpdate();
   const { userData, isError, isPending } = useUserInfoDataQuery();
-  const [modalType, setModalType] = useState(null);
-  const [modalData, setModalData] = useState({});
-
+  const [modalType, setModalType] = useState<string | null>(null);
   if (isError) {
     return <div>에러입니다</div>;
   }
 
   if (isPending) {
-    return <div>에러입니다</div>;
+    return <div>로딩중...</div>;
   }
 
   const { username, trackName, period, trackRole, email, phone } =
     userData.data;
-  const openModal = (type) => {
-    setModalType(type);
-    setModalData({});
-  };
+  const openModal = (type: string) => setModalType(type);
+  const closeModal = () => setModalType(null);
 
-  const closeModal = () => {
-    setModalType(null);
-    setModalData({});
-  };
-  const handleSubmit = async (type: string, data: any) => {
-    try {
-      switch (type) {
-        case 'password':
-          await updatePasswordMutate.mutate(data); // 비밀번호 업데이트
-          break;
-        case 'phone':
-          await updatePhoneNumberMutate.mutate(data); // 전화번호 업데이트
-          break;
-        case 'role':
-          await updateRoleMutate.mutate(data); // 권한 업데이트
-          break;
-        default:
-          throw new Error('Unknown modal type');
-      }
-    } catch (error) {
-      console.error('업데이트 오류:', error);
-    }
-  };
   return (
     <BackofficePage>
       <PermissionBoard variant="userInfo">
@@ -83,11 +55,14 @@ const Profile = () => {
         />
       </PermissionBoard>
 
-      {modalType && (
-        <ProfileModal
-          type={modalType}
+      {modalType === 'password' && <PasswordChangeModal onClose={closeModal} />}
+      {modalType === 'phone' && <PhoneChangeModal onClose={closeModal} />}
+      {modalType === 'role' && (
+        <RoleChangeModal
           onClose={closeModal}
-          onSubmit={handleSubmit}
+          trackName={trackName}
+          trackRole={trackRole}
+          period={period}
         />
       )}
     </BackofficePage>

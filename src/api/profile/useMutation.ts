@@ -10,6 +10,9 @@ export const useProfileUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: [PROFILE_QUERY_KEYS.PROFILE],
       }),
+    onError: (error) => {
+      console.log('변경 실패:', error);
+    },
   });
 
   const updatePasswordMutate = useMutation({
@@ -18,6 +21,9 @@ export const useProfileUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: [PROFILE_QUERY_KEYS.PROFILE],
       }),
+    onError: (error) => {
+      console.log('변경 실패:', error);
+    },
   });
 
   const updateRoleMutate = useMutation({
@@ -26,6 +32,9 @@ export const useProfileUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: [PROFILE_QUERY_KEYS.PROFILE],
       }),
+    onError: (error) => {
+      console.log('변경 실패:', error);
+    },
   });
   return { updatePhoneNumberMutate, updatePasswordMutate, updateRoleMutate };
 };

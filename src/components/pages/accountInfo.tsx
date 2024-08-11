@@ -14,18 +14,6 @@ const AccountInfo = ({
   handleChangePassword,
   handleChangePhoneNumber,
 }: AccountInfoProps) => {
-  // const { updatePasswordMutate, updatePhoneNumberMutate } = useProfileUpdate();
-
-  // const handleChangePassword = () => {
-  //   const rePw = 'manager1';
-  //   const newPw = 'manager1@';
-  //   const password = { rePw, newPw };
-  //   updatePasswordMutate.mutate(password);
-  // };
-  // const handleChangePhoneNumber = () => {
-  //   const newPhoneNumber = '01012345678';
-  //   updatePhoneNumberMutate.mutate(newPhoneNumber);
-  // };
   return (
     <main className="flex h-[236px] w-[1084px] flex-col items-center justify-center gap-[24px]">
       {/* 계정정보 Title*/}

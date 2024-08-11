@@ -27,14 +27,18 @@ export const updatePhoneNumber = async (phoneNumber: string) => {
   }
 };
 
-export const updatePassword = async (password: string) => {
-  const { rePw, newPw } = password;
-  console.log(rePw, '기존비밀번호');
-  console.log(newPw, '변경할 비밀번호');
+interface PassWordChange {
+  originPassword: string;
+  newPassword: string;
+}
+export const updatePassword = async (password: PassWordChange) => {
+  const { originPassword, newPassword } = password;
+  console.log(originPassword, '기존비밀번호');
+  console.log(newPassword, '변경할 비밀번호');
   try {
     const res = await client.patch(`/api/v1/profile/password`, {
-      originPassword: rePw,
-      newPassword: newPw,
+      originPassword,
+      newPassword,
     });
     return res.data;
   } catch (error) {

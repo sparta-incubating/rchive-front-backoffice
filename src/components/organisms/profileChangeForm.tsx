@@ -1,8 +1,7 @@
 import IconButton from '../atoms/iconButton';
 
-interface ProfileModal {
+interface ProfileChangeFormProps {
   label: string;
-  onClick: () => void;
   onClose: () => void;
   children: React.ReactNode;
 }
@@ -10,9 +9,8 @@ interface ProfileModal {
 const ProfileChangeForm = ({
   label,
   children,
-  onClick,
   onClose,
-}: ProfileModal) => {
+}: ProfileChangeFormProps) => {
   return (
     <div className="flex w-[520px] flex-col items-center rounded-[14px] bg-white">
       {/* 나가기버튼 */}
@@ -30,11 +28,11 @@ const ProfileChangeForm = ({
       <div className="h-[250px] px-[24px]">
         <div className="flex flex-col gap-[10px]">{children}</div>
       </div>
-      <div className="h-[106px]">
-        <button onClick={onClick} className="w-[360px]" disabled={true}>
+      {/* <div className="h-[106px]">
+        <button type="submit" className="w-[360px]">
           완료
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
