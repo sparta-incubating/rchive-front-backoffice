@@ -8,7 +8,7 @@ import { RoleFormSchema } from '@/types/role.types';
 import { SelectOptionType } from '@/types/signup.types';
 import { roleSchema } from '@/validators/auth/role.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface RoleSelectFormProps {

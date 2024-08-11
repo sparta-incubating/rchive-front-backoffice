@@ -54,9 +54,9 @@ interface RoleChange {
 
 export const updateRole = async (roleInfo: RoleChange) => {
   const { trackName, period, trackRole } = roleInfo;
-  console.log(trackName, 'n');
-  console.log(period, 'p');
-  console.log(trackRole, 'r');
+  console.log(trackName, '트랙이름');
+  console.log(period, '기수');
+  console.log(trackRole, 'Role');
   try {
     const res = await client.post(`/api/v1/role`, {
       trackName,
