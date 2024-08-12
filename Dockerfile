@@ -7,7 +7,7 @@ FROM node:18 as build
 WORKDIR /app
 
 # 의존성 설치
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 RUN yarn install
 
 # 앱 코드 복사 및 빌드
