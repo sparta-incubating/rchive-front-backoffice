@@ -6,7 +6,7 @@ import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import { getLastConnectRole, getRoleApplyStatus } from '@/api/authApi';
-import { useModalContext } from '@/context/modal.context';
+import { useModalContext } from '@/context/useModalContext';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
