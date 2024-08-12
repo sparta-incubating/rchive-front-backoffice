@@ -6,7 +6,7 @@ import TagInput from '@/components/atoms/tagInput';
 import DropDownContainer from '@/components/molecules/dropDownContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TagCard from '@/components/molecules/tagCard';
-import { useTagContext } from '@/context/tag.context';
+import { useTagContext } from '@/context/useTagContext';
 
 interface TagContainerProps {
   placeholder: string;

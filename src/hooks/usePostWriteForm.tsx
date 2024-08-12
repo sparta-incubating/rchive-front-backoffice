@@ -1,7 +1,7 @@
 import { getNotionPageData, postDataPost } from '@/api/postApi';
 import ProgressModal from '@/components/pages/progressModal';
-import { useModalContext } from '@/context/modal.context';
-import { useTagContext } from '@/context/tag.context';
+import { useModalContext } from '@/context/useModalContext';
+import { useTagContext } from '@/context/useTagContext';
 import { postsEndPointFormData, PostsFormSchema } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notionAPI';
 import { createToast } from '@/utils/toast';

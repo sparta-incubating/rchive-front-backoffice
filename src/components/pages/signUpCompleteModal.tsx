@@ -3,7 +3,7 @@
 import Button from '@/components/atoms/button';
 import Modal from '@/components/atoms/modal';
 import SignupHeader from '@/components/molecules/signupHeader';
-import { useModalContext } from '@/context/modal.context';
+import { useModalContext } from '@/context/useModalContext';
 
 const SignUpCompleteModal = () => {
   const { close } = useModalContext();
