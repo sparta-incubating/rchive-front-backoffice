@@ -1,7 +1,7 @@
 import { getMailCheck, postSignup } from '@/api/authApi';
 import { Admin, User } from '@/class/signup';
 import SignUpCompleteModal from '@/components/pages/signUpCompleteModal';
-import { useModalContext } from '@/context/modal.context';
+import { useModalContext } from '@/context/useModalContext';
 import {
   GenderEnum,
   OAuthEnum,

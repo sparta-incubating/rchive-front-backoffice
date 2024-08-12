@@ -9,7 +9,7 @@ const UploadThumbnailText = ({ children }: PropsWithChildren) => {
         alt="기본 썸네일"
         fill
       />
-      <div className="bg-image-black absolute inset-0"></div>
+      <div className="absolute inset-0 bg-image-black"></div>
       <div className="relative z-10 text-center text-sm font-medium text-gray-50">
         {children}
       </div>

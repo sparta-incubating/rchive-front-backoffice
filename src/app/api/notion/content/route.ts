@@ -35,9 +35,13 @@ export async function GET(request: Request) {
       const data = load.value
         .toString()
         .replace(
-          /<([^>]+)>|!\[[^\]]*\]\([^)]+\)|\[\S+?\]\([^)]+\)|\*\*|\s+|[`~!@#$%^&*()_+\-=$begin:math:display$$end:math:display${};':"\\|,.<>\/?]/gi,
+          /<([^>]+)>|!\[[^\]]*\]\([^)]+\)|\[\S+?\]\([^)]+\)|\*\*|\s+|[`~!@#$%^&*()_+\-=$begin:math:display$$end:math:display${};':"\\|,.<>/?]/gi,
           '',
         );
+      // .replace(
+      //   /<([^>]+)>|!\[[^\]]*\]\([^)]+\)|\[\S+?\]\([^)]+\)|\*\*|\s+|[`~!@#$%^&*()_+\-=$begin:math:display$$end:math:display${};':"\\|,.<>\/?]/gi,
+      //   '',
+      // );
       return NextResponse.json({ result: data });
     }
   } catch (error) {
