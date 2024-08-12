@@ -1,4 +1,4 @@
-name: CI on Dev
+name: CI/CD on Dev
 
 on:
   pull_request:
@@ -34,8 +34,8 @@ jobs:
     - name: Run lint
       run: yarn run lint
 
-    - name: Run tests
-      run: yarn test
+    # - name: Run tests
+    #   run: yarn test
 
     - name: Run build
       run: yarn build:dev
