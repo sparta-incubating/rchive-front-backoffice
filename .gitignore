@@ -106,3 +106,5 @@ Temporary Items
 
 .env
 .env.local
+.env.development
+.env.prodction
