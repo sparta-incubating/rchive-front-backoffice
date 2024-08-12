@@ -16,10 +16,10 @@ export const getUserInfo = async () => {
   }
 };
 
-export const updatePhoneNumber = async (phoneNumber: string) => {
+export const updatePhoneNumber = async (phone: string) => {
   try {
     const res = await client.patch(`/api/v1/profile/phone`, {
-      phone: phoneNumber,
+      phone,
     });
     return res.data;
   } catch (error) {

@@ -58,12 +58,7 @@ const Profile = () => {
       {modalType === 'password' && <PasswordChangeModal onClose={closeModal} />}
       {modalType === 'phone' && <PhoneChangeModal onClose={closeModal} />}
       {modalType === 'role' && (
-        <RoleChangeModal
-          onClose={closeModal}
-          trackName={trackName}
-          trackRole={trackRole}
-          period={period}
-        />
+        <RoleChangeModal onClose={closeModal} trackRole={trackRole} />
       )}
     </BackofficePage>
   );

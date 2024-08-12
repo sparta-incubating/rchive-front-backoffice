@@ -35,7 +35,7 @@ const TableRow = ({
   checkedListById,
   variant,
   onCheckChange,
-  onPermissionChange, // 새로운 prop 사용
+  onPermissionChange,
 }: TableRowProps) => {
   const isChecked = checkedListById.includes(data.id);
 

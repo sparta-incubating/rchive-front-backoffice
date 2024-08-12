@@ -12,7 +12,7 @@ type TabProps = {
   }[];
   activeTab: number;
   setActiveTab: (idx: number) => void;
-  listData: any[]; // 전체 데이터 리스트
+  listData: any[];
 };
 
 const TapMenu = ({ data, activeTab, setActiveTab, listData }: TabProps) => {
