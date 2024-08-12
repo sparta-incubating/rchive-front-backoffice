@@ -1,13 +1,14 @@
 'use client';
 
 import CategoryBox from '@/components/atoms/category/categoryBox';
+import PostIsOpenSelectBoxCategory from '@/components/atoms/category/postIsOpenSelectBoxCategory';
 import { setPostId } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
 import { getNameCategory } from '@/utils/setAuthInfo/post.util';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PostsTableRowProps {
   postData: PostContentType;
@@ -58,7 +59,12 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       </td>
       <td className="w-[97px] px-2.5 text-gray-400">{postData.tutor}</td>
       <td className="w-[69px] text-gray-400">{postData.period}기</td>
-      <td className="w-[137px] px-2.5 text-gray-400">{postData.isOpened}</td>
+      <td className="w-[137px] px-2.5 text-gray-400">
+        <PostIsOpenSelectBoxCategory
+          isOpen={postData.isOpened}
+          postId={postData.postId}
+        />
+      </td>
       <td className="w-[106px] text-gray-400">{postData.uploadedAt}</td>
       <td className="w-[74px] text-gray-400"></td>
     </tr>

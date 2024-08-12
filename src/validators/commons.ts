@@ -7,9 +7,9 @@ export const trackEnum = z.enum([
   'SPRING_JAVA',
   'SPRING_KOTLIN',
   'FRONT_REACT',
-  'WEB',
   'ANDROID',
   'IOS',
   'DATA',
   'UXUI',
+  'SPRING_DEEP',
 ]);

@@ -1,9 +1,12 @@
 import PostListPage from '@/components/pages/postListPage';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/posts.constnat';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { createServerAPI } from '@/utils/serverAPI';
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import React from 'react';
+
+export const revalidate = 1;
 
 interface PostProps {
   searchParams: SearchParamsType;
@@ -39,8 +42,8 @@ const Post = async ({ searchParams }: PostProps) => {
     query.set('isOpened', searchParamsData.isOpened);
   if (searchParamsData.tutorId) query.set('tutorId', searchParamsData.tutorId);
   if (searchParamsData.title) query.set('title', searchParamsData.title);
-  query.set('page', searchParamsData.page || '1');
-  query.set('size', searchParamsData.size || '5');
+  query.set('page', searchParamsData.page || DEFAULT_PAGE);
+  query.set('size', searchParamsData.size || DEFAULT_PAGE_SIZE);
 
   const postListResponse = await serverAPI.get<PostListResponse>(
     `/api/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,

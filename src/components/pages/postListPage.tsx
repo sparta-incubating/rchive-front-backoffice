@@ -1,5 +1,6 @@
 'use client';
 
+import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import PageNation from '@/components/atoms/category/pageNation';
 import PostFilterCategory from '@/components/atoms/category/postFilterCategory';
 import PostList from '@/components/atoms/category/postList';
@@ -9,14 +10,17 @@ import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import BackofficePage from '@/components/pages/backofficePage';
 import { postTabArr } from '@/constants/permission.constant';
+import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
 import useSearchKeyword from '@/hooks/useSearchKeyword';
 import useSearchTutor from '@/hooks/useSearchTutor';
-import { useAppSelector } from '@/redux/storeConfig';
+import { clearPostIds } from '@/redux/slice/postCheckBox.slice';
+import { setPosts } from '@/redux/slice/posts.slice';
+import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 interface PostListProps {
@@ -31,12 +35,18 @@ const PostListPage = ({
   periodData,
 }: PostListProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  dispatch(setPosts(postListData.data.content));
 
   const {
     trackName,
     period: loginPeriod,
     trackRole: loginTrackRole,
   } = useAppSelector((state) => state.authSlice);
+  const { postIds: checkedPostIds } = useAppSelector(
+    (state) => state.postCheckBoxSlice,
+  );
 
   const [activeTab, setActiveTab] = useState<string>(
     searchParams?.postType || 'all',
@@ -122,14 +132,31 @@ const PostListPage = ({
     } else {
       query.delete(key);
     }
-
     if (key !== 'page') {
       setCurrentPage(1);
-      query.set('page', '1'); // 필터 변경 시 페이지를 1로 초기화
+      query.set('page', '1');
     }
 
     router.push(`/posts?${query.toString()}`);
   };
+
+  const updatePostsIsOpen = usePostIsOpenUpdate();
+
+  const handlePostsIsOpen = useCallback(
+    async (postIds: number[]) => {
+      await updatePostsIsOpen(postIds, true);
+      dispatch(clearPostIds());
+    },
+    [dispatch, updatePostsIsOpen],
+  );
+
+  const handlePostsIsClose = useCallback(
+    async (postIds: number[]) => {
+      await updatePostsIsOpen(postIds, false);
+      dispatch(clearPostIds());
+    },
+    [dispatch, updatePostsIsOpen],
+  );
 
   return (
     <BackofficePage>
@@ -155,7 +182,7 @@ const PostListPage = ({
 
         <section className="px-9 py-6">
           {/* 카테고리 */}
-          <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between">
+          <section className="mx-auto my-[24px] flex w-full flex-row justify-between">
             <section className="flex flex-row gap-2.5">
               {/* period */}
               {loginTrackRole === 'PM' && (
@@ -197,10 +224,29 @@ const PostListPage = ({
                 }}
               />
             </section>
+
+            {checkedPostIds.length > 0 && (
+              <section className="flex flex-row gap-[8px]">
+                <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
+                  {checkedPostIds.length}개 선택
+                </p>
+                <BackOfficeButton
+                  onClick={() => handlePostsIsOpen(checkedPostIds)}
+                >
+                  공개
+                </BackOfficeButton>
+                <BackOfficeButton
+                  onClick={() => handlePostsIsClose(checkedPostIds)}
+                  variant="nondisclosure"
+                >
+                  비공개
+                </BackOfficeButton>
+              </section>
+            )}
           </section>
 
           {/* 조회 */}
-          <PostList postListData={postListData} />
+          <PostList />
 
           {/* 페이지네이션 */}
           <PageNation

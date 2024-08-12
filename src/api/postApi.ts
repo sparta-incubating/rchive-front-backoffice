@@ -132,3 +132,45 @@ export const postDataPost = async (
     throw new Error('게시물 등록에 실패했습니다.');
   }
 };
+
+// 게시물 공개 endpoint
+export const patchPostOpen = async (
+  trackName: string,
+  loginPeriod: string,
+  postIds: number[],
+) => {
+  try {
+    const response = await client.patch(
+      `/api/v1/posts/open?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+      {
+        postIds,
+      },
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+    throw new Error('게시물 공개에 실패했습니다.');
+  }
+};
+
+// 게시물 비공개 endpoint
+export const patchPostClose = async (
+  trackName: string,
+  loginPeriod: string,
+  postIds: number[],
+) => {
+  try {
+    const response = await client.patch(
+      `/api/v1/posts/close?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+      {
+        postIds,
+      },
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+    throw new Error('게시물 비공개에 실패했습니다.');
+  }
+};
