@@ -49,7 +49,7 @@ const Calendar = ({ control, className }: CalendarProps) => {
             <PopoverContent className="top-0 w-auto p-0" sideOffset={-1020}>
               <CalendarComponent
                 mode="single"
-                selected={value}
+                selected={value || undefined}
                 onSelect={onChange}
                 locale={ko}
                 initialFocus
