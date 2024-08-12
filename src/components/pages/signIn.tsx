@@ -62,7 +62,7 @@ const SignIn = () => {
         }
       }
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 500) {
         setpwErrorMsg(
           '가입되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.',
         );
@@ -151,7 +151,7 @@ const SignIn = () => {
 
           {/*2 */}
 
-          <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
+          <section className="flex-1 bg-custom-gradient shadow-signInBox">
             <section className="flex items-center justify-center pt-[138px]">
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
@@ -191,7 +191,7 @@ const SignIn = () => {
                   />
                 </article>
               </section>
-            </section>{' '}
+            </section>
           </section>
           {/*2 */}
         </section>
