@@ -175,7 +175,8 @@ export type PostContentType = {
   period: number;
   isOpened: boolean;
   uploadedAt: string;
-  tagInfoList: TagType[];
+  tagInfoList?: TagType[];
+  contentLink?: string;
 };
 
 export type SortType = {

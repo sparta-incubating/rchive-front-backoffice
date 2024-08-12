@@ -1,14 +1,19 @@
 'use client';
 
+import refreshIcon from '@/../public/assets/icons/refresh.svg';
+import refreshDisableIcon from '@/../public/assets/icons/refreshDisable.svg';
+import { getNotionPageData } from '@/api/postApi';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import PostIsOpenSelectBoxCategory from '@/components/atoms/category/postIsOpenSelectBoxCategory';
+import RefreshButton from '@/components/atoms/refreshButton';
 import { setPostId } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
+import { extractPageId } from '@/utils/notionAPI';
 import { getNameCategory } from '@/utils/setAuthInfo/post.util';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 interface PostsTableRowProps {
   postData: PostContentType;
@@ -20,10 +25,21 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
 
   const [checked, setChecked] = useState<boolean>(false);
 
-  const handleCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(e.target.checked);
-    dispatch(setPostId({ postId: postData.postId }));
-  };
+  const handleCheckChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked(e.target.checked);
+      dispatch(setPostId({ postId: postData.postId }));
+    },
+    [dispatch, postData.postId],
+  );
+
+  const handleRefreshContent = useCallback(async () => {
+    // content data 가져오기
+    const responseNotionData = await getNotionPageData(
+      extractPageId(postData.contentLink!)!,
+    );
+    console.log({ responseNotionData });
+  }, [postData.contentLink]);
 
   useEffect(() => {
     setChecked(postIds.includes(postData.postId));
@@ -62,11 +78,22 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       <td className="w-[137px] px-2.5 text-gray-400">
         <PostIsOpenSelectBoxCategory
           isOpen={postData.isOpened}
-          postId={postData.postId}
+          postId={String(postData.postId)}
         />
       </td>
       <td className="w-[106px] text-gray-400">{postData.uploadedAt}</td>
-      <td className="w-[74px] text-gray-400"></td>
+      <td className="w-[74px] text-gray-400">
+        <RefreshButton
+          disabled={!postData.contentLink}
+          onClick={handleRefreshContent}
+        >
+          {postData.contentLink ? (
+            <Image src={refreshIcon} alt="새로고침 버튼" fill />
+          ) : (
+            <Image src={refreshDisableIcon} alt="새로고침 비활성 버튼" fill />
+          )}
+        </RefreshButton>
+      </td>
     </tr>
   );
 };
