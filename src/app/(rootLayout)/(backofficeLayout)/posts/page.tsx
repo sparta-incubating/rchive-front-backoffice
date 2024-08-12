@@ -11,6 +11,12 @@ import { useState } from 'react';
 const Post = () => {
   const [checkedNum, setCheckedNum] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // updateQueryParams('page', page);
+  };
 
   return (
     <>
@@ -51,7 +57,12 @@ const Post = () => {
           <PostList activeTab={activeTab} onCheckedNumChange={setCheckedNum} />
 
           {/* 페이지네이션*/}
-          <PageNation />
+          <PageNation
+            currentPage={currentPage}
+            totalElements={postListData.data.totalElements}
+            size={postListData.data.size}
+            onPageChange={handlePageChange}
+          />
         </PermissionBoard>
       </BackofficePage>
     </>
