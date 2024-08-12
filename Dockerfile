@@ -8,11 +8,11 @@ WORKDIR /app
 
 # 의존성 설치
 COPY package.json package-lock.json ./
-RUN npm install
+RUN yarn install
 
 # 앱 코드 복사 및 빌드
 COPY . .
-RUN npm run build
+RUN yarn build
 
 # 배포용 Node.js 이미지를 사용합니다.
 FROM node:18
@@ -27,4 +27,4 @@ COPY --from=build /app ./
 EXPOSE 3000
 
 # 앱 실행
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
