@@ -21,6 +21,7 @@ const PostsSlice = createSlice({
       action: PayloadAction<{ postIds: number[]; isOpen: boolean }>,
     ) => {
       const { postIds, isOpen } = action.payload;
+      console.log('updateIsOpen', postIds, isOpen);
       state.posts = state.posts.map((post) =>
         postIds.includes(post.postId)
           ? {

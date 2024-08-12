@@ -5,12 +5,11 @@ import {
   PropsWithChildren,
   ReactElement,
   useCallback,
-  useContext,
   useMemo,
   useState,
 } from 'react';
 
-interface ModalContextValue {
+export interface ModalContextValue {
   open: (modalElement: ReactElement, closable?: boolean) => void;
   close: () => void;
   backdropClosable: boolean;
@@ -24,10 +23,10 @@ const initialModalContext: ModalContextValue = {
 
 const ModalContext = createContext<ModalContextValue>(initialModalContext);
 
-export const useModalContext = () => {
-  if (!ModalContext) throw new Error('Context 범위가 아닙니다.');
-  return useContext(ModalContext);
-};
+// export const useModalContext = () => {
+//   if (!ModalContext) throw new Error('Context 범위가 아닙니다.');
+//   return useContext(ModalContext);
+// };
 
 export const ModalContextProvider = ({ children }: PropsWithChildren) => {
   const [modal, setModal] = useState<ReactElement | null>(null);

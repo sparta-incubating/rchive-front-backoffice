@@ -1,7 +1,6 @@
 import { patchPostClose, patchPostOpen } from '@/api/postApi';
 import { updateIsOpen } from '@/redux/slice/posts.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
-import { useCallback } from 'react';
 
 const usePostIsOpenUpdate = () => {
   const { trackName, period: loginPeriod } = useAppSelector(
@@ -9,14 +8,15 @@ const usePostIsOpenUpdate = () => {
   );
   const dispatch = useAppDispatch();
 
-  return useCallback(
-    async (postIds: number[], isOpen: boolean) => {
-      const apiCall = isOpen ? patchPostOpen : patchPostClose;
+  return async (postIds: number[], isOpen: boolean) => {
+    const apiCall = isOpen ? patchPostOpen : patchPostClose;
+    try {
       await apiCall(trackName, loginPeriod, postIds);
       dispatch(updateIsOpen({ postIds, isOpen }));
-    },
-    [dispatch, loginPeriod, trackName],
-  );
+    } catch (error) {
+      throw new Error('게시물 공개 변경에 실패했습니다.');
+    }
+  };
 };
 
 export default usePostIsOpenUpdate;

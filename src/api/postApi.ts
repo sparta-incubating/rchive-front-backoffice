@@ -143,7 +143,7 @@ export const patchPostOpen = async (
     const response = await client.patch(
       `/api/v1/posts/open?trackName=${trackName}&loginPeriod=${loginPeriod}`,
       {
-        postIds,
+        postIdList: postIds,
       },
     );
 
@@ -164,7 +164,7 @@ export const patchPostClose = async (
     const response = await client.patch(
       `/api/v1/posts/close?trackName=${trackName}&loginPeriod=${loginPeriod}`,
       {
-        postIds,
+        postIdList: postIds,
       },
     );
 

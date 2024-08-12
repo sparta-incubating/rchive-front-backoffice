@@ -1,5 +1,5 @@
 import ProgressModal from '@/components/pages/progressModal';
-import { useModalContext } from '@/context/modal.context';
+import { useModalContext } from '@/context/useModalContext';
 import { useEffect, useState } from 'react';
 
 const useLoadingProgress = () => {
