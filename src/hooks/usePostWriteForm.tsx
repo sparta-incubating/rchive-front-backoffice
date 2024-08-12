@@ -1,7 +1,6 @@
 import { getNotionPageData, postDataPost } from '@/api/postApi';
-import ProgressModal from '@/components/pages/progressModal';
-import { useModalContext } from '@/context/modal.context';
 import { useTagContext } from '@/context/tag.context';
+import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
 import {
   postsEndPointFormData,
@@ -13,7 +12,7 @@ import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const usePostWriteForm = () => {
@@ -23,10 +22,9 @@ const usePostWriteForm = () => {
     trackName,
   } = useAppSelector((state) => state.authSlice);
 
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [LoadingMessage, setLoadingMessage] = useState<string>('');
+  const { setIsSubmitLoading, setLoadingMessage } = useLoadingProgress();
+
   const { tags } = useTagContext();
-  const { open, close } = useModalContext();
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
@@ -93,13 +91,6 @@ const usePostWriteForm = () => {
     setIsSubmitLoading(false);
     createToast('게시물 등록이 완료되었습니다.', 'primary');
   };
-
-  // loading modal을 제어하는 useEffect
-  useEffect(() => {
-    if (isSubmitLoading)
-      open(<ProgressModal>{LoadingMessage}</ProgressModal>, false);
-    else if (!isSubmitLoading) close();
-  }, [isSubmitLoading, open, close, LoadingMessage]);
 
   return {
     register,

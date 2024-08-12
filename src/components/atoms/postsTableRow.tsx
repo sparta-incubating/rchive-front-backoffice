@@ -6,11 +6,13 @@ import { getNotionPageData } from '@/api/postApi';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import PostIsOpenSelectBoxCategory from '@/components/atoms/category/postIsOpenSelectBoxCategory';
 import RefreshButton from '@/components/atoms/refreshButton';
+import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { setPostId } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notionAPI';
 import { getNameCategory } from '@/utils/setAuthInfo/post.util';
+import { createToast } from '@/utils/toast';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -25,6 +27,8 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
 
   const [checked, setChecked] = useState<boolean>(false);
 
+  const { setLoadingMessage, setIsSubmitLoading } = useLoadingProgress();
+
   const handleCheckChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setChecked(e.target.checked);
@@ -34,12 +38,24 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
   );
 
   const handleRefreshContent = useCallback(async () => {
+    if (!postData.contentLink) return;
+
+    // Progress 출력
+    setIsSubmitLoading(true);
+    setLoadingMessage('노션 자료를 찾아오는 중...');
+
     // content data 가져오기
     const responseNotionData = await getNotionPageData(
       extractPageId(postData.contentLink!)!,
     );
     console.log({ responseNotionData });
-  }, [postData.contentLink]);
+
+    setLoadingMessage('데이터를 서버에 등록 중...');
+    // server data patch
+
+    setIsSubmitLoading(false);
+    createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
+  }, [postData.contentLink, setIsSubmitLoading, setLoadingMessage]);
 
   useEffect(() => {
     setChecked(postIds.includes(postData.postId));

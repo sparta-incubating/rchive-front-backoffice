@@ -14,12 +14,19 @@ const RefreshButton = ({
   return (
     <button
       className={classMerge(
-        'h-8 w-8 rounded-full border border-blue-100',
+        'group h-8 w-8 rounded-full border border-blue-100',
         disabled ? 'cursor-auto' : 'cursor-pointer',
       )}
       {...props}
     >
-      <div className="relative m-auto h-4 w-4">{children}</div>
+      <div
+        className={classMerge(
+          'relative m-auto h-4 w-4',
+          disabled ? '' : 'group-hover:rotate-180 group-hover:duration-500',
+        )}
+      >
+        {children}
+      </div>
     </button>
   );
 };
