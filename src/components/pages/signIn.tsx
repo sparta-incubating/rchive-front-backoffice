@@ -48,7 +48,7 @@ const SignIn = () => {
 
     try {
       await getLastConnectRole();
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       const roleApplyStatusResponse = await getRoleApplyStatus();
       setCookie('loginId', data.username);
@@ -63,7 +63,7 @@ const SignIn = () => {
 
   return (
     <>
-      <main className="w-screen">
+      <main className="m-auto w-screen">
         <section className="flex flex-row">
           {/*1 */}
           <aside className="h-screen w-[500px]">
@@ -138,6 +138,7 @@ const SignIn = () => {
           </aside>
 
           {/*2 */}
+
           <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
             <section className="flex items-center justify-center pt-[138px]">
               <section className="relative">
@@ -178,7 +179,7 @@ const SignIn = () => {
                   />
                 </article>
               </section>
-            </section>
+            </section>{' '}
           </section>
           {/*2 */}
         </section>

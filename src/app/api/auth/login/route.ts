@@ -1,5 +1,6 @@
 import { setServerCookieLogin } from '@/utils/auth.server.util';
 import { createServerAPI } from '@/utils/serverAPI';
+import { getCookie } from 'cookies-next';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -7,7 +8,7 @@ export async function POST(req: NextRequest) {
   const serverAPI = createServerAPI('');
 
   try {
-    const response = await serverAPI.post('/api/v1/users/login', {
+    const response = await serverAPI.post('/apis/v1/users/login', {
       username: data.username,
       password: data.password,
     });
@@ -15,6 +16,9 @@ export async function POST(req: NextRequest) {
     if (response?.status === 200) {
       await setServerCookieLogin(accessToken);
 
+      const res = new NextResponse();
+
+      getCookie('refresh', { req, res });
       return new NextResponse('로그인 성공', { status: 200 });
     } else {
       return new NextResponse('로그인 실패', { status: response.status });

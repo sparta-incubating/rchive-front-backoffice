@@ -12,7 +12,7 @@ import { getCookie } from 'cookies-next';
 export const getTags = async (keyword: string) => {
   try {
     const response = await axiosAPI.get(
-      `/api/v1/posts/tags?tagName=${keyword}`,
+      `/apis/v1/posts/tags?tagName=${keyword}`,
     );
 
     return response.data.data;
@@ -24,7 +24,7 @@ export const getTags = async (keyword: string) => {
 // 태그 저장 함수
 export const postTag = async (tagName: string) => {
   try {
-    const response = await axiosAPI.post('/api/v1/posts/tags', {
+    const response = await axiosAPI.post('/apis/v1/posts/tags', {
       tagName,
     });
     return response.data;
@@ -36,8 +36,8 @@ export const postTag = async (tagName: string) => {
 // 기수 검색 함수
 export const getPeriod = async <T>(track: string): Promise<T> => {
   try {
-    const response = await axiosAPI.get(
-      `/api/v1/role/track/period?trackName=${track}`,
+    const response = await client.get(
+      `/apis/v1/role/track/period?trackName=${track}`,
     );
 
     const periodResponseData = response?.data.data.trackPeriodList;
@@ -61,7 +61,7 @@ export const postThumbnailUpload = async (file: File) => {
 
   try {
     const response = await axiosAPI.post(
-      '/api/v1/s3/thumbnail/upload',
+      '/apis/v1/s3/thumbnail/upload',
       formData,
       {
         headers: {
@@ -95,7 +95,7 @@ export const getSearchTutor = async (
 ): Promise<tutorApiType> => {
   try {
     const response = await client.get<tutorApiType>(
-      `/api/v1/posts/tutors?trackName=${track}&loginPeriod=${loginPeriod}&inputPeriod=${inputPeriod}&tutorName=${keyword}`,
+      `/apis/v1/posts/tutors?trackName=${track}&loginPeriod=${loginPeriod}&inputPeriod=${inputPeriod}&tutorName=${keyword}`,
     );
 
     return response.data;
@@ -123,12 +123,54 @@ export const postDataPost = async (
 ) => {
   try {
     const response = await client.post(
-      `/api/v1/posts?trackName=${trackName}&loginPeriod=${period}`,
+      `/apis/v1/posts?trackName=${trackName}&loginPeriod=${period}`,
       data,
     );
 
     return response.data;
   } catch (error) {
     throw new Error('게시물 등록에 실패했습니다.');
+  }
+};
+
+// 게시물 공개 endpoint
+export const patchPostOpen = async (
+  trackName: string,
+  loginPeriod: string,
+  postIds: number[],
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/open?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+      {
+        postIdList: postIds,
+      },
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+    throw new Error('게시물 공개에 실패했습니다.');
+  }
+};
+
+// 게시물 비공개 endpoint
+export const patchPostClose = async (
+  trackName: string,
+  loginPeriod: string,
+  postIds: number[],
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/close?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+      {
+        postIdList: postIds,
+      },
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+    throw new Error('게시물 비공개에 실패했습니다.');
   }
 };

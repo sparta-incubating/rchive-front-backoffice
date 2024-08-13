@@ -18,7 +18,7 @@ const RoleResultPage = async () => {
     const serverAPI = createServerAPI(String(accessToken));
 
     try {
-      const response = await serverAPI.get('/api/v1/role/result');
+      const response = await serverAPI.get('/apis/v1/role/result');
       return response.data.data;
     } catch (error) {
       throw new Error('권한 신청 결과 조회에 실패했습니다.');

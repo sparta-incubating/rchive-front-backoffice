@@ -1,4 +1,5 @@
 import { SelectOptionType } from '@/types/signup.types';
+import { TagType } from '@/types/tag.types';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { z } from 'zod';
 
@@ -23,6 +24,64 @@ export type trackPeriodResponse = {
 
 export type TutorType = { tutorId: number; tutorName: string };
 
+export const trackOptions: SelectOptionType[] = [
+  {
+    value: 'UNITY',
+    label: 'Unity',
+    selected: false,
+  },
+  {
+    value: 'NODEJS',
+    label: 'Node.js',
+    selected: false,
+  },
+  {
+    value: 'SPRING_JAVA',
+    label: 'Sprign(Java)',
+    selected: false,
+  },
+  {
+    value: 'SPRING_KOTLIN',
+    label: 'Spring(Kotlin)',
+    selected: false,
+  },
+  {
+    value: 'FRONT_REACT',
+    label: 'React',
+    selected: false,
+  },
+  {
+    value: 'AI',
+    label: 'AI',
+    selected: false,
+  },
+  {
+    value: 'ANDROID',
+    label: 'Android',
+    selected: false,
+  },
+  {
+    value: 'IOS',
+    label: 'IOS',
+    selected: false,
+  },
+  {
+    value: 'DATA',
+    label: 'Data',
+    selected: false,
+  },
+  {
+    value: 'UXUI',
+    label: 'UX/UI',
+    selected: false,
+  },
+  {
+    value: 'SPRING_DEEP',
+    label: 'Spring(단기 심화)',
+    selected: false,
+  },
+];
+
 export type TrackType =
   | ''
   | 'UNITY'
@@ -30,11 +89,11 @@ export type TrackType =
   | 'SPRING_JAVA'
   | 'SPRING_KOTLIN'
   | 'FRONT_REACT'
-  | 'WEB'
   | 'ANDROID'
   | 'IOS'
   | 'DATA'
-  | 'UXUI';
+  | 'UXUI'
+  | 'SPRING_DEEP';
 
 export type PostType =
   | 'Sparta_Lecture'
@@ -42,7 +101,8 @@ export type PostType =
   | 'Level_Challenge'
   | 'Level_Standard'
   | 'Level_Basic'
-  | 'Project_Description';
+  | 'Project_Description'
+  | 'all';
 
 export type tutorApiType = {
   data: TutorType[];
@@ -62,4 +122,70 @@ export type postsEndPointFormData = {
   isOpened: boolean;
   thumbnailUrl: string;
   content: string;
+};
+
+export type SearchParamsType = {
+  postType: string | undefined;
+  startDate: string | undefined;
+  endDate: string | undefined;
+  searchPeriod: string | undefined;
+  isOpened: string | undefined;
+  tutorId: string | undefined;
+  page: string | undefined;
+  size: string | undefined;
+  title: string | undefined;
+};
+
+export type PostFilterType = {
+  key: number;
+  value: string;
+};
+
+export type PostListResponse = {
+  status: number;
+  message: string;
+  data: {
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    content: PostContentType[];
+    number: number;
+    sort: { empty: boolean; sorted: boolean; unsorted: boolean };
+    numberOfElements: 7;
+    pageable: {
+      sort: SortType;
+      offset: number;
+      pageNumber: number;
+      pageSize: number;
+      paged: boolean;
+      unpaged: boolean;
+    };
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
+};
+
+export type PostContentType = {
+  postId: number;
+  thumbnailUrl: string;
+  title: string;
+  postType: PostType;
+  tutor: string;
+  period: number;
+  isOpened: boolean;
+  uploadedAt: string;
+  tagInfoList?: TagType[];
+  contentLink?: string;
+};
+
+export type SortType = {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+};
+
+export type PostTabType = {
+  id: PostType;
+  title: string;
 };

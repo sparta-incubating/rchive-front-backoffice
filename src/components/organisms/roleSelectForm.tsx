@@ -4,8 +4,8 @@ import { postRoleApply } from '@/api/authApi';
 import Button from '@/components/atoms/button';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
+import { trackOptions } from '@/types/posts.types';
 import { RoleFormSchema } from '@/types/role.types';
-import { SelectOptionType } from '@/types/signup.types';
 import { roleSchema } from '@/validators/auth/role.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { ReactNode } from 'react';
@@ -96,58 +96,5 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
     </form>
   );
 };
-
-const trackOptions: SelectOptionType[] = [
-  {
-    value: 'UNITY',
-    label: '게임 개발(Unity)',
-    selected: false,
-  },
-  {
-    value: 'NODEJS',
-    label: '게임 개발(Node.js)',
-    selected: false,
-  },
-  {
-    value: 'SPRING_JAVA',
-    label: '백엔드 개발(Java+Spring)',
-    selected: false,
-  },
-  {
-    value: 'SPRING_KOTLIN',
-    label: '백엔드 개발(Kotlin+Spring)',
-    selected: false,
-  },
-  {
-    value: 'FRONT_REACT',
-    label: '프론트엔드 개발',
-    selected: false,
-  },
-  {
-    value: 'WEB',
-    label: 'WEB',
-    selected: false,
-  },
-  {
-    value: 'ANDROID',
-    label: '안드로이드 앱 개발',
-    selected: false,
-  },
-  {
-    value: 'IOS',
-    label: 'Ios 앱 개발',
-    selected: false,
-  },
-  {
-    value: 'DATA',
-    label: 'DATA',
-    selected: false,
-  },
-  {
-    value: 'UXUI',
-    label: 'UX/UI 디자인',
-    selected: false,
-  },
-];
 
 export default RoleSelectForm;

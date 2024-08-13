@@ -17,6 +17,7 @@ interface SelectBoxProps {
   variant?: 'primary' | 'secondary';
   className?: string;
   value: string;
+  disabled?: boolean;
 }
 
 const SelectFormBox = ({
@@ -26,6 +27,7 @@ const SelectFormBox = ({
   variant,
   className,
   value,
+  disabled,
 }: SelectBoxProps) => {
   const { isOpen, setIsOpen, dropdownRef, handleClick } =
     useDropDownOutsideClick();
@@ -44,13 +46,23 @@ const SelectFormBox = ({
     <SelectContainer className={className}>
       <SelectLayout label={label}>
         <SelectLabel>{label}</SelectLabel>
-        <SelectInput
-          variant={selectedOption ? 'selected' : 'unSelected'}
-          onClick={handleClick}
-          clicked={isOpen}
-        >
-          {selectedOption ? selectedOption.label : '선택안함'}
-        </SelectInput>
+        {!disabled ? (
+          <SelectInput
+            variant={selectedOption ? 'selected' : 'unSelected'}
+            onClick={handleClick}
+            clicked={isOpen}
+          >
+            {selectedOption ? selectedOption.label : '선택안함'}
+          </SelectInput>
+        ) : (
+          <SelectInput
+            variant={selectedOption ? 'selected' : 'unSelected'}
+            clicked={isOpen}
+          >
+            {`${value}기`}
+          </SelectInput>
+        )}
+
         <CustomDropDown ref={dropdownRef} clicked={isOpen}>
           {options.map((option) => (
             <SelectItem

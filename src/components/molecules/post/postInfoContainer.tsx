@@ -7,6 +7,7 @@ import SelectCategoryFormBox from '@/components/organisms/selectCategoryFormBox'
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
 import useSelectBox from '@/hooks/useSelectBox';
+import { useAppSelector } from '@/redux/storeConfig';
 import { PostsFormSchema, postTypeList } from '@/types/posts.types';
 import {
   Control,
@@ -31,7 +32,9 @@ const PostInfoContainer = ({
   watch,
   errors,
 }: PostInputContainerProps) => {
-  const period = useGetPeriod('UNITY');
+  const { trackRole, trackName } = useAppSelector((state) => state.authSlice);
+
+  const period = useGetPeriod(trackName);
   const { handleSelected: handlePeriodSelected } = useSelectBox(
     period ? period : [],
   );
@@ -58,6 +61,7 @@ const PostInfoContainer = ({
               variant="secondary"
               className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
               value={value}
+              disabled={trackRole === 'APM'}
             />
           )}
         />
