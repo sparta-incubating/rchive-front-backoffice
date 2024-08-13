@@ -1,0 +1,84 @@
+name: CI/CD on Prod
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  NEXT_PUBLIC_RUN_MODE: ${{secrets.NEXT_PUBLIC_RUN_MODE_PROD}}
+  NEXT_PUBLIC_BACKEND_URL: ${{secrets.NEXT_PUBLIC_BACKEND_URL_PROD}}
+  NOTION_API: ${{secrets.NOTION_API}}
+  TZ: Asia/Seoul
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Run lint
+      run: yarn run lint
+
+    # - name: Run tests
+    #   run: yarn test
+
+    - name: Run build
+      run: yarn build
+
+    - name: Docker login
+      run: echo "${{secrets.DOCKER_HUB_TOKEN}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
+
+    - name: Docker Build image
+      run: docker build -f Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:latest .
+
+    - name: Docker Push image
+      run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:latest
+
+    - name: SSH to EC2 and deploy
+      uses: appleboy/ssh-action@master
+      id: deploy
+      with:
+        host: ${{secrets.HOST_PROD}}
+        username: ${{secrets.USER}}
+        key: ${{secrets.SSH_PEM_KEY}}
+        envs: GITHUB_SHA
+        script: |
+          # Docker login
+          sudo echo "${{secrets.DOCKER_HUB_TOKEN}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
+
+          # Stop and remove existing containers
+          if [ "$(docker ps -q --filter "name=rchive-front-")" ]; then
+            docker stop $(docker ps -q --filter "name=rchive-front-")
+          fi
+          if [ "$(docker ps -a -q -f status=exited)" ]; then
+            docker rm $(docker ps -a -q -f status=exited)
+          fi
+            
+          # Pull the latest image
+          docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:latest
+
+          # Docker run
+          docker run -d \
+            --name rchive-front-${VERSION} \
+            -p 3000:3000 \
+            -e NEXT_PUBLIC_RUN_MODE=${{secrets.NEXT_PUBLIC_RUN_MODE_DEV}} \
+            -e NEXT_PUBLIC_BACKEND_URL=${{secrets.NEXT_PUBLIC_BACKEND_URL_DEV}} \
+            -e NOTION_API=${{secrets.NOTION_API}} \
+            -e TZ=Asia/Seoul \
+            ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:latest
+        
+          # Remove unused images to free up space
+          docker image prune -f
