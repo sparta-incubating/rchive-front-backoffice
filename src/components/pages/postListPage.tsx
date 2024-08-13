@@ -14,7 +14,6 @@ import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
 import useSearchKeyword from '@/hooks/useSearchKeyword';
 import useSearchTutor from '@/hooks/useSearchTutor';
 import { clearPostIds } from '@/redux/slice/postCheckBox.slice';
-import { setPosts } from '@/redux/slice/posts.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
@@ -36,8 +35,6 @@ const PostListPage = ({
 }: PostListProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-
-  dispatch(setPosts(postListData.data.content));
 
   const {
     trackName,
@@ -123,10 +120,14 @@ const PostListPage = ({
 
     if (key === 'date' && value) {
       const dateRange = value as DateRange;
+      console.log({ dateRange });
       if (dateRange.from)
         query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
       if (dateRange.to)
         query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
+    } else if (key === 'date' && !value) {
+      query.delete('startDate');
+      query.delete('endDate');
     } else if (value) {
       query.set(key, String(value));
     } else {
@@ -246,7 +247,7 @@ const PostListPage = ({
           </section>
 
           {/* 조회 */}
-          <PostList />
+          <PostList postListData={postListData.data.content} />
 
           {/* 페이지네이션 */}
           <PageNation

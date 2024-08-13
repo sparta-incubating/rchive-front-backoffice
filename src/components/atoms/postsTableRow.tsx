@@ -31,6 +31,8 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
 
   const handleCheckChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('handleCheckChange');
+
       setChecked(e.target.checked);
       dispatch(setPostId({ postId: postData.postId }));
     },
@@ -48,6 +50,7 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
     const responseNotionData = await getNotionPageData(
       extractPageId(postData.contentLink!)!,
     );
+
     console.log({ responseNotionData });
 
     setLoadingMessage('데이터를 서버에 등록 중...');

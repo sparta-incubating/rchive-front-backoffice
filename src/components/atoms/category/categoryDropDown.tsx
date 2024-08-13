@@ -41,8 +41,8 @@ const CategoryDropDown = ({
       )}
     >
       <div
-        className={`flex w-[160px] flex-col items-center justify-center rounded-[14px] border bg-white ${
-          isClicked ? 'h-[64px]' : 'h-[100px]'
+        className={`flex h-auto w-[160px] flex-col items-center overflow-y-scroll rounded-[14px] border bg-white py-2 scrollbar-hide ${
+          isClicked ? 'max-h-[64px]' : 'max-h-[120px]'
         }`}
         data-clicked={isClicked}
       >

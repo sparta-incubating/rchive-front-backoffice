@@ -36,7 +36,7 @@ const FilterCategory = ({
   };
 
   const handleToast = () => {
-    createToast('기수를 먼저 선택해주세요.', 'primary');
+    createToast('기수를 먼저 선택해주세요.', 'warning');
   };
 
   useEffect(() => {

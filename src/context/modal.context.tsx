@@ -21,12 +21,8 @@ const initialModalContext: ModalContextValue = {
   backdropClosable: true,
 };
 
-const ModalContext = createContext<ModalContextValue>(initialModalContext);
-
-// export const useModalContext = () => {
-//   if (!ModalContext) throw new Error('Context 범위가 아닙니다.');
-//   return useContext(ModalContext);
-// };
+export const ModalContext =
+  createContext<ModalContextValue>(initialModalContext);
 
 export const ModalContextProvider = ({ children }: PropsWithChildren) => {
   const [modal, setModal] = useState<ReactElement | null>(null);

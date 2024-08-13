@@ -6,11 +6,15 @@ import PostsTableRow from '@/components/atoms/postsTableRow';
 import { postHeaders } from '@/constants/permission.constant';
 import { setAllPostIds } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
+import { PostContentType } from '@/types/posts.types';
 
-const PostList = () => {
+interface PostListProps {
+  postListData: PostContentType[];
+}
+
+const PostList = ({ postListData }: PostListProps) => {
   const dispatch = useAppDispatch();
   const postIds = useAppSelector((state) => state.postCheckBoxSlice.postIds);
-  const postListData = useAppSelector((state) => state.postsSlice.posts);
 
   const handleAllCheck = (checked: boolean) => {
     const currentPagePostIds = postListData.map((item) => item.postId);

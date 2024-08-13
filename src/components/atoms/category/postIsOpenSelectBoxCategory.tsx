@@ -8,8 +8,6 @@ import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpen
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';
 import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
-import { updateIsOpen } from '@/redux/slice/posts.slice';
-import { useAppDispatch } from '@/redux/storeConfig';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -22,13 +20,11 @@ const PostIsOpenSelectBoxCategory = ({
   isOpen,
   postId,
 }: PostIsOpenSelectBoxCategoryProps) => {
-  const dispatch = useAppDispatch();
   const [showOptions, setShowOptions] = useState(false);
   const updatePostsIsOpen = usePostIsOpenUpdate();
 
   const handleClick = async (data: boolean) => {
     await updatePostsIsOpen([Number(postId)], data);
-    dispatch(updateIsOpen({ postIds: [Number(postId)], isOpen: data }));
     setShowOptions(false);
   };
 

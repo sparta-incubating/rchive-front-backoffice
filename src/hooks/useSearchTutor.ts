@@ -9,7 +9,7 @@ const useSearchTutor = (
   period: string,
 ) => {
   const { data } = useQuery({
-    queryKey: ['tutor', trackName],
+    queryKey: ['tutor', trackName, period],
     queryFn: () =>
       getSearchTutor(trackName, Number(loginPeriod), Number(period), ''),
     enabled: period !== '0',

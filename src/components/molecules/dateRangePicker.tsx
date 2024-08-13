@@ -72,7 +72,9 @@ export function DateRangePicker({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={(day, selectedDay, activeModifiers, e) => {
+              setDate(day || undefined);
+            }}
             numberOfMonths={1}
             locale={ko}
           />
