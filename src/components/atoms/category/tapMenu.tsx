@@ -1,3 +1,4 @@
+/*
 'use client';
 
 import { useMemo } from 'react';
@@ -56,3 +57,4 @@ const TapMenu = ({ data, activeTab, setActiveTab, listData }: TabProps) => {
 };
 
 export default TapMenu;
+*/

@@ -1,3 +1,4 @@
+/*
 'use client';
 
 import green from '@/../public/assets/icons/rectangle-green.svg';
@@ -93,3 +94,4 @@ const PermissionCategory = ({ currentPermission, onPermissionChange }: any) => {
 };
 
 export default PermissionCategory;
+*/

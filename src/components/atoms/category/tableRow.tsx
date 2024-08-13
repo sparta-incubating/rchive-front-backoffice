@@ -1,3 +1,4 @@
+/*
 import { TableHeaderItem } from '@/constants/permission.constant';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps } from 'react';
@@ -74,3 +75,4 @@ const TableRow = ({
 };
 
 export default TableRow;
+*/

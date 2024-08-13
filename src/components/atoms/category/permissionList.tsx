@@ -1,3 +1,4 @@
+/*
 'use client';
 
 import { permissionHeaders } from '@/constants/permission.constant';
@@ -99,3 +100,4 @@ const PermissionList = ({
 };
 
 export default PermissionList;
+*/

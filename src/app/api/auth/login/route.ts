@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const serverAPI = createServerAPI('');
 
   try {
-    const response = await serverAPI.post('/api/v1/users/login', {
+    const response = await serverAPI.post('/apis/v1/users/login', {
       username: data.username,
       password: data.password,
     });

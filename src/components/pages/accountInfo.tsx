@@ -1,4 +1,4 @@
-const AccountInfo = ({ email, phone }) => {
+const AccountInfo = ({ email, phone }: { email: string; phone: string }) => {
   return (
     <div className="flex h-[236px] w-[1084px] flex-col items-center justify-center gap-[24px] border">
       <div className="flex h-[40px] w-[1012px] items-center">

@@ -46,11 +46,11 @@ const Post = async ({ searchParams }: PostProps) => {
   query.set('size', searchParamsData.size || DEFAULT_PAGE_SIZE);
 
   const postListResponse = await serverAPI.get<PostListResponse>(
-    `/api/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
+    `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
   );
 
   const periodResponse = await serverAPI.get(
-    `/api/v1/role/track/period?trackName=${trackName}`,
+    `/apis/v1/role/track/period?trackName=${trackName}`,
   );
 
   const periodData = periodResponse?.data.data.trackPeriodList.map(

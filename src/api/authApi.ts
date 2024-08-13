@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const postSignup = async (userData: User | Admin) => {
   try {
-    const response = await axiosAPI.post('/api/v1/users/signup', userData);
+    const response = await axiosAPI.post('/apis/v1/users/signup', userData);
     return response.data;
   } catch (error) {
     console.log({ error });
@@ -21,7 +21,7 @@ export const postSignup = async (userData: User | Admin) => {
 export const getMailCheck = async (email: string) => {
   try {
     const response = await axiosAPI.get<emailUniqueResponseType>(
-      `/api/v1/users/overlap/email?email=${email}`,
+      `/apis/v1/users/overlap/email?email=${email}`,
     );
     return response.data;
   } catch (error) {
@@ -34,7 +34,7 @@ export const postSignIn = async (data: {
   password: string;
 }) => {
   try {
-    const res = await client.post('/api/v1/users/login', {
+    const res = await client.post('/apis/v1/users/login', {
       username: data.username,
       password: data.password,
     });
@@ -60,7 +60,7 @@ export const getLastConnectRole = async () => {
 // 권한 신청 endpoint
 export const postRoleApply = async (data: RoleFormSchema) => {
   try {
-    const response = await client.post('/api/v1/role', data);
+    const response = await client.post('/apis/v1/role', data);
     return response.data;
   } catch (error) {
     throw new Error('권한 신청에 실패했습니다.');
@@ -70,7 +70,7 @@ export const postRoleApply = async (data: RoleFormSchema) => {
 // 권한 신청 여부 조회 endpoint
 export const getRoleApplyStatus = async () => {
   try {
-    const response = await client.get('/api/v1/role/request');
+    const response = await client.get('/apis/v1/role/request');
     return response.data.data;
   } catch (error) {
     throw new Error('권한 신청 여부 조회에 실패했습니다.');
@@ -80,7 +80,7 @@ export const getRoleApplyStatus = async () => {
 // logout endpoint
 export const logout = async () => {
   try {
-    const res = await client.delete('/api/v1/users/logout');
+    const res = await client.delete('/apis/v1/users/logout');
     if (res.data.status === 200) {
       return res.data.status;
     } else {
@@ -96,7 +96,7 @@ export const serverLogout = async (req: NextRequest) => {
   const accessToken = getCookie('AT', { req, res });
   const serverAPI = createServerAPI(String(accessToken));
   try {
-    const res = await serverAPI.delete('/api/v1/users/logout');
+    const res = await serverAPI.delete('/apis/v1/users/logout');
     if (res.data.status === 200) {
       return res.data.status;
     } else {

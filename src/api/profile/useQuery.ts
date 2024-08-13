@@ -17,19 +17,21 @@ export function useUserInfoDataQuery() {
   return { userData, isPending, isError };
 }
 
-export function useUserPatchPhoneQuery() {
+export function useUserPatchPhoneQuery(phoneNumber: string) {
   const { data, isPending, isError } = useQuery({
     queryKey: [PROFILE_QUERY_KEYS.PROFILE],
-    queryFn: updatePhone,
+    queryFn: () => updatePhone(phoneNumber),
+    enabled: !!phoneNumber,
   });
 
   return { data, isPending, isError };
 }
 
-export function useUserPatchPasswordQuery() {
+export function useUserPatchPasswordQuery(password: string) {
   const { data, isPending, isError } = useQuery({
     queryKey: [PROFILE_QUERY_KEYS.PROFILE],
-    queryFn: updatePassword,
+    queryFn: () => updatePassword(password),
+    enabled: !!password,
   });
 
   return { data, isPending, isError };
