@@ -183,7 +183,7 @@ const PostListPage = ({
 
         <section className="px-9 py-6">
           {/* 카테고리 */}
-          <section className="mx-auto my-[24px] flex w-full flex-row justify-between">
+          <section className="mx-auto mb-[24px] flex w-full flex-row justify-between">
             <section className="flex flex-row gap-2.5">
               {/* period */}
               {loginTrackRole === 'PM' && (
