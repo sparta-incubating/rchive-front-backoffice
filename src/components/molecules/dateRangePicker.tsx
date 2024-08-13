@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -13,11 +15,16 @@ import Image from 'next/image';
 import * as React from 'react';
 import { DateRange } from 'react-day-picker';
 
-export function DateRangePicker({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>();
+interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
+  setDate: (value: DateRange | undefined) => void;
+  date: DateRange | undefined;
+}
 
+export function DateRangePicker({
+  date,
+  setDate,
+  className,
+}: DateRangePickerProps) {
   return (
     <div className={classMerge('grid gap-2', className)}>
       <Popover>
@@ -26,23 +33,28 @@ export function DateRangePicker({
             id="date"
             variant={'outline'}
             className={classMerge(
-              'flex w-fit min-w-[100px] items-center justify-between rounded-full px-2.5 py-2 text-left font-normal',
+              'flex h-[39px] w-fit min-w-[100px] items-center justify-between rounded-full px-2.5 py-0 text-left font-normal',
               !date && 'text-muted-foreground',
             )}
           >
-            <div className="flex gap-2.5 text-xs">
+            <div className="flex items-center gap-2.5">
               <CalendarIcon className="h-4 w-4" />
               {date?.from ? (
                 date.to ? (
                   <>
-                    {dayjs(date.from).format('YY/MM/DD')} -{' '}
-                    {dayjs(date.to).format('YY/MM/DD')}
+                    <span className="text-sm font-semibold">
+                      {dayjs(date.from).format('YY/MM/DD')}
+                    </span>{' '}
+                    -{' '}
+                    <span className="text-sm font-semibold">
+                      {dayjs(date.to).format('YY/MM/DD')}
+                    </span>
                   </>
                 ) : (
                   dayjs(date.from).format('YY/MM/DD')
                 )
               ) : (
-                <span>기간</span>
+                <span className="text-sm font-semibold">기간</span>
               )}
               <div className="relative h-5 w-5">
                 <Image
@@ -60,7 +72,9 @@ export function DateRangePicker({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={(day, selectedDay, activeModifiers, e) => {
+              setDate(day || undefined);
+            }}
             numberOfMonths={1}
             locale={ko}
           />

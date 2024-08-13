@@ -6,7 +6,8 @@ export const toastVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-gray-700 ',
+        primary: 'bg-gray-700',
+        warning: 'bg-gray-700',
       },
     },
     defaultVariants: {},
@@ -35,6 +36,7 @@ export const eventEmitter = new EventEmitter<EventMap>();
 export const createToast = (
   message: string,
   variant: VariantProps<typeof toastVariants>['variant'],
+  isIcon: boolean = true,
 ) => {
-  eventEmitter.emit('createToast', { message, variant });
+  eventEmitter.emit('createToast', { message, variant, isIcon });
 };

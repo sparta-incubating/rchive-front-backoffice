@@ -5,6 +5,17 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  res.headers.append('Access-Control-Allow-Credentials', 'true');
+  res.headers.append('Access-Control-Allow-Origin', '*'); // replace this your actual origin
+  res.headers.append(
+    'Access-Control-Allow-Methods',
+    'GET,DELETE,PATCH,POST,PUT',
+  );
+  res.headers.append(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+  );
+
   const token = getCookie('AT', { res, req });
   const role = getCookie('trackRole', { res, req });
   const { pathname } = req.nextUrl;

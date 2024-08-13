@@ -29,14 +29,6 @@ interface TagContextType {
 
 export const TagContext = createContext<TagContextType | undefined>(undefined);
 
-// export const useTagContext = () => {
-//   const context = useContext(TagContext);
-//   if (!context) {
-//     throw new Error('TagContext 범위 밖입니다.');
-//   }
-//   return context;
-// };
-
 export const TagContextProvider = ({ children }: PropsWithChildren) => {
   const [tags, setTags] = useState<TagType[]>([]);
   const [searchTags, setSearchTags] = useState<TagType[] | null>(null);

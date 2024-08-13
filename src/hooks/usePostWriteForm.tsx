@@ -1,21 +1,31 @@
 import { getNotionPageData, postDataPost } from '@/api/postApi';
-import ProgressModal from '@/components/pages/progressModal';
-import { useModalContext } from '@/context/useModalContext';
 import { useTagContext } from '@/context/useTagContext';
-import { postsEndPointFormData, PostsFormSchema } from '@/types/posts.types';
+import useLoadingProgress from '@/hooks/useLoadingProgress';
+import { useAppSelector } from '@/redux/storeConfig';
+import {
+  postsEndPointFormData,
+  PostsFormSchema,
+  TrackType,
+} from '@/types/posts.types';
 import { extractPageId } from '@/utils/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const usePostWriteForm = () => {
-  const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
-  const [LoadingMessage, setLoadingMessage] = useState<string>('');
+  const {
+    trackRole,
+    period: loginPeriod,
+    trackName,
+  } = useAppSelector((state) => state.authSlice);
+
+  const { setIsSubmitLoading, setLoadingMessage } = useLoadingProgress();
+
   const { tags } = useTagContext();
-  const { open, close } = useModalContext();
+
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
 
@@ -38,8 +48,8 @@ const usePostWriteForm = () => {
       videoLink: '',
       tagNameList: [],
       uploadedAt: null,
-      trackName: 'UNITY',
-      postPeriod: '',
+      trackName: trackName as TrackType,
+      postPeriod: trackRole === 'APM' ? loginPeriod : '',
       isOpened: 'true',
     },
   });
@@ -81,13 +91,6 @@ const usePostWriteForm = () => {
     setIsSubmitLoading(false);
     createToast('게시물 등록이 완료되었습니다.', 'primary');
   };
-
-  // loading modal을 제어하는 useEffect
-  useEffect(() => {
-    if (isSubmitLoading)
-      open(<ProgressModal>{LoadingMessage}</ProgressModal>, false);
-    else if (!isSubmitLoading) close();
-  }, [isSubmitLoading, open, close, LoadingMessage]);
 
   return {
     register,

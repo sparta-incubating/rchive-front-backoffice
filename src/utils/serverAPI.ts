@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { serverLogout } from './auth.server.util';
+import { redirect } from 'next/navigation';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -36,7 +36,8 @@ export const createServerAPI = (accessToken: string) => {
       // 토큰 재발행 로직 추가 예정
 
       if (error.response?.status === 401) {
-        await serverLogout();
+        console.log('로그아웃해야해요');
+        redirect('/login');
       }
 
       return Promise.reject(error);

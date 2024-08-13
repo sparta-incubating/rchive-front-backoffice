@@ -3,7 +3,6 @@
 import { LastConnectRoleDataType } from '@/types/auth.types';
 import { deleteCookie, setCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 export const setServerCookieRole = async (data: LastConnectRoleDataType) => {
   const { trackId, trackRole, trackName, period } = data;
@@ -19,12 +18,6 @@ export const deleteServerCookieRole = async () => {
   deleteCookie('trackRole', { cookies });
   deleteCookie('trackName', { cookies });
   deleteCookie('period', { cookies });
-};
-
-export const serverLogout = async () => {
-  deleteCookie('AT', { cookies });
-  await deleteServerCookieRole();
-  redirect('/login');
 };
 
 export const setServerCookieLogin = async (accessToken: string) => {
