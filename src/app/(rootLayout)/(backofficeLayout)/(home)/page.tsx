@@ -3,6 +3,7 @@
 import { postReissue } from '@/api/authApi';
 import Button from '@/components/atoms/button';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import { useState } from 'react';
 
 const Home = () => {
@@ -18,6 +19,8 @@ const Home = () => {
   };
 
   const handleClientRefresh = async () => {
+    const refresh = getCookie('Refresh');
+    console.log({ refresh });
     try {
       const response = await postReissue();
     } catch (error) {
