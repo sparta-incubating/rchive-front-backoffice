@@ -1,3 +1,4 @@
+import { setServerAccessTokenCookie } from '@/utils/auth.server.util';
 import axiosInstance from '@/utils/axiosAPI';
 import axios from 'axios';
 import { cookies } from 'next/headers';
@@ -21,7 +22,17 @@ export async function POST() {
         },
       },
     );
-    return new NextResponse(response.data.message, { status: response.status });
+
+    const accessToken = response.headers.authorization.replace('Bearer ', '');
+    if (response?.status === 200) {
+      await setServerAccessTokenCookie(accessToken);
+
+      return new NextResponse(response.data.message, {
+        status: response.status,
+      });
+    } else {
+      return new NextResponse('갱신 실패', { status: response.status });
+    }
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.data, '로그인 오류');

@@ -1,6 +1,5 @@
-import { setServerCookieLogin } from '@/utils/auth.server.util';
+import { setServerAccessTokenCookie } from '@/utils/auth.server.util';
 import axiosInstance from '@/utils/axiosAPI';
-import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -20,11 +19,8 @@ export async function POST(req: NextRequest) {
 
     const accessToken = response.headers.authorization.replace('Bearer ', '');
     if (response?.status === 200) {
-      await setServerCookieLogin(accessToken);
+      await setServerAccessTokenCookie(accessToken);
 
-      const res = new NextResponse();
-
-      getCookie('refresh', { req, res });
       return new NextResponse('로그인 성공', { status: 200 });
     } else {
       return new NextResponse('로그인 실패', { status: response.status });
