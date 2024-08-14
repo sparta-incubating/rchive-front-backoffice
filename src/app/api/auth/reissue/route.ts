@@ -10,7 +10,7 @@ interface ReissueResponse {
 
 export async function POST() {
   const cookieStore = cookies();
-  const refreshToken = cookieStore.get('Refresh');
+  const refreshToken = cookieStore.get('Refresh')?.value || '';
   try {
     const response = await axiosInstance.post<ReissueResponse>(
       '/apis/v1/users/reissue',
