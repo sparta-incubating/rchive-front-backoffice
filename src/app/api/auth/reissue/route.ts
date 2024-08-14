@@ -17,7 +17,7 @@ export async function POST() {
       {},
       {
         headers: {
-          'set-cookie': `Refresh=${refreshToken}`,
+          Cookie: `Refresh=${refreshToken}`,
         },
       },
     );
