@@ -3,8 +3,7 @@ import { cookies } from 'next/headers';
 
 const Home = () => {
   const cookieStore = cookies();
-  const refreshToken = cookieStore.get('Refresh');
-
+  const refreshToken = cookieStore.get('Refresh')?.value || '';
   return <TestComponent refreshToken={refreshToken + ''}></TestComponent>;
 };
 
