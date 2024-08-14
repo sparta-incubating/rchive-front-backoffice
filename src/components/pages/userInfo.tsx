@@ -9,6 +9,7 @@ interface UserInfoProps {
   trackName: string;
   period: string;
   trackRole: string;
+  profileImg: string;
   handleChangeRole: () => void;
 }
 
@@ -19,8 +20,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
   trackRole,
   handleChangeRole,
 }) => {
-  // const { updateRoleMutate } = useProfileUpdate();
-  const profileImages = [
+  const randomProfile = [
     '/assets/icons/MRT_1.svg',
     '/assets/icons/MRT_2.svg',
     '/assets/icons/MRT_3.svg',
@@ -35,14 +35,14 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const [initImg, setInitImg] = useState(0);
 
   const handleRandomImg = () => {
-    setInitImg((initImg) => (initImg + 1) % profileImages.length);
+    setInitImg((initImg) => (initImg + 1) % randomProfile.length);
   };
 
   return (
     <main className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
       <section className="flex w-[1020px] flex-row items-center justify-between text-base">
         <p className="flex h-[24px]">회원정보</p>
-        {trackRole === 'APM' && (
+        {trackRole === 'PM' && (
           <button
             className="h-[42px] w-[108px] rounded-[8px] border-2"
             onClick={handleChangeRole}
@@ -58,7 +58,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <article className="flex h-[160px] flex-row">
           <figure className="w-[calc(100%-824px)]">
             <Image
-              src={profileImages[initImg]}
+              src={randomProfile[initImg]}
               height={160}
               width={160}
               alt="랜덤프로필"

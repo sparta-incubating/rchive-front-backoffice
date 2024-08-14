@@ -41,7 +41,7 @@ const CategoryDropDown = ({
       )}
     >
       <div
-        className={`flex w-[160px] flex-col items-center justify-center rounded-[14px] border bg-white ${
+        className={`transition-height flex w-[160px] flex-col items-center justify-center rounded-[14px] border bg-white ${
           isClicked ? 'h-[64px]' : 'h-[100px]'
         }`}
         data-clicked={isClicked}

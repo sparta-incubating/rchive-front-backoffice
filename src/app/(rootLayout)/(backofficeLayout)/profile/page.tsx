@@ -11,12 +11,13 @@ import UserInfo from '@/components/pages/userInfo';
 import { useState } from 'react';
 
 export interface USERPROFILE {
-  username: string;
-  trackName: string;
-  period: string;
-  trackRole: string;
   email: string;
+  username: string;
+  profileImg: string;
   phone: string;
+  trackName: string;
+  trackRole: string;
+  period: string;
 }
 
 const Profile = () => {
@@ -30,7 +31,7 @@ const Profile = () => {
     return <div>로딩중...</div>;
   }
 
-  const { username, trackName, period, trackRole, email, phone } =
+  const { email, username, profileImg, trackName, period, trackRole, phone } =
     userData.data;
   const openModal = (type: string) => setModalType(type);
   const closeModal = () => setModalType(null);
@@ -39,6 +40,7 @@ const Profile = () => {
     <BackofficePage>
       <PermissionBoard variant="userInfo">
         <UserInfo
+          profileImg={profileImg}
           username={username}
           trackName={trackName}
           period={period}

@@ -10,9 +10,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const postSignup = async (userData: User | Admin) => {
   try {
-    const response = await axiosAPI.post('/api/v1/users/signup', userData);
+    const response = await axiosAPI.post('/apis/v1/users/signup', userData);
     return response.data;
   } catch (error) {
+    console.log({ error });
     throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
   }
 };
@@ -20,7 +21,7 @@ export const postSignup = async (userData: User | Admin) => {
 export const getMailCheck = async (email: string) => {
   try {
     const response = await axiosAPI.get<emailUniqueResponseType>(
-      `/api/v1/users/overlap/email?email=${email}`,
+      `/apis/v1/users/overlap/email?email=${email}`,
     );
     return response.data;
   } catch (error) {
@@ -33,23 +34,17 @@ export const postSignIn = async (data: {
   password: string;
 }) => {
   try {
-    const res = await client.post('/api/v1/users/login', {
+    const res = await client.post('/apis/v1/users/login', {
       username: data.username,
       password: data.password,
     });
-
-    if (res.status === 200) {
-      const accessToken = res.headers.authorization.replace('Bearer ', '');
+    const accessToken = res.headers.authorization.replace('Bearer ', '');
+    if (res?.status === 200) {
       setCookie('AT', accessToken);
-      console.log('로그인 성공');
-    } else if (res.status === 401) {
-      alert('비밀번호를 다시 확인해주세요');
-    } else {
-      alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
+    return res;
   } catch (error) {
-    console.error('로그인 오류:', error);
-    alert('로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    console.log(error, '로그인 오류');
   }
 };
 
@@ -58,14 +53,14 @@ export const getLastConnectRole = async () => {
   try {
     await axios.get('/api/auth/lastConnectRole');
   } catch (error) {
-    throw new Error('마지막 권한 조회에 실패했습니다.');
+    throw new Error('마지막 권환 조회에 실패했습니다.');
   }
 };
 
 // 권한 신청 endpoint
 export const postRoleApply = async (data: RoleFormSchema) => {
   try {
-    const response = await client.post('/api/v1/role', data);
+    const response = await client.post('/apis/v1/role', data);
     return response.data;
   } catch (error) {
     throw new Error('권한 신청에 실패했습니다.');
@@ -75,7 +70,7 @@ export const postRoleApply = async (data: RoleFormSchema) => {
 // 권한 신청 여부 조회 endpoint
 export const getRoleApplyStatus = async () => {
   try {
-    const response = await client.get('/api/v1/role/request');
+    const response = await client.get('/apis/v1/role/request');
     return response.data.data;
   } catch (error) {
     throw new Error('권한 신청 여부 조회에 실패했습니다.');
@@ -85,9 +80,8 @@ export const getRoleApplyStatus = async () => {
 // logout endpoint
 // export const logout = async () => {
 //   try {
-//     const res = await client.delete('/api/v1/users/logout');
+//     const res = await client.delete('/apis/v1/users/logout');
 //     if (res.data.status === 200) {
-//       logoutCookie();
 //       return res.data.status;
 //     } else {
 //       console.log(res.data.message);
@@ -102,7 +96,7 @@ export const serverLogout = async (req: NextRequest) => {
   const accessToken = getCookie('AT', { req, res });
   const serverAPI = createServerAPI(String(accessToken));
   try {
-    const res = await serverAPI.delete('/api/v1/users/logout');
+    const res = await serverAPI.delete('/apis/v1/users/logout');
     if (res.data.status === 200) {
       return res.data.status;
     } else {

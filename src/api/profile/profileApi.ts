@@ -7,7 +7,7 @@ export const getUserInfo = async () => {
 
   try {
     const res = await client.get(
-      `api/v1/profile?trackName=${trackName}&period=${period}`,
+      `/apis/v1/profile?trackName=${trackName}&period=${period}`,
     );
     return res.data;
   } catch (error) {
@@ -18,7 +18,7 @@ export const getUserInfo = async () => {
 
 export const updatePhoneNumber = async (phone: string) => {
   try {
-    const res = await client.patch(`/api/v1/profile/phone`, {
+    const res = await client.patch(`/apis/v1/profile/phone`, {
       phone,
     });
     return res.data;
@@ -36,7 +36,7 @@ export const updatePassword = async (password: PassWordChange) => {
   console.log(originPassword, '기존비밀번호');
   console.log(newPassword, '변경할 비밀번호');
   try {
-    const res = await client.patch(`/api/v1/profile/password`, {
+    const res = await client.patch(`/apis/v1/profile/password`, {
       originPassword,
       newPassword,
     });
@@ -58,7 +58,7 @@ export const updateRole = async (roleInfo: RoleChange) => {
   console.log(period, '기수');
   console.log(trackRole, 'Role');
   try {
-    const res = await client.post(`/api/v1/role`, {
+    const res = await client.post(`/apis/v1/role`, {
       trackName,
       period,
       trackRole,

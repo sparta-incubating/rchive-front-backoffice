@@ -1,6 +1,5 @@
 import { getLastConnectRole } from '@/api/authApi';
 import Button from '@/components/atoms/button';
-import React from 'react';
 
 const RoleResult = () => {
   const handleComplete = async () => {

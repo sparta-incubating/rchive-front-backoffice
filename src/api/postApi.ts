@@ -12,7 +12,7 @@ import { getCookie } from 'cookies-next';
 export const getTags = async (keyword: string) => {
   try {
     const response = await axiosAPI.get(
-      `/api/v1/posts/tags?tagName=${keyword}`,
+      `/apis/v1/posts/tags?tagName=${keyword}`,
     );
 
     return response.data.data;
@@ -24,7 +24,7 @@ export const getTags = async (keyword: string) => {
 // 태그 저장 함수
 export const postTag = async (tagName: string) => {
   try {
-    const response = await axiosAPI.post('/api/v1/posts/tags', {
+    const response = await axiosAPI.post('/apis/v1/posts/tags', {
       tagName,
     });
     return response.data;
@@ -37,7 +37,7 @@ export const postTag = async (tagName: string) => {
 export const getPeriod = async <T>(track: string): Promise<T> => {
   try {
     const response = await axiosAPI.get(
-      `/api/v1/role/track/period?trackName=${track}`,
+      `/apis/v1/role/track/period?trackName=${track}`,
     );
 
     const periodResponseData = response?.data.data.trackPeriodList;
@@ -61,7 +61,7 @@ export const postThumbnailUpload = async (file: File) => {
 
   try {
     const response = await axiosAPI.post(
-      '/api/v1/s3/thumbnail/upload',
+      '/apis/v1/s3/thumbnail/upload',
       formData,
       {
         headers: {
@@ -79,7 +79,7 @@ export const postThumbnailUpload = async (file: File) => {
 export const getThumbnailDelete = async (thumbnailUrl: string) => {
   try {
     return await client.get(
-      `api/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
+      `/apis/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
     );
   } catch (error) {
     throw new Error('파일 삭제에 실패했습니다.');
@@ -95,7 +95,7 @@ export const getSearchTutor = async (
 ): Promise<tutorApiType> => {
   try {
     const response = await client.get<tutorApiType>(
-      `/api/v1/posts/tutors?trackName=${track}&loginPeriod=${loginPeriod}&inputPeriod=${inputPeriod}&tutorName=${keyword}`,
+      `/apis/v1/posts/tutors?trackName=${track}&loginPeriod=${loginPeriod}&inputPeriod=${inputPeriod}&tutorName=${keyword}`,
     );
 
     return response.data;
@@ -107,7 +107,7 @@ export const getSearchTutor = async (
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
   try {
-    const response = await axios.get(`/api/notion/content?url=${pageId}`);
+    const response = await axios.get(`/apis/notion/content?url=${pageId}`);
 
     return response.data.result.replace('"', '');
   } catch (error) {
@@ -123,7 +123,7 @@ export const postDataPost = async (
 ) => {
   try {
     const response = await client.post(
-      `/api/v1/posts?trackName=${trackName}&loginPeriod=${period}`,
+      `/apis/v1/posts?trackName=${trackName}&loginPeriod=${period}`,
       data,
     );
 
