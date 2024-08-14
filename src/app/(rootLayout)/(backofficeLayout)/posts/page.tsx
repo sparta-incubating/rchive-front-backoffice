@@ -44,11 +44,9 @@ const Post = async ({ searchParams }: PostProps) => {
   if (searchParamsData.title) query.set('title', searchParamsData.title);
   query.set('page', searchParamsData.page || DEFAULT_PAGE);
   query.set('size', searchParamsData.size || DEFAULT_PAGE_SIZE);
-
   const postListResponse = await serverAPI.get<PostListResponse>(
     `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
   );
-
   const periodResponse = await serverAPI.get(
     `/apis/v1/role/track/period?trackName=${trackName}`,
   );
@@ -69,4 +67,5 @@ const Post = async ({ searchParams }: PostProps) => {
     />
   );
 };
+
 export default Post;

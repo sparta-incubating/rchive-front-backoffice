@@ -1,11 +1,26 @@
-import TagContainer from '@/components/organisms/tagContainer';
+'use client';
+
+import Button from '@/components/atoms/button';
+import axios from 'axios';
+import { useState } from 'react';
 
 const Home = () => {
+  const [message, setMessage] = useState('대기중');
+
+  const handleRefresh = async () => {
+    try {
+      const response = await axios.post('/api/auth/reissue');
+      console.log({ response });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="w-full">
         <h1>Home</h1>
-        <TagContainer placeholder="태그 입력 최대 개수는 10개까지 가능해요." />
+        <Button onClick={handleRefresh}>loginTest</Button>
+        <div>{message}</div>
       </div>
     </>
   );

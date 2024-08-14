@@ -1,5 +1,4 @@
 import { ModalContextProvider } from '@/context/modal.context';
-import { TagContextProvider } from '@/context/tag.context';
 import StoreProvider from '@/provider/reduxProvider/storeProvider';
 import TanstackQueryProvider from '@/provider/tanstackQueryProvider/TanstackQueryProvider';
 import { trackRole } from '@/types/auth.types';
@@ -25,7 +24,7 @@ const CompoundProvider = ({ children }: PropsWithChildren) => {
             trackRole={trackRole}
             period={period}
           />
-          <TagContextProvider>{children}</TagContextProvider>
+          {children}
         </ModalContextProvider>
       </TanstackQueryProvider>
     </StoreProvider>

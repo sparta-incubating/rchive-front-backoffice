@@ -5,12 +5,15 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import { getLastConnectRole, getRoleApplyStatus } from '@/api/authApi';
+import {
+  getLastConnectRole,
+  getRoleApplyStatus,
+  postSignIn,
+} from '@/api/authApi';
 import { useModalContext } from '@/context/useModalContext';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -25,7 +28,6 @@ import SignupModal from './signupModal';
 
 const SignIn = () => {
   const { open } = useModalContext();
-
   const handleSignupModalOpen = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
@@ -44,11 +46,13 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await axios.post('/api/auth/login', data);
+    // await axios.post('/api/auth/login', data);
+    await postSignIn(data);
 
     try {
       await getLastConnectRole();
-      window.location.href = '/';
+      router.push('/');
+      // window.location.href = '/';
     } catch (error) {
       const roleApplyStatusResponse = await getRoleApplyStatus();
       setCookie('loginId', data.username);

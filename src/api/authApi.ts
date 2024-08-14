@@ -106,3 +106,17 @@ export const serverLogout = async (req: NextRequest) => {
     console.error('로그아웃 중 오류 발생:', error);
   }
 };
+
+export const postReissue = async () => {
+  try {
+    const res = await client.post('/apis/v1/users/reissue');
+
+    const accessToken = res.headers.authorization.replace('Bearer ', '');
+    if (res?.status === 200) {
+      setCookie('AT', accessToken);
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
