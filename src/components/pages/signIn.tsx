@@ -91,8 +91,10 @@ const SignIn = () => {
                   BackOffice
                 </p>*/}
                 <p>
-                  <div>{session?.user.accessToken}</div>
-                  <div>{session?.user.refreshToken}</div>
+                  {/*<div>{session?.user.accessToken}</div>*/}
+                  {/*<div>{session?.user.refreshToken}</div>*/}
+                  <div>{process.env.NEXTAUTH_URL}</div>
+                  <div>{process.env.NEXTAUTH_SECRET}</div>
                 </p>
               </section>
             </section>
