@@ -62,11 +62,15 @@ const nextAuthOptions: NextAuthOptions = {
     async jwt({ token, user, trigger }) {
       if (trigger === 'update') {
         try {
-          const refreshRes = await axiosInstance('/apis/v1/users/reissue', {
-            headers: {
-              Cookie: `Refresh=${token.refreshToken}`,
+          const refreshRes = await axiosInstance.post(
+            '/apis/v1/users/reissue',
+            {},
+            {
+              headers: {
+                Cookie: `Refresh=${token.refreshToken}`,
+              },
             },
-          });
+          );
 
           const accessToken = refreshRes.headers.authorization.replace(
             'Bearer ',
