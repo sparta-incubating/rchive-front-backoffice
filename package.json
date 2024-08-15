@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "build:local": "env-cmd -f .env.local next build",
     "build:dev": "env-cmd -f .env.development next build",
     "build:prod": "env-cmd -f .env.prodction next build"
   },

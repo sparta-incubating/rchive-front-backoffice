@@ -84,11 +84,15 @@ const SignIn = () => {
             {/*문구*/}
             <section className="h-[120px]">
               <section className="flex flex-col pb-[20px] pt-[36px]">
-                <p className="flex justify-center text-2xl font-bold">
+                {/* <p className="flex justify-center text-2xl font-bold">
                   르탄이의 아카이브
                 </p>
                 <p className="flex justify-center text-2xl font-bold">
                   BackOffice
+                </p>*/}
+                <p>
+                  <div>{session?.user.accessToken}</div>
+                  <div>{session?.user.refreshToken}</div>
                 </p>
               </section>
             </section>
