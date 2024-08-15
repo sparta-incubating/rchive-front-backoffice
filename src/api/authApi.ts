@@ -5,7 +5,7 @@ import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
 import { createServerAPI } from '@/utils/serverAPI';
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { setCookie } from 'cookies-next';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const postSignup = async (userData: User | Admin) => {
@@ -93,8 +93,7 @@ export const logout = async () => {
 
 export const serverLogout = async (req: NextRequest) => {
   const res = new NextResponse();
-  const accessToken = getCookie('AT', { req, res });
-  const serverAPI = createServerAPI(String(accessToken));
+  const serverAPI = await createServerAPI();
   try {
     const res = await serverAPI.delete('/apis/v1/users/logout');
     if (res.data.status === 200) {
@@ -103,7 +102,7 @@ export const serverLogout = async (req: NextRequest) => {
       console.log(res.data.message);
     }
   } catch (error) {
-    console.error('로그아웃 중 오류 발생:', error);
+    // console.error('로그아웃 중 오류 발생:', error);
   }
 };
 

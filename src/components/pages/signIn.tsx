@@ -5,13 +5,11 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import { getLastConnectRole, getRoleApplyStatus } from '@/api/authApi';
 import { useModalContext } from '@/context/useModalContext';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
-import { setCookie } from 'cookies-next';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -24,6 +22,7 @@ import InputField from '../molecules/InputField';
 import SignupModal from './signupModal';
 
 const SignIn = () => {
+  const { data: session } = useSession();
   const { open } = useModalContext();
   const handleSignupModalOpen = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
@@ -43,23 +42,33 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await axios.post('/api/auth/login', data);
+    // await axios.post('/api/auth/login', data);
     // await postSignIn(data);
+    const authRes = await signIn('credentials', {
+      username: data.username,
+      password: data.password,
+      redirect: false,
+    });
 
-    try {
-      await getLastConnectRole();
+    if (authRes?.status === 200) {
+      console.log("let's go to home");
       router.push('/');
-      // window.location.href = '/';
-    } catch (error) {
-      const roleApplyStatusResponse = await getRoleApplyStatus();
-      setCookie('loginId', data.username);
-
-      if (roleApplyStatusResponse) {
-        router.push(`/role/result`);
-      } else {
-        router.push('/role');
-      }
     }
+    /*
+        try {
+          await getLastConnectRole();
+          router.push('/');
+          // window.location.href = '/';
+        } catch (error) {
+          const roleApplyStatusResponse = await getRoleApplyStatus();
+          setCookie('loginId', data.username);
+    
+          if (roleApplyStatusResponse) {
+            router.push(`/role/result`);
+          } else {
+            router.push('/role');
+          }
+        }*/
   };
 
   return (

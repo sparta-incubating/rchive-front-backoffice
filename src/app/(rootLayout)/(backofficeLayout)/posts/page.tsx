@@ -25,10 +25,9 @@ const Post = async ({ searchParams }: PostProps) => {
     title: searchParams.title ?? '',
   };
 
-  const accessToken = String(getCookie('AT', { cookies }));
   const period = String(getCookie('period', { cookies }));
   const trackName = String(getCookie('trackName', { cookies }));
-  const serverAPI = createServerAPI(accessToken);
+  const serverAPI = await createServerAPI();
 
   const query = new URLSearchParams();
   if (searchParamsData.postType && searchParams.postType !== 'all')

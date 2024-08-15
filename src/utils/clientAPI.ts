@@ -1,7 +1,20 @@
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import { getSession } from 'next-auth/react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+const getAuthorizationToken = async () => {
+  const SESSION = await getSession();
+
+  if (SESSION) {
+    const {
+      user: { accessToken },
+    } = SESSION;
+
+    return accessToken;
+  }
+  throw Error('토큰이 없습니다. 로그인 해주시고 이용해주세요');
+};
 
 export const client = axios.create({
   baseURL: BACKEND_URL,
@@ -13,7 +26,7 @@ export const client = axios.create({
 
 client.interceptors.request.use(
   async (config) => {
-    const accessToken = getCookie('AT');
+    const accessToken = await getAuthorizationToken();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     } else {

@@ -1,9 +1,14 @@
+import nextAuthOptions from '@/utils/nextOptions/nextOptions';
 import axios from 'axios';
+import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const createServerAPI = (accessToken: string) => {
+export const createServerAPI = async () => {
+  const session = await getServerSession(nextAuthOptions);
+  const accessToken = session?.user?.accessToken || '';
+
   const serverAPI = axios.create({
     baseURL: BACKEND_URL,
     withCredentials: true,
