@@ -59,7 +59,26 @@ const nextAuthOptions: NextAuthOptions = {
     maxAge: 5 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
+      if (trigger === 'update') {
+        try {
+          const refreshRes = await axiosInstance('/apis/v1/users/reissue', {
+            headers: {
+              Cookie: `Refresh=${token.refreshToken}`,
+            },
+          });
+
+          const accessToken = refreshRes.headers.authorization.replace(
+            'Bearer ',
+            '',
+          );
+
+          token.accessToken = accessToken;
+        } catch (error) {
+          console.log(error);
+          token.roleError = '토큰 갱신 실패';
+        }
+      }
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;

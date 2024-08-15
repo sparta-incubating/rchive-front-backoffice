@@ -9,7 +9,7 @@ import { useState } from 'react';
 const TestComponent = ({ refreshToken }: { refreshToken: string }) => {
   const [message, setMessage] = useState('대기중');
 
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   const handleServerRefresh = async () => {
     try {
@@ -28,6 +28,10 @@ const TestComponent = ({ refreshToken }: { refreshToken: string }) => {
     }
   };
 
+  const handleNextAuthRefresh = async () => {
+    await update();
+  };
+
   return (
     <>
       <div className="w-full">
@@ -39,6 +43,7 @@ const TestComponent = ({ refreshToken }: { refreshToken: string }) => {
         <Button onClick={handleClientRefresh} variant="submit">
           ClientRefreshTest
         </Button>
+        <Button onClick={handleNextAuthRefresh}>userUpdate</Button>
         <div>{message}</div>
       </div>
     </>
