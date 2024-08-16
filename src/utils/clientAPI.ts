@@ -1,10 +1,15 @@
-import { refreshAccessToken } from '@/utils/auth.util';
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+let currentAccessToken: string | null = null;
+
 const getAuthorizationToken = async () => {
+  if (currentAccessToken) {
+    return currentAccessToken;
+  }
+
   const SESSION = await getSession();
 
   if (SESSION) {
@@ -12,6 +17,7 @@ const getAuthorizationToken = async () => {
       user: { accessToken },
     } = SESSION;
 
+    currentAccessToken = accessToken;
     return accessToken;
   }
   throw Error('토큰이 없습니다. 로그인 해주시고 이용해주세요');
@@ -19,7 +25,6 @@ const getAuthorizationToken = async () => {
 
 export const client = axios.create({
   baseURL: BACKEND_URL,
-  // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -35,7 +40,6 @@ client.interceptors.request.use(
     }
     return config;
   },
-
   (error) => Promise.reject(error),
 );
 
@@ -52,28 +56,31 @@ client.interceptors.response.use(
       try {
         const session = await getSession();
         const refreshToken = session?.user.refreshToken;
-        //
+
         if (refreshToken) {
-          const newAccessToken = await refreshAccessToken(refreshToken);
+          const response = await axios.post('/api/auth/reissue');
+          const newAccessToken = response.data.accessToken;
           console.log({ newAccessToken });
 
-          // Update the session with the new access token
-          session.user.accessToken = newAccessToken;
+          // 새로운 액세스 토큰을 전역 변수에 저장
+          currentAccessToken = newAccessToken;
 
-          // Update the original request with the new token
+          // 새로운 헤더로 Authorization 토큰 업데이트
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-          // Retry the original request
+          // 원래의 요청을 새로운 토큰으로 재시도
           return client(originalRequest);
         } else {
-          // await signOut();
+          throw new Error('No refresh token available');
         }
       } catch (refreshError) {
         console.error('Failed to refresh token, logging out');
         // await signOut();
+        currentAccessToken = null;
         return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   },
 );

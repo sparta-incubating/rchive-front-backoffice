@@ -70,7 +70,17 @@ const nextAuthOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger }) {
+      console.log('jwt 가 실행되어유~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      console.log('jwt 가 실행되어유~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      console.log('jwt 가 실행되어유~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      console.log('jwt 가 실행되어유~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      console.log('jwt 가 실행되어유~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      if (trigger === 'update' && token.accessToken) {
+        console.log('update token');
+        return { ...token, accessToken: token.accessToken };
+      }
       if (trigger === 'update') {
+        console.log('update token');
         try {
           token.accessToken = await refreshAccessToken(token.refreshToken);
         } catch (error) {
