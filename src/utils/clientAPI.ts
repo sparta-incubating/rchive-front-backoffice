@@ -1,5 +1,6 @@
+import { refreshAccessToken } from '@/utils/auth.util';
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -43,16 +44,35 @@ client.interceptors.response.use(
     console.log('응답 받음:', response.status, response.config.url);
     return response;
   },
-
   async (error) => {
-    console.error('API 오류:', error.response?.status, error.response?.data);
-    // 토큰 재발행 로직 추가 예정
+    const originalRequest = error.config;
 
-    if (error.response?.data === 'access token expired') {
-      // await logout();
-      window.dispatchEvent(new CustomEvent('AUTH_ERROR'));
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const session = await getSession();
+        const refreshToken = session?.user.refreshToken;
+        //
+        if (refreshToken) {
+          const newAccessToken = await refreshAccessToken(refreshToken);
+
+          // Update the session with the new access token
+          session.user.accessToken = newAccessToken;
+
+          // Update the original request with the new token
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          // Retry the original request
+          return client(originalRequest);
+        } else {
+          await signOut();
+        }
+      } catch (refreshError) {
+        console.error('Failed to refresh token, logging out');
+        await signOut();
+        return Promise.reject(refreshError);
+      }
     }
-
     return Promise.reject(error);
   },
 );

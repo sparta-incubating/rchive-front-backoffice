@@ -1,6 +1,6 @@
 'use client';
 
-import { postRoleApply } from '@/api/authApi';
+import { postRoleApply } from '@/api/server/authApi';
 import Button from '@/components/atoms/button';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';

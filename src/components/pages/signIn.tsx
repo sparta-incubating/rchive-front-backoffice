@@ -42,8 +42,6 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    // await axios.post('/api/auth/login', data);
-    // await postSignIn(data);
     const authRes = await signIn('credentials', {
       username: data.username,
       password: data.password,
@@ -54,21 +52,6 @@ const SignIn = () => {
       console.log("let's go to home");
       router.push('/');
     }
-    /*
-        try {
-          await getLastConnectRole();
-          router.push('/');
-          // window.location.href = '/';
-        } catch (error) {
-          const roleApplyStatusResponse = await getRoleApplyStatus();
-          setCookie('loginId', data.username);
-    
-          if (roleApplyStatusResponse) {
-            router.push(`/role/result`);
-          } else {
-            router.push('/role');
-          }
-        }*/
   };
 
   return (
@@ -84,17 +67,11 @@ const SignIn = () => {
             {/*문구*/}
             <section className="h-[120px]">
               <section className="flex flex-col pb-[20px] pt-[36px]">
-                {/* <p className="flex justify-center text-2xl font-bold">
+                <p className="flex justify-center text-2xl font-bold">
                   르탄이의 아카이브
                 </p>
                 <p className="flex justify-center text-2xl font-bold">
                   BackOffice
-                </p>*/}
-                <p>
-                  {/*<div>{session?.user.accessToken}</div>*/}
-                  {/*<div>{session?.user.refreshToken}</div>*/}
-                  <div>{process.env.NEXTAUTH_URL}</div>
-                  <div>{process.env.NEXTAUTH_SECRET}</div>
                 </p>
               </section>
             </section>

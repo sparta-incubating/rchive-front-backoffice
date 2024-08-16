@@ -31,12 +31,13 @@ export default async function middleware(req: NextRequest) {
   const role = trackRole;
   const { pathname } = req.nextUrl;
 
-  // /role과 /role/result 페이지는 항상 접근 가능하도록 설정
-  if (
-    pathname === '/role' ||
-    pathname === '/role/result' ||
-    pathname === '/login'
-  ) {
+  // /login 페이지는 아무 조건 없이 접근 가능
+  if (pathname === '/login') {
+    return NextResponse.next();
+  }
+
+  // /role, /role/result는 AccessToken이 있어야 접근 가능
+  if ((pathname === '/role' || pathname === '/role/result') && accessToken) {
     return NextResponse.next();
   }
 

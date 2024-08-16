@@ -1,4 +1,4 @@
-import { getSearchTutor } from '@/api/postApi';
+import { getSearchTutor } from '@/api/client/postApi';
 import { TrackType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import { useQuery } from '@tanstack/react-query';

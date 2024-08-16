@@ -2,7 +2,7 @@
 
 import refreshIcon from '@/../public/assets/icons/refresh.svg';
 import refreshDisableIcon from '@/../public/assets/icons/refreshDisable.svg';
-import { getNotionPageData } from '@/api/postApi';
+import { getNotionPageData } from '@/api/client/postApi';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import PostIsOpenSelectBoxCategory from '@/components/atoms/category/postIsOpenSelectBoxCategory';
 import RefreshButton from '@/components/atoms/refreshButton';

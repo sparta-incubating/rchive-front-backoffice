@@ -2,14 +2,11 @@
 
 import Button from '@/components/atoms/button';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const RoleWait = () => {
-  const router = useRouter();
   const handleGoToLogin = async () => {
     await signOut();
-    router.push('/login');
   };
 
   return (

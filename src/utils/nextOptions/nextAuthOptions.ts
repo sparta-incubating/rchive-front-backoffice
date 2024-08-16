@@ -1,6 +1,16 @@
+import {
+  getLastConnectRole,
+  getRoleApplyStatus,
+  logout,
+  signIn,
+} from '@/api/server/authApi';
 import { trackRole } from '@/types/auth.types';
 import { TrackType } from '@/types/posts.types';
-import axiosInstance from '@/utils/axiosAPI';
+import {
+  extractAccessToken,
+  extractRefreshToken,
+  refreshAccessToken,
+} from '@/utils/auth.util';
 import axios from 'axios';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -16,19 +26,18 @@ const nextAuthOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         try {
           // login 진행
-          const response = await axiosInstance.post('/apis/v1/users/login', {
-            username: credentials?.username,
-            password: credentials?.password,
-          });
+          const response = await signIn(
+            credentials?.username,
+            credentials?.password,
+          );
 
           // refresh token cookie에 저장
           const setCookie = response.headers['set-cookie'] as string[];
-          const refreshToken = setCookie[0].split('=')[1].split(';')[0];
+          const refreshToken = extractRefreshToken(setCookie);
 
           // access token 가져오기
-          const accessToken = response.headers.authorization.replace(
-            'Bearer ',
-            '',
+          const accessToken = extractAccessToken(
+            response.headers.authorization,
           );
 
           if (response?.status === 200) {
@@ -44,9 +53,10 @@ const nextAuthOptions: NextAuthOptions = {
           return null;
         } catch (error) {
           if (axios.isAxiosError(error)) {
-            console.log({ error });
+            console.log('-------------login error----------------');
+            console.log(error.response);
+            console.log('-------------login error----------------');
             const message = Object.values(error.response?.data)[0] as string;
-            console.log(message);
             throw new Error(message);
           }
           return null;
@@ -62,24 +72,9 @@ const nextAuthOptions: NextAuthOptions = {
     async jwt({ token, user, trigger }) {
       if (trigger === 'update') {
         try {
-          const refreshRes = await axiosInstance.post(
-            '/apis/v1/users/reissue',
-            {},
-            {
-              headers: {
-                Cookie: `Refresh=${token.refreshToken}`,
-              },
-            },
-          );
-
-          const accessToken = refreshRes.headers.authorization.replace(
-            'Bearer ',
-            '',
-          );
-
-          token.accessToken = accessToken;
+          token.accessToken = await refreshAccessToken(token.refreshToken);
         } catch (error) {
-          console.log(error);
+          //TODO: logout 처리
           token.roleError = '토큰 갱신 실패';
         }
       }
@@ -89,29 +84,19 @@ const nextAuthOptions: NextAuthOptions = {
 
         // 여기서 추가 정보를 가져옵니다
         try {
-          const response = await axiosInstance.get(
-            '/apis/v1/role/select/last',
-            {
-              headers: {
-                Authorization: `Bearer ${user.accessToken}`,
-              },
-            },
-          );
-          console.log(response.data.data);
+          // 이때는 session이 없으므로 token 직접 주입
+          const response = await getLastConnectRole(user.accessToken);
+
           const { trackId, trackRole, trackName, period } = response.data.data;
           token.trackId = trackId;
           token.trackRole = trackRole;
           token.trackName = trackName;
           token.loginPeriod = period;
         } catch (error) {
-          const roleResponse = await axiosInstance.get(
-            '/apis/v1/role/request',
-            {
-              headers: {
-                Authorization: `Bearer ${user.accessToken}`,
-              },
-            },
-          );
+          // 권한이 없을때
+          // 권한 신청이 있는지 조회
+          // 여기도 마찬가지로 session이 없음.
+          const roleResponse = await getRoleApplyStatus(user.accessToken);
           const { data } = roleResponse.data;
           token.roleApply = data;
         }
@@ -131,12 +116,17 @@ const nextAuthOptions: NextAuthOptions = {
   },
   events: {
     async signOut({ session, token }) {
-      await axiosInstance.delete('/apis/v1/users/logout', {
-        headers: {
-          Authorization: `Bearer ${token.accessToken}`,
-          Cookie: `Refresh=${token.refreshToken}`,
-        },
-      });
+      try {
+        console.log('signout 진행');
+
+        const response = await logout(token.accessToken);
+        console.log('signout 완료');
+        return response;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.response);
+        }
+      }
     },
   },
   pages: {

@@ -1,6 +1,5 @@
 'use client';
 
-import { postReissue } from '@/api/authApi';
 import Button from '@/components/atoms/button';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
@@ -20,14 +19,6 @@ const TestComponent = ({ refreshToken }: { refreshToken: string }) => {
     }
   };
 
-  const handleClientRefresh = async () => {
-    try {
-      const response = await postReissue();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleNextAuthRefresh = async () => {
     await update();
   };
@@ -40,9 +31,6 @@ const TestComponent = ({ refreshToken }: { refreshToken: string }) => {
         <h2>next auth accessToken tokens: {session?.user.accessToken}</h2>
         <h2>next auth refreshToken tokens: {session?.user.accessToken}</h2>
         <Button onClick={handleServerRefresh}>ServerRefreshTest</Button>
-        <Button onClick={handleClientRefresh} variant="submit">
-          ClientRefreshTest
-        </Button>
         <Button onClick={handleNextAuthRefresh}>userUpdate</Button>
         <div>{message}</div>
       </div>
