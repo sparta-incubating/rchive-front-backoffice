@@ -18,7 +18,7 @@ const ProfileChangeForm = ({
     <>
       <div className="fixed inset-0 bg-gray-900 bg-opacity-60"></div>
       <div className="fixed inset-0 flex items-center justify-center border">
-        <div className="flex w-[520px] flex-col items-center rounded-[14px] border bg-white">
+        <div className="flex h-[557px] w-[520px] flex-col items-center rounded-[14px] border bg-white">
           {/* 나가기버튼 */}
           <div className="flex h-[72px] w-full justify-end p-[28px]">
             <IconButton onClick={onClose}>

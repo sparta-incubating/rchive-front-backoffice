@@ -6,19 +6,17 @@ import InputField from '@/components/molecules/InputField';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import { SelectOptionType } from '@/types/signup.types';
+import { createToast } from '@/utils/toast';
 import { roleSchema } from '@/validators/auth/role.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import ChangeSuccessModal from './changeSuccessModal';
 
 interface RoleChangeModalProps {
   trackRole: string;
   onClose: () => void;
 }
 const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
-  const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const {
     control,
     register,
@@ -40,8 +38,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     if (trackRole) {
       try {
         await updateRoleMutate.mutateAsync(data);
-        alert('권한 수정 요청이 성공적으로 변경되었습니다.');
-        setIsSuccessful(true);
+        createToast('권한 수정이 요청되었습니다.', 'primary');
       } catch (error) {
         console.error('Error updating password:', error);
         alert('권한 수정 요청에 실패했습니다. 다시 시도해 주세요.');
@@ -50,49 +47,45 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {!isSuccessful ? (
-        <ProfileChangeForm
-          label="권한요청 페이지입니다."
-          onClose={onClose}
-          isValid={isValid}
-        >
-          <p className="text-center text-gray-300">
-            해당하는 직책과 트랙 및 기수를 입력하세요
-          </p>
-          <Controller
-            name="trackName"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <SelectFormBox
-                className="w-[360px]"
-                options={trackOptions}
-                label="트랙"
-                onSelect={onChange}
-                value={value || ''} // 기본 값 설정
-              />
-            )}
-          />
-          {errors.trackName && (
-            <p className="text-red-500">{errors.trackName.message}</p>
+      <ProfileChangeForm
+        label="권한요청 페이지입니다."
+        onClose={onClose}
+        isValid={isValid}
+      >
+        <p className="text-center text-gray-300">
+          해당하는 직책과 트랙 및 기수를 입력하세요
+        </p>
+        <Controller
+          name="trackName"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <SelectFormBox
+              className="w-[360px]"
+              options={trackOptions}
+              label="트랙"
+              onSelect={onChange}
+              value={value || ''}
+            />
           )}
-          <InputContainer>
-            <InputField>
-              <Label htmlFor="period">기수</Label>
-              <Input
-                {...register('period')}
-                placeholder="기수입력"
-                className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-              />
-            </InputField>
-          </InputContainer>
-          <p className="text-gray-300">*1기라면 '1'만 작성해주세요</p>{' '}
-          {errors.period && (
-            <p className="text-red-500">{errors.period.message}</p>
-          )}
-        </ProfileChangeForm>
-      ) : (
-        <ChangeSuccessModal label="권한수정" onClose={onClose} />
-      )}
+        />
+        {errors.trackName && (
+          <p className="text-red-500">{errors.trackName.message}</p>
+        )}
+        <InputContainer>
+          <InputField>
+            <Label htmlFor="period">기수</Label>
+            <Input
+              {...register('period')}
+              placeholder="기수입력"
+              className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+            />
+          </InputField>
+        </InputContainer>
+        <p className="text-gray-300">*1기라면 '1'만 작성해주세요</p>{' '}
+        {errors.period && (
+          <p className="text-red-500">{errors.period.message}</p>
+        )}
+      </ProfileChangeForm>
     </form>
   );
 };
