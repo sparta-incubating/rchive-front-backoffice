@@ -19,7 +19,7 @@ const getAuthorizationToken = async () => {
 
 export const client = axios.create({
   baseURL: BACKEND_URL,
-  withCredentials: true,
+  // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -55,6 +55,7 @@ client.interceptors.response.use(
         //
         if (refreshToken) {
           const newAccessToken = await refreshAccessToken(refreshToken);
+          console.log({ newAccessToken });
 
           // Update the session with the new access token
           session.user.accessToken = newAccessToken;
