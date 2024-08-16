@@ -1,6 +1,6 @@
 import { refreshAccessToken } from '@/utils/auth.util';
 import axios from 'axios';
-import { getSession, signOut } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -65,11 +65,11 @@ client.interceptors.response.use(
           // Retry the original request
           return client(originalRequest);
         } else {
-          await signOut();
+          // await signOut();
         }
       } catch (refreshError) {
         console.error('Failed to refresh token, logging out');
-        await signOut();
+        // await signOut();
         return Promise.reject(refreshError);
       }
     }
