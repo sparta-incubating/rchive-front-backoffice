@@ -16,7 +16,9 @@ const RandomProfileModal = ({
   profileImg,
 }: RandomProfileModalProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [initImg, setInitImg] = useState<number>(0);
+  const [initImg, setInitImg] = useState<string>(profileImg ?? null);
+  const [selectImg, setSelectImg] = useState<number>(0);
+  console.log(initImg, 'initImg');
 
   const { updateProfileInfoMutate } = useProfileUpdate();
 
@@ -32,16 +34,18 @@ const RandomProfileModal = ({
     'MRT_9',
   ];
 
-  const imgName = 'MRT_' + (initImg + 1);
+  const imgName = 'MRT_' + (selectImg + 1);
 
   const handleRandomImg = () => {
-    setInitImg((initImg) => (initImg + 1) % randomProfile.length);
-    console.log(profileImg, '프로필');
+    setSelectImg((selectImg) => (selectImg + 1) % randomProfile.length);
+    setInitImg(imgName);
     setIsValid(true);
+
+    console.log(profileImg, '프로필');
   };
 
   const profileInfo = {
-    profileImg: imgName,
+    profileImg: initImg,
     nickname: '',
   };
   console.log(profileInfo, '프로필 정보');
@@ -61,7 +65,7 @@ const RandomProfileModal = ({
           <span>원하시는 프로필로 변경해 보세요.</span>
           <figure>
             <Image
-              src={`/assets/icons/${profileImg ?? `MRT_1`}.svg`}
+              src={`/assets/icons/${initImg ?? `MRT_1`}.svg`}
               height={160}
               width={160}
               alt="랜덤프로필"
