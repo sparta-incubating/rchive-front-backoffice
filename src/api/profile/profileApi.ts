@@ -68,3 +68,24 @@ export const updateRole = async (roleInfo: RoleChange) => {
     throw new Error('권한수정 요청에 실패했습니다. 다시 시도해주세요.');
   }
 };
+
+interface ProfileChange {
+  profileImg: string;
+  nickname: string;
+}
+
+export const updateProfileInfo = async (profileInfo: ProfileChange) => {
+  const { profileImg, nickname } = profileInfo;
+  console.log(profileImg, 'profileImg');
+  console.log(nickname, 'nickname');
+
+  try {
+    const res = await client.patch(`/apis/v1/profile`, {
+      profileImg,
+      nickname: '',
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('프로필 수정에 실패했습니다. 다시 시도해주세요.');
+  }
+};

@@ -6,6 +6,7 @@ import AccountInfo from '@/components/pages/accountInfo';
 import BackofficePage from '@/components/pages/backofficePage';
 import PasswordChangeModal from '@/components/pages/profile/passwordChangeModal';
 import PhoneChangeModal from '@/components/pages/profile/phoneChangeModal';
+import RandomProfileModal from '@/components/pages/profile/randomProfileModal';
 import RoleChangeModal from '@/components/pages/profile/roleChangeModal';
 import UserInfo from '@/components/pages/userInfo';
 import { useState } from 'react';
@@ -46,6 +47,7 @@ const Profile = () => {
           period={period}
           trackRole={trackRole}
           handleChangeRole={() => openModal('role')}
+          handleChangeImage={() => openModal('image')}
         />
       </PermissionBoard>
       <PermissionBoard variant="accountInfo">
@@ -61,6 +63,9 @@ const Profile = () => {
       {modalType === 'phone' && <PhoneChangeModal onClose={closeModal} />}
       {modalType === 'role' && (
         <RoleChangeModal onClose={closeModal} trackRole={trackRole} />
+      )}
+      {modalType === 'image' && (
+        <RandomProfileModal onClose={closeModal} profileImg={profileImg} />
       )}
     </BackofficePage>
   );

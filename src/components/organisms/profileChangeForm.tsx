@@ -39,6 +39,7 @@ const ProfileChangeForm = ({
               variant="primary"
               className="mt-4 w-[360px]"
               disabled={!isValid}
+              type="submit"
             >
               완료
             </Button>
