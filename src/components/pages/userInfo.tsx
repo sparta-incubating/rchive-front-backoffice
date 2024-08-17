@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import UserInfoContainer from '../molecules/userInfoContainer';
 
 interface UserInfoProps {
@@ -22,6 +23,14 @@ const UserInfo: React.FC<UserInfoProps> = ({
   handleChangeImage,
   handleChangeRole,
 }) => {
+  const [init, setInit] = useState<string>(profileImg);
+
+  useEffect(() => {
+    if (profileImg === 'img') {
+      setInit('MRT_1');
+    }
+  }, [profileImg]);
+
   return (
     <main className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
       <section className="flex w-[1020px] flex-row items-center justify-between text-base">
@@ -42,7 +51,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <article className="flex h-[160px] flex-row">
           <figure className="group relative w-[calc(100%-860px)]">
             <Image
-              src={`/assets/icons/${profileImg}.svg`}
+              src={`/assets/icons/${init}.svg`}
               height={160}
               width={160}
               alt="랜덤프로필"

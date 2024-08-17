@@ -4,7 +4,7 @@ import refresh from '@/../public/assets/icons/refresh-button.svg';
 import { useProfileUpdate } from '@/api/profile/useMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface RandomProfileModalProps {
   onClose: () => void;
@@ -16,9 +16,14 @@ const RandomProfileModal = ({
   profileImg,
 }: RandomProfileModalProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [initImg, setInitImg] = useState<string>(profileImg ?? null);
+  const [initImg, setInitImg] = useState<string>(profileImg);
   const [selectImg, setSelectImg] = useState<number>(0);
-  console.log(initImg, 'initImg');
+
+  useEffect(() => {
+    if (profileImg === 'img') {
+      setInitImg('MRT_1');
+    }
+  }, [profileImg]);
 
   const { updateProfileInfoMutate } = useProfileUpdate();
 
@@ -40,15 +45,12 @@ const RandomProfileModal = ({
     setSelectImg((selectImg) => (selectImg + 1) % randomProfile.length);
     setInitImg(imgName);
     setIsValid(true);
-
-    console.log(profileImg, '프로필');
   };
 
   const profileInfo = {
     profileImg: initImg,
     nickname: '',
   };
-  console.log(profileInfo, '프로필 정보');
 
   const onSubmit = async () => {
     updateProfileInfoMutate.mutate(profileInfo);
@@ -65,7 +67,7 @@ const RandomProfileModal = ({
           <span>원하시는 프로필로 변경해 보세요.</span>
           <figure>
             <Image
-              src={`/assets/icons/${initImg ?? `MRT_1`}.svg`}
+              src={`/assets/icons/${initImg}.svg`}
               height={160}
               width={160}
               alt="랜덤프로필"
