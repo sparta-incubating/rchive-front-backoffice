@@ -1,8 +1,5 @@
-import { AdminDataInfoType } from '@/api/admin/adminApi';
-
-interface FilteredListProps {
-  data: AdminDataInfoType[];
-}
+import NoDataList from '@/components/atoms/category/noDataList';
+import { FilteredListProps } from '@/types/admin.types';
 
 const AuthFilteredList = ({ data }: FilteredListProps) => {
   return (
@@ -34,7 +31,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
             </div>
           </div>
         </>
-      ))}
+      )) ?? <NoDataList />}
     </div>
   );
 };

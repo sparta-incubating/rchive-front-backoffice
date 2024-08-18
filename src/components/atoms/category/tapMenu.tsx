@@ -1,10 +1,7 @@
 'use client';
 
 import { useRoleCountDataQuery } from '@/api/admin/useQuery';
-
-interface TapProps {
-  onTabChange: (tab: string) => void;
-}
+import { TapProps } from '@/types/admin.types';
 
 const TapMenu = ({ onTabChange }: TapProps) => {
   const { countList } = useRoleCountDataQuery();
@@ -23,12 +20,12 @@ const TapMenu = ({ onTabChange }: TapProps) => {
 
         <div className="gap-[10px flex border">
           <button onClick={() => onTabChange('WAIT')}>대기 중</button>
-          <p>{approveCount}</p>
+          <p>{waitCount}</p>
         </div>
 
         <div className="flex gap-[10px] border">
           <button onClick={() => onTabChange('APPROVE')}>승인</button>
-          <p>{waitCount}</p>
+          <p>{approveCount}</p>
         </div>
       </div>
     </section>

@@ -1,13 +1,15 @@
 'use client';
 
-import { AdminDataInfoType } from '@/api/admin/adminApi';
 import { usePermissionDataQuery } from '@/api/admin/useQuery';
+import AuthCategory from '@/components/atoms/category/AuthCategory';
+import NoDataList from '@/components/atoms/category/noDataList';
 import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
 import BackofficePage from '@/components/pages/backofficePage';
+import { AdminDataInfoType } from '@/types/admin.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -16,8 +18,15 @@ import { DateRange } from 'react-day-picker';
 const Admin = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedTab, setSelectedTab] = useState<string>('All');
-  const { boardList } = usePermissionDataQuery();
+  const [filters, setFilters] = useState({
+    trackRole: '',
+    sort: 'DATE_LATELY',
+    searchPeriod: '',
+  });
+
+  const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
+  console.log(viewList, 'viewList');
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -28,9 +37,7 @@ const Admin = () => {
       selectedTab === 'All' || item.auth === selectedTab,
   );
 
-  {
-    /*페이지 네이션 */
-  }
+  /*페이지 네이션 */
   const router = useRouter();
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -66,6 +73,28 @@ const Admin = () => {
     router.push(`/admin?${query.toString()}`);
   };
 
+  /*카테고리 */
+  const roleCategory = [
+    { id: 1, name: 'APM', value: 'APM' },
+    { id: 2, name: '수강생', value: 'STUDENT' },
+  ];
+
+  const sortCategory = [
+    { id: 1, name: '최신순', value: 'DATE_LATELY' },
+    { id: 2, name: '가나다순', value: 'NAME_ALPHABETICALLY' },
+  ];
+
+  const periodCategory = [
+    { id: 1, name: '1기', value: '1' },
+    { id: 2, name: '2기', value: '2' },
+  ];
+  const handleCategoryChange = (category: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [category]: value,
+    }));
+  };
+
   return (
     <>
       <BackofficePage>
@@ -76,18 +105,43 @@ const Admin = () => {
         <PermissionBoard>
           <TapMenu onTabChange={handleTabChange} />
           <br />
-
-          <AuthFilteredList data={filteredData} />
           {/* <FilterCategory /> */}
           {/* <AuthCategory label="직책" data={roleCategory} />
           <AuthCategory label="최신순" data={sortCategory} /> */}
+          <div className="flex flex-row">
+            <AuthCategory
+              label="직책"
+              data={roleCategory}
+              setValue={(value) => handleCategoryChange('trackRole', value)}
+            />
+            <AuthCategory
+              label="최신순"
+              data={sortCategory}
+              setValue={(value) => handleCategoryChange('sort', value)}
+            />
+            <AuthCategory
+              label="기수"
+              data={periodCategory}
+              setValue={(value) => handleCategoryChange('searchPeriod', value)}
+            />
+          </div>
 
+          <br />
+          {viewList?.length > 0 ? (
+            <AuthFilteredList data={filteredData} />
+          ) : (
+            <NoDataList />
+          )}
+
+          <br />
           <PageNation
             currentPage={currentPage}
             totalElements={boardList?.data?.totalElements}
             size={boardList?.data?.size}
             onPageChange={handlePageChange}
           />
+
+          {/* <FilterCategory /> */}
         </PermissionBoard>
       </BackofficePage>
     </>

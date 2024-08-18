@@ -1,64 +1,43 @@
+import {
+  ApproveItem,
+  DeleteUserType,
+  RejectionItem,
+} from '@/types/admin.types';
 import { client } from '@/utils/clientAPI';
 import { getCookie } from 'cookies-next';
-
-export type AdminDataInfoType = {
-  username: string;
-  trackRole: string;
-  period: number;
-  email: string;
-  createdAt: string;
-  auth: string;
-};
-
-export type USERDATA = {
-  trackName: string;
-  period: number;
-  trackRole: string;
-  email: string;
-  loginPeriod: number;
-  trackId: number;
-};
-
-export type DeleteUserType = {
-  trackName: string;
-  period: number;
-  email: string;
-  trackRole: string;
-};
-
-type ApproveItem = Pick<
-  USERDATA,
-  'trackName' | 'email' | 'trackRole' | 'period'
->;
-type RejectionItem = Pick<USERDATA, 'trackName' | 'loginPeriod' | 'trackId'>;
 
 //백오피스 - 프로필 조회
 export const getBackOfficeInfo = async () => {
   try {
     const res = await client.get(`/apis/v1/backoffice/profile`);
-
     return res.data;
   } catch (error) {
     throw new Error('백오피스 프로필 조회에 실패했습니다. 다시 시도해주세요.');
   }
 };
 
-//유저의 트랙 권한 신청 목록 조회
-export const getBoardList = async () => {
+export const getBoardList = async (filters: Record<string, string>) => {
   const trackName = getCookie('trackName');
   const period = getCookie('period');
 
-  try {
-    const res = await client.get(
-      `/apis/v1/backoffice/role?sort=DATE_LATELY&trackName=${trackName}&period=${period}&page=1&size=10`,
-    );
+  const params = {
+    sort: filters.sort || 'DATE_LATELY',
+    trackName,
+    period,
+    searchPeriod: filters.searchPeriod || undefined,
+    page: '1',
+    size: '10',
+    trackRole: filters.trackRole || undefined,
+  };
 
+  try {
+    const res = await client.get('/apis/v1/backoffice/role', { params });
+    console.log('카테고리 받음:', res.status, res.config.url);
     return res.data;
   } catch (error) {
     throw new Error('권한 신청 목록 조회에 실패했습니다. 다시 시도해주세요.');
   }
 };
-
 //유저의 트랙 권한 신청 건수 (전체/대기/승인) -> 탭메뉴 필터
 export const getRoleCount = async () => {
   const trackName = getCookie('trackName');

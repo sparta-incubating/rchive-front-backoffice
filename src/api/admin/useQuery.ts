@@ -4,14 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { getBoardList, getRoleCount, getSelectRole } from './adminApi';
 import { ADMIN_QUERY_KEYS } from './keys.constant';
 
-export function usePermissionDataQuery() {
+export function usePermissionDataQuery(filters: Record<string, string>) {
   const {
     data: boardList,
     isPending,
     isError,
   } = useQuery({
-    queryKey: [ADMIN_QUERY_KEYS.ADMIN],
-    queryFn: getBoardList,
+    queryKey: [ADMIN_QUERY_KEYS.ADMIN, filters],
+    queryFn: () => getBoardList(filters),
   });
 
   return { boardList, isPending, isError };
