@@ -1,8 +1,8 @@
 'use client';
 
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
-import PageNation from '@/components/atoms/category/pageNation';
 import PostList from '@/components/atoms/category/postList';
+import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import BackofficePage from '@/components/pages/backofficePage';
@@ -26,11 +26,11 @@ const Post = () => {
         {/* 게시판 */}
         <PermissionBoard>
           {/* 탭메뉴*/}
-          {/* <TapMenu
-            data={subArr}
+          <TapMenu
+            data={subArr || ''}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-          /> */}
+          />
           {/* 카테고리 */}
           <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between border">
             {/* 카테고리 */}
@@ -57,12 +57,6 @@ const Post = () => {
           <PostList activeTab={activeTab} onCheckedNumChange={setCheckedNum} />
 
           {/* 페이지네이션*/}
-          <PageNation
-            currentPage={currentPage}
-            totalElements={postListData.data.totalElements}
-            size={postListData.data.size}
-            onPageChange={handlePageChange}
-          />
         </PermissionBoard>
       </BackofficePage>
     </>
