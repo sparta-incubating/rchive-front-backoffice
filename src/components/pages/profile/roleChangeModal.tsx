@@ -2,6 +2,7 @@ import { useProfileUpdate } from '@/api/profile/useMutation';
 import { usePeriodListQuery } from '@/api/profile/useQuery';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
+import { RoleChangeModalProps } from '@/types/profile.types';
 import { SelectOptionType } from '@/types/signup.types';
 import { createToast } from '@/utils/toast';
 import { roleSchema } from '@/validators/auth/role.validator';
@@ -10,10 +11,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-interface RoleChangeModalProps {
-  trackRole: string;
-  onClose: () => void;
-}
 const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
   const {
     handleSubmit,

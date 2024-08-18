@@ -1,12 +1,6 @@
 'use client ';
+import { AccountInfoProps } from '@/types/profile.types';
 import ProfileContainer from '../molecules/profileContainer';
-
-interface AccountInfoProps {
-  email: string;
-  phone: string;
-  handleChangePassword: () => void;
-  handleChangePhoneNumber: () => void;
-}
 
 const AccountInfo = ({
   email,

@@ -5,6 +5,7 @@ import Label from '@/components/atoms/label';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import InputField from '@/components/molecules/InputField';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
+import { ChangeModalProps } from '@/types/profile.types';
 import { profilePasswordSchema } from '@/validators/auth/profile.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -12,11 +13,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import ChangeSuccessModal from './changeSuccessModal';
 
-export interface PasswordChangeModalProps {
-  onClose: () => void;
-}
-
-const PasswordChangeModal = ({ onClose }: PasswordChangeModalProps) => {
+const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
   const [pwErrorMsg, setpwErrorMsg] = useState<string>('');
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const {

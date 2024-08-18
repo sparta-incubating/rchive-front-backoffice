@@ -1,3 +1,8 @@
+import {
+  PassWordChange,
+  ProfileChange,
+  RoleChange,
+} from '@/types/profile.types';
 import { client } from '@/utils/clientAPI';
 import { getCookie } from 'cookies-next';
 
@@ -16,10 +21,6 @@ export const getUserInfo = async () => {
   }
 };
 
-interface PassWordChange {
-  originPassword: string;
-  newPassword: string;
-}
 export const updatePassword = async (password: PassWordChange) => {
   const { originPassword, newPassword } = password;
   console.log(originPassword, '기존비밀번호');
@@ -34,12 +35,6 @@ export const updatePassword = async (password: PassWordChange) => {
     throw new Error('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
   }
 };
-
-interface RoleChange {
-  trackName: string;
-  period: string;
-  trackRole: string;
-}
 
 export const updateRole = async (roleInfo: RoleChange) => {
   const { trackName, period, trackRole } = roleInfo;
@@ -56,11 +51,6 @@ export const updateRole = async (roleInfo: RoleChange) => {
     throw new Error('권한수정 요청에 실패했습니다. 다시 시도해주세요.');
   }
 };
-
-interface ProfileChange {
-  profileImg: string;
-  nickname: string;
-}
 
 export const updateProfileInfo = async (profileInfo: ProfileChange) => {
   const { profileImg, nickname } = profileInfo;

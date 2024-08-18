@@ -11,16 +11,6 @@ import RoleChangeModal from '@/components/pages/profile/roleChangeModal';
 import UserInfo from '@/components/pages/userInfo';
 import { useState } from 'react';
 
-export interface USERPROFILE {
-  email: string;
-  username: string;
-  profileImg: string;
-  phone: string;
-  trackName: string;
-  trackRole: string;
-  period: string;
-}
-
 const Profile = () => {
   const { userData, isError, isPending } = useUserInfoDataQuery();
   const [modalType, setModalType] = useState<string | null>(null);

@@ -1,18 +1,9 @@
 'use client';
 
+import { UserInfoProps } from '@/types/profile.types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import UserInfoContainer from '../molecules/userInfoContainer';
-
-interface UserInfoProps {
-  username: string;
-  trackName: string;
-  period: string;
-  trackRole: string;
-  profileImg: string;
-  handleChangeImage: () => void;
-  handleChangeRole: () => void;
-}
 
 const UserInfo: React.FC<UserInfoProps> = ({
   username,

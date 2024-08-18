@@ -8,13 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import Input from '@/components/atoms/input';
 import PhoneChangeField from '@/components/molecules/form/PhonChangeField';
+import { ChangeModalProps } from '@/types/profile.types';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import ChangeSuccessModal from './changeSuccessModal';
-import { PasswordChangeModalProps } from './passwordChangeModal';
 
-const PhoneChangeModal = ({ onClose }: PasswordChangeModalProps) => {
+const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const {
     register,

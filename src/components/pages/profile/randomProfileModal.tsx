@@ -3,13 +3,9 @@
 import refresh from '@/../public/assets/icons/refresh-button.svg';
 import { useProfileUpdate } from '@/api/profile/useMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
+import { RandomProfileModalProps } from '@/types/profile.types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
-export interface RandomProfileModalProps {
-  onClose: () => void;
-  profileImg: string;
-}
 
 const RandomProfileModal = ({
   onClose,
