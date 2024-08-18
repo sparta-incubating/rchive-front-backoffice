@@ -1,79 +1,119 @@
 'use client';
 
-import BackOfficeButton from '@/components/atoms/backOfficeButton';
-import FilterCategory from '@/components/atoms/category/filterCategory';
-import PageNation from '@/components/atoms/category/pageNation';
-import PermissionList from '@/components/atoms/category/permissionList';
-import TapMenu from '@/components/atoms/category/tapMenu';
+import { PermissionInfoType } from '@/api/permission/permissionApi';
+import {
+  usePermissionDataQuery,
+  useRoleCountDataQuery,
+} from '@/api/permission/useQuery';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import BackofficePage from '@/components/pages/backofficePage';
-import { mockData, tabArr } from '@/constants/permission.constant';
-import { useMemo, useState } from 'react';
 
 const Admin = () => {
-  const [checkedNum, setCheckedNum] = useState<number>(0);
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const [listData, setListData] = useState(mockData);
+  const { boardList } = usePermissionDataQuery();
+  const { countList } = useRoleCountDataQuery();
 
-  const filteredListData = useMemo(() => {
-    if (activeTab === 0) return listData;
-    if (activeTab === 1)
-      return listData.filter((item) => item.permission === '대기');
-    if (activeTab === 2)
-      return listData.filter((item) => item.permission === '승인');
-    return [];
-  }, [listData, activeTab]);
+  const testData = boardList?.data?.content;
+  const countData = countList?.data;
+  const allCount = countData?.statusAll;
+  const approveCount = countData?.statusApprove;
+  const waitCount = countData?.statusWait;
 
-  const currentTabTotal = filteredListData.length;
+  const handleChangeAuth = () => {
+    console.log('??');
+    alert('안녕');
+  };
 
   return (
     <>
       <BackofficePage>
         {/* 검색바 */}
         <SearchBar />
+        <div className="flex flex-row gap-[50px] border">
+          <p className="w-[50px]">이름</p>
+          <p className="w-[50px]">직책</p>
+          <p className="w-[50px]">기수</p>
+          <p className="w-[50px]">이메일</p>
+          <p className="w-[50px]">요청날짜</p>
+          <p className="w-[50px]">승인상태</p>
+        </div>
 
         {/* 게시판 */}
         <PermissionBoard>
-          {/* 탭메뉴*/}
-          <TapMenu
-            data={tabArr}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            listData={listData}
-          />
-          {/* 카테고리 */}
-          <section className="mx-auto my-[24px] flex w-[1012px] flex-row justify-between">
-            <section className="flex flex-row gap-[10px]">
-              <FilterCategory />
-              <FilterCategory />
-              <FilterCategory />
-            </section>
-
-            {/* 버튼 */}
-            <section className="flex flex-row gap-[8px]">
-              {checkedNum > 0 && (
+          <div className="border">
+            <p>전체 :{allCount}</p>
+            <p>대기 중:{waitCount}</p>
+            <p>승인 :{approveCount}</p>
+            {testData?.map((item: PermissionInfoType, index: string) => (
+              <>
+                <div key={index} className="flex flex-row gap-[20px] border">
+                  <div>{item.username}</div>
+                  <div>{item.trackRole}</div>
+                  <div>{item.period}</div>
+                  <div>{item.email}</div>
+                  <div>{item.createdAt}</div>
+                  <div>
+                    <select>
+                      <option> {item.auth}</option>
+                      <option>
+                        <button onClick={handleChangeAuth}>승인ㅇㅇㅇ</button>
+                      </option>
+                      <option>
+                        <button onClick={handleChangeAuth}>거절</button>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </>
+            ))}
+            <br />
+            <br />
+            <p>대기중</p>
+            {testData
+              ?.filter((item: PermissionInfoType) => item.auth === 'WAIT')
+              .map((item: PermissionInfoType, index: string) => (
                 <>
-                  <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
-                    {currentTabTotal}개 선택
-                  </p>
-                  <BackOfficeButton>승인</BackOfficeButton>
-                  <BackOfficeButton variant="secondary">거절</BackOfficeButton>
+                  <div key={index} className="flex flex-row gap-[20px] border">
+                    <div>{item.username}</div>
+                    <div>{item.trackRole}</div>
+                    <div>{item.period}</div>
+                    <div>{item.email}</div>
+                    <div>{item.createdAt}</div>
+                    <div>
+                      <select>
+                        <option> {item.auth}</option>
+                        <option>승인</option>
+                        <option>거절</option>
+                      </select>
+                    </div>
+                  </div>
                 </>
-              )}
-            </section>
-          </section>
+              ))}
 
-          {/* 조회*/}
-          <PermissionList
-            activeTab={activeTab}
-            onCheckedNumChange={setCheckedNum}
-            listData={filteredListData}
-            setListData={setListData}
-          />
-
-          {/* 페이지네이션*/}
-          <PageNation />
+            <br />
+            <br />
+            <p>승인</p>
+            {testData
+              ?.filter((item: PermissionInfoType) => item.auth === 'APPROVE')
+              .map((item: PermissionInfoType, index: string) => (
+                <>
+                  <div key={index} className="flex flex-row gap-[20px] border">
+                    <div>{item.username}</div>
+                    <div>{item.trackRole}</div>
+                    <div>{item.period}</div>
+                    <div>{item.email}</div>
+                    <div>{item.createdAt}</div>
+                    <div>
+                      <select>
+                        <option> {item.auth}</option>
+                        <option>승인</option>
+                        <option>거절</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              ))}
+          </div>
         </PermissionBoard>
       </BackofficePage>
     </>

@@ -17,18 +17,22 @@ export function usePermissionDataQuery() {
   return { boardList, isPending, isError };
 }
 
-export function useRoleCountQuery() {
-  const { data, isPending, isError } = useQuery({
-    queryKey: [PERMISSION_QUERY_KEYS.PERMISSION],
+export function useRoleCountDataQuery() {
+  const {
+    data: countList,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: [PERMISSION_QUERY_KEYS.COUNT],
     queryFn: getRoleCount,
   });
 
-  return { data, isPending, isError };
+  return { countList, isPending, isError };
 }
 
 export function useSelectRoleQuery() {
   const { data, isPending, isError } = useQuery({
-    queryKey: [PERMISSION_QUERY_KEYS.PERMISSION],
+    queryKey: [PERMISSION_QUERY_KEYS.SELECT],
     queryFn: getSelectRole,
   });
 
