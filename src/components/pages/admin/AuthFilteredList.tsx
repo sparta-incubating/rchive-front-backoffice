@@ -1,6 +1,10 @@
-import { PermissionInfoType } from '@/api/permission/permissionApi';
+import { AdminDataInfoType } from '@/api/admin/adminApi';
 
-const AuthFilteredList = ({ data }) => {
+interface FilteredListProps {
+  data: AdminDataInfoType[];
+}
+
+const AuthFilteredList = ({ data }: FilteredListProps) => {
   return (
     <div>
       {/*테이블 헤더*/}
@@ -13,7 +17,7 @@ const AuthFilteredList = ({ data }) => {
         <p className="w-[50px]">승인상태</p>
       </div>
 
-      {data?.map((item: PermissionInfoType, index: string) => (
+      {data?.map((item, index) => (
         <>
           <div key={index} className="flex flex-row gap-[20px] border">
             <div>{item.username}</div>

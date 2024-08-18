@@ -1,12 +1,12 @@
 import { queryClient } from '@/provider/tanstackQueryProvider/TanstackQueryProvider';
 import { useMutation } from '@tanstack/react-query';
-import { PERMISSION_QUERY_KEYS } from './keys.constant';
 import {
-  deleteUsrRole,
-  patchUserPermission,
-  patchUserRejection,
-  postUserApprove,
-} from './permissionApi';
+    deleteUsrRole,
+    patchUserPermission,
+    patchUserRejection,
+    postUserApprove,
+} from './adminApi';
+import { PERMISSION_QUERY_KEYS } from './keys.constant';
 
 export const usePermissionList = () => {
   const postUserApproveMutate = useMutation({

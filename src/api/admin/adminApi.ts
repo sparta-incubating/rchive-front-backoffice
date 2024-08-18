@@ -1,7 +1,7 @@
 import { client } from '@/utils/clientAPI';
 import { getCookie } from 'cookies-next';
 
-export type PermissionInfoType = {
+export type AdminDataInfoType = {
   username: string;
   trackRole: string;
   period: number;

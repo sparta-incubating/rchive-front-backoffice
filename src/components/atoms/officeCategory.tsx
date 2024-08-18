@@ -1,7 +1,7 @@
 'use client';
 
+import PermissionCategory from './category/AuthCategory';
 import FilterCategory from './category/filterCategory';
-import PermissionCategory from './category/permissionCategory';
 
 const OfficeCategory = () => {
   return (

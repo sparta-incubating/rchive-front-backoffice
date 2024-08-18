@@ -1,47 +1,36 @@
 'use client';
 
-import { PermissionInfoType } from '@/api/permission/permissionApi';
-import {
-  usePermissionDataQuery,
-  useRoleCountDataQuery,
-} from '@/api/permission/useQuery';
-import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
-import { useState } from 'react';
+import { useRoleCountDataQuery } from '@/api/admin/useQuery';
 
-const TapMenu = () => {
-  const { boardList } = usePermissionDataQuery();
+interface TapProps {
+  onTabChange: (tab: string) => void;
+}
+
+const TapMenu = ({ onTabChange }: TapProps) => {
   const { countList } = useRoleCountDataQuery();
-
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const allCount = countList?.data?.statusAll;
   const approveCount = countList?.data?.statusApprove;
   const waitCount = countList?.data?.statusWait;
 
-  const testData = boardList?.data?.content;
-  const filteredData =
-    selectedCategory === 'All'
-      ? testData
-      : testData.filter(
-          (item: PermissionInfoType) => item.auth === selectedCategory,
-        );
-
   return (
-    <section>
-      <div>
-        <button onClick={() => setSelectedCategory('All')}>
-          전체 {allCount}
-        </button>
-        <button onClick={() => setSelectedCategory('WAIT')}>
-          대기중 {approveCount}
-        </button>
-        <button onClick={() => setSelectedCategory('APPROVE')}>
-          승인 {waitCount}
-        </button>
-      </div>
+    <section className="h-[64px] w-full border border-b-2">
+      <div className="ml-[36px] flex h-full flex-row gap-[20px] border">
+        <div className="flex gap-[10px] border">
+          <button onClick={() => onTabChange('All')}>전체</button>
+          <p>{allCount}</p>
+        </div>
 
-      {/* 필터링된 데이터 표시 */}
-      <AuthFilteredList data={filteredData} />
+        <div className="gap-[10px flex border">
+          <button onClick={() => onTabChange('WAIT')}>대기 중</button>
+          <p>{approveCount}</p>
+        </div>
+
+        <div className="flex gap-[10px] border">
+          <button onClick={() => onTabChange('APPROVE')}>승인</button>
+          <p>{waitCount}</p>
+        </div>
+      </div>
     </section>
   );
 };

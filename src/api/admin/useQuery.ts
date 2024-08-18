@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { PERMISSION_QUERY_KEYS } from './keys.constant';
-import { getBoardList, getRoleCount, getSelectRole } from './permissionApi';
+import { getBoardList, getRoleCount, getSelectRole } from './adminApi';
+import { ADMIN_QUERY_KEYS } from './keys.constant';
 
 export function usePermissionDataQuery() {
   const {
@@ -10,7 +10,7 @@ export function usePermissionDataQuery() {
     isPending,
     isError,
   } = useQuery({
-    queryKey: [PERMISSION_QUERY_KEYS.PERMISSION],
+    queryKey: [ADMIN_QUERY_KEYS.ADMIN],
     queryFn: getBoardList,
   });
 
@@ -23,7 +23,7 @@ export function useRoleCountDataQuery() {
     isPending,
     isError,
   } = useQuery({
-    queryKey: [PERMISSION_QUERY_KEYS.COUNT],
+    queryKey: [ADMIN_QUERY_KEYS.COUNT],
     queryFn: getRoleCount,
   });
 
@@ -32,7 +32,7 @@ export function useRoleCountDataQuery() {
 
 export function useSelectRoleQuery() {
   const { data, isPending, isError } = useQuery({
-    queryKey: [PERMISSION_QUERY_KEYS.SELECT],
+    queryKey: [ADMIN_QUERY_KEYS.SELECT],
     queryFn: getSelectRole,
   });
 
