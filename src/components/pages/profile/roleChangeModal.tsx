@@ -1,14 +1,12 @@
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import Input from '@/components/atoms/input';
-import InputContainer from '@/components/atoms/InputContainer';
-import Label from '@/components/atoms/label';
-import InputField from '@/components/molecules/InputField';
+import { usePeriodListQuery } from '@/api/profile/useQuery';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import { SelectOptionType } from '@/types/signup.types';
 import { createToast } from '@/utils/toast';
 import { roleSchema } from '@/validators/auth/role.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -18,33 +16,47 @@ interface RoleChangeModalProps {
 }
 const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
   const {
-    control,
-    register,
     handleSubmit,
-    formState: { errors, isValid },
+    watch,
+    control,
+    formState: { isValid, errors },
   } = useForm<z.infer<typeof roleSchema>>({
     resolver: zodResolver(roleSchema),
     mode: 'onChange',
     defaultValues: {
       trackName: '',
       period: '',
-      trackRole,
+      trackRole: '',
     },
   });
+
+  const periodList = usePeriodListQuery(watch('trackName'));
+
+  const periodOptions = periodList?.map((item: number) => ({
+    value: `${item}`,
+    label: `${item}기`,
+    selected: false,
+  }));
 
   const { updateRoleMutate } = useProfileUpdate();
 
   const onSubmit = async (data: z.infer<typeof roleSchema>) => {
-    if (trackRole) {
-      try {
-        await updateRoleMutate.mutateAsync(data);
-        createToast('권한 수정이 요청되었습니다.', 'primary');
-      } catch (error) {
-        console.error('Error updating password:', error);
-        alert('권한 수정 요청에 실패했습니다. 다시 시도해 주세요.');
-      }
+    const { trackName, period } = data;
+    const roleChangeInfo = {
+      trackName,
+      period: period as string,
+      trackRole,
+    };
+
+    try {
+      await updateRoleMutate.mutateAsync(roleChangeInfo);
+      createToast('권한 수정이 요청되었습니다.', 'primary');
+    } catch (error) {
+      console.error('Error updating password:', error);
+      alert('권한 수정 요청에 실패했습니다. 다시 시도해 주세요.');
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ProfileChangeForm
@@ -62,26 +74,29 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
             <SelectFormBox
               className="w-[360px]"
               options={trackOptions}
-              label="트랙"
+              label={'트랙'}
               onSelect={onChange}
-              value={value || ''}
+              value={value}
             />
           )}
         />
         {errors.trackName && (
           <p className="text-red-500">{errors.trackName.message}</p>
         )}
-        <InputContainer>
-          <InputField>
-            <Label htmlFor="period">기수</Label>
-            <Input
-              {...register('period')}
-              placeholder="기수입력"
-              className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+
+        <Controller
+          name="period"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <SelectFormBox
+              className="w-[360px]"
+              options={periodOptions || []}
+              label={'기수'}
+              onSelect={onChange}
+              value={value!}
             />
-          </InputField>
-        </InputContainer>
-        <p className="text-gray-300">*1기라면 '1'만 작성해주세요</p>{' '}
+          )}
+        />
         {errors.period && (
           <p className="text-red-500">{errors.period.message}</p>
         )}
@@ -89,6 +104,9 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     </form>
   );
 };
+
+export default RoleChangeModal;
+
 const trackOptions: SelectOptionType[] = [
   {
     value: 'UNITY',
@@ -141,4 +159,3 @@ const trackOptions: SelectOptionType[] = [
     selected: false,
   },
 ];
-export default RoleChangeModal;

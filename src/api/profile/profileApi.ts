@@ -16,17 +16,6 @@ export const getUserInfo = async () => {
   }
 };
 
-export const updatePhoneNumber = async (phone: string) => {
-  try {
-    const res = await client.patch(`/apis/v1/profile/phone`, {
-      phone,
-    });
-    return res.data;
-  } catch (error) {
-    throw new Error('휴대폰 번호 변경에 실패했습니다. 다시 시도해주세요.');
-  }
-};
-
 interface PassWordChange {
   originPassword: string;
   newPassword: string;
@@ -48,19 +37,18 @@ export const updatePassword = async (password: PassWordChange) => {
 
 interface RoleChange {
   trackName: string;
-  period: number;
+  period: string;
   trackRole: string;
 }
 
 export const updateRole = async (roleInfo: RoleChange) => {
   const { trackName, period, trackRole } = roleInfo;
-  console.log(trackName, '트랙이름');
-  console.log(period, '기수');
-  console.log(trackRole, 'Role');
+  const periodInt = parseInt(period);
+
   try {
     const res = await client.post(`/apis/v1/role`, {
       trackName,
-      period,
+      period: periodInt,
       trackRole,
     });
     return res.data;
@@ -76,16 +64,38 @@ interface ProfileChange {
 
 export const updateProfileInfo = async (profileInfo: ProfileChange) => {
   const { profileImg, nickname } = profileInfo;
-  console.log(profileImg, 'profileImg');
-  console.log(nickname, 'nickname');
 
   try {
     const res = await client.patch(`/apis/v1/profile`, {
       profileImg,
-      nickname: '',
+      nickname,
     });
     return res.data;
   } catch (error) {
     throw new Error('프로필 수정에 실패했습니다. 다시 시도해주세요.');
+  }
+};
+
+//해당트랙 이름의 기수조회
+export const getTrackPeriodList = async (trackName: string) => {
+  try {
+    const res = await client.get(
+      `/apis/v1/role/track/period?trackName=${trackName}`,
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error('기수 조회에 실패했습니다. 다시 시도해주세요.');
+  }
+};
+
+{
+  /* 휴대폰 인증번호 로직 추가 예정*/
+}
+export const updatePhoneNumber = async (phone: string) => {
+  try {
+    const res = await client.patch(`/apis/v1/profile/phone`, phone);
+    return res.data;
+  } catch (error) {
+    throw new Error('휴대폰 번호 변경에 실패했습니다. 다시 시도해주세요.');
   }
 };

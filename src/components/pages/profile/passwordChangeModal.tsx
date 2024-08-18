@@ -37,8 +37,6 @@ const PasswordChangeModal = ({ onClose }: PasswordChangeModalProps) => {
   const { updatePasswordMutate } = useProfileUpdate();
 
   const onSubmit = async (data: z.infer<typeof profilePasswordSchema>) => {
-    console.log('Submitted data:', data);
-
     try {
       await updatePasswordMutate.mutateAsync(data);
       setIsSuccessful(true);

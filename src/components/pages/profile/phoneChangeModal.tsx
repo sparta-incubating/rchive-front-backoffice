@@ -1,8 +1,13 @@
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import PhoneForm from '@/components/molecules/form/PhoneForm';
+import Label from '@/components/atoms/label';
+import PasswordContainer from '@/components/atoms/PasswordContainer';
+import InputField from '@/components/molecules/InputField';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import Input from '@/components/atoms/input';
+import PhoneChangeField from '@/components/molecules/form/PhonChangeField';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,7 +33,7 @@ const PhoneChangeModal = ({ onClose }: PasswordChangeModalProps) => {
 
   const onSubmit = async (data: z.infer<typeof profilePhoneSchema>) => {
     try {
-      await updatePhoneNumberMutate.mutateAsync(data);
+      await updatePhoneNumberMutate.mutateAsync(data.phone);
       setIsSuccessful(true);
     } catch (error) {
       console.error('Error updating password:', error);
@@ -47,7 +52,20 @@ const PhoneChangeModal = ({ onClose }: PasswordChangeModalProps) => {
             휴대폰 변경을 위해 인증이 필요해요
           </p>
           <section className="flex flex-col gap-[10px]">
-            <PhoneForm register={register} />
+            {/** */}
+            <PasswordContainer variant="primary">
+              <InputField>
+                <Label htmlFor="phone">휴대폰 번호</Label>
+                <PhoneChangeField register={register} />
+                <div className="w-[320px] border" />
+                <Input
+                  name="phone"
+                  className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                  placeholder="인증번호 입력"
+                />
+              </InputField>
+            </PasswordContainer>
+            {/** */}
             {errors.phone && (
               <span className="text-sm text-primary-400">
                 {errors.phone.message}
