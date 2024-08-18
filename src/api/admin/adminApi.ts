@@ -32,7 +32,6 @@ export const getBoardList = async (filters: Record<string, string>) => {
 
   try {
     const res = await client.get('/apis/v1/backoffice/role', { params });
-    console.log('카테고리 받음:', res.status, res.config.url);
     return res.data;
   } catch (error) {
     throw new Error('권한 신청 목록 조회에 실패했습니다. 다시 시도해주세요.');

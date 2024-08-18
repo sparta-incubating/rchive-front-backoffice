@@ -10,6 +10,7 @@ import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
 import BackofficePage from '@/components/pages/backofficePage';
 import { AdminDataInfoType } from '@/types/admin.types';
+import { getCookie } from 'cookies-next';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -23,6 +24,8 @@ const Admin = () => {
     sort: 'DATE_LATELY',
     searchPeriod: '',
   });
+
+  const trackName = getCookie('trackRole');
 
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
@@ -114,16 +117,22 @@ const Admin = () => {
               data={roleCategory}
               setValue={(value) => handleCategoryChange('trackRole', value)}
             />
-            <AuthCategory
-              label="최신순"
-              data={sortCategory}
-              setValue={(value) => handleCategoryChange('sort', value)}
-            />
-            <AuthCategory
-              label="기수"
-              data={periodCategory}
-              setValue={(value) => handleCategoryChange('searchPeriod', value)}
-            />
+            {trackName === 'PM' && (
+              <>
+                <AuthCategory
+                  label="최신순"
+                  data={sortCategory}
+                  setValue={(value) => handleCategoryChange('sort', value)}
+                />
+                <AuthCategory
+                  label="기수"
+                  data={periodCategory}
+                  setValue={(value) =>
+                    handleCategoryChange('searchPeriod', value)
+                  }
+                />
+              </>
+            )}
           </div>
 
           <br />
