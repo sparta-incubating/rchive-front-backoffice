@@ -3,55 +3,43 @@
 import AdminSelectBoxCategory from '@/components/atoms/category/adminSelectBoxCategory';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import NoDataList from '@/components/atoms/category/noDataList';
-import { setAllPostIds, setPostId } from '@/redux/slice/postCheckBox.slice';
+import { setAdminId } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { FilteredListProps } from '@/types/admin.types';
 import { useCallback, useEffect, useState } from 'react';
 
 const AuthFilteredList = ({ data }: FilteredListProps) => {
   const dispatch = useAppDispatch();
-  const postIds = useAppSelector((state) => state.postCheckBoxSlice.postIds);
+  const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
 
-  const [checkedState, setCheckedState] = useState<boolean[]>(
-    new Array(data.length).fill(false),
-  );
+  //id 추가
+  // const dataList = data.map((item) => ({
+  //   ...item,
+  //   adminId: item.email,
+  // }));
+
+  const [checked, setChecked] = useState<boolean>(false);
 
   const handleCheckChange = useCallback(
-    (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const updatedCheckedState = checkedState.map((item, idx) =>
-        idx === index ? e.target.checked : item,
-      );
-
-      setCheckedState(updatedCheckedState);
-      if (e.target.checked) {
-        dispatch(setPostId({ postId: index }));
-      }
+    (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked(e.target.checked);
+      console.log(checked, '체크상태');
+      dispatch(setAdminId({ adminId: adminId }));
     },
-    [dispatch, checkedState],
+    [dispatch],
   );
 
-  const handleAllCheck = (checked: boolean) => {
-    const currentPagePostIds = data.map((_, index) => index);
-    dispatch(setAllPostIds({ postIds: currentPagePostIds, checked }));
-  };
-
-  const isAllChecked =
-    data.length > 0 && data.every((_, index) => postIds.includes(index));
-
   useEffect(() => {
-    const updatedCheckedState = data.map((_, index) => postIds.includes(index));
-    setCheckedState(updatedCheckedState);
-  }, [postIds, data]);
+    setChecked(
+      adminIds.length === data.length &&
+        data.every((item) => adminIds.includes(item.adminId)),
+    );
+  }, [adminIds, data]);
 
   return (
     <div>
       {/* 테이블 헤더 */}
       <div className="flex flex-row gap-[50px] border">
-        <CategoryBox
-          text=""
-          onChange={(e) => handleAllCheck(e.target.checked)}
-          checked={isAllChecked}
-        />
         <p className="w-[50px]">이름</p>
         <p className="w-[50px]">직책</p>
         <p className="w-[50px]">기수</p>
@@ -60,13 +48,13 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
         <p className="w-[50px]">승인상태</p>
       </div>
 
-      {data?.map((item, index) => (
-        <div key={index} className="flex flex-row gap-[20px] border">
+      {/* 단건 체크 */}
+      {data?.map((item) => (
+        <div key={item.adminId} className="flex flex-row gap-[20px] border">
           <CategoryBox
             text=""
-            onChange={handleCheckChange(index)}
-            checked={checkedState[index]}
-            id={index.toString()}
+            onChange={handleCheckChange(item.adminId)}
+            checked={checked}
           />
           <div>{item.username}</div>
           <div>{item.trackRole}</div>
@@ -80,7 +68,10 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
               <option>거절</option>
             </select>
 
-            <AdminSelectBoxCategory isStatus={item.auth} statusId={index} />
+            <AdminSelectBoxCategory
+              isStatus={item.auth}
+              adminId={item.adminId}
+            />
           </div>
         </div>
       )) ?? <NoDataList />}

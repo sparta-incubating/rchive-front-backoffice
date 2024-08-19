@@ -14,19 +14,19 @@ import { useState } from 'react';
 
 interface PostIsOpenSelectBoxCategoryProps {
   isStatus: string;
-  statusId: number;
+  adminId: string;
 }
 
 const AdminSelectBoxCategory = ({
   isStatus,
-  statusId,
+  adminId,
 }: PostIsOpenSelectBoxCategoryProps) => {
   const [showOptions, setShowOptions] = useState(false);
   const updatePostsIsOpen = usePostIsOpenUpdate();
 
   const handleClick = async (data: boolean) => {
     // await updatePostsIsOpen([Number(postId)], data);
-    alert(statusId);
+    alert(adminId);
     setShowOptions(false);
   };
 

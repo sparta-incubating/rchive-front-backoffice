@@ -1,4 +1,16 @@
+//체크박스 type
 export type AdminDataInfoType = {
+  adminId: string;
+  username: string;
+  trackRole: string;
+  period: number;
+  email: string;
+  createdAt: string;
+  auth: string;
+};
+
+//권한 조회 리스트 유저 타입
+export type AdminListInfoType = {
   username: string;
   trackRole: string;
   period: number;
