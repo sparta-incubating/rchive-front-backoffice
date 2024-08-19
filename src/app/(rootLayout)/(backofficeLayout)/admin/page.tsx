@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType, AdminListInfoType } from '@/types/admin.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 const Admin = () => {
@@ -26,9 +26,10 @@ const Admin = () => {
     trackRole: '',
     sort: 'DATE_LATELY',
     searchPeriod: '',
+    email: '',
   });
 
-  const { trackRole, period } = useAppSelector((state) => state.authSlice);
+  const { trackRole } = useAppSelector((state) => state.authSlice);
 
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
@@ -93,6 +94,17 @@ const Admin = () => {
     { id: 1, name: '1기', value: '1' },
     { id: 2, name: '2기', value: '2' },
   ];
+
+  /*검색 */
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSearchChange = () => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      email: inputRef.current?.value ?? '',
+    }));
+  };
+
   const handleCategoryChange = (category: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -136,7 +148,7 @@ const Admin = () => {
     <>
       <BackofficePage>
         {/* 검색바 */}
-        <SearchBar />
+        <SearchBar ref={inputRef} onChange={handleSearchChange} />
 
         {/* 게시판 */}
         <PermissionBoard>

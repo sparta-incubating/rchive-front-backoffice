@@ -26,6 +26,7 @@ export const getBoardList = async (filters: Record<string, string>) => {
     trackName,
     period,
     searchPeriod: filters.searchPeriod || undefined,
+    email: filters.email || undefined,
     page: '1',
     size: '10',
     trackRole: filters.trackRole || undefined,
@@ -38,6 +39,10 @@ export const getBoardList = async (filters: Record<string, string>) => {
     throw new Error('권한 신청 목록 조회에 실패했습니다. 다시 시도해주세요.');
   }
 };
+
+//이메일로 유저 검색
+// /apis/v1/backoffice/role?sort=DATE_LATELY&trackName=ANDROID&period=0&email=nodejs_apm%40test.com&page=1&size=10
+
 //유저의 트랙 권한 신청 건수 (전체/대기/승인) -> 탭메뉴 필터
 export const getRoleCount = async () => {
   try {

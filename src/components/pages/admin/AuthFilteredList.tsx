@@ -6,28 +6,25 @@ import NoDataList from '@/components/atoms/category/noDataList';
 import { setAdminId } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { FilteredListProps } from '@/types/admin.types';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const AuthFilteredList = ({ data }: FilteredListProps) => {
   const dispatch = useAppDispatch();
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
 
-  //id 추가
-  // const dataList = data.map((item) => ({
-  //   ...item,
-  //   adminId: item.email,
-  // }));
-
   const [checked, setChecked] = useState<boolean>(false);
+  console.log(checked);
 
-  const handleCheckChange = useCallback(
+  const handleCheckChange =
     (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked(e.target.checked);
-      console.log(checked, '체크상태');
-      dispatch(setAdminId({ adminId: adminId }));
-    },
-    [dispatch],
-  );
+      const { checked } = e.target;
+      // 개별 체크박스 상태 변경
+      if (checked) {
+        dispatch(setAdminId({ adminId }));
+      } else {
+        dispatch(setAdminId({ adminId }));
+      }
+    };
 
   useEffect(() => {
     setChecked(
@@ -54,7 +51,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
           <CategoryBox
             text=""
             onChange={handleCheckChange(item.adminId)}
-            checked={checked}
+            checked={adminIds.includes(item.adminId)}
           />
           <div>{item.username}</div>
           <div>{item.trackRole}</div>
