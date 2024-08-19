@@ -1,33 +1,26 @@
 'use client';
 
-import { signOut } from '@/auth';
-import {
-  TOKEN_EXPIRATION_ERROR_CODE,
-  TOKEN_EXPIRATION_ERROR_STATUS,
-} from '@/constants/auth.constant';
-import { useEffect } from 'react';
+import useServerComponentErrorHandling from '@/hooks/useServerComponentErrorHandling';
+
+export interface ErrorResponseType {
+  status: number | undefined;
+  data: ErrorType | string;
+}
 
 interface ErrorType {
   errorCode?: string;
   message?: string;
   status?: number;
+  errorData: string;
 }
 
-interface CustomErrorProps {
-  errorData: ErrorType;
+export interface ServerComponentCustomErrorProps {
+  errorData: ErrorResponseType;
 }
 
-const CustomError = ({ errorData }: CustomErrorProps) => {
-  useEffect(() => {
-    const { errorCode, message, status } = errorData;
-    console.log({ errorCode, message, status });
-    if (
-      errorCode === TOKEN_EXPIRATION_ERROR_CODE &&
-      status === TOKEN_EXPIRATION_ERROR_STATUS
-    ) {
-      (async () => await signOut())();
-    }
-  }, [errorData]);
+const CustomError = ({ errorData }: ServerComponentCustomErrorProps) => {
+  useServerComponentErrorHandling(errorData);
+
   return <>error page</>;
 };
 

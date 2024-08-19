@@ -72,10 +72,10 @@ const Post = async ({ searchParams }: PostProps) => {
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorData = error?.response?.data;
-      console.log(errorData);
+      const data = error?.response?.data;
+      const status = error?.response?.status;
 
-      return <CustomError errorData={errorData}></CustomError>;
+      return <CustomError errorData={{ status, data }}></CustomError>;
     }
   }
 };

@@ -8,8 +8,6 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   ...authConfig,
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log({ trigger });
-
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -33,6 +31,8 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           token.roleApply = data;
         }
       }
+
+      // update 함수 호출시 실행되는 부분
       if (trigger === 'update' && session) {
         token = {
           ...token,
@@ -46,9 +46,6 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log('in auth session : ', { session });
-      console.log('in auth token : ', { token });
-
       session.user.accessToken = token.accessToken as string;
       session.user.refreshToken = token.refreshToken as string;
       session.user.roleError = token.roleError as string | undefined;
@@ -62,18 +59,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   },
   events: {
     async signOut(token) {
-      console.log('singout ', token);
-      /*try {
-        console.log('signout 진행');
-
-        const response = await logout(token.accessToken);
-        console.log('signout 완료');
-        return response;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(error.response);
-        }
-      }*/
+      console.log('signOut이 진행되고있어요.');
     },
   },
 });
