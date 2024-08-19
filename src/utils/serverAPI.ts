@@ -1,9 +1,13 @@
+import { refreshAccessToken } from '@/utils/auth.util';
+import nextAuthOptions from '@/utils/nextOptions/nextAuthOptions';
 import axios from 'axios';
-import { serverLogout } from './auth.server.util';
+import { getServerSession } from 'next-auth';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const createServerAPI = (accessToken: string) => {
+export const createServerAPI = async () => {
+  const session = await getServerSession(nextAuthOptions);
+  let accessToken = session?.user?.accessToken || '';
   const serverAPI = axios.create({
     baseURL: BACKEND_URL,
     withCredentials: true,
@@ -21,7 +25,6 @@ export const createServerAPI = (accessToken: string) => {
       }
       return config;
     },
-
     (error) => Promise.reject(error),
   );
 
@@ -30,15 +33,33 @@ export const createServerAPI = (accessToken: string) => {
       console.log('응답 받음:', response.status, response.config.url);
       return response;
     },
-
     async (error) => {
-      console.error('API 오류:', error.response?.status, error.response?.data);
-      // 토큰 재발행 로직 추가 예정
+      const originalRequest = error.config;
 
-      if (error.response?.status === 401) {
-        await serverLogout();
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const refreshToken = session?.user?.refreshToken;
+
+          if (refreshToken) {
+            const newAccessToken = await refreshAccessToken(refreshToken);
+
+            if (session && session.user) {
+              session.user.accessToken = newAccessToken;
+              accessToken = newAccessToken;
+            }
+
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+            return serverAPI(originalRequest);
+          } else {
+            throw new Error('No refresh token available');
+          }
+        } catch (refreshError) {
+          console.error('Failed to refresh token:', refreshError);
+          throw refreshError;
+        }
       }
-
       return Promise.reject(error);
     },
   );

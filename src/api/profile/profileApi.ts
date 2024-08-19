@@ -4,13 +4,14 @@ import {
   RoleChange,
 } from '@/types/profile.types';
 import { client } from '@/utils/clientAPI';
-import { getCookie } from 'cookies-next';
+import { getSession } from 'next-auth/react';
 
 export const getUserInfo = async () => {
-  const trackName = getCookie('trackName');
-  const period = getCookie('period');
-
   try {
+    const session = await getSession();
+    const trackName = session?.user.trackName;
+    const period = session?.user.loginPeriod;
+
     const res = await client.get(
       `/apis/v1/profile?trackName=${trackName}&period=${period}`,
     );
@@ -23,8 +24,8 @@ export const getUserInfo = async () => {
 
 export const updatePassword = async (password: PassWordChange) => {
   const { originPassword, newPassword } = password;
-  console.log(originPassword, '기존비밀번호');
-  console.log(newPassword, '변경할 비밀번호');
+  // console.log(originPassword, '기존비밀번호');
+  // console.log(newPassword, '변경할 비밀번호');
   try {
     const res = await client.patch(`/apis/v1/profile/password`, {
       originPassword,

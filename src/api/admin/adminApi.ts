@@ -4,7 +4,7 @@ import {
   RejectionItem,
 } from '@/types/admin.types';
 import { client } from '@/utils/clientAPI';
-import { getCookie } from 'cookies-next';
+import { getSession } from 'next-auth/react';
 
 //백오피스 - 프로필 조회
 export const getBackOfficeInfo = async () => {
@@ -17,8 +17,9 @@ export const getBackOfficeInfo = async () => {
 };
 
 export const getBoardList = async (filters: Record<string, string>) => {
-  const trackName = getCookie('trackName');
-  const period = getCookie('period');
+  const session = await getSession();
+  const trackName = session?.user.trackName;
+  const period = session?.user.loginPeriod;
 
   const params = {
     sort: filters.sort || 'DATE_LATELY',
@@ -39,10 +40,11 @@ export const getBoardList = async (filters: Record<string, string>) => {
 };
 //유저의 트랙 권한 신청 건수 (전체/대기/승인) -> 탭메뉴 필터
 export const getRoleCount = async () => {
-  const trackName = getCookie('trackName');
-  const period = getCookie('period');
-
   try {
+    const session = await getSession();
+    const trackName = session?.user.trackName;
+    const period = session?.user.loginPeriod;
+
     const res = await client.get(
       `/apis/v1/backoffice/role/count?trackName=${trackName}&period=${period}`,
     );

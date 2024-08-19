@@ -5,13 +5,11 @@ import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
-import { getLastConnectRole, getRoleApplyStatus } from '@/api/authApi';
-import { useModalContext } from '@/context/modal.context';
+import { useModalContext } from '@/context/useModalContext';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
-import { setCookie } from 'cookies-next';
+import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -27,7 +25,6 @@ import SignupModal from './signupModal';
 const SignIn = () => {
   const [pwErrorMsg, setpwErrorMsg] = useState<string>('');
   const { open } = useModalContext();
-
   const handleSignupModalOpen = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
@@ -46,30 +43,15 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    try {
-      await axios.post('/api/auth/login', data);
-      try {
-        await getLastConnectRole();
-        router.push('/');
-      } catch (error) {
-        const roleApplyStatusResponse = await getRoleApplyStatus();
-        setCookie('loginId', data.username);
+    const authRes = await signIn('credentials', {
+      username: data.username,
+      password: data.password,
+      redirect: false,
+    });
 
-        if (roleApplyStatusResponse) {
-          router.push(`/role/result`);
-        } else {
-          router.push('/role');
-        }
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 500) {
-        setpwErrorMsg(
-          '가입되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.',
-        );
-      } else {
-        console.error('로그인 중 오류 발생:', error);
-        alert('로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-      }
+    if (authRes?.status === 200) {
+      console.log("let's go to home");
+      router.push('/');
     }
   };
 

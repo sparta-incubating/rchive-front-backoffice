@@ -3,17 +3,13 @@ import {
   TrackType,
   tutorApiType,
 } from '@/types/posts.types';
-import axiosAPI from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
 
 // 태그 검색 함수
 export const getTags = async (keyword: string) => {
   try {
-    const response = await axiosAPI.get(
-      `/apis/v1/posts/tags?tagName=${keyword}`,
-    );
+    const response = await client.get(`/apis/v1/posts/tags?tagName=${keyword}`);
 
     return response.data.data;
   } catch (error) {
@@ -24,7 +20,7 @@ export const getTags = async (keyword: string) => {
 // 태그 저장 함수
 export const postTag = async (tagName: string) => {
   try {
-    const response = await axiosAPI.post('/apis/v1/posts/tags', {
+    const response = await client.post('/apis/v1/posts/tags', {
       tagName,
     });
     return response.data;
@@ -36,7 +32,7 @@ export const postTag = async (tagName: string) => {
 // 기수 검색 함수
 export const getPeriod = async <T>(track: string): Promise<T> => {
   try {
-    const response = await axiosAPI.get(
+    const response = await client.get(
       `/apis/v1/role/track/period?trackName=${track}`,
     );
 
@@ -57,17 +53,10 @@ export const postThumbnailUpload = async (file: File) => {
   const formData = new FormData();
   formData.append('thumbnail', file);
 
-  const accessToken = getCookie('AT');
-
   try {
-    const response = await axiosAPI.post(
+    const response = await client.post(
       '/apis/v1/s3/thumbnail/upload',
       formData,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
     );
     return response.data;
   } catch (error) {
@@ -130,5 +119,45 @@ export const postDataPost = async (
     return response.data;
   } catch (error) {
     throw new Error('게시물 등록에 실패했습니다.');
+  }
+};
+
+// 게시물 공개 endpoint
+export const patchPostOpen = async (
+  trackName: string,
+  loginPeriod: string,
+  postIds: number[],
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/open?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+      {
+        postIdList: postIds,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('게시물 공개에 실패했습니다.');
+  }
+};
+
+// 게시물 비공개 endpoint
+export const patchPostClose = async (
+  trackName: string,
+  loginPeriod: string,
+  postIds: number[],
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/close?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+      {
+        postIdList: postIds,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('게시물 비공개에 실패했습니다.');
   }
 };

@@ -1,14 +1,10 @@
-import TagContainer from '@/components/organisms/tagContainer';
+import TestComponent from '@/app/(rootLayout)/(backofficeLayout)/(home)/_components/testComponent';
+import { cookies } from 'next/headers';
 
 const Home = () => {
-  return (
-    <>
-      <div className="w-full">
-        <h1>Home</h1>
-        <TagContainer placeholder="태그 입력 최대 개수는 10개까지 가능해요." />
-      </div>
-    </>
-  );
+  const cookieStore = cookies();
+  const refreshToken = cookieStore.get('Refresh')?.value || '';
+  return <TestComponent refreshToken={refreshToken + ''}></TestComponent>;
 };
 
 export default Home;

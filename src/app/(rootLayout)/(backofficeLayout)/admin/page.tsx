@@ -1,7 +1,7 @@
 'use client';
 
 import { usePermissionDataQuery } from '@/api/admin/useQuery';
-import AuthCategory from '@/components/atoms/category/AuthCategory';
+import AuthFilterCategory from '@/components/atoms/category/AuthCategory';
 import NoDataList from '@/components/atoms/category/noDataList';
 import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
@@ -9,8 +9,8 @@ import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
 import BackofficePage from '@/components/pages/backofficePage';
+import { useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType } from '@/types/admin.types';
-import { getCookie } from 'cookies-next';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -25,11 +25,12 @@ const Admin = () => {
     searchPeriod: '',
   });
 
-  const trackName = getCookie('trackRole');
+  const { trackRole } = useAppSelector((state) => state.authSlice);
 
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
-  console.log(viewList, 'viewList');
+
+  console.log(boardList, '게시글 정보');
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -108,23 +109,21 @@ const Admin = () => {
         <PermissionBoard>
           <TapMenu onTabChange={handleTabChange} />
           <br />
-          {/* <FilterCategory /> */}
-          {/* <AuthCategory label="직책" data={roleCategory} />
-          <AuthCategory label="최신순" data={sortCategory} /> */}
+
           <div className="flex flex-row">
-            <AuthCategory
+            <AuthFilterCategory
               label="직책"
               data={roleCategory}
               setValue={(value) => handleCategoryChange('trackRole', value)}
             />
-            {trackName === 'PM' && (
+            {trackRole === 'PM' && (
               <>
-                <AuthCategory
+                <AuthFilterCategory
                   label="최신순"
                   data={sortCategory}
                   setValue={(value) => handleCategoryChange('sort', value)}
                 />
-                <AuthCategory
+                <AuthFilterCategory
                   label="기수"
                   data={periodCategory}
                   setValue={(value) =>
@@ -149,8 +148,6 @@ const Admin = () => {
             size={boardList?.data?.size}
             onPageChange={handlePageChange}
           />
-
-          {/* <FilterCategory /> */}
         </PermissionBoard>
       </BackofficePage>
     </>

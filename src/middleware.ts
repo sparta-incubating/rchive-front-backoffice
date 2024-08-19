@@ -1,32 +1,63 @@
 // middleware.ts
-import { serverLogout } from '@/api/authApi';
-import { deleteCookie, getCookie } from 'cookies-next';
-import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const token = getCookie('AT', { res, req });
-  const role = getCookie('trackRole', { res, req });
+  res.headers.append('Access-Control-Allow-Credentials', 'true');
+  res.headers.append('Access-Control-Allow-Origin', '*'); // replace this your actual origin
+  res.headers.append(
+    'Access-Control-Allow-Methods',
+    'GET,DELETE,PATCH,POST,PUT',
+  );
+  res.headers.append(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+  );
+
+  const session = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const accessToken = session?.accessToken;
+  const trackId = session?.trackId;
+  const trackRole = session?.trackRole;
+  const trackName = session?.trackName;
+  const loginPeriod = session?.loginPeriod;
+  const roleApply = session?.roleApply;
+
+  const role = trackRole;
   const { pathname } = req.nextUrl;
 
-  // 로그인 정보와 권한이 필요한 페이지
-  // 필요한 페이지 아래와 같이 if문에 추가.
-  if (pathname === '/' || pathname.startsWith('/posts')) {
-    if (!token || !role) {
-      await serverLogout(req);
-      deleteCookie('AT', { res, req });
-      deleteCookie('loginId', { res, req });
-      return NextResponse.redirect(new URL('/login', req.url));
+  // /login 페이지는 아무 조건 없이 접근 가능
+  if (pathname === '/login') {
+    return NextResponse.next();
+  }
+
+  // /role, /role/result는 AccessToken이 있어야 접근 가능
+  if ((pathname === '/role' || pathname === '/role/result') && accessToken) {
+    return NextResponse.next();
+  }
+
+  // 1. AccessToken과 Role이 모두 있는 경우, 모든 페이지 접근 허용
+  if (accessToken && role) {
+    return NextResponse.next();
+  }
+
+  // 2. AccessToken은 있지만 Role이 없는 경우, /role로 리다이렉션
+  if (accessToken && !role) {
+    if (roleApply) {
+      // 3. AccessToken은 있지만 Role이 없고, roleApply가 있다면 /role/result로 리다이렉션
+      return NextResponse.redirect(new URL('/role/result', req.url));
+    } else {
+      return NextResponse.redirect(new URL('/role', req.url));
     }
   }
 
-  // 로그인 정보는 필요하지만 권한이 필요없는 페이지
-  // 필요한 페이지 아래와 같이 if문에 추가.
-  if (pathname === '/role/result') {
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
-  }
+  // 기타 경우: 로그인 페이지로 리다이렉션
+  return NextResponse.redirect(new URL('/login', req.url));
 }
 
 export const config = {

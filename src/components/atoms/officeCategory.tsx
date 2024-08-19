@@ -7,7 +7,6 @@ const OfficeCategory = () => {
   return (
     <div className="flex flex-row">
       <FilterCategory />
-      <PermissionCategory />
     </div>
   );
 };

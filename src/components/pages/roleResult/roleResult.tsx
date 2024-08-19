@@ -1,4 +1,4 @@
-import { getLastConnectRole } from '@/api/authApi';
+import { getLastConnectRole } from '@/api/client/authApi';
 import Button from '@/components/atoms/button';
 
 const RoleResult = () => {

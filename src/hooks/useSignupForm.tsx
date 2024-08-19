@@ -1,7 +1,7 @@
-import { getMailCheck, postSignup } from '@/api/authApi';
+import { getMailCheck, postSignup } from '@/api/client/authApi';
 import { Admin, User } from '@/class/signup';
 import SignUpCompleteModal from '@/components/pages/signUpCompleteModal';
-import { useModalContext } from '@/context/modal.context';
+import { useModalContext } from '@/context/useModalContext';
 import {
   GenderEnum,
   OAuthEnum,
@@ -14,6 +14,20 @@ import { signupSchema } from '@/validators/auth/signup.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+const DEFAULT_VALUE = {
+  email: '',
+  username: '',
+  password: '',
+  passwordConfirm: '',
+  phone: '',
+  birth: '',
+  // phoneConfirm: false,
+  ad: false,
+  age: false,
+  privacy: false,
+  service: false,
+};
 
 const useSignupForm = (signupType: signupModalType) => {
   const [isEmailUnique, setIsEmailUnique] = useState<boolean | undefined>(
@@ -33,19 +47,7 @@ const useSignupForm = (signupType: signupModalType) => {
     mode: 'all',
     reValidateMode: 'onChange',
     shouldFocusError: false,
-    defaultValues: {
-      email: '',
-      username: '',
-      password: '',
-      passwordConfirm: '',
-      phone: '',
-      birth: '',
-      // phoneConfirm: false,
-      ad: false,
-      age: false,
-      privacy: false,
-      service: false,
-    },
+    defaultValues: DEFAULT_VALUE,
   });
 
   const onSubmit = async (data: SignupFormSchema) => {

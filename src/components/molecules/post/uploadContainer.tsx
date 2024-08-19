@@ -30,9 +30,9 @@ const UploadContainer = () => {
     }
   }, [debouncedURL]);
 
-  const handleUrlChange = (newUrl: string) => {
-    setUrl(newUrl);
-  };
+  // const handleUrlChange = (newUrl: string) => {
+  //   setUrl(newUrl);
+  // };
 
   return (
     <div className="flex w-full gap-4">
@@ -50,7 +50,16 @@ const UploadContainer = () => {
           </>
         )}
       </UploadThumbnail>
-      {/*<UploadInput value={url} onChange={handleUrlChange} />*/}
+      {/* <UploadInput value={url} onClick={handleUrlChange} /> */}
+      {/* 추후 삭제 로직 */}
+      <input
+        type="text"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)} // 입력된 URL을 setUrl로 업데이트
+        placeholder="URL을 입력하세요"
+        className="hidden"
+      />
+      {/* 추후 삭제 로직*/}
     </div>
   );
 };

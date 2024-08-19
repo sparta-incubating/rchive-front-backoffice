@@ -25,7 +25,7 @@ interface SelectInputProps
   extends PropsWithChildren<VariantProps<typeof SelectInputVariants>> {
   className?: string;
   clicked: boolean;
-  onClick: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 const SelectInput = ({
@@ -40,20 +40,22 @@ const SelectInput = ({
       <span className={classMerge(SelectInputVariants({ variant }), className)}>
         {children}
       </span>
-      <div
-        data-clicked={clicked}
-        className="flex h-6 w-6 rotate-180 items-center justify-center transition-transform duration-500 ease-in-out data-[clicked=false]:rotate-0"
-      >
-        <Image
-          src={
-            variant === 'menubar'
-              ? '/assets/icons/selectArrowWhite.svg'
-              : '/assets/icons/selectArrow.svg'
-          }
-          alt={'select arrow icon'}
-          fill
-        />
-      </div>
+      {onClick && (
+        <div
+          data-clicked={clicked}
+          className="flex h-6 w-6 rotate-180 items-center justify-center transition-transform duration-500 ease-in-out data-[clicked=false]:rotate-0"
+        >
+          <Image
+            src={
+              variant === 'menubar'
+                ? '/assets/icons/selectArrowWhite.svg'
+                : '/assets/icons/selectArrow.svg'
+            }
+            alt={'select arrow icon'}
+            fill
+          />
+        </div>
+      )}
     </div>
   );
 };

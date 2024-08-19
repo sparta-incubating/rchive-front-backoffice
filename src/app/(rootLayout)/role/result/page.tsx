@@ -13,8 +13,7 @@ const RoleResultPage = async () => {
 
   // 권한 신청 결과 조회 endpoint
   const getRoleApplyResult = async () => {
-    const accessToken = getCookie('AT', { cookies });
-    const serverAPI = createServerAPI(String(accessToken));
+    const serverAPI = await createServerAPI();
 
     try {
       const response = await serverAPI.get('/apis/v1/role/result');

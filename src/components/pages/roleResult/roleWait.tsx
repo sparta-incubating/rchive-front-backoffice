@@ -1,16 +1,11 @@
 'use client';
 
-import { logout } from '@/api/authApi';
 import Button from '@/components/atoms/button';
-import { deleteLoginIdCookie } from '@/utils/auth.util';
-import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const RoleWait = () => {
-  const router = useRouter();
   const handleGoToLogin = async () => {
-    await logout();
-    deleteLoginIdCookie();
-    router.push('/login');
+    await signOut();
   };
 
   return (

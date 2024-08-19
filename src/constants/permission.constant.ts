@@ -1,3 +1,5 @@
+import { PostTabType } from '@/types/posts.types';
+
 export interface TableHeaderItem {
   label: string;
   key: string;
@@ -60,6 +62,66 @@ export const postHeaders: TableHeaderItem[] = [
     label: '날짜',
     key: 'date',
     className: 'w-[106px]  text-gray-400',
+  },
+  {
+    label: '업데이트',
+    key: 'update',
+    className: 'w-[106px]  text-gray-400',
+  },
+];
+
+export const tabArr = [
+  {
+    id: 0,
+    title: '전체',
+    className: 'w-[104px]',
+    bgColor: 'bg-blue-55',
+    textColor: 'text-blue-400',
+  },
+  {
+    id: 1,
+    title: '대기 중',
+    className: 'w-[114px]',
+    bgColor: 'bg-[#ff9900]/10',
+    textColor: 'text-[#FF9900]',
+  },
+  {
+    id: 3,
+    title: '승인',
+    className: 'w-[104px]',
+    bgColor: 'bg-[#58b32e]/10',
+    textColor: 'text-success-green',
+  },
+];
+
+export const postTabArr: PostTabType[] = [
+  {
+    id: 'all',
+    title: '전체',
+  },
+  {
+    id: 'Sparta_Lecture',
+    title: '강의자료',
+  },
+  {
+    id: 'Level_Challenge',
+    title: '챌린지',
+  },
+  {
+    id: 'Level_Standard',
+    title: '스탠다드',
+  },
+  {
+    id: 'Level_Basic',
+    title: '베이직',
+  },
+  {
+    id: 'Project_Description',
+    title: '과제해설',
+  },
+  {
+    id: 'Special_Lecture',
+    title: '특강/실시간 세션',
   },
 ];
 

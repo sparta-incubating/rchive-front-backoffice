@@ -2,7 +2,7 @@ import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
-const divVariants = cva('absolute right-0', {
+const divVariants = cva('absolute left-0', {
   variants: {
     variant: {
       permission: 'top-[35px]',
@@ -37,12 +37,12 @@ const CategoryDropDown = ({
       className={classMerge(
         divVariants({ variant }),
         className,
-        show ? 'z-[999] block' : 'hidden',
+        show ? 'z-30 block' : 'hidden',
       )}
     >
       <div
-        className={`transition-height flex w-[160px] flex-col items-center justify-center rounded-[14px] border bg-white ${
-          isClicked ? 'h-[64px]' : 'h-[100px]'
+        className={`flex h-auto w-[160px] flex-col items-center overflow-y-scroll rounded-[14px] border bg-white py-2 scrollbar-hide ${
+          isClicked ? 'max-h-[64px]' : 'max-h-[120px]'
         }`}
         data-clicked={isClicked}
       >

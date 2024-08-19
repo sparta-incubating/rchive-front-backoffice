@@ -1,6 +1,6 @@
 'use client';
 
-import { useTagContext } from '@/context/tag.context';
+import { useTagContext } from '@/context/useTagContext';
 import styles from '@/styles/tagInput.module.css';
 import { ComponentProps, useEffect } from 'react';
 

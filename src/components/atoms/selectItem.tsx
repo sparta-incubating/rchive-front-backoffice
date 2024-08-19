@@ -1,7 +1,7 @@
+import { ReactNode } from 'react';
+import Image from 'next/image';
 import SelectItemSpan from '@/components/atoms/selectItemSpan';
 import { cva, VariantProps } from 'class-variance-authority';
-import Image from 'next/image';
-import { ReactNode } from 'react';
 
 const SelectItemVariants = cva(
   'relative mx-3 flex cursor-pointer justify-between rounded-[12px] px-[14px] py-5 ',

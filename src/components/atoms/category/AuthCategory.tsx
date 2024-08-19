@@ -21,7 +21,7 @@ interface AuthCategoryProps {
   setValue: (value: string) => void;
 }
 
-const AuthCategory = ({ label, data, setValue }: AuthCategoryProps) => {
+const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(label);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -63,4 +63,4 @@ const AuthCategory = ({ label, data, setValue }: AuthCategoryProps) => {
   );
 };
 
-export default AuthCategory;
+export default AuthFilterCategory;
