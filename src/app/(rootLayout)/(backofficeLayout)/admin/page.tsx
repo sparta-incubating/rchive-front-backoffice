@@ -25,12 +25,10 @@ const Admin = () => {
     searchPeriod: '',
   });
 
-  const { trackRole } = useAppSelector((state) => state.authSlice);
+  const { trackRole, period } = useAppSelector((state) => state.authSlice);
 
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
-
-  console.log(boardList, '게시글 정보');
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);

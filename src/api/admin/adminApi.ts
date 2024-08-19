@@ -51,7 +51,9 @@ export const getRoleCount = async () => {
 
     return res.data;
   } catch (error) {
-    throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
+    throw new Error(
+      '유저의 트랙 권한 신청 건수 조회에 실패했습니다. 다시 시도해주세요.',
+    );
   }
 };
 

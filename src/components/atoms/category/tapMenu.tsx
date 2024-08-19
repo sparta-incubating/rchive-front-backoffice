@@ -5,6 +5,7 @@ import { TapProps } from '@/types/admin.types';
 
 const TapMenu = ({ onTabChange }: TapProps) => {
   const { countList } = useRoleCountDataQuery();
+  console.log(countList, 'countList');
 
   const allCount = countList?.data?.statusAll;
   const approveCount = countList?.data?.statusApprove;
