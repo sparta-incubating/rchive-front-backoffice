@@ -137,7 +137,6 @@ export const patchPostOpen = async (
     );
     return response.data;
   } catch (error) {
-    console.log(error);
     throw new Error('게시물 공개에 실패했습니다.');
   }
 };
@@ -157,7 +156,6 @@ export const patchPostClose = async (
     );
     return response.data;
   } catch (error) {
-    console.log(error);
     throw new Error('게시물 비공개에 실패했습니다.');
   }
 };

@@ -13,14 +13,16 @@ const TestComponent = ({ refreshToken }: { refreshToken: string }) => {
   const handleServerRefresh = async () => {
     try {
       const response = await axios.post('/api/auth/reissue');
-      console.log({ response });
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleNextAuthRefresh = async () => {
-    await update();
+    await update({
+      ...session,
+      user: { ...session?.user, accessToken: 'asdf' },
+    });
   };
 
   return (

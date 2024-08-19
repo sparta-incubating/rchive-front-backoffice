@@ -49,7 +49,6 @@ const SignIn = () => {
     });
 
     if (authRes?.status === 200) {
-      console.log("let's go to home");
       router.push('/');
     }
   };

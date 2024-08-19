@@ -1,10 +1,10 @@
 'use client';
 
+import { signOut } from '@/auth';
 import {
   TOKEN_EXPIRATION_ERROR_CODE,
   TOKEN_EXPIRATION_ERROR_STATUS,
 } from '@/constants/auth.constant';
-import { signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 
 interface ErrorType {

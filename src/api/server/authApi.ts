@@ -1,7 +1,6 @@
 import { RoleFormSchema } from '@/types/role.types';
 import axiosInstance from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
-import { createServerAPI } from '@/utils/serverAPI';
 
 // 권한 신청 endpoint
 export const postRoleApply = async (data: RoleFormSchema) => {
@@ -31,7 +30,7 @@ export const getRoleApplyStatus = async (accessToken: string) => {
   });
 };
 
-export const signIn = async (
+export const login = async (
   username: string | undefined,
   password: string | undefined,
 ) => {
@@ -42,8 +41,7 @@ export const signIn = async (
 };
 
 export const logout = async (accessToken: string) => {
-  const serverAPI = await createServerAPI();
-  await serverAPI.delete('/apis/v1/users/logout', {
+  await axiosInstance.delete('/apis/v1/users/logout', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

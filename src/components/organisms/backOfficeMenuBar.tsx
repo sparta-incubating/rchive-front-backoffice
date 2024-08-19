@@ -14,9 +14,7 @@ const options: SelectOptionType[] = [
 ];
 
 const BackOfficeMenuBar = () => {
-  const handleSelect = (value: SelectOptionType['value']) => {
-    console.log(value, 'value');
-  };
+  const handleSelect = (value: SelectOptionType['value']) => {};
 
   return (
     <aside className="w-[292px] bg-black text-white">

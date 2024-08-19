@@ -1,10 +1,9 @@
+import { auth, signOut } from '@/auth';
 import { trackRole } from '@/types/auth.types';
 import { TrackType } from '@/types/posts.types';
-import NextAuthOptions from '@/utils/nextOptions/nextAuthOptions';
-import { getServerSession } from 'next-auth';
 
 export const serverSession = async () => {
-  const session = await getServerSession(NextAuthOptions);
+  const session = await auth();
 
   const period = session?.user.loginPeriod as number;
   const trackName = session?.user.trackName as TrackType;
@@ -17,7 +16,7 @@ export const serverSession = async () => {
 };
 
 export const updateAccessToken = async (accessToken: string) => {
-  const session = await getServerSession(NextAuthOptions);
+  const session = await auth();
 
   if (session && session.user) {
     console.log('updateAccessToken', accessToken);
@@ -25,4 +24,9 @@ export const updateAccessToken = async (accessToken: string) => {
   }
 
   return session;
+};
+
+export const logout = async () => {
+  'use server';
+  await signOut();
 };

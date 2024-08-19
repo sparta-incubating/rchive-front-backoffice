@@ -2,6 +2,7 @@
 
 import refresh from '@/../public/assets/icons/refresh-button.svg';
 import Image from 'next/image';
+
 interface UserInfoProps {
   username: string;
   trackName: string;
@@ -20,7 +21,6 @@ const UserInfo: React.FC<UserInfoProps> = ({
   // 랜덤 이미지 선택 함수
   const handleRandomImg = () => {
     const randomIndex = Math.floor(Math.random() * profileImages.length);
-    console.log(randomIndex, 'imgIndx');
     return profileImages[randomIndex];
   };
 

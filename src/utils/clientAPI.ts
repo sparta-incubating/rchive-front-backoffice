@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -59,14 +59,12 @@ client.interceptors.response.use(
 
         if (refreshToken) {
           const response = await axios.post('/api/auth/reissue');
-          const newAccessToken = response.data.accessToken;
-          console.log({ newAccessToken });
 
           // 새로운 액세스 토큰을 전역 변수에 저장
-          currentAccessToken = newAccessToken;
+          currentAccessToken = response.data.accessToken;
 
           // 새로운 헤더로 Authorization 토큰 업데이트
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${currentAccessToken}`;
 
           // 원래의 요청을 새로운 토큰으로 재시도
           return client(originalRequest);
@@ -75,8 +73,15 @@ client.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error('Failed to refresh token, logging out');
-        // await signOut();
-        currentAccessToken = null;
+
+        try {
+          await signOut();
+        } catch (logoutError) {
+          console.error('Failed to sign out:', logoutError);
+        } finally {
+          currentAccessToken = null;
+        }
+
         return Promise.reject(refreshError);
       }
     }

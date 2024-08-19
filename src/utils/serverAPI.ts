@@ -1,13 +1,16 @@
+import { auth } from '@/auth';
 import { refreshAccessToken } from '@/utils/auth.util';
-import nextAuthOptions from '@/utils/nextOptions/nextAuthOptions';
 import axios from 'axios';
-import { getServerSession } from 'next-auth';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+let currentAccessToken: string | null = null;
+
 export const createServerAPI = async () => {
-  const session = await getServerSession(nextAuthOptions);
-  let accessToken = session?.user?.accessToken || '';
+  const session = await auth();
+
+  currentAccessToken = session?.user?.accessToken || '';
+
   const serverAPI = axios.create({
     baseURL: BACKEND_URL,
     withCredentials: true,
@@ -18,8 +21,8 @@ export const createServerAPI = async () => {
 
   serverAPI.interceptors.request.use(
     async (config) => {
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
+      if (currentAccessToken) {
+        config.headers.Authorization = `Bearer ${currentAccessToken}`;
       } else {
         console.log('액세스 토큰 오류');
       }
@@ -42,24 +45,36 @@ export const createServerAPI = async () => {
           const refreshToken = session?.user?.refreshToken;
 
           if (refreshToken) {
-            const newAccessToken = await refreshAccessToken(refreshToken);
+            /*            const response = await axios.post(
+                          `/api/auth/reissue`,
+                          {},
+                          {
+                            withCredentials: true,
+                          },
+                        );
+                        currentAccessToken = response.data.accessToken;*/
+            currentAccessToken = await refreshAccessToken(refreshToken);
+            // 변경된 accessToken을 session이 아닌 cookie에 임시 저장한다.
 
-            if (session && session.user) {
-              session.user.accessToken = newAccessToken;
-              accessToken = newAccessToken;
-            }
-
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            /*    if (session && session.user) {
+                  await unstable_update({
+                    ...session,
+                    user: { ...session?.user, accessToken: currentAccessToken },
+                  });
+                }
+    */
+            originalRequest.headers.Authorization = `Bearer ${currentAccessToken}`;
 
             return serverAPI(originalRequest);
           } else {
             throw new Error('No refresh token available');
           }
         } catch (refreshError) {
-          console.error('Failed to refresh token:', refreshError);
+          console.error('Failed to refresh token, logging out');
           throw refreshError;
         }
       }
+
       return Promise.reject(error);
     },
   );

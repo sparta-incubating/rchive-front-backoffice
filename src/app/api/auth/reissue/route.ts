@@ -1,10 +1,6 @@
+import { auth, unstable_update } from '@/auth';
 import axiosInstance from '@/utils/axiosAPI';
-import { serverSession } from '@/utils/nextOptions/nextAuth.util';
-import nextAuthOptions from '@/utils/nextOptions/nextAuthOptions';
 import axios from 'axios';
-import { NextApiRequest } from 'next';
-import { getServerSession } from 'next-auth';
-import { getToken, JWT } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 interface ReissueResponse {
@@ -12,8 +8,9 @@ interface ReissueResponse {
   message: string;
 }
 
-export async function POST(req: NextApiRequest) {
-  const { refreshToken } = await serverSession();
+export async function POST() {
+  const session = await auth();
+  const refreshToken = session?.user.refreshToken;
   try {
     const response = await axiosInstance.post<ReissueResponse>(
       '/apis/v1/users/reissue',
@@ -27,22 +24,14 @@ export async function POST(req: NextApiRequest) {
 
     const accessToken = response.headers.authorization.replace('Bearer ', '');
     if (response?.status === 200) {
-      console.log(
-        '----------------------------------갱신좀 해봐 ㅠㅠ----------------------------------',
-      );
-      const token = (await getToken({ req })) as JWT;
-      if (token) {
-        token.accessToken = accessToken;
-
-        // 세션 업데이트
-        const session = await getServerSession(nextAuthOptions);
-        if (session && session.user) {
-          session.user.accessToken = accessToken;
-        }
+      // 세션 업데이트
+      const session = await auth();
+      if (session && session.user) {
+        await unstable_update({
+          ...session,
+          user: { ...session?.user, accessToken },
+        });
       }
-      console.log(
-        '----------------------------------갱신좀 해봐 ㅠㅠ----------------------------------',
-      );
 
       return new NextResponse(
         JSON.stringify({ message: response.data.message, accessToken }),

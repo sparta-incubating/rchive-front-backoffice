@@ -1,5 +1,5 @@
 // middleware.ts
-import { getToken } from 'next-auth/jwt';
+import { auth } from '@/auth';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -16,17 +16,14 @@ export default async function middleware(req: NextRequest) {
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
   );
 
-  const session = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  const session = await auth();
 
-  const accessToken = session?.accessToken;
-  const trackId = session?.trackId;
-  const trackRole = session?.trackRole;
-  const trackName = session?.trackName;
-  const loginPeriod = session?.loginPeriod;
-  const roleApply = session?.roleApply;
+  const accessToken = session?.user.accessToken;
+  const trackId = session?.user.trackId;
+  const trackRole = session?.user.trackRole;
+  const trackName = session?.user.trackName;
+  const loginPeriod = session?.user.loginPeriod;
+  const roleApply = session?.user.roleApply;
 
   const role = trackRole;
   const { pathname } = req.nextUrl;
