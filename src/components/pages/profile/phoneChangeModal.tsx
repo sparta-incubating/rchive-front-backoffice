@@ -44,13 +44,13 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       {!isSuccessful ? (
         <ProfileChangeForm
-          label="휴대폰 번호 변경"
+          labels={{
+            main: '휴대폰 번호 변경',
+            sub: '휴대폰 변경을 위해 인증이 필요해요',
+          }}
           onClose={onClose}
           isValid={isValid}
         >
-          <p className="text-center text-gray-300">
-            휴대폰 변경을 위해 인증이 필요해요
-          </p>
           <section className="flex flex-col gap-[10px]">
             {/** */}
             <PasswordContainer variant="primary">

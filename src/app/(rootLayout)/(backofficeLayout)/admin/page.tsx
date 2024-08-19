@@ -20,6 +20,8 @@ import { useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 const Admin = () => {
+  /*이름 검색 */
+  // const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedTab, setSelectedTab] = useState<string>('All');
   const [filters, setFilters] = useState({
@@ -36,47 +38,6 @@ const Admin = () => {
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
-  };
-
-  // const filteredData = viewList?.filter(
-  //   (item: AdminDataInfoType) =>
-  //     selectedTab === 'All' || item.auth === selectedTab,
-  // );
-
-  /*페이지 네이션 */
-  const router = useRouter();
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    updateQueryParams('page', page);
-  };
-
-  const updateQueryParams = (
-    key: string,
-    value: string | number | DateRange | undefined,
-  ) => {
-    const query = new URLSearchParams(window.location.search);
-
-    if (key === 'date' && value) {
-      const dateRange = value as DateRange;
-      console.log({ dateRange });
-      if (dateRange.from)
-        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
-      if (dateRange.to)
-        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
-    } else if (key === 'date' && !value) {
-      query.delete('startDate');
-      query.delete('endDate');
-    } else if (value) {
-      query.set(key, String(value));
-    } else {
-      query.delete(key);
-    }
-    if (key !== 'page') {
-      setCurrentPage(1);
-      query.set('page', '1');
-    }
-
-    router.push(`/admin?${query.toString()}`);
   };
 
   /*카테고리 */
@@ -99,11 +60,26 @@ const Admin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchChange = () => {
+    const value = inputRef.current?.value ?? '';
+    // setSearchTerm(value);
     setFilters((prevFilters) => ({
       ...prevFilters,
-      email: inputRef.current?.value ?? '',
+      email: value,
     }));
   };
+
+  /*이름 검색*/
+  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === 'Enter') {
+  //     handleSearchChange();
+  //   }
+  // };
+
+  // const namefiltered = viewList?.filter((item: AdminListInfoType) =>
+  //   item?.username?.includes(searchTerm.toLowerCase()),
+  // );
+
+  /*이름 검색*/
 
   const handleCategoryChange = (category: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -143,12 +119,53 @@ const Admin = () => {
   const { adminIds: checkedAdminIds } = useAppSelector(
     (state) => state.adminCheckBoxSlice,
   );
+  /*체크박스*/
+
+  /*페이지 네이션 */
+  const router = useRouter();
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    updateQueryParams('page', page);
+  };
+
+  const updateQueryParams = (
+    key: string,
+    value: string | number | DateRange | undefined,
+  ) => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (key === 'date' && value) {
+      const dateRange = value as DateRange;
+      console.log({ dateRange });
+      if (dateRange.from)
+        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
+      if (dateRange.to)
+        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
+    } else if (key === 'date' && !value) {
+      query.delete('startDate');
+      query.delete('endDate');
+    } else if (value) {
+      query.set(key, String(value));
+    } else {
+      query.delete(key);
+    }
+    if (key !== 'page') {
+      setCurrentPage(1);
+      query.set('page', '1');
+    }
+
+    router.push(`/admin?${query.toString()}`);
+  };
 
   return (
     <>
       <BackofficePage>
         {/* 검색바 */}
-        <SearchBar ref={inputRef} onChange={handleSearchChange} />
+        <SearchBar
+          ref={inputRef}
+          onChange={handleSearchChange}
+          // onKeyDown={handleKeyDown}
+        />
 
         {/* 게시판 */}
         <PermissionBoard>

@@ -16,15 +16,15 @@ const ProfileContainer = ({
   className,
   showButton = true,
 }: ProfileItemProps) => {
-  const baseStyle = 'text-sm text-gray-900';
+  const baseStyle = 'text-base text-gray-900 font-medium';
   return (
-    <div className="h-[108px] w-[326.67px]">
-      <p className="flex h-[40px] w-[348px] items-center">{label}</p>
-      <div className="flex h-[60px] w-[332px] items-center justify-between rounded-[12px] border-2 px-[20px]">
+    <div className="h-[40px] w-[327px]">
+      <p className="flex h-[40px] w-[300px] items-center">{label}</p>
+      <div className="flex h-[62px] w-[334px] items-center justify-between rounded-[12px] border py-[20px] pl-[20px] pr-[9px]">
         <p className={classMerge(baseStyle, className)}>{data}</p>
         {showButton && (
           <button
-            className="h-[36px] w-[80px] rounded-full bg-gray-900"
+            className="h-[36px] w-[80px] rounded-[26px] bg-gray-900"
             onClick={onClick}
           >
             <p className="text-white">변경</p>

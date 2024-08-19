@@ -23,15 +23,19 @@ const UserInfo: React.FC<UserInfoProps> = ({
   }, [profileImg]);
 
   return (
-    <main className="flex h-[306px] w-[1084px] flex-col items-center justify-center gap-[24px]">
-      <section className="flex w-[1020px] flex-row items-center justify-between text-base">
-        <p className="flex h-[24px]">회원정보</p>
-        {trackRole === 'APM' && (
+    <main className="flex flex-col items-center justify-center gap-[24px]">
+      <section className="flex h-[24px] w-[1012px] flex-row items-center justify-between text-base">
+        <p className="flex h-[24px] w-[60px] text-base font-medium leading-6 text-gray-900">
+          회원정보
+        </p>
+        {trackRole === 'PM' && (
           <button
-            className="h-[42px] w-[108px] rounded-[8px] border-2"
+            className="box-border h-[44px] w-[111px] rounded-[8px] border px-[20px] py-[12px]"
             onClick={handleChangeRole}
           >
-            권한수정요청
+            <p className="text-xs font-semibold leading-[18px] text-gray-900">
+              권한 수정 요청
+            </p>
           </button>
         )}
       </section>
@@ -52,15 +56,17 @@ const UserInfo: React.FC<UserInfoProps> = ({
             <div className="absolute inset-10 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
               <button
                 onClick={handleChangeImage}
-                className="relative flex h-[36px] w-[80px] items-center justify-center rounded-[26px] border border-blue-100 bg-white px-5 py-3 hover:bg-blue-55"
+                className="relative flex h-[38px] w-[82px] items-center justify-center rounded-[26px] border border-blue-100 bg-white px-5 py-3 text-center hover:bg-blue-55"
               >
-                <p className="text-xs font-bold"> 변경</p>
+                <p className="text-center text-xs font-semibold">변경</p>
               </button>
             </div>
           </figure>
           <figcaption className="w-[824px]">
             <section className="ml-[36px] h-[60px] w-[332px]">
-              <p className="text-[32px] font-bold">{username}</p>
+              <p className="text-[32px] font-bold leading-[43.2px]">
+                {username}
+              </p>
             </section>
 
             <section className="ml-[36px] flex w-[824px] flex-row gap-[16px]">
@@ -75,17 +81,17 @@ const UserInfo: React.FC<UserInfoProps> = ({
                   <UserInfoContainer
                     label="트랙"
                     data={trackName}
-                    className="w-[264px]"
+                    className="w-[263px]"
                   />
                   <UserInfoContainer
                     label="기수"
                     data={period}
-                    className="w-[264px]"
+                    className="w-[263px]"
                   />
                   <UserInfoContainer
                     label="직책"
                     data={trackRole}
-                    className="w-[264px]"
+                    className="w-[263px]"
                   />
                 </>
               )}

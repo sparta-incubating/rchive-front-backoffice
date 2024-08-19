@@ -57,13 +57,13 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ProfileChangeForm
-        label="권한요청 페이지입니다."
+        labels={{
+          main: '권한 수정 요청 페이지입니다.',
+          sub: '해당하는 트랙 및 기수를 입력하세요',
+        }}
         onClose={onClose}
         isValid={isValid}
       >
-        <p className="text-center text-gray-300">
-          해당하는 직책과 트랙 및 기수를 입력하세요
-        </p>
         <Controller
           name="trackName"
           control={control}

@@ -56,11 +56,13 @@ const RandomProfileModal = ({
     <>
       <form onSubmit={onSubmit}>
         <ProfileChangeForm
-          label="랜덤프로필 변경"
+          labels={{
+            main: '랜덤 프로필 변경',
+            sub: '원하시는 프로필로 변경해 보세요.',
+          }}
           onClose={onClose}
           isValid={isValid}
         >
-          <span>원하시는 프로필로 변경해 보세요.</span>
           <figure>
             <Image
               src={`/assets/icons/${initImg}.svg`}
@@ -71,7 +73,7 @@ const RandomProfileModal = ({
           </figure>
           {/* 리프레시버튼 */}
           <button onClick={handleRandomImg} type="button">
-            <div className="flex h-[18px] flex-row gap-[4px]">
+            <div className="flex h-[18px] flex-row justify-center gap-[4px]">
               <Image src={refresh} width={16} height={16} alt="리프레시 버튼" />
               <p className="text-xs text-gray-400">랜덤 프로필 설정</p>
             </div>

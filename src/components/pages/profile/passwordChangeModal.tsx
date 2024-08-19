@@ -48,7 +48,10 @@ const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         {!isSuccessful ? (
           <ProfileChangeForm
-            label="비밀번호 변경"
+            labels={{
+              main: '비밀번호 변경하기',
+              sub: '',
+            }}
             onClose={onClose}
             isValid={isValid}
           >
