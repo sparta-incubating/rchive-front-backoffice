@@ -31,8 +31,8 @@ export type USERDATA = {
 export type DeleteUserType = {
   trackName: string;
   period: number;
-  email: string;
   trackRole: string;
+  email: string;
 };
 
 export type ApproveItem = Pick<

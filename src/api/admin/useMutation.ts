@@ -52,6 +52,7 @@ export const usePermissionList = () => {
       console.log('트랙 거절 실패:', error);
     },
   });
+
   return {
     postUserApproveMutate,
     updateRolePermissionMutate,

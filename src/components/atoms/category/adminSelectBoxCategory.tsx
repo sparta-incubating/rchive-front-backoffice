@@ -4,29 +4,60 @@ import green from '@/../public/assets/icons/rectangle-green.svg';
 import orange from '@/../public/assets/icons/rectangle-orange.svg';
 import red from '@/../public/assets/icons/rectangle-red.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
+import { usePermissionList } from '@/api/admin/useMutation';
 import PostIsOpenDropDown from '@/components/atoms/category/postIsOpenDropDown';
 import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpenSelectBoxContainer';
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';
-import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
+import { useAppSelector } from '@/redux/storeConfig';
+import { AdminDataInfoType } from '@/types/admin.types';
 import Image from 'next/image';
 import { useState } from 'react';
 
 interface PostIsOpenSelectBoxCategoryProps {
   isStatus: string;
-  adminId: string;
+
+  dataList: AdminDataInfoType;
 }
 
 const AdminSelectBoxCategory = ({
   isStatus,
-  adminId,
+  dataList,
 }: PostIsOpenSelectBoxCategoryProps) => {
   const [showOptions, setShowOptions] = useState(false);
-  const updatePostsIsOpen = usePostIsOpenUpdate();
+  const { trackName: statusTrackName } = useAppSelector(
+    (state) => state.authSlice,
+  );
 
-  const handleClick = async (data: boolean) => {
-    // await updatePostsIsOpen([Number(postId)], data);
-    alert(adminId);
+  console.log(statusTrackName, 'trackName');
+
+  const {
+    postUserApproveMutate,
+    deleteUsrRoleMutate,
+    updateRoleRejectionMutate,
+  } = usePermissionList();
+  // await updatePostsIsOpen([Number(postId)], data);
+  const handleClick = async (isStatus: string) => {
+    const { period, trackRole, email } = dataList;
+
+    const userInfo = {
+      trackName: statusTrackName,
+      period,
+      trackRole,
+      email,
+    };
+    console.log(isStatus, 'isStatus');
+    console.log(userInfo, 'userInfo');
+    if (isStatus === 'APPROVE') {
+      try {
+        postUserApproveMutate.mutate(userInfo);
+      } catch (error) {
+        console.log(error, '에러');
+      }
+    } else if (isStatus === 'REJECT') {
+      deleteUsrRoleMutate.mutate(userInfo);
+    }
+
     setShowOptions(false);
   };
 
@@ -49,10 +80,7 @@ const AdminSelectBoxCategory = ({
         show={showOptions}
         className="bottom-0"
       >
-        <div
-          className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
-          onClick={() => handleClick(!isStatus)}
-        >
+        <div className="flex w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55">
           <Image
             src={isStatus === 'WAIT' ? green : red}
             alt=""
@@ -62,17 +90,14 @@ const AdminSelectBoxCategory = ({
           />
           <p className="text-sm">
             {isStatus === 'WAIT' ? (
-              <p onClick={() => alert('승인')}>승인</p>
+              <p onClick={() => handleClick('APPROVE')}>승인</p>
             ) : (
-              <p onClick={() => alert('거절')}>거절</p>
+              <p onClick={() => handleClick('REJECT')}>거절</p>
             )}
           </p>
         </div>
         {isStatus === 'WAIT' && (
-          <div
-            className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
-            onClick={() => handleClick(!isStatus)}
-          >
+          <div className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55">
             <Image
               src={isStatus === 'WAIT' ? red : green}
               alt=""
@@ -82,9 +107,9 @@ const AdminSelectBoxCategory = ({
             />
             <p className="text-sm">
               {isStatus === 'WAIT' ? (
-                <p onClick={() => alert('거절')}>거절</p>
+                <p onClick={() => handleClick('REJECT')}>거절</p>
               ) : (
-                <p onClick={() => alert('승인')}>승인</p>
+                <p onClick={() => handleClick('APPROVE')}>승인</p>
               )}
             </p>
           </div>

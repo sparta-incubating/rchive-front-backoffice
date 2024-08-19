@@ -2,7 +2,6 @@
 
 import { usePermissionDataQuery } from '@/api/admin/useQuery';
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
-import AuthFilterCategory from '@/components/atoms/category/AuthCategory';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import NoDataList from '@/components/atoms/category/noDataList';
 import PageNation from '@/components/atoms/category/pageNation';
@@ -10,13 +9,14 @@ import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
+import CategoryFiltered from '@/components/pages/admin/categoryFiltered';
 import BackofficePage from '@/components/pages/backofficePage';
 import { setAllAdminIds } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType, AdminListInfoType } from '@/types/admin.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 const Admin = () => {
@@ -39,22 +39,6 @@ const Admin = () => {
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
   };
-
-  /*카테고리 */
-  const roleCategory = [
-    { id: 1, name: 'APM', value: 'APM' },
-    { id: 2, name: '수강생', value: 'STUDENT' },
-  ];
-
-  const sortCategory = [
-    { id: 1, name: '최신순', value: 'DATE_LATELY' },
-    { id: 2, name: '가나다순', value: 'NAME_ALPHABETICALLY' },
-  ];
-
-  const periodCategory = [
-    { id: 1, name: '1기', value: '1' },
-    { id: 2, name: '2기', value: '2' },
-  ];
 
   /*검색 */
   const inputRef = useRef<HTMLInputElement>(null);
@@ -157,6 +141,10 @@ const Admin = () => {
     router.push(`/admin?${query.toString()}`);
   };
 
+  useEffect(() => {
+    handleSearchChange();
+  }, [filters.email]);
+
   return (
     <>
       <BackofficePage>
@@ -169,33 +157,16 @@ const Admin = () => {
 
         {/* 게시판 */}
         <PermissionBoard>
+          {/* 탭 메뉴 */}
           <TapMenu onTabChange={handleTabChange} />
-          <br />
 
-          <div className="flex flex-row">
-            <AuthFilterCategory
-              label="직책"
-              data={roleCategory}
-              setValue={(value) => handleCategoryChange('trackRole', value)}
-            />
-            {trackRole === 'PM' && (
-              <>
-                <AuthFilterCategory
-                  label="최신순"
-                  data={sortCategory}
-                  setValue={(value) => handleCategoryChange('sort', value)}
-                />
-                <AuthFilterCategory
-                  label="기수"
-                  data={periodCategory}
-                  setValue={(value) =>
-                    handleCategoryChange('searchPeriod', value)
-                  }
-                />
-              </>
-            )}
-          </div>
+          {/* 카테고리 */}
+          <CategoryFiltered
+            trackRole={trackRole}
+            handleCategoryChange={handleCategoryChange}
+          />
 
+          {/* 조회 리스트 */}
           <div>
             {checkedAdminIds.length > 0 && (
               <section className="flex flex-row gap-[8px]">
@@ -219,7 +190,6 @@ const Admin = () => {
             <NoDataList />
           )}
 
-          <br />
           <PageNation
             currentPage={currentPage}
             totalElements={boardList?.data?.totalElements}

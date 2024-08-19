@@ -65,24 +65,19 @@ export const getRoleCount = async () => {
 //권한수락(Post)
 //유저의 트랙 권한 수락 (PM일 때)
 export const postUserApprove = async (userInfo: ApproveItem) => {
-  //예시
-  // const userInfo = {
-  //   trackName: 'ANDROID',
-  //   period: 0,
-  //   trackRole: 'STUDENT',
-  //   email: 'string',
-  // };
-
   const { trackName, period, trackRole, email } = userInfo;
   try {
-    const res = await client.post('/apis/v1/backoffice/role/approve', {
-      trackName,
-      period,
-      trackRole,
-      email,
-    });
+    const res = await client.post('/apis/v1/backoffice/role/approve', [
+      {
+        trackName,
+        period,
+        trackRole,
+        email,
+      },
+    ]);
     return res.data;
   } catch (error) {
+    console.log(error, 'error');
     throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
   }
 };
@@ -92,11 +87,13 @@ export const patchUserPermission = async (userInfo: RejectionItem) => {
   const { trackName, loginPeriod, trackId } = userInfo;
 
   try {
-    const res = await client.patch('/apis/v1/backoffice/track/permission', {
-      trackName,
-      loginPeriod,
-      trackId,
-    });
+    const res = await client.patch('/apis/v1/backoffice/track/permission', [
+      {
+        trackName,
+        loginPeriod,
+        trackId,
+      },
+    ]);
     return res.data;
   } catch (error) {
     throw new Error('권한 승인에 실패했습니다. 다시 시도해주세요.');
@@ -119,7 +116,8 @@ export const deleteUsrRole = async (userInfo: DeleteUserType) => {
     });
     return res.data;
   } catch (error) {
-    throw new Error('트랙권한 거절에 실패했습니다. 다시 시도해주세요.');
+    console.log(error, 'error');
+    throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
   }
 };
 

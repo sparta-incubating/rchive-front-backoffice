@@ -28,7 +28,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <p className="flex h-[24px] w-[60px] text-base font-medium leading-6 text-gray-900">
           회원정보
         </p>
-        {trackRole === 'PM' && (
+        {trackRole === 'APM' && (
           <button
             className="box-border h-[44px] w-[111px] rounded-[8px] border px-[20px] py-[12px]"
             onClick={handleChangeRole}

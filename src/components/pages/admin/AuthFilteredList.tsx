@@ -65,10 +65,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
               <option>거절</option>
             </select>
 
-            <AdminSelectBoxCategory
-              isStatus={item.auth}
-              adminId={item.adminId}
-            />
+            <AdminSelectBoxCategory dataList={item} isStatus={item.auth} />
           </div>
         </div>
       )) ?? <NoDataList />}
