@@ -55,7 +55,6 @@ const SignIn = () => {
 
   useEffect(() => {
     if (session) {
-      console.log({ session });
       const { trackName, trackRole, accessToken, loginPeriod } = session.user;
       dispatch(
         setAuth({
@@ -65,7 +64,7 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      // router.push('/');
+      router.push('/');
     }
   }, [dispatch, router, session]);
 
