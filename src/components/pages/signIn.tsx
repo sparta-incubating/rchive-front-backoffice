@@ -46,7 +46,7 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const authRes = await signIn('credentials', {
+    await signIn('credentials', {
       username: data.username,
       password: data.password,
       redirect: false,
