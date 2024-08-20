@@ -75,6 +75,7 @@ client.interceptors.response.use(
         console.error('Failed to refresh token, logging out');
 
         try {
+          console.log('로그아웃 시도해요');
           await signOut();
         } catch (logoutError) {
           console.error('Failed to sign out:', logoutError);
