@@ -65,7 +65,7 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      router.push('/');
+      // router.push('/');
     }
   }, [dispatch, router, session]);
 
