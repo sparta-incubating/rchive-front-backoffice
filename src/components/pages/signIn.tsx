@@ -6,12 +6,15 @@ import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import { useModalContext } from '@/context/useModalContext';
+import { setAuth } from '@/redux/slice/auth.slice';
+import { useAppDispatch } from '@/redux/storeConfig';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
@@ -24,6 +27,7 @@ import SignupModal from './signupModal';
 const SignIn = () => {
   const { data: session } = useSession();
   const { open } = useModalContext();
+  const dispatch = useAppDispatch();
   const handleSignupModalOpen = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
@@ -47,11 +51,23 @@ const SignIn = () => {
       password: data.password,
       redirect: false,
     });
+  };
 
-    if (authRes?.status === 200) {
+  useEffect(() => {
+    if (session) {
+      console.log({ session });
+      const { trackName, trackRole, accessToken, loginPeriod } = session.user;
+      dispatch(
+        setAuth({
+          accessToken,
+          trackName: trackName || '',
+          trackRole: trackRole || 'USER',
+          period: String(loginPeriod) || '',
+        }),
+      );
       router.push('/');
     }
-  };
+  }, [dispatch, router, session]);
 
   return (
     <>
