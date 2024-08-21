@@ -1,14 +1,14 @@
 import { useProfileUpdate } from '@/api/profile/useMutation';
+import AuthTimer from '@/components/atoms/authTimer';
+import Input from '@/components/atoms/input';
 import Label from '@/components/atoms/label';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
+import PhoneChangeField from '@/components/molecules/form/PhonChangeField';
 import InputField from '@/components/molecules/InputField';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
+import { ChangeModalProps } from '@/types/profile.types';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import Input from '@/components/atoms/input';
-import PhoneChangeField from '@/components/molecules/form/PhonChangeField';
-import { ChangeModalProps } from '@/types/profile.types';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -16,6 +16,8 @@ import ChangeSuccessModal from './changeSuccessModal';
 
 const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
+  const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
+  const [expire, setExpire] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -40,6 +42,10 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
       alert('휴대폰번호 변경에 실패했습니다. 다시 시도해 주세요.');
     }
   };
+
+  console.log(requestAuthNumber, '인증요청');
+  // console.log('-------------------');
+  // console.log(expire, '타이머 만료');
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {!isSuccessful ? (
@@ -56,7 +62,13 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
             <PasswordContainer variant="primary">
               <InputField>
                 <Label htmlFor="phone">휴대폰 번호</Label>
-                <PhoneChangeField register={register} />
+                <PhoneChangeField
+                  register={register}
+                  requestAuthNumber={requestAuthNumber}
+                  setRequestAuthNumber={setRequestAuthNumber}
+                  setExpire={setExpire}
+                  label={!expire ? '인증번호' : '재요청'}
+                />
                 <div className="w-[320px] border" />
                 <Input
                   name="phone"
@@ -71,6 +83,8 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
                 {errors.phone.message}
               </span>
             )}
+
+            {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
           </section>
         </ProfileChangeForm>
       ) : (

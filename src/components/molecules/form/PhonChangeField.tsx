@@ -4,15 +4,25 @@ import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
-import React, { useEffect, useState } from 'react';
+
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 
 interface PhoneFieldProps {
   register: UseFormRegister<z.infer<typeof profilePhoneSchema>>;
+  requestAuthNumber: boolean;
+  label: string;
+  setExpire: Dispatch<SetStateAction<boolean>>;
+  setRequestAuthNumber: Dispatch<SetStateAction<boolean>>;
 }
 
-const PhoneChangeField = ({ register }: PhoneFieldProps) => {
+const PhoneChangeField = ({
+  register,
+  requestAuthNumber,
+  label,
+  setRequestAuthNumber,
+}: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
   useEffect(() => {
@@ -24,9 +34,11 @@ const PhoneChangeField = ({ register }: PhoneFieldProps) => {
   }, [isInputFilled]);
 
   const handleRequestAuth = () => {
-    alert('휴대폰 인증 요청');
-  };
+    setRequestAuthNumber(true);
+    console.log('1');
 
+    //휴대폰 api 인증로직 추가 예정
+  };
   return (
     <>
       <InputContainer variant="secondary">
@@ -47,7 +59,7 @@ const PhoneChangeField = ({ register }: PhoneFieldProps) => {
           type="button"
           onClick={handleRequestAuth}
         >
-          인증 요청
+          {label}
         </Button>
       </InputContainer>
     </>
