@@ -1,16 +1,16 @@
 'use client';
 
+import { usePeriodListQuery } from '@/api/profile/useQuery';
 import AuthFilterCategory from '@/components/atoms/category/AuthCategory';
+import { useAppSelector } from '@/redux/storeConfig';
 
 interface CategoryProps {
-  trackRole: string;
   handleCategoryChange: (category: string, value: string) => void;
 }
 
-const CategoryFiltered = ({
-  trackRole,
-  handleCategoryChange,
-}: CategoryProps) => {
+const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
+  const { trackRole, trackName } = useAppSelector((state) => state.authSlice);
+
   const roleCategory = [
     { id: 1, name: 'APM', value: 'APM' },
     { id: 2, name: '수강생', value: 'STUDENT' },
@@ -21,10 +21,13 @@ const CategoryFiltered = ({
     { id: 2, name: '가나다순', value: 'NAME_ALPHABETICALLY' },
   ];
 
-  const periodCategory = [
-    { id: 1, name: '1기', value: '1' },
-    { id: 2, name: '2기', value: '2' },
-  ];
+  const periodList = usePeriodListQuery(trackName);
+  const reversPeriod = [...periodList].reverse();
+  const periodCategory = reversPeriod?.map((item: number) => ({
+    id: item,
+    name: `${item}기`,
+    value: item.toString(),
+  }));
 
   return (
     <div className="flex flex-row">

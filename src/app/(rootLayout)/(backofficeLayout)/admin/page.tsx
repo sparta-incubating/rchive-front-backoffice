@@ -20,8 +20,6 @@ import { useEffect, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 const Admin = () => {
-  /*이름 검색 */
-  // const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedTab, setSelectedTab] = useState<string>('All');
   const [filters, setFilters] = useState({
@@ -30,8 +28,6 @@ const Admin = () => {
     searchPeriod: '',
     email: '',
   });
-
-  const { trackRole } = useAppSelector((state) => state.authSlice);
 
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
@@ -45,31 +41,20 @@ const Admin = () => {
 
   const handleSearchChange = () => {
     const value = inputRef.current?.value ?? '';
-    // setSearchTerm(value);
+
     setFilters((prevFilters) => ({
       ...prevFilters,
       email: value,
     }));
   };
 
-  /*이름 검색*/
-  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === 'Enter') {
-  //     handleSearchChange();
-  //   }
-  // };
-
-  // const namefiltered = viewList?.filter((item: AdminListInfoType) =>
-  //   item?.username?.includes(searchTerm.toLowerCase()),
-  // );
-
-  /*이름 검색*/
-
   const handleCategoryChange = (category: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [category]: value,
     }));
+
+    console.log(category, value, 'prevFilters');
   };
 
   /*체크박스*/
@@ -149,11 +134,7 @@ const Admin = () => {
     <>
       <BackofficePage>
         {/* 검색바 */}
-        <SearchBar
-          ref={inputRef}
-          onChange={handleSearchChange}
-          // onKeyDown={handleKeyDown}
-        />
+        <SearchBar ref={inputRef} onChange={handleSearchChange} />
 
         {/* 게시판 */}
         <PermissionBoard>
@@ -161,10 +142,7 @@ const Admin = () => {
           <TapMenu onTabChange={handleTabChange} />
 
           {/* 카테고리 */}
-          <CategoryFiltered
-            trackRole={trackRole}
-            handleCategoryChange={handleCategoryChange}
-          />
+          <CategoryFiltered handleCategoryChange={handleCategoryChange} />
 
           {/* 조회 리스트 */}
           <div>

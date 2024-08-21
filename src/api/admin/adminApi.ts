@@ -40,9 +40,6 @@ export const getBoardList = async (filters: Record<string, string>) => {
   }
 };
 
-//이메일로 유저 검색
-// /apis/v1/backoffice/role?sort=DATE_LATELY&trackName=ANDROID&period=0&email=nodejs_apm%40test.com&page=1&size=10
-
 //유저의 트랙 권한 신청 건수 (전체/대기/승인) -> 탭메뉴 필터
 export const getRoleCount = async () => {
   try {
@@ -62,8 +59,7 @@ export const getRoleCount = async () => {
   }
 };
 
-//권한수락(Post)
-//유저의 트랙 권한 수락 (PM일 때)
+//권한수락
 export const postUserApprove = async (userInfo: ApproveItem) => {
   const { trackName, period, trackRole, email } = userInfo;
   try {
@@ -82,7 +78,34 @@ export const postUserApprove = async (userInfo: ApproveItem) => {
   }
 };
 
-//일반 유저의 트랙 권한 수락 (APM일 때)
+//권한 거절
+export const deleteUsrRole = async (userInfo: DeleteUserType) => {
+  // const { trackName, period, trackRole, email } = userInfo;
+  const params = [userInfo];
+  try {
+    const res = await client.delete('/apis/v1/backoffice/role/reject', {
+      data: params,
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error, 'error');
+    throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
+  }
+};
+
+//마지막에 선택한 권한 조회
+export const getSelectRole = async () => {
+  try {
+    const res = await client.get('/apis/v1/backoffice/role/select/last');
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      '마지막에 선택한 권한 조회에 실패했습니다. 다시 시도해주세요.',
+    );
+  }
+};
+
+//3개월 후 해당 트랙 권한 수락/거절 - 현재는 사용하지않는 api
 export const patchUserPermission = async (userInfo: RejectionItem) => {
   const { trackName, loginPeriod, trackId } = userInfo;
 
@@ -100,35 +123,7 @@ export const patchUserPermission = async (userInfo: RejectionItem) => {
   }
 };
 
-//권한 거절
-//유저의 트랙 권한 거절 - PM일
-export const deleteUsrRole = async (userInfo: DeleteUserType) => {
-  const { trackName, period, trackRole, email } = userInfo;
-
-  try {
-    const res = await client.delete('/apis/v1/backoffice/role/reject', {
-      params: {
-        trackName,
-        period,
-        trackRole,
-        email,
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.log(error, 'error');
-    throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
-  }
-};
-
-//트랙의 일반 유저 열람 권한 거절 - APM일 때
 export const patchUserRejection = async (userInfo: RejectionItem) => {
-  //예시
-  // const userInfo = {
-  // trackName:'ANDROID',
-  // loginPeriod: 1,
-  // trackId:11
-  // };
   const { trackName, loginPeriod, trackId } = userInfo;
 
   try {
@@ -140,17 +135,5 @@ export const patchUserRejection = async (userInfo: RejectionItem) => {
     return res.data;
   } catch (error) {
     throw new Error('권한 거절에 실패했습니다. 다시 시도해주세요.');
-  }
-};
-
-//마지막에 선택한 권한 조회
-export const getSelectRole = async () => {
-  try {
-    const res = await client.get('/apis/v1/backoffice/role/select/last');
-    return res.data;
-  } catch (error) {
-    throw new Error(
-      '마지막에 선택한 권한 조회에 실패했습니다. 다시 시도해주세요.',
-    );
   }
 };

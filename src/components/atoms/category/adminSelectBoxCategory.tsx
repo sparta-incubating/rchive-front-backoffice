@@ -12,6 +12,7 @@ import SelectLabel from '@/components/atoms/selectLabel';
 import { useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType } from '@/types/admin.types';
 import Image from 'next/image';
+
 import { useState } from 'react';
 
 interface PostIsOpenSelectBoxCategoryProps {
@@ -29,14 +30,8 @@ const AdminSelectBoxCategory = ({
     (state) => state.authSlice,
   );
 
-  console.log(statusTrackName, 'trackName');
+  const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
 
-  const {
-    postUserApproveMutate,
-    deleteUsrRoleMutate,
-    updateRoleRejectionMutate,
-  } = usePermissionList();
-  // await updatePostsIsOpen([Number(postId)], data);
   const handleClick = async (isStatus: string) => {
     const { period, trackRole, email } = dataList;
 
@@ -57,7 +52,6 @@ const AdminSelectBoxCategory = ({
     } else if (isStatus === 'REJECT') {
       deleteUsrRoleMutate.mutate(userInfo);
     }
-
     setShowOptions(false);
   };
 

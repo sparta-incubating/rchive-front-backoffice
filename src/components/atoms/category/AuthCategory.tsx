@@ -38,7 +38,7 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
         <Image src={arrow} width={12} height={12} alt="화살표" />
       </CategoryLayout>
       <CategoryDropDown show={isDropdownOpen}>
-        {data.map((item) => (
+        {data?.map((item) => (
           <div
             className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
             key={item.id}
