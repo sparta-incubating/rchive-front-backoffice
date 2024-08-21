@@ -38,6 +38,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           ...token,
           accessToken: session.user.accessToken,
           sub: session.user.accessToken,
+          refreshToken: session.user.refreshToken,
         };
 
         return token;
