@@ -1,8 +1,27 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getBoardList, getRoleCount, getSelectRole } from './adminApi';
+import {
+  getBackOfficeInfo,
+  getBoardList,
+  getRoleCount,
+  getSelectRole,
+} from './adminApi';
 import { ADMIN_QUERY_KEYS } from './keys.constant';
+
+//백오피스에서의 프로필 조회
+export function useBackOfficeProfileQuery() {
+  const {
+    data: profileInfo,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: [ADMIN_QUERY_KEYS.PROFILE],
+    queryFn: getBackOfficeInfo,
+  });
+
+  return { profileInfo, isPending, isError };
+}
 
 export function usePermissionDataQuery(filters: Record<string, string>) {
   const {
@@ -23,7 +42,7 @@ export function useRoleCountDataQuery() {
     isPending,
     isError,
   } = useQuery({
-    queryKey: [ADMIN_QUERY_KEYS.COUNT],
+    queryKey: [ADMIN_QUERY_KEYS.COUNT, ADMIN_QUERY_KEYS.ADMIN],
     queryFn: getRoleCount,
     // refetchInterval: 60000,
   });

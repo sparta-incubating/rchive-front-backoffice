@@ -11,13 +11,13 @@ import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSel
 import SelectLabel from '@/components/atoms/selectLabel';
 import { useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType } from '@/types/admin.types';
+import { createToast } from '@/utils/toast';
 import Image from 'next/image';
 
 import { useState } from 'react';
 
 interface PostIsOpenSelectBoxCategoryProps {
   isStatus: string;
-
   dataList: AdminDataInfoType;
 }
 
@@ -43,16 +43,19 @@ const AdminSelectBoxCategory = ({
     };
     console.log(isStatus, 'isStatus');
     console.log(userInfo, 'userInfo');
-    if (isStatus === 'APPROVE') {
-      try {
+    try {
+      if (isStatus === 'APPROVE') {
         postUserApproveMutate.mutate(userInfo);
-      } catch (error) {
-        console.log(error, '에러');
+        createToast(`1건의 요청이 승인되었습니다.`, 'primary', false);
+      } else if (isStatus === 'REJECT') {
+        deleteUsrRoleMutate.mutate(userInfo);
+        createToast(`1건의 요청이 거절되었습니다.`, 'primary', false);
       }
-    } else if (isStatus === 'REJECT') {
-      deleteUsrRoleMutate.mutate(userInfo);
+    } catch (error) {
+      console.log(error, '에러');
+    } finally {
+      setShowOptions(false);
     }
-    setShowOptions(false);
   };
 
   return (
@@ -69,6 +72,7 @@ const AdminSelectBoxCategory = ({
         <SelectLabel>{isStatus === 'WAIT' ? '대기' : '승인'}</SelectLabel>
         <Image src={arrow} width={12} height={12} alt="화살표" />
       </PostIsOpenSelectBoxLayout>
+
       <PostIsOpenDropDown
         variant="permission"
         show={showOptions}

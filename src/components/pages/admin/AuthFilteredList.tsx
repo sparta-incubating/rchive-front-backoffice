@@ -13,7 +13,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
 
   const [checked, setChecked] = useState<boolean>(false);
-  console.log(checked);
+  // console.log(checked);
 
   const handleCheckChange =
     (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {

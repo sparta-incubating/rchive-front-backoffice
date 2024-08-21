@@ -9,7 +9,7 @@ interface CategoryProps {
 }
 
 const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
-  const { trackRole, trackName } = useAppSelector((state) => state.authSlice);
+  const { trackName, trackRole } = useAppSelector((state) => state.authSlice);
 
   const roleCategory = [
     { id: 1, name: 'APM', value: 'APM' },

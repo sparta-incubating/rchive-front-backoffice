@@ -6,10 +6,12 @@ import { ADMIN_QUERY_KEYS } from './keys.constant';
 export const usePermissionList = () => {
   const postUserApproveMutate = useMutation({
     mutationFn: postUserApprove,
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [ADMIN_QUERY_KEYS.ADMIN, ADMIN_QUERY_KEYS.COUNT],
-      }),
+        queryKey: [ADMIN_QUERY_KEYS.ADMIN],
+      });
+    },
+
     onError: (error) => {
       console.log('권한수락 실패:', error);
     },
@@ -17,10 +19,11 @@ export const usePermissionList = () => {
 
   const deleteUsrRoleMutate = useMutation({
     mutationFn: deleteUsrRole,
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [ADMIN_QUERY_KEYS.ADMIN, ADMIN_QUERY_KEYS.COUNT],
-      }),
+        queryKey: [ADMIN_QUERY_KEYS.ADMIN],
+      });
+    },
     onError: (error) => {
       console.log('트랙 거절 실패:', error);
     },

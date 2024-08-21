@@ -39,6 +39,15 @@ export type ApproveItem = Pick<
   USERDATA,
   'trackName' | 'email' | 'trackRole' | 'period'
 >;
+
+// export type ApproveItem = {
+//   trackName: string;
+//   period: number;
+//   trackRole: string;
+//   email: string;
+//   selectItem: number;
+// };
+
 export type RejectionItem = Pick<
   USERDATA,
   'trackName' | 'loginPeriod' | 'trackId'

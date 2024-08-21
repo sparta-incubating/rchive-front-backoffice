@@ -1,5 +1,6 @@
 'use client';
 
+import { usePermissionList } from '@/api/admin/useMutation';
 import { usePermissionDataQuery } from '@/api/admin/useQuery';
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import CategoryBox from '@/components/atoms/category/categoryBox';
@@ -14,6 +15,7 @@ import BackofficePage from '@/components/pages/backofficePage';
 import { setAllAdminIds } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType, AdminListInfoType } from '@/types/admin.types';
+import { createToast } from '@/utils/toast';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -29,6 +31,10 @@ const Admin = () => {
     email: '',
   });
 
+  const { trackName: statusTrackName } = useAppSelector(
+    (state) => state.authSlice,
+  );
+  const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
 
@@ -130,6 +136,44 @@ const Admin = () => {
     handleSearchChange();
   }, [filters.email]);
 
+  /**전체 승인 조회 */
+  const foundItems = checkedAdminIds.flatMap((email) =>
+    viewList?.filter((item: AdminDataInfoType) => item.email === email),
+  );
+
+  const extractedData = foundItems.map(({ period, trackRole, email }) => ({
+    trackName: statusTrackName,
+    period,
+    trackRole,
+    email,
+  }));
+
+  const allApproveItems = () => {
+    console.log(extractedData, '선택한 정보');
+    extractedData.forEach((item) => {
+      postUserApproveMutate.mutate(item);
+      console.log('Received item:', item);
+    });
+    createToast(
+      `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
+      'primary',
+      false,
+    );
+  };
+
+  const allRejectItems = () => {
+    console.log(extractedData, '선택한 정보');
+    extractedData.forEach((item) => {
+      deleteUsrRoleMutate.mutate(item);
+      console.log('Received item:', item);
+    });
+    createToast(
+      `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
+      'primary',
+      false,
+    );
+  };
+
   return (
     <>
       <BackofficePage>
@@ -151,8 +195,12 @@ const Admin = () => {
                 <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
                   {checkedAdminIds.length}개 선택
                 </p>
-                <BackOfficeButton>승인</BackOfficeButton>
-                <BackOfficeButton variant="secondary">거절</BackOfficeButton>
+                <BackOfficeButton onClick={allApproveItems}>
+                  승인
+                </BackOfficeButton>
+                <BackOfficeButton variant="secondary" onClick={allRejectItems}>
+                  거절
+                </BackOfficeButton>
               </section>
             )}
           </div>
