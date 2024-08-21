@@ -1,4 +1,5 @@
 import { auth, unstable_update } from '@/auth';
+import { extractRefreshToken } from '@/utils/auth.util';
 import axiosInstance from '@/utils/axiosAPI';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
@@ -22,6 +23,13 @@ export async function POST() {
       },
     );
 
+    // refresh token cookie에 저장
+    const setCookie = response.headers['set-cookie'] as string[];
+    let newRefreshToken = '';
+    if (setCookie) {
+      newRefreshToken = extractRefreshToken(setCookie);
+    }
+
     const accessToken = response.headers.authorization.replace('Bearer ', '');
     if (response?.status === 200) {
       // 세션 업데이트
@@ -29,7 +37,11 @@ export async function POST() {
       if (session && session.user) {
         await unstable_update({
           ...session,
-          user: { ...session?.user, accessToken },
+          user: {
+            ...session?.user,
+            accessToken,
+            refreshToken: newRefreshToken || session.user.refreshToken,
+          },
         });
       }
 
