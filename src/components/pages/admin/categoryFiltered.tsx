@@ -21,7 +21,7 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
     { id: 2, name: '가나다순', value: 'NAME_ALPHABETICALLY' },
   ];
 
-  const periodList = usePeriodListQuery(trackName);
+  const periodList = usePeriodListQuery(trackName) ?? [];
   const reversPeriod = [...periodList].reverse();
   const periodCategory = reversPeriod?.map((item: number) => ({
     id: item,

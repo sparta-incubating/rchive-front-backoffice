@@ -17,10 +17,10 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const [init, setInit] = useState<string>(profileImg);
 
   useEffect(() => {
-    if (profileImg === 'img') {
+    if (!profileImg.includes('MRT')) {
       setInit('MRT_1');
     }
-  }, [profileImg]);
+  }, [profileImg, init]);
 
   return (
     <main className="flex flex-col items-center justify-center gap-[24px]">

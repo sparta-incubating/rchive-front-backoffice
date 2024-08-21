@@ -16,7 +16,7 @@ const RandomProfileModal = ({
   const [selectImg, setSelectImg] = useState<number>(0);
 
   useEffect(() => {
-    if (profileImg === 'img') {
+    if (!profileImg.includes('MRT')) {
       setInitImg('MRT_1');
     }
   }, [profileImg]);
