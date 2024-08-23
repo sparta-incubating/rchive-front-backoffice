@@ -28,27 +28,22 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Install dependencies
         run: yarn install
 
-      # - name: Run lint
-      #   run: yarn run lint
-
-      # # - name: Run tests
-      # #   run: yarn test
-
-      # - name: Run build
-      #   run: yarn build
-
-  lint_and_build:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
       - name: Run lint
         run: yarn run lint
-        working-directory: ./rchive-front
+
+      # - name: Run tests
+      #   run: yarn test
 
       - name: Run build
         run: yarn build
-        working-directory: ./rchive-front
