@@ -10,6 +10,7 @@ import CategoryDropDown from './categoryDropDown';
 import CategoryLayout from './categoryLayout';
 
 interface AdminCateoryType {
+  label: string;
   id: number;
   name: string;
   value: string;
@@ -25,8 +26,8 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(label);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleClick = (data: { name: string; value: string }) => {
-    setSelectedCategory(data.name);
+  const handleClick = (data: { label: string; value: string }) => {
+    setSelectedCategory(data.label);
     setIsDropdownOpen(false);
     setValue(data.value);
   };

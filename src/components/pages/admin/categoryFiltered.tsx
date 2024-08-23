@@ -12,22 +12,34 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
   const { trackName, trackRole } = useAppSelector((state) => state.authSlice);
 
   const roleCategory = [
-    { id: 1, name: 'APM', value: 'APM' },
-    { id: 2, name: '수강생', value: 'STUDENT' },
+    { id: 1, name: '전체', label: '직책', value: '' },
+    { id: 2, name: 'APM', label: 'APM', value: 'APM' },
+    { id: 3, name: '수강생', label: '수강생', value: 'STUDENT' },
   ];
 
   const sortCategory = [
-    { id: 1, name: '최신순', value: 'DATE_LATELY' },
-    { id: 2, name: '가나다순', value: 'NAME_ALPHABETICALLY' },
+    { id: 1, name: '최신순', label: '최신순', value: 'DATE_LATELY' },
+    {
+      id: 2,
+      name: '가나다순',
+      label: '가나다순',
+      value: 'NAME_ALPHABETICALLY',
+    },
   ];
 
   const periodList = usePeriodListQuery(trackName) ?? [];
   const reversPeriod = [...periodList].reverse();
-  const periodCategory = reversPeriod?.map((item: number) => ({
+  const periodItem = reversPeriod?.map((item: number) => ({
     id: item,
     name: `${item}기`,
     value: item.toString(),
+    label: `${item}기`,
   }));
+
+  const periodCategory = [
+    { id: 1, name: '전체', label: '기수', value: '' },
+    ...periodItem,
+  ];
 
   return (
     <div className="flex flex-row">
