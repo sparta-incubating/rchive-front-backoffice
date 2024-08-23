@@ -6,13 +6,15 @@ import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
 import { useModalContext } from '@/context/useModalContext';
+import { setAuth } from '@/redux/slice/auth.slice';
+import { useAppDispatch } from '@/redux/storeConfig';
 import { signupModalType } from '@/types/signup.types';
 import { loginSchema } from '@/validators/auth/login.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
@@ -24,7 +26,9 @@ import SignupModal from './signupModal';
 
 const SignIn = () => {
   const [pwErrorMsg, setpwErrorMsg] = useState<string>('');
+  const { data: session } = useSession();
   const { open } = useModalContext();
+  const dispatch = useAppDispatch();
   const handleSignupModalOpen = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
@@ -43,17 +47,27 @@ const SignIn = () => {
 
   const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const authRes = await signIn('credentials', {
+    await signIn('credentials', {
       username: data.username,
       password: data.password,
       redirect: false,
     });
+  };
 
-    if (authRes?.status === 200) {
-      console.log("let's go to home");
+  useEffect(() => {
+    if (session) {
+      const { trackName, trackRole, accessToken, loginPeriod } = session.user;
+      dispatch(
+        setAuth({
+          accessToken,
+          trackName: trackName || '',
+          trackRole: trackRole || 'USER',
+          period: String(loginPeriod) || '',
+        }),
+      );
       router.push('/');
     }
-  };
+  }, [dispatch, router, session]);
 
   return (
     <>
@@ -133,7 +147,7 @@ const SignIn = () => {
 
           {/*2 */}
 
-          <section className="flex-1 bg-custom-gradient shadow-signInBox">
+          <section className="w-[calc(100%-500px)] bg-custom-gradient shadow-signInBox">
             <section className="flex items-center justify-center pt-[138px]">
               <section className="relative">
                 <article className="absolute bottom-[445.52px] left-[508px] h-[351.48px] w-[237.79px]">
@@ -173,7 +187,7 @@ const SignIn = () => {
                   />
                 </article>
               </section>
-            </section>
+            </section>{' '}
           </section>
           {/*2 */}
         </section>

@@ -1,11 +1,10 @@
+import { auth } from '@/auth';
 import CustomError from '@/components/atoms/customError';
 import PostListPage from '@/components/pages/postListPage';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/posts.constnat';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
-import NextAuthOptions from '@/utils/nextOptions/nextAuthOptions';
 import { createServerAPI } from '@/utils/serverAPI';
 import axios from 'axios';
-import { getServerSession } from 'next-auth';
 
 export const revalidate = 1;
 
@@ -26,7 +25,7 @@ const Post = async ({ searchParams }: PostProps) => {
     title: searchParams.title ?? '',
   };
 
-  const session = await getServerSession(NextAuthOptions);
+  const session = await auth();
 
   const period = session?.user?.loginPeriod;
   const trackName = session?.user?.trackName;
@@ -72,10 +71,10 @@ const Post = async ({ searchParams }: PostProps) => {
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorData = error?.response?.data;
-      console.log(errorData);
+      const data = error?.response?.data;
+      const status = error?.response?.status;
 
-      return <CustomError errorData={errorData}></CustomError>;
+      return <CustomError errorData={{ status, data }}></CustomError>;
     }
   }
 };

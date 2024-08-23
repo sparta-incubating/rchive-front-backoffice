@@ -1,13 +1,17 @@
+import { auth } from '@/auth';
 import { ModalContextProvider } from '@/context/modal.context';
 import NextAuthProvider from '@/provider/nextAuthProvider/nextAuthProvider';
 import StoreProvider from '@/provider/reduxProvider/storeProvider';
 import TanstackQueryProvider from '@/provider/tanstackQueryProvider/TanstackQueryProvider';
-import { serverSession } from '@/utils/nextOptions/nextAuth.util';
 import SetAuthInfo from '@/utils/setAuthInfo/setAuthInfo';
 import { PropsWithChildren } from 'react';
 
 const CompoundProvider = async ({ children }: PropsWithChildren) => {
-  const { trackRole, trackName, period, accessToken } = await serverSession();
+  const session = await auth();
+  const accessToken = session?.user.accessToken || '';
+  const trackName = session?.user.trackName || '';
+  const trackRole = session?.user.trackRole || 'USER';
+  const period = session?.user.loginPeriod || '';
 
   return (
     <StoreProvider>
