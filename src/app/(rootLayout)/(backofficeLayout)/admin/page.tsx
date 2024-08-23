@@ -183,7 +183,7 @@ const Admin = () => {
         {/* 게시판 */}
         <PermissionBoard>
           {/* 탭 메뉴 */}
-          <TapMenu onTabChange={handleTabChange} />
+          <TapMenu onTabChange={handleTabChange} selectedTab={selectedTab} />
 
           {/* 카테고리 */}
           <CategoryFiltered handleCategoryChange={handleCategoryChange} />

@@ -54,6 +54,7 @@ export type RejectionItem = Pick<
 >;
 
 export interface TapProps {
+  selectedTab: string;
   onTabChange: (tab: string) => void;
 }
 
