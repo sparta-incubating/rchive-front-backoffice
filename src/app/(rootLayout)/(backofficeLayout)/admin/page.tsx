@@ -204,11 +204,15 @@ const Admin = () => {
               </section>
             )}
           </div>
-          <CategoryBox
-            text=""
-            onChange={(e) => handleAllCheck(e.target.checked)}
-            checked={isAllChecked}
-          />
+          {viewList?.length > 0 ? (
+            <CategoryBox
+              text=""
+              onChange={(e) => handleAllCheck(e.target.checked)}
+              checked={isAllChecked}
+            />
+          ) : (
+            ''
+          )}
           <br />
           {viewList?.length > 0 ? (
             <AuthFilteredList data={filteredData} />

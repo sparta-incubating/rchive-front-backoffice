@@ -33,7 +33,6 @@ const PhoneChangeField = ({ username, register, label }: PhoneFieldProps) => {
   const handleRequestAuth = () => {
     const userInfo = { username, phone: isInputFilled };
     postPhoneAuthNumberMutate.mutate(userInfo);
-    // console.log(userInfo, '입력값');
   };
   return (
     <>
