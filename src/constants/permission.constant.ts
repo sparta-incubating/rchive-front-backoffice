@@ -70,30 +70,6 @@ export const postHeaders: TableHeaderItem[] = [
   },
 ];
 
-export const tabArr = [
-  {
-    id: 0,
-    title: '전체',
-    className: 'w-[104px]',
-    bgColor: 'bg-blue-55',
-    textColor: 'text-blue-400',
-  },
-  {
-    id: 1,
-    title: '대기 중',
-    className: 'w-[114px]',
-    bgColor: 'bg-[#ff9900]/10',
-    textColor: 'text-[#FF9900]',
-  },
-  {
-    id: 3,
-    title: '승인',
-    className: 'w-[104px]',
-    bgColor: 'bg-[#58b32e]/10',
-    textColor: 'text-success-green',
-  },
-];
-
 export const postTabArr: PostTabType[] = [
   {
     id: 'all',

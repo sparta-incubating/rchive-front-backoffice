@@ -2,8 +2,8 @@
 
 import { usePermissionList } from '@/api/admin/useMutation';
 import { usePermissionDataQuery } from '@/api/admin/useQuery';
+import AdminTableHeader from '@/components/atoms/admin/adminTableHeader';
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
-import CategoryBox from '@/components/atoms/category/categoryBox';
 import NoDataList from '@/components/atoms/category/noDataList';
 import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
@@ -149,7 +149,6 @@ const Admin = () => {
   }));
 
   const allApproveItems = () => {
-    console.log(extractedData, '선택한 정보');
     extractedData.forEach((item) => {
       postUserApproveMutate.mutate(item);
       console.log('Received item:', item);
@@ -162,7 +161,6 @@ const Admin = () => {
   };
 
   const allRejectItems = () => {
-    console.log(extractedData, '선택한 정보');
     extractedData.forEach((item) => {
       deleteUsrRoleMutate.mutate(item);
       console.log('Received item:', item);
@@ -184,48 +182,55 @@ const Admin = () => {
         <PermissionBoard>
           {/* 탭 메뉴 */}
           <TapMenu onTabChange={handleTabChange} selectedTab={selectedTab} />
+          {/* 탭 메뉴 */}
+          {/*카테고리 및 체크박스*/}
 
-          {/* 카테고리 */}
-          <CategoryFiltered handleCategoryChange={handleCategoryChange} />
-
-          {/* 조회 리스트 */}
-          <div>
-            {checkedAdminIds.length > 0 && (
-              <section className="flex flex-row gap-[8px]">
-                <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
-                  {checkedAdminIds.length}개 선택
-                </p>
-                <BackOfficeButton onClick={allApproveItems}>
-                  승인
-                </BackOfficeButton>
-                <BackOfficeButton variant="secondary" onClick={allRejectItems}>
-                  거절
-                </BackOfficeButton>
-              </section>
-            )}
+          <div className="flex flex-row justify-between py-[24px]">
+            {/* 카테고리 */}
+            <CategoryFiltered handleCategoryChange={handleCategoryChange} />
+            {/* 조회 리스트 */}
+            <section>
+              {checkedAdminIds.length > 0 && (
+                <section className="flex flex-row gap-[8px]">
+                  <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
+                    {checkedAdminIds.length}개 선택
+                  </p>
+                  <BackOfficeButton onClick={allApproveItems}>
+                    승인
+                  </BackOfficeButton>
+                  <BackOfficeButton
+                    variant="secondary"
+                    onClick={allRejectItems}
+                  >
+                    거절
+                  </BackOfficeButton>
+                </section>
+              )}
+            </section>
           </div>
+
+          {/*카테고리 및 체크박스*/}
           {viewList?.length > 0 ? (
-            <CategoryBox
-              text=""
-              onChange={(e) => handleAllCheck(e.target.checked)}
-              checked={isAllChecked}
+            <AdminTableHeader
+              handleAllCheck={handleAllCheck}
+              isAllChecked={isAllChecked}
             />
           ) : (
             ''
           )}
-          <br />
           {viewList?.length > 0 ? (
             <AuthFilteredList data={filteredData} />
           ) : (
             <NoDataList />
           )}
-
-          <PageNation
-            currentPage={currentPage}
-            totalElements={boardList?.data?.totalElements}
-            size={boardList?.data?.size}
-            onPageChange={handlePageChange}
-          />
+          <div className="py-[24px]">
+            <PageNation
+              currentPage={currentPage}
+              totalElements={boardList?.data?.totalElements}
+              size={boardList?.data?.size}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </PermissionBoard>
       </BackofficePage>
     </>

@@ -13,7 +13,6 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
 
   const [checked, setChecked] = useState<boolean>(false);
-  // console.log(checked);
 
   const handleCheckChange =
     (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,42 +33,43 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   }, [adminIds, data]);
 
   return (
-    <div>
-      {/* 테이블 헤더 */}
-      <div className="flex flex-row gap-[50px] border">
-        <p className="w-[50px]">이름</p>
-        <p className="w-[50px]">직책</p>
-        <p className="w-[50px]">기수</p>
-        <p className="w-[50px]">이메일</p>
-        <p className="w-[50px]">요청날짜</p>
-        <p className="w-[50px]">승인상태</p>
-      </div>
-
-      {/* 단건 체크 */}
-      {data?.map((item) => (
-        <div key={item.adminId} className="flex flex-row gap-[20px] border">
-          <CategoryBox
-            text=""
-            onChange={handleCheckChange(item.adminId)}
-            checked={adminIds.includes(item.adminId)}
-          />
-          <div>{item.username}</div>
-          <div>{item.trackRole}</div>
-          <div>{item.period}</div>
-          <div>{item.email}</div>
-          <div>{item.createdAt}</div>
-          <div>
-            <select>
-              <option> {item.auth}</option>
-              <option>승인</option>
-              <option>거절</option>
-            </select>
-
-            <AdminSelectBoxCategory dataList={item} isStatus={item.auth} />
-          </div>
-        </div>
-      )) ?? <NoDataList />}
-    </div>
+    <table className="w-[1012px]">
+      <tr className="h-full w-full">
+        {/* 단건 체크 */}
+        {data?.map((item) => (
+          <tr
+            key={item.adminId}
+            className={`flex flex-row hover:bg-blue-50 ${adminIds.includes(item.adminId) ? `bg-secondary-55` : ''}`}
+          >
+            <td className="flex h-[64px] w-[92px] items-center pl-[24px]">
+              <CategoryBox
+                text=""
+                onChange={handleCheckChange(item.adminId)}
+                checked={adminIds.includes(item.adminId)}
+              />
+            </td>
+            <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
+              {item.username}
+            </div>
+            <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
+              {item.trackRole}
+            </div>
+            <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
+              {item.period}
+            </div>
+            <div className="flex h-[64px] w-[268px] items-center px-[16px] py-[12px] text-sm font-medium text-gray-700">
+              {item.email}
+            </div>
+            <div className="flex h-[64px] w-[171px] items-center text-sm font-medium text-gray-700">
+              {item.createdAt}
+            </div>
+            <div className="flex h-[64px] w-[123px] items-center px-[10px] text-sm font-medium text-gray-700">
+              <AdminSelectBoxCategory dataList={item} isStatus={item.auth} />
+            </div>
+          </tr>
+        )) ?? <NoDataList />}
+      </tr>
+    </table>
   );
 };
 

@@ -9,7 +9,6 @@ const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
   const allCount = countList?.data?.statusAll;
   const approveCount = countList?.data?.statusApprove;
   const waitCount = countList?.data?.statusWait;
-  console.log(selectedTab, '???');
 
   return (
     <section className="h-[65px] w-full border-b pt-[16px]">
