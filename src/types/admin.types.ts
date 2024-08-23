@@ -40,11 +40,11 @@ export type ApproveItem = Pick<
   'trackName' | 'email' | 'trackRole' | 'period'
 >;
 
-// export type ApproveItem = {
+// export type searchListItem = {
 //   trackName: string;
 //   period: number;
 //   trackRole: string;
-//   email: string;
+//   keyword: string;
 //   selectItem: number;
 // };
 

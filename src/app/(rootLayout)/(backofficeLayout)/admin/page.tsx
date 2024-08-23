@@ -28,7 +28,7 @@ const Admin = () => {
     trackRole: '',
     sort: 'DATE_LATELY',
     searchPeriod: '',
-    email: '',
+    keyword: '',
   });
 
   const { trackName: statusTrackName } = useAppSelector(
@@ -50,7 +50,7 @@ const Admin = () => {
 
     setFilters((prevFilters) => ({
       ...prevFilters,
-      email: value,
+      keyword: value,
     }));
   };
 
@@ -134,7 +134,7 @@ const Admin = () => {
 
   useEffect(() => {
     handleSearchChange();
-  }, [filters.email]);
+  }, [filters.keyword]);
 
   /**전체 승인 조회 */
   const foundItems = checkedAdminIds.flatMap((email) =>
