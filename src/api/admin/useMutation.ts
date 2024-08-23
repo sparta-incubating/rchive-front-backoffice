@@ -10,6 +10,9 @@ export const usePermissionList = () => {
       queryClient.invalidateQueries({
         queryKey: [ADMIN_QUERY_KEYS.ADMIN],
       });
+      queryClient.invalidateQueries({
+        queryKey: [ADMIN_QUERY_KEYS.COUNT],
+      });
     },
 
     onError: (error) => {
@@ -22,6 +25,9 @@ export const usePermissionList = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [ADMIN_QUERY_KEYS.ADMIN],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [ADMIN_QUERY_KEYS.COUNT],
       });
     },
     onError: (error) => {

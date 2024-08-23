@@ -19,14 +19,14 @@ export const getBackOfficeInfo = async () => {
 export const getBoardList = async (filters: Record<string, string>) => {
   const session = await getSession();
   const trackName = session?.user.trackName;
-  const period = session?.user.loginPeriod;
+  const loginPeriod = session?.user.loginPeriod;
 
   const params = {
     sort: filters.sort || 'DATE_LATELY',
     trackName,
-    period,
+    loginPeriod,
     searchPeriod: filters.searchPeriod || undefined,
-    keyword: filters.keyword || undefined,
+    searchKeyword: filters.keyword || undefined,
     page: '1',
     size: '10',
     trackRole: filters.trackRole || undefined,
@@ -45,10 +45,10 @@ export const getRoleCount = async () => {
   try {
     const session = await getSession();
     const trackName = session?.user.trackName;
-    const period = session?.user.loginPeriod;
+    const loginPeriod = session?.user.loginPeriod;
 
     const res = await client.get(
-      `/apis/v1/backoffice/role/count?trackName=${trackName}&period=${period}`,
+      `/apis/v1/backoffice/role/count?trackName=${trackName}&loginPeriod=${loginPeriod}`,
     );
 
     return res.data;
