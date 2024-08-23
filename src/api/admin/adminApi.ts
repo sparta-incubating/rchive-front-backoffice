@@ -29,7 +29,7 @@ export const getBoardList = async (filters: Record<string, string>) => {
     searchKeyword: filters.keyword || undefined,
     page: '1',
     size: '10',
-    trackRole: filters.trackRole || undefined,
+    searchTrackRole: filters.trackRole || undefined,
   };
 
   try {

@@ -22,7 +22,7 @@ const AuthTimer = memo(({ setExpire }: AuthTimerProps) => {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      console.log('타이머가 종료되었습니다.');
+      // console.log('타이머가 종료되었습니다.');
     }
 
     return () => {

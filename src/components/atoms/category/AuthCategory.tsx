@@ -36,7 +36,15 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
     <CategoryContainer onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
       <CategoryLayout>
         <SelectLabel>{selectedCategory}</SelectLabel>
-        <Image src={arrow} width={12} height={12} alt="화살표" />
+        <Image
+          src={arrow}
+          width={12}
+          height={12}
+          alt="화살표"
+          className={`transition-transform duration-500 ${
+            isDropdownOpen ? 'rotate-180' : 'rotate-0'
+          }`}
+        />
       </CategoryLayout>
       <CategoryDropDown show={isDropdownOpen}>
         {data?.map((item) => (

@@ -41,8 +41,8 @@ const AdminSelectBoxCategory = ({
       trackRole,
       email,
     };
-    console.log(isStatus, 'isStatus');
-    console.log(userInfo, 'userInfo');
+    // console.log(isStatus, 'isStatus');
+    // console.log(userInfo, 'userInfo');
     try {
       if (isStatus === 'APPROVE') {
         await postUserApproveMutate.mutate(userInfo);
@@ -54,7 +54,7 @@ const AdminSelectBoxCategory = ({
         createToast(`1건의 요청이 거절되었습니다.`, 'primary', false);
       }
     } catch (error) {
-      console.log(error, '에러');
+      throw new Error('권한 요청 응답 실패!');
     }
   };
 
@@ -70,7 +70,15 @@ const AdminSelectBoxCategory = ({
           alt=""
         />
         <SelectLabel>{isStatus === 'WAIT' ? '대기' : '승인'}</SelectLabel>
-        <Image src={arrow} width={12} height={12} alt="화살표" />
+        <Image
+          src={arrow}
+          width={12}
+          height={12}
+          alt="화살표"
+          className={`transition-transform duration-500 ${
+            showOptions ? 'rotate-180' : 'rotate-0'
+          }`}
+        />
       </PostIsOpenSelectBoxLayout>
 
       <PostIsOpenDropDown
@@ -84,7 +92,9 @@ const AdminSelectBoxCategory = ({
             alt=""
             width={8}
             height={8}
-            className="mx-[14px]"
+            className={`mx-[14px] transition-transform duration-500 ${
+              showOptions ? 'rotate-180' : 'rotate-0'
+            }`}
           />
           <p className="text-sm">
             {isStatus === 'WAIT' ? (

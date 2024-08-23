@@ -59,8 +59,6 @@ const Admin = () => {
       ...prevFilters,
       [category]: value,
     }));
-
-    console.log(category, value, 'prevFilters');
   };
 
   /*체크박스*/
@@ -151,7 +149,6 @@ const Admin = () => {
   const allApproveItems = () => {
     extractedData.forEach((item) => {
       postUserApproveMutate.mutate(item);
-      console.log('Received item:', item);
     });
     createToast(
       `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
@@ -163,7 +160,6 @@ const Admin = () => {
   const allRejectItems = () => {
     extractedData.forEach((item) => {
       deleteUsrRoleMutate.mutate(item);
-      console.log('Received item:', item);
     });
     createToast(
       `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,

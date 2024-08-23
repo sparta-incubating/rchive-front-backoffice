@@ -38,8 +38,8 @@ const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
       await updatePasswordMutate.mutateAsync(data);
       setIsSuccessful(true);
     } catch (error) {
-      console.error('Error updating password:', error);
       setpwErrorMsg('비밀번호가 일치하지 않습니다.');
+      throw new Error('비밀번호가 일치하지 않습니다.');
     }
   };
 
