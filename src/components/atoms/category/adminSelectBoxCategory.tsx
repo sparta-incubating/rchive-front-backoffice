@@ -5,7 +5,6 @@ import orange from '@/../public/assets/icons/rectangle-orange.svg';
 import red from '@/../public/assets/icons/rectangle-red.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
 import { usePermissionList } from '@/api/admin/useMutation';
-import PostIsOpenDropDown from '@/components/atoms/category/postIsOpenDropDown';
 import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpenSelectBoxContainer';
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';
@@ -15,6 +14,7 @@ import { createToast } from '@/utils/toast';
 import Image from 'next/image';
 
 import { useState } from 'react';
+import AdminIsOpenDropDown from '../admin/adminIsOpenDropDown';
 
 interface PostIsOpenSelectBoxCategoryProps {
   isStatus: string;
@@ -81,11 +81,7 @@ const AdminSelectBoxCategory = ({
         />
       </PostIsOpenSelectBoxLayout>
 
-      <PostIsOpenDropDown
-        variant="permission"
-        show={showOptions}
-        className="bottom-0"
-      >
+      <AdminIsOpenDropDown show={showOptions} isLargeSize={isStatus === 'WAIT'}>
         <div className="flex w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55">
           <Image
             src={isStatus === 'WAIT' ? green : red}
@@ -122,7 +118,7 @@ const AdminSelectBoxCategory = ({
             </p>
           </div>
         )}
-      </PostIsOpenDropDown>
+      </AdminIsOpenDropDown>
     </PostIsOpenSelectBoxContainer>
   );
 };
