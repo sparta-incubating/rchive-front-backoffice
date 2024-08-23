@@ -1,5 +1,6 @@
 'use client';
 
+import { useProfileUpdate } from '@/api/profile/useMutation';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
@@ -15,9 +16,11 @@ interface PhoneFieldProps {
   label: string;
   setExpire: Dispatch<SetStateAction<boolean>>;
   setRequestAuthNumber: Dispatch<SetStateAction<boolean>>;
+  username: string;
 }
 
 const PhoneChangeField = ({
+  username,
   register,
   requestAuthNumber,
   label,
@@ -25,6 +28,9 @@ const PhoneChangeField = ({
 }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+
+  const { postPhoneAuthNumberMutate } = useProfileUpdate();
+
   useEffect(() => {
     if (isInputFilled.length > 10) {
       setDisabled(false);
@@ -35,9 +41,9 @@ const PhoneChangeField = ({
 
   const handleRequestAuth = () => {
     setRequestAuthNumber(true);
-    console.log('1');
-
-    //휴대폰 api 인증로직 추가 예정
+    const userInfo = { username, phone: isInputFilled };
+    postPhoneAuthNumberMutate.mutate(userInfo);
+    console.log(userInfo, '입력값');
   };
   return (
     <>

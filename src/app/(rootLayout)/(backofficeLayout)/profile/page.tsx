@@ -50,7 +50,9 @@ const Profile = () => {
       </PermissionBoard>
 
       {modalType === 'password' && <PasswordChangeModal onClose={closeModal} />}
-      {modalType === 'phone' && <PhoneChangeModal onClose={closeModal} />}
+      {modalType === 'phone' && (
+        <PhoneChangeModal onClose={closeModal} username={username} />
+      )}
       {modalType === 'role' && (
         <RoleChangeModal onClose={closeModal} trackRole={trackRole} />
       )}

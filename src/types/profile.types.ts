@@ -30,6 +30,11 @@ export interface ChangeModalProps {
   onClose: () => void;
 }
 
+export interface PhoneChangeModalProps {
+  onClose: () => void;
+  username: string;
+}
+
 export interface RoleChangeModalProps {
   trackRole: string;
   onClose: () => void;
@@ -55,4 +60,15 @@ export interface RoleChange {
 export interface ProfileChange {
   profileImg: string;
   nickname: string;
+}
+
+export interface PhoneInfo {
+  username: string;
+  phone: string;
+}
+
+export interface PhoneChange {
+  username: string;
+  phone: string;
+  authCode: string;
 }

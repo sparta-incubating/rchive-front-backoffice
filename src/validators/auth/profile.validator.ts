@@ -29,4 +29,5 @@ export const profilePasswordSchema = z
 
 export const profilePhoneSchema = z.object({
   phone: z.string().min(8, '휴대폰 인증은 필수 입니다.'),
+  authCode: z.string().min(6, '인증번호는 필수 입니다.'),
 });

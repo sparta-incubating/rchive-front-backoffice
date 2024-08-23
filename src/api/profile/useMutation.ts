@@ -2,6 +2,7 @@ import { queryClient } from '@/provider/tanstackQueryProvider/TanstackQueryProvi
 import { useMutation } from '@tanstack/react-query';
 import { PROFILE_QUERY_KEYS } from './keys.constant';
 import {
+  sendPhoneAuthNumber,
   updatePassword,
   updatePhoneNumber,
   updateProfileInfo,
@@ -9,6 +10,17 @@ import {
 } from './profileApi';
 
 export const useProfileUpdate = () => {
+  const postPhoneAuthNumberMutate = useMutation({
+    mutationFn: sendPhoneAuthNumber,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [PROFILE_QUERY_KEYS.PROFILE],
+      }),
+    onError: (error) => {
+      console.log('변경 실패:', error);
+    },
+  });
+
   const updatePhoneNumberMutate = useMutation({
     mutationFn: updatePhoneNumber,
     onSuccess: () =>
@@ -57,5 +69,6 @@ export const useProfileUpdate = () => {
     updatePasswordMutate,
     updateRoleMutate,
     updateProfileInfoMutate,
+    postPhoneAuthNumberMutate,
   };
 };

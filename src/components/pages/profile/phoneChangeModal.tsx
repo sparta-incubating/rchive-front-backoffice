@@ -6,7 +6,7 @@ import PasswordContainer from '@/components/atoms/PasswordContainer';
 import PhoneChangeField from '@/components/molecules/form/PhonChangeField';
 import InputField from '@/components/molecules/InputField';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
-import { ChangeModalProps } from '@/types/profile.types';
+import { PhoneChangeModalProps } from '@/types/profile.types';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import ChangeSuccessModal from './changeSuccessModal';
 
-const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
+const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
   const [expire, setExpire] = useState<boolean>(false);
@@ -28,14 +28,21 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
     resolver: zodResolver(profilePhoneSchema),
     defaultValues: {
       phone: '',
+      authCode: '',
     },
   });
 
   const { updatePhoneNumberMutate } = useProfileUpdate();
 
   const onSubmit = async (data: z.infer<typeof profilePhoneSchema>) => {
+    const userInfo = {
+      username,
+      phone: data?.phone,
+      authCode: data?.authCode,
+    };
     try {
-      await updatePhoneNumberMutate.mutateAsync(data.phone);
+      console.log(userInfo, '입력값');
+      await updatePhoneNumberMutate.mutateAsync(userInfo);
       setIsSuccessful(true);
     } catch (error) {
       console.error('Error updating password:', error);
@@ -55,7 +62,7 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
             sub: '휴대폰 변경을 위해 인증이 필요해요',
           }}
           onClose={onClose}
-          isValid={isValid}
+          isValid={!isValid}
         >
           <section className="flex flex-col gap-[10px]">
             {/** */}
@@ -63,6 +70,7 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
               <InputField>
                 <Label htmlFor="phone">휴대폰 번호</Label>
                 <PhoneChangeField
+                  username={username}
                   register={register}
                   requestAuthNumber={requestAuthNumber}
                   setRequestAuthNumber={setRequestAuthNumber}
@@ -71,7 +79,8 @@ const PhoneChangeModal = ({ onClose }: ChangeModalProps) => {
                 />
                 <div className="w-[320px] border" />
                 <Input
-                  name="phone"
+                  {...register('authCode')}
+                  name="authNumber"
                   className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
                   placeholder="인증번호 입력"
                 />
