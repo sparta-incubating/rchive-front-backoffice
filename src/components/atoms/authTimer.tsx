@@ -5,8 +5,7 @@ interface AuthTimerProps {
 }
 
 const AuthTimer = memo(({ setExpire }: AuthTimerProps) => {
-  //   const MINUTES_IN_MS = 1 * 60 * 1000; //초기값 10분
-  const MINUTES_IN_MS = 1 * 3 * 1000;
+  const MINUTES_IN_MS = 10 * 60 * 1000;
   const INTERVAL = 1000; //1초
   const [timeLeft, setTimeLeft] = useState<number>(MINUTES_IN_MS);
 
@@ -14,7 +13,7 @@ const AuthTimer = memo(({ setExpire }: AuthTimerProps) => {
     2,
     '0',
   );
-  const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
+  const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,11 +22,11 @@ const AuthTimer = memo(({ setExpire }: AuthTimerProps) => {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      setExpire(true);
       console.log('타이머가 종료되었습니다.');
     }
 
     return () => {
+      setExpire(true);
       clearInterval(timer);
     };
   }, [timeLeft, setExpire]);
@@ -46,7 +45,7 @@ const AuthTimer = memo(({ setExpire }: AuthTimerProps) => {
             인증번호가 발송되었습니다. 유효시간&nbsp;
           </span>
           <span className="text-base font-medium text-primary-400">
-            {minutes}:{second}
+            {minutes}:{seconds}
           </span>
         </>
       )}

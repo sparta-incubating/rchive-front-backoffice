@@ -6,7 +6,7 @@ import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
 
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,9 +14,17 @@ interface PhoneFieldProps {
   register: UseFormRegister<z.infer<typeof profilePhoneSchema>>;
   label: string;
   username: string;
+  setpwErrorMsg: Dispatch<SetStateAction<boolean>>;
+  setRequestAuthNumber: Dispatch<SetStateAction<boolean>>;
 }
 
-const PhoneChangeField = ({ username, register, label }: PhoneFieldProps) => {
+const PhoneChangeField = ({
+  username,
+  register,
+  label,
+  setpwErrorMsg,
+  setRequestAuthNumber,
+}: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -32,7 +40,20 @@ const PhoneChangeField = ({ username, register, label }: PhoneFieldProps) => {
 
   const handleRequestAuth = () => {
     const userInfo = { username, phone: isInputFilled };
-    postPhoneAuthNumberMutate.mutate(userInfo);
+    try {
+      postPhoneAuthNumberMutate.mutate(userInfo);
+      try {
+        setpwErrorMsg(false);
+        setRequestAuthNumber(false);
+        setTimeout(() => {
+          setRequestAuthNumber(true);
+        }, 0);
+      } catch (error) {
+        throw new Error('휴대폰 인증번호 재요청 실패');
+      }
+    } catch (error) {
+      throw new Error('휴대폰 인증번호 요청 실패');
+    }
   };
   return (
     <>

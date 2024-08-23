@@ -17,10 +17,11 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
   const [expire, setExpire] = useState<boolean>(false);
+  const [pwErrorMsg, setpwErrorMsg] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isValid },
   } = useForm<z.infer<typeof profilePhoneSchema>>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -40,10 +41,8 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
       authCode: data.authCode,
     };
     try {
-      console.log(userInfo, '입력값');
       await checkPhoneAuthMutate.mutateAsync(userInfo);
       try {
-        console.log(data?.phone, '입력값');
         await updatePhoneNumberMutate.mutateAsync(data?.phone);
         setIsSuccessful(true);
       } catch (error) {
@@ -51,13 +50,10 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
       }
     } catch (error) {
       console.error('Error updating phone:', error);
-      alert('인증번호 확인에 실패했습니다. 다시 시도해 주세요.');
+      setpwErrorMsg(true);
     }
   };
 
-  console.log(requestAuthNumber, '인증요청');
-  // console.log('-------------------');
-  // console.log(expire, '타이머 만료');
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {!isSuccessful ? (
@@ -75,9 +71,11 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
               <InputField>
                 <Label htmlFor="phone">휴대폰 번호</Label>
                 <PhoneChangeField
+                  setpwErrorMsg={setpwErrorMsg}
+                  setRequestAuthNumber={setRequestAuthNumber}
                   username={username}
                   register={register}
-                  label="인증 요청"
+                  label={expire ? '재요청' : '인증요청'}
                 />
               </InputField>
             </PasswordContainer>
@@ -87,7 +85,13 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
                 {errors.phone.message}
               </span>
             )}
-            {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
+            {pwErrorMsg ? (
+              <span className="text-sm text-primary-400">
+                인증 번호가 일치하지 않습니다.
+              </span>
+            ) : (
+              <>{requestAuthNumber && <AuthTimer setExpire={setExpire} />}</>
+            )}
           </section>
         </ProfileChangeForm>
       ) : (
