@@ -19,6 +19,7 @@ import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -35,7 +36,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
-
+  const router = useRouter();
   const {
     register,
     watch,
@@ -96,6 +97,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       if (!postData) {
         await postDataPost(watch('trackName'), Number(loginPeriod), formData);
         createToast('게시물 등록이 완료되었습니다.', 'primary');
+        router.push('/posts');
       } else {
         await patchDataPost(
           watch('trackName'),
@@ -104,6 +106,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
           Number(postData.postId),
         );
         createToast('게시물 수정이 완료되었습니다.', 'primary');
+        router.back();
       }
     } catch (error) {
       if (!postData) {

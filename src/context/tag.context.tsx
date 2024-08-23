@@ -13,11 +13,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 interface TagContextType {
   tags: TagType[];
   addTag: (tag: string) => void;
-  deleteTag: (tagId: number) => void;
+  deleteTag: (tagId: string) => void;
   inputRef: React.RefObject<HTMLDivElement>;
   tagContainerRef: React.RefObject<HTMLDivElement>;
   handleFocusTagInput: () => void;
@@ -59,7 +60,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       }
 
       const newTag: TagType = {
-        tagId: Date.now(),
+        tagId: uuidv4(),
         tagName: tag,
       };
 
@@ -78,7 +79,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
     setSearchTags(null);
   };
 
-  const deleteTag = useCallback((tagId: number) => {
+  const deleteTag = useCallback((tagId: string) => {
     setTags((prevState) => prevState.filter((tag) => tag.tagId !== tagId));
   }, []);
 

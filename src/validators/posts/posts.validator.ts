@@ -26,7 +26,7 @@ const isOpenEnum = z.enum(['true', 'false'], {
 });
 
 const tagSchema = z.object({
-  tagId: z.number(),
+  tagId: z.string(),
   tagName: z.string(),
 });
 
