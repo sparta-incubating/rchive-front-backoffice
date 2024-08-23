@@ -45,16 +45,16 @@ const AdminSelectBoxCategory = ({
     console.log(userInfo, 'userInfo');
     try {
       if (isStatus === 'APPROVE') {
-        postUserApproveMutate.mutate(userInfo);
+        await postUserApproveMutate.mutate(userInfo);
+        setShowOptions(false);
         createToast(`1건의 요청이 승인되었습니다.`, 'primary', false);
       } else if (isStatus === 'REJECT') {
-        deleteUsrRoleMutate.mutate(userInfo);
+        await deleteUsrRoleMutate.mutate(userInfo);
+        setShowOptions(false);
         createToast(`1건의 요청이 거절되었습니다.`, 'primary', false);
       }
     } catch (error) {
       console.log(error, '에러');
-    } finally {
-      setShowOptions(false);
     }
   };
 

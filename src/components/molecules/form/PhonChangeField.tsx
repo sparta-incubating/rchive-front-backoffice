@@ -6,26 +6,17 @@ import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
 import { profilePhoneSchema } from '@/validators/auth/profile.validator';
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { z } from 'zod';
 
 interface PhoneFieldProps {
   register: UseFormRegister<z.infer<typeof profilePhoneSchema>>;
-  requestAuthNumber: boolean;
   label: string;
-  setExpire: Dispatch<SetStateAction<boolean>>;
-  setRequestAuthNumber: Dispatch<SetStateAction<boolean>>;
   username: string;
 }
 
-const PhoneChangeField = ({
-  username,
-  register,
-  requestAuthNumber,
-  label,
-  setRequestAuthNumber,
-}: PhoneFieldProps) => {
+const PhoneChangeField = ({ username, register, label }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -40,10 +31,9 @@ const PhoneChangeField = ({
   }, [isInputFilled]);
 
   const handleRequestAuth = () => {
-    setRequestAuthNumber(true);
     const userInfo = { username, phone: isInputFilled };
     postPhoneAuthNumberMutate.mutate(userInfo);
-    console.log(userInfo, '입력값');
+    // console.log(userInfo, '입력값');
   };
   return (
     <>
@@ -68,6 +58,12 @@ const PhoneChangeField = ({
           {label}
         </Button>
       </InputContainer>
+      <div className="w-[320px] border" />
+      <Input
+        {...register('authCode')}
+        className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+        placeholder="인증번호 입력"
+      />
     </>
   );
 };

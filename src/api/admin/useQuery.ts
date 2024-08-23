@@ -44,7 +44,6 @@ export function useRoleCountDataQuery() {
   } = useQuery({
     queryKey: [ADMIN_QUERY_KEYS.COUNT],
     queryFn: getRoleCount,
-    // refetchInterval: 60000,
   });
 
   return { countList, isPending, isError };

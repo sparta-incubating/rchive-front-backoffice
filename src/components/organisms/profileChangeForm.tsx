@@ -19,6 +19,8 @@ const ProfileChangeForm = ({
   onClose,
   isValid,
 }: ProfileChangeFormProps) => {
+  console.log(isValid, 'isValid');
+
   return (
     <>
       <div className="fixed inset-0 bg-gray-900 bg-opacity-60"></div>

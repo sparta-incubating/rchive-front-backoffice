@@ -19,7 +19,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     formState: { isValid, errors },
   } = useForm<z.infer<typeof roleSchema>>({
     resolver: zodResolver(roleSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
     defaultValues: {
       trackName: '',
       period: '',

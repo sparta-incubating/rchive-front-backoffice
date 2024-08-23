@@ -1,6 +1,5 @@
 import { useProfileUpdate } from '@/api/profile/useMutation';
 import AuthTimer from '@/components/atoms/authTimer';
-import Input from '@/components/atoms/input';
 import Label from '@/components/atoms/label';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import PhoneChangeField from '@/components/molecules/form/PhonChangeField';
@@ -21,7 +20,7 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isDirty, isValid },
   } = useForm<z.infer<typeof profilePhoneSchema>>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -32,21 +31,27 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
     },
   });
 
-  const { updatePhoneNumberMutate } = useProfileUpdate();
+  const { updatePhoneNumberMutate, checkPhoneAuthMutate } = useProfileUpdate();
 
   const onSubmit = async (data: z.infer<typeof profilePhoneSchema>) => {
     const userInfo = {
       username,
       phone: data?.phone,
-      authCode: data?.authCode,
+      authCode: data.authCode,
     };
     try {
       console.log(userInfo, '입력값');
-      await updatePhoneNumberMutate.mutateAsync(userInfo);
-      setIsSuccessful(true);
+      await checkPhoneAuthMutate.mutateAsync(userInfo);
+      try {
+        console.log(data?.phone, '입력값');
+        await updatePhoneNumberMutate.mutateAsync(data?.phone);
+        setIsSuccessful(true);
+      } catch (error) {
+        alert('휴대폰번호 변경에 실패했습니다. 다시 시도해 주세요.');
+      }
     } catch (error) {
-      console.error('Error updating password:', error);
-      alert('휴대폰번호 변경에 실패했습니다. 다시 시도해 주세요.');
+      console.error('Error updating phone:', error);
+      alert('인증번호 확인에 실패했습니다. 다시 시도해 주세요.');
     }
   };
 
@@ -62,7 +67,7 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
             sub: '휴대폰 변경을 위해 인증이 필요해요',
           }}
           onClose={onClose}
-          isValid={!isValid}
+          isValid={isValid}
         >
           <section className="flex flex-col gap-[10px]">
             {/** */}
@@ -72,17 +77,7 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
                 <PhoneChangeField
                   username={username}
                   register={register}
-                  requestAuthNumber={requestAuthNumber}
-                  setRequestAuthNumber={setRequestAuthNumber}
-                  setExpire={setExpire}
-                  label={!expire ? '인증번호' : '재요청'}
-                />
-                <div className="w-[320px] border" />
-                <Input
-                  {...register('authCode')}
-                  name="authNumber"
-                  className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                  placeholder="인증번호 입력"
+                  label="인증 요청"
                 />
               </InputField>
             </PasswordContainer>
@@ -92,7 +87,6 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
                 {errors.phone.message}
               </span>
             )}
-
             {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
           </section>
         </ProfileChangeForm>
