@@ -7,14 +7,18 @@ import TitleContainer from '@/components/molecules/post/titleContainer';
 import { PostsFormSchema } from '@/types/posts.types';
 import { createToast } from '@/utils/toast';
 import { useMutation } from '@tanstack/react-query';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 interface ThumbnailContainerProps {
   setValue: UseFormSetValue<PostsFormSchema>;
+  initValue?: string;
 }
 
-const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
+const ThumbnailContainer = ({
+  setValue,
+  initValue,
+}: ThumbnailContainerProps) => {
   const [uploadState, setUploadState] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileUploadError, setFileUploadError] = useState<string | null>();
@@ -54,8 +58,14 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
   };
 
   const handleDeleteThumbnail = () => {
-    thumbnailDeleteMutate(data.data);
+    thumbnailDeleteMutate(data.data || initValue);
   };
+
+  useEffect(() => {
+    if (initValue) {
+      setUploadState(true);
+    }
+  }, [initValue]);
 
   return (
     <TitleContainer title="썸네일">
@@ -68,7 +78,7 @@ const ThumbnailContainer = ({ setValue }: ThumbnailContainerProps) => {
         ) : (
           <UploadThumbnail variant="image">
             <img
-              src={data?.data}
+              src={data?.data || initValue}
               alt={'upload image'}
               className="object-fill"
             />

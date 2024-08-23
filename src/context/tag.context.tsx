@@ -13,7 +13,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { flushSync } from 'react-dom';
 
 interface TagContextType {
   tags: TagType[];
@@ -25,6 +24,7 @@ interface TagContextType {
   handleInput: () => void;
   searchTags: TagType[] | null;
   handleClickDropDownData: (label: string) => void;
+  clearTags: () => void;
 }
 
 export const TagContext = createContext<TagContextType | undefined>(undefined);
@@ -62,9 +62,10 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         tagId: Date.now(),
         tagName: tag,
       };
-      flushSync(() => {
-        setTags((prevState) => [...prevState, newTag]);
-      });
+
+      // flushSync를 제거하고 바로 상태 업데이트
+      setTags((prevState) => [...prevState, newTag]);
+
       if (tagContainerRef.current) {
         tagContainerRef.current.scrollLeft =
           tagContainerRef.current.scrollWidth;
@@ -83,6 +84,10 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
 
   const removeLastTag = useCallback(() => {
     setTags((prevState) => prevState.slice(0, -1));
+  }, []);
+
+  const clearTags = useCallback(() => {
+    setTags((prevState) => []);
   }, []);
 
   const handleFocusTagInput = useCallback(() => {
@@ -203,6 +208,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       handleInput,
       searchTags,
       handleClickDropDownData,
+      clearTags,
     }),
     [
       tags,
@@ -212,6 +218,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       handleInput,
       searchTags,
       handleClickDropDownData,
+      clearTags,
     ],
   );
 

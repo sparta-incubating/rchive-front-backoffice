@@ -1,3 +1,5 @@
+'use client';
+
 import CustomDropDown from '@/components/atoms/customDropDown';
 import SelectContainer from '@/components/atoms/selectContainer';
 import SelectDumyItem from '@/components/atoms/selectDumyItem';
@@ -7,7 +9,7 @@ import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
 import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 interface SelectBoxProps<T extends FieldValues> {
@@ -39,6 +41,11 @@ const SelectCategoryFormBox = <T extends FieldValues>({
     setIsOpen(false);
     onSelect(option.value);
   };
+
+  useEffect(() => {
+    const option = options.find((option) => option.value === field.value);
+    setSelectedOption(option || null);
+  }, [field.value, options]);
 
   return (
     <SelectContainer className={className}>

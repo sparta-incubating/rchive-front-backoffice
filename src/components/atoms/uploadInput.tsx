@@ -11,6 +11,7 @@ interface UploadInputProps extends ComponentProps<'input'> {
   onClick?: () => void;
   isLoading?: boolean;
   validate?: boolean;
+  isUpdateMod?: boolean;
 }
 
 const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
@@ -22,10 +23,17 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
       isLoading,
       validate,
       onClick,
+      isUpdateMod,
       ...props
     },
     ref,
   ) => {
+    const showButton =
+      !validate &&
+      isUseButton &&
+      watch &&
+      (!isUpdateMod || (isUpdateMod && !validate));
+
     return (
       <div className="flex h-[62px] w-[334px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
         <input
@@ -34,7 +42,7 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
           {...props}
           className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap outline-none"
         />
-        {!validate && isUseButton && watch && (
+        {showButton && (
           <Button
             size="sm"
             variant="secondary"

@@ -1,8 +1,15 @@
-import { getNotionPageData, postDataPost } from '@/api/client/postApi';
+'use client';
+
+import {
+  getNotionPageData,
+  patchDataPost,
+  postDataPost,
+} from '@/api/client/postApi';
 import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
 import {
+  postFetchData,
   postsEndPointFormData,
   PostsFormSchema,
   TrackType,
@@ -12,10 +19,10 @@ import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const usePostWriteForm = () => {
+const usePostWriteForm = (postData?: postFetchData) => {
   const {
     trackRole,
     period: loginPeriod,
@@ -24,7 +31,7 @@ const usePostWriteForm = () => {
 
   const { setIsSubmitLoading, setLoadingMessage } = useLoadingProgress();
 
-  const { tags } = useTagContext();
+  const { tags, addTag, clearTags } = useTagContext();
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
@@ -85,12 +92,56 @@ const usePostWriteForm = () => {
       thumbnailUrl: data.thumbnailUrl || '',
     };
     setLoadingMessage('데이터를 서버에 등록 중...');
-
-    await postDataPost(watch('trackName'), 0, formData);
-
-    setIsSubmitLoading(false);
-    createToast('게시물 등록이 완료되었습니다.', 'primary');
+    try {
+      if (!postData) {
+        await postDataPost(watch('trackName'), Number(loginPeriod), formData);
+        createToast('게시물 등록이 완료되었습니다.', 'primary');
+      } else {
+        await patchDataPost(
+          watch('trackName'),
+          Number(loginPeriod),
+          formData,
+          Number(postData.postId),
+        );
+        createToast('게시물 수정이 완료되었습니다.', 'primary');
+      }
+    } catch (error) {
+      if (!postData) {
+        createToast('게시물 등록 중 오류가 발생했습니다.', 'warning');
+      } else {
+        createToast('게시물 수정 중 오류가 발생했습니다.', 'warning');
+      }
+    } finally {
+      setIsSubmitLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (postData) {
+      setValue('thumbnailUrl', postData.thumbnailUrl || '');
+      setValue('title', postData.title);
+      setValue('contentLink', postData.contentLink);
+      setNotionValidateState(!!postData.contentLink);
+      setValue('videoLink', postData.videoLink);
+      setValue('postPeriod', String(postData.period));
+      setValue('postType', postData.postType);
+      setValue('uploadedAt', dayjs(postData.uploadedAt).toDate());
+      setValue('tutor', { ...postData.tutorRes });
+      setValue('isOpened', String(postData.isOpened) as 'true' | 'false');
+
+      clearTags(); // 기존 태그 초기화
+      if (postData.tagNameList.length > 0) {
+        // Promise.all로 모든 태그 추가 작업이 완료될 때까지 기다립니다.
+        Promise.all(
+          postData.tagNameList.map((tag) => {
+            addTag(tag as string);
+          }),
+        ).then(() => {
+          setValue('tagNameList', tags); // 모든 태그가 추가된 후 설정
+        });
+      }
+    }
+  }, [setValue]);
 
   return {
     register,

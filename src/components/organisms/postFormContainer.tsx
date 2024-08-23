@@ -9,10 +9,15 @@ import ThumbnailContainer from '@/components/molecules/post/thumbnailContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TagContainer from '@/components/organisms/tagContainer';
 import usePostWriteForm from '@/hooks/usePostWriteForm';
+import { postFetchData } from '@/types/posts.types';
 import { radioType } from '@/types/radio.types';
 import { Controller } from 'react-hook-form';
 
-const PostFormContainer = () => {
+interface PostFormContainerProps {
+  postData?: postFetchData;
+}
+
+const PostFormContainer = ({ postData }: PostFormContainerProps) => {
   const {
     register,
     watch,
@@ -24,14 +29,17 @@ const PostFormContainer = () => {
     notionValidateState,
     setNotionValidateState,
     isValid,
-  } = usePostWriteForm();
+  } = usePostWriteForm(postData);
 
   return (
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <section className="flex flex-col">
         <div className="m-6 flex max-w-[1102px] flex-col gap-4 rounded-[14px] border border-blue-100 bg-white px-9 py-8">
           {/* Thumbnail */}
-          <ThumbnailContainer setValue={setValue} />
+          <ThumbnailContainer
+            setValue={setValue}
+            initValue={watch('thumbnailUrl')}
+          />
 
           {/* Inputs */}
           <PostInputContainer
@@ -40,6 +48,8 @@ const PostFormContainer = () => {
             errors={errors}
             notionValidateState={notionValidateState}
             setNotionValidateState={setNotionValidateState}
+            isUpdatedMod={!!postData}
+            initialContentLink={postData?.contentLink || ''}
           />
 
           {/* Info */}
@@ -85,7 +95,7 @@ const PostFormContainer = () => {
               disabled={!isValid}
               className="w-[178px]"
             >
-              게시하기
+              {postData ? '수정하기' : '등록하기'}
             </Button>
           </div>
         </div>

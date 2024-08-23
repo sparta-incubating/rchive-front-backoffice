@@ -1,3 +1,5 @@
+'use client';
+
 import FormSpan from '@/components/atoms/formSpan';
 import UploadInput from '@/components/atoms/uploadInput';
 import TitleContainer from '@/components/molecules/post/titleContainer';
@@ -5,7 +7,7 @@ import useIsLoading from '@/hooks/useIsLoading';
 import { PostsFormSchema } from '@/types/posts.types';
 import { extractPageId, validateNotionPageId } from '@/utils/notionAPI';
 import axios from 'axios';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 interface PostInputContainerProps {
@@ -14,6 +16,8 @@ interface PostInputContainerProps {
   errors: FieldErrors<PostsFormSchema>;
   notionValidateState: boolean;
   setNotionValidateState: Dispatch<SetStateAction<boolean>>;
+  isUpdatedMod: boolean;
+  initialContentLink?: string;
 }
 
 const PostInputContainer = ({
@@ -22,9 +26,12 @@ const PostInputContainer = ({
   errors,
   notionValidateState,
   setNotionValidateState,
+  isUpdatedMod,
+  initialContentLink,
 }: PostInputContainerProps) => {
   const [validateIsLoading, handleValidateIsLoading] = useIsLoading();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const contentLink = watch('contentLink');
 
   const handleNotionUrlValidate = async () => {
     handleValidateIsLoading(true);
@@ -63,6 +70,18 @@ const PostInputContainer = ({
     }
   };
 
+  useEffect(() => {
+    if (!isUpdatedMod) {
+      setNotionValidateState(false);
+      setErrorMessage(null);
+    } else {
+      if (initialContentLink !== contentLink) {
+        setNotionValidateState(false);
+        setErrorMessage(null);
+      }
+    }
+  }, [contentLink, setNotionValidateState, isUpdatedMod, initialContentLink]);
+
   return (
     <section className="flex gap-4">
       <article>
@@ -83,7 +102,7 @@ const PostInputContainer = ({
         <TitleContainer title="노션 링크">
           <UploadInput
             {...register('contentLink')}
-            watch={watch('contentLink')}
+            watch={contentLink}
             placeholder="노션 링크를 입력해주세요."
             buttonLabel="주소확인"
             onClick={handleNotionUrlValidate}
