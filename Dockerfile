@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Node.js 이미지를 사용하여 빌드합니다.
-FROM node:18 as build
+FROM node:18-alpine as build
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY . .
 RUN yarn build
 
 # 배포용 Node.js 이미지를 사용합니다.
-FROM node:18
+FROM node:18-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
