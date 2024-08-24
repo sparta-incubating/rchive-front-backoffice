@@ -29,21 +29,13 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Cache node modules
+      - name: Cache dependencies
         uses: actions/cache@v2
         with:
-          path: node_modules
+          path: |
+            node_modules
+            .next
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
-      - name: Cache build
-        uses: actions/cache@v2
-        with:
-          path: .next
-          key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
 
       - name: Install dependencies
         run: yarn install
@@ -62,7 +54,7 @@ jobs:
 
       - name: Docker Build image
         run: docker build -f Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:dev .
-
+        
       - name: Docker Push image
         run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:dev
 
