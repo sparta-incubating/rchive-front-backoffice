@@ -21,10 +21,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # 필요한 파일 복사
-# 빌드한 정적 파일만 복사
-COPY --from=build /app/.next /app/.next
-COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app/package.json /app/package.json
+COPY --from=build /app ./
 
 # 포트 설정
 EXPOSE 3000
