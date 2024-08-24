@@ -1,5 +1,5 @@
 name: CI/CD on Dev
-#test123
+
 on:
   push:
     branches: [ "dev" ]
@@ -56,7 +56,7 @@ jobs:
 
       - name: Docker Build image
         run: docker build -f Dockerfile --tag ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:dev .
-
+        
       - name: Docker Push image
         run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:dev
 
