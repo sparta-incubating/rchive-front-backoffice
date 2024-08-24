@@ -8,11 +8,11 @@ WORKDIR /app
 
 # 의존성 설치
 COPY package.json yarn.lock ./
-RUN --mount=type=cache,target=/root/.cache/yarn yarn install --frozen-lockfile
+RUN RUN --mount=type=cache,target=/root/.cache/yarn yarn install --frozen-lockfile --prefer-offline
 
 # 앱 코드 복사 및 빌드
 COPY . .
-RUN yarn build
+RUN yarn build && yarn cache clean
 
 # 배포용 Node.js 이미지를 사용합니다.
 FROM node:18-alpine
