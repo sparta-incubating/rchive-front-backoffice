@@ -8,7 +8,7 @@ WORKDIR /app
 
 # 의존성 설치
 COPY package.json yarn.lock ./
-RUN RUN --mount=type=cache,target=/root/.cache/yarn yarn install --frozen-lockfile --prefer-offline
+RUN --mount=type=cache,target=/root/.cache/yarn yarn install --frozen-lockfile --prefer-offline
 
 # 앱 코드 복사 및 빌드
 COPY . .
