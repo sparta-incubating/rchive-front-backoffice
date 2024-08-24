@@ -31,6 +31,9 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Clean Yarn cache
+        run: yarn cache clean
+
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
