@@ -37,7 +37,7 @@ export const trackOptions: SelectOptionType[] = [
   },
   {
     value: 'SPRING_JAVA',
-    label: 'Sprign(Java)',
+    label: 'Spring(Java)',
     selected: false,
   },
   {
@@ -46,7 +46,7 @@ export const trackOptions: SelectOptionType[] = [
     selected: false,
   },
   {
-    value: 'FRONT_REACT',
+    value: 'REACT',
     label: 'React',
     selected: false,
   },
@@ -88,7 +88,8 @@ export type TrackType =
   | 'NODEJS'
   | 'SPRING_JAVA'
   | 'SPRING_KOTLIN'
-  | 'FRONT_REACT'
+  | 'REACT'
+  | 'AI'
   | 'ANDROID'
   | 'IOS'
   | 'DATA'

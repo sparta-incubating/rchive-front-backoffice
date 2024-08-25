@@ -5,7 +5,7 @@ import { ComponentProps, ReactNode } from 'react';
 const divVariants = cva('absolute left-0', {
   variants: {
     variant: {
-      permission: 'top-[38px]',
+      permission: 'top-[32px]',
       category: 'top-[26px]',
     },
   },

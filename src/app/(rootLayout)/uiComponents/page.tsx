@@ -2,7 +2,6 @@
 
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import Button from '@/components/atoms/button';
-import OfficeCategory from '@/components/atoms/officeCategory';
 import SearchBar from '@/components/atoms/searchBar';
 import UploadContainer from '@/components/molecules/post/uploadContainer';
 import { createToast } from '@/utils/toast';
@@ -65,9 +64,6 @@ const UiComponents = () => {
         <BackOfficeButton variant="secondary">거절</BackOfficeButton>
         <BackOfficeButton variant="nondisclosure">비공개</BackOfficeButton>
         <SearchBar />
-      </div>
-      <div>
-        <OfficeCategory />
       </div>
     </>
   );

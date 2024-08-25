@@ -6,7 +6,6 @@ import { createServerAPI } from '@/utils/serverAPI';
 import { isTeamSpartaEmail } from '@/utils/utils';
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
-import React from 'react';
 
 const RoleResultPage = async () => {
   const email = getCookie('loginId', { cookies });

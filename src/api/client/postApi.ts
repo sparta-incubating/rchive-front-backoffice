@@ -73,7 +73,7 @@ export const postThumbnailUpload = async (file: File) => {
 export const getThumbnailDelete = async (thumbnailUrl: string) => {
   try {
     return await client.get(
-      `apis/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
+      `/apis/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
     );
   } catch (error) {
     throw new Error('파일 삭제에 실패했습니다.');

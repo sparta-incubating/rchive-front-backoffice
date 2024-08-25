@@ -65,7 +65,7 @@ const SelectFormBox = ({
             variant={selectedOption ? 'selected' : 'unSelected'}
             clicked={isOpen}
           >
-            {`${value}기`}
+            {`${value ? `기` : `트랙을 먼저 선택하세요`}`}
           </SelectInput>
         )}
 

@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
@@ -25,6 +25,7 @@ import InputField from '../molecules/InputField';
 import SignupModal from './signupModal';
 
 const SignIn = () => {
+  const [pwErrorMsg, setpwErrorMsg] = useState<string>('');
   const { data: session } = useSession();
   const { open } = useModalContext();
   const dispatch = useAppDispatch();
@@ -64,7 +65,8 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      router.push('/');
+      //로그인 시 권한 설정 페이지로 이동
+      router.push('/admin');
     }
   }, [dispatch, router, session]);
 
@@ -122,7 +124,7 @@ const SignIn = () => {
                     </InputField>
                   </InputContainer>
                   <span className="text-sm text-primary-400">
-                    {errors.password?.message}
+                    {errors.password?.message || pwErrorMsg}
                   </span>
                 </section>
               </section>
