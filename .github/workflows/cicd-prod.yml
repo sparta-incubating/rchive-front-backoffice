@@ -28,14 +28,19 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            .next
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
         run: yarn install
 
       - name: Run lint
         run: yarn run lint
-
-      # - name: Run tests
-      #   run: yarn test
 
       - name: Run build
         run: yarn build
