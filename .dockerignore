@@ -34,3 +34,6 @@ Dockerfile
 # MacOS, Linux 시스템 파일
 .DS_Store
 *.swp
+
+src
+tests
