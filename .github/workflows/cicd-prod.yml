@@ -42,9 +42,6 @@ jobs:
       - name: Run lint
         run: yarn run lint
 
-      # - name: Run tests
-      #   run: yarn test
-
       - name: Run build
         run: yarn build
 
