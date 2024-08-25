@@ -1,6 +1,6 @@
 'use client';
 
-import { getTags, postTag } from '@/api/postApi';
+import { getTags, postTag } from '@/api/client/postApi';
 import useComposition from '@/hooks/useComposition';
 import { TagType } from '@/types/tag.types';
 import { debounce } from 'lodash';

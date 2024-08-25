@@ -1,4 +1,4 @@
-import { getThumbnailDelete, postThumbnailUpload } from '@/api/postApi';
+import { getThumbnailDelete, postThumbnailUpload } from '@/api/client/postApi';
 import Button from '@/components/atoms/button';
 import FormSpan from '@/components/atoms/formSpan';
 import UploadThumbnail from '@/components/atoms/uploadThumbnail';

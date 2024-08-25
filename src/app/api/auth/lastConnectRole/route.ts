@@ -1,13 +1,11 @@
 import { LastConnectRoleResponseType } from '@/types/auth.types';
 import { setServerCookieRole } from '@/utils/auth.server.util';
 import { createServerAPI } from '@/utils/serverAPI';
-import { getCookie } from 'cookies-next';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
   const res = new NextResponse();
-  const accessToken = getCookie('AT', { req, res });
-  const serverAPI = createServerAPI(String(accessToken));
+  const serverAPI = await createServerAPI();
   try {
     const { data } = await serverAPI.get<LastConnectRoleResponseType>(
       '/apis/v1/role/select/last',

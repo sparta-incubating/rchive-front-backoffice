@@ -1,4 +1,4 @@
-import { getNotionPageData, postDataPost } from '@/api/postApi';
+import { getNotionPageData, postDataPost } from '@/api/client/postApi';
 import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';

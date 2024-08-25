@@ -1,4 +1,4 @@
-import { patchPostClose, patchPostOpen } from '@/api/postApi';
+import { patchPostClose, patchPostOpen } from '@/api/client/postApi';
 import { useAppSelector } from '@/redux/storeConfig';
 import { createToast } from '@/utils/toast';
 import { useRouter } from 'next/navigation';

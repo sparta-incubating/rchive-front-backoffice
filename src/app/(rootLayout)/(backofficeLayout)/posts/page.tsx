@@ -1,9 +1,10 @@
+import { auth } from '@/auth';
+import CustomError from '@/components/atoms/customError';
 import PostListPage from '@/components/pages/postListPage';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/posts.constnat';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { createServerAPI } from '@/utils/serverAPI';
-import { getCookie } from 'cookies-next';
-import { cookies } from 'next/headers';
+import axios from 'axios';
 import React from 'react';
 
 export const revalidate = 1;
@@ -25,10 +26,11 @@ const Post = async ({ searchParams }: PostProps) => {
     title: searchParams.title ?? '',
   };
 
-  const accessToken = String(getCookie('AT', { cookies }));
-  const period = String(getCookie('period', { cookies }));
-  const trackName = String(getCookie('trackName', { cookies }));
-  const serverAPI = createServerAPI(accessToken);
+  const session = await auth();
+
+  const period = session?.user?.loginPeriod;
+  const trackName = session?.user?.trackName;
+  const serverAPI = await createServerAPI();
 
   const query = new URLSearchParams();
   if (searchParamsData.postType && searchParams.postType !== 'all')
@@ -45,28 +47,37 @@ const Post = async ({ searchParams }: PostProps) => {
   query.set('page', searchParamsData.page || DEFAULT_PAGE);
   query.set('size', searchParamsData.size || DEFAULT_PAGE_SIZE);
 
-  const postListResponse = await serverAPI.get<PostListResponse>(
-    `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
-  );
+  try {
+    const [postListResponse, periodResponse] = await Promise.all([
+      serverAPI.get<PostListResponse>(
+        `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
+      ),
+      serverAPI.get(`/apis/v1/role/track/period?trackName=${trackName}`),
+    ]);
 
-  const periodResponse = await serverAPI.get(
-    `/apis/v1/role/track/period?trackName=${trackName}`,
-  );
+    const periodData = periodResponse?.data.data.trackPeriodList.map(
+      (periodNumber: number) => ({
+        value: periodNumber.toString(),
+        label: `${periodNumber}기`,
+        selected: false,
+      }),
+    );
 
-  const periodData = periodResponse?.data.data.trackPeriodList.map(
-    (periodNumber: number) => ({
-      value: periodNumber.toString(),
-      label: `${periodNumber}기`,
-      selected: false,
-    }),
-  );
+    return (
+      <PostListPage
+        searchParams={searchParamsData}
+        postListData={postListResponse.data}
+        periodData={periodData}
+      />
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const data = error?.response?.data;
+      const status = error?.response?.status;
 
-  return (
-    <PostListPage
-      searchParams={searchParamsData}
-      postListData={postListResponse.data}
-      periodData={periodData}
-    />
-  );
+      return <CustomError errorData={{ status, data }}></CustomError>;
+    }
+  }
 };
+
 export default Post;

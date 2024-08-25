@@ -20,6 +20,6 @@ export const deleteServerCookieRole = async () => {
   deleteCookie('period', { cookies });
 };
 
-export const setServerCookieLogin = async (accessToken: string) => {
+export const setServerAccessTokenCookie = async (accessToken: string) => {
   setCookie('AT', accessToken, { cookies });
 };

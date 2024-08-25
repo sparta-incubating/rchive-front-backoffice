@@ -1,4 +1,4 @@
-import { getSearchTutor } from '@/api/postApi';
+import { getSearchTutor } from '@/api/client/postApi';
 import CloseButton from '@/components/atoms/closeButton';
 import DropDownItem from '@/components/atoms/dropDownItem';
 import FormSpan from '@/components/atoms/formSpan';
