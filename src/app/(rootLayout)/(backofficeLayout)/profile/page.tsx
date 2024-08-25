@@ -8,24 +8,38 @@ import PasswordChangeModal from '@/components/pages/profile/passwordChangeModal'
 import PhoneChangeModal from '@/components/pages/profile/phoneChangeModal';
 import RandomProfileModal from '@/components/pages/profile/randomProfileModal';
 import RoleChangeModal from '@/components/pages/profile/roleChangeModal';
+import ProgressModal from '@/components/pages/progressModal';
 import UserInfo from '@/components/pages/userInfo';
 import { useState } from 'react';
 
 const Profile = () => {
   const { userData, isError, isPending } = useUserInfoDataQuery();
   const [modalType, setModalType] = useState<string | null>(null);
+
+  const {
+    email,
+    username,
+    profileImg,
+    trackName,
+    period,
+    trackRole,
+    phone,
+    nickname,
+  } = userData?.data ?? '';
+  const openModal = (type: string) => setModalType(type);
+  const closeModal = () => setModalType(null);
+
   if (isError) {
-    return <div>에러입니다</div>;
+    return <div>에러입니다.</div>;
   }
 
   if (isPending) {
-    return <div>로딩중...</div>;
+    return (
+      <ProgressModal>
+        <span>프로필을 불러오는 중</span>
+      </ProgressModal>
+    );
   }
-
-  const { email, username, profileImg, trackName, period, trackRole, phone } =
-    userData.data;
-  const openModal = (type: string) => setModalType(type);
-  const closeModal = () => setModalType(null);
 
   return (
     <BackofficePage>
@@ -57,7 +71,11 @@ const Profile = () => {
         <RoleChangeModal onClose={closeModal} trackRole={trackRole} />
       )}
       {modalType === 'image' && (
-        <RandomProfileModal onClose={closeModal} profileImg={profileImg} />
+        <RandomProfileModal
+          onClose={closeModal}
+          profileImg={profileImg}
+          nickname={nickname}
+        />
       )}
     </BackofficePage>
   );

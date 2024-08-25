@@ -42,6 +42,7 @@ export interface RoleChangeModalProps {
 
 export interface RandomProfileModalProps {
   onClose: () => void;
+  nickname: string;
   profileImg: string;
 }
 
@@ -52,9 +53,9 @@ export interface PassWordChange {
 }
 
 export interface RoleChange {
-  trackName: string;
-  period: string;
-  trackRole: string;
+  trackName?: string;
+  period?: string;
+  trackRole?: string;
 }
 
 export interface ProfileChange {

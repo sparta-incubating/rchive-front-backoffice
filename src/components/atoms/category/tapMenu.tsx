@@ -54,7 +54,6 @@ const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
             </p>
           </button>
           <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-[#58b32e]/10 p-[4px] text-sm font-semibold text-success-green">
-            {' '}
             {approveCount}
           </p>
         </div>

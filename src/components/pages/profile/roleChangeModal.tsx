@@ -1,8 +1,9 @@
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import { usePeriodListQuery } from '@/api/profile/useQuery';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
+import useGetPeriod from '@/hooks/useGetPeriod';
 import { RoleChangeModalProps } from '@/types/profile.types';
+import { RoleFormSchema } from '@/types/role.types';
 import { SelectOptionType } from '@/types/signup.types';
 import { createToast } from '@/utils/toast';
 import { roleSchema } from '@/validators/auth/role.validator';
@@ -13,35 +14,29 @@ import { z } from 'zod';
 
 const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
   const {
+    control,
     handleSubmit,
     watch,
-    control,
-    formState: { isValid, errors },
-  } = useForm<z.infer<typeof roleSchema>>({
+    formState: { errors, isValid },
+  } = useForm<RoleFormSchema>({
     resolver: zodResolver(roleSchema),
-    mode: 'onSubmit',
+    mode: 'all',
+    reValidateMode: 'onChange',
     defaultValues: {
+      trackRole,
       trackName: '',
       period: '',
-      trackRole: '',
     },
   });
 
-  const periodList = usePeriodListQuery(watch('trackName'));
-
-  const periodOptions = periodList?.map((item: number) => ({
-    value: `${item}`,
-    label: `${item}기`,
-    selected: false,
-  }));
-
+  const period = useGetPeriod(watch('trackName'), trackRole);
   const { updateRoleMutate } = useProfileUpdate();
 
   const onSubmit = async (data: z.infer<typeof roleSchema>) => {
     const { trackName, period } = data;
     const roleChangeInfo = {
       trackName,
-      period: period as string,
+      period,
       trackRole,
     };
 
@@ -87,7 +82,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
           render={({ field: { onChange, value } }) => (
             <SelectFormBox
               className="w-[360px]"
-              options={periodOptions || []}
+              options={period || []}
               label={'기수'}
               onSelect={onChange}
               value={value!}

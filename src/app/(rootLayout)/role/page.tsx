@@ -3,7 +3,6 @@ import RoleContainerPage from '@/components/pages/roleContainerPage';
 import { isTeamSpartaEmail } from '@/utils/utils';
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
-import React from 'react';
 
 const RolePage = () => {
   const email = getCookie('loginId', { cookies });

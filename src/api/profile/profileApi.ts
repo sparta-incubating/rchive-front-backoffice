@@ -40,13 +40,12 @@ export const updatePassword = async (password: PassWordChange) => {
 };
 
 export const updateRole = async (roleInfo: RoleChange) => {
-  const { trackName, period, trackRole } = roleInfo;
-  const periodInt = parseInt(period);
+  const { trackName, period: periodInt, trackRole } = roleInfo;
 
   try {
     const res = await client.post(`/apis/v1/role`, {
       trackName,
-      period: periodInt,
+      period: Number(periodInt),
       trackRole,
     });
     return res.data;
