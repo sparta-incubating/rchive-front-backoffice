@@ -35,5 +35,5 @@ Dockerfile
 .DS_Store
 *.swp
 
-src
+# 테스트 파일
 tests
