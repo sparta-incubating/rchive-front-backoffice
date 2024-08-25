@@ -17,6 +17,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     control,
     handleSubmit,
     watch,
+
     formState: { errors, isValid },
   } = useForm<RoleFormSchema>({
     resolver: zodResolver(roleSchema),
@@ -29,7 +30,10 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     },
   });
 
+  const watchTrackName = watch('trackName');
+
   const period = useGetPeriod(watch('trackName'), trackRole);
+
   const { updateRoleMutate } = useProfileUpdate();
 
   const onSubmit = async (data: z.infer<typeof roleSchema>) => {
@@ -79,14 +83,23 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
         <Controller
           name="period"
           control={control}
-          render={({ field: { onChange, value } }) => (
-            <SelectFormBox
-              className="w-[360px]"
-              options={period || []}
-              label={'기수'}
-              onSelect={onChange}
-              value={value!}
-            />
+          render={({ field: { onChange, value, disabled } }) => (
+            <div
+              onClick={() => {
+                if (!watchTrackName) {
+                  createToast('트랙을 먼저 선택해주세요', 'warning');
+                }
+              }}
+            >
+              <SelectFormBox
+                className="w-[360px]"
+                options={period || []}
+                label={'기수'}
+                onSelect={onChange}
+                value={value! ?? '기수 선택'}
+                disabled={!watchTrackName ?? disabled}
+              />
+            </div>
           )}
         />
         {errors.period && (
