@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { PROFILE_QUERY_KEYS } from './keys.constant';
-import { getUserInfo, updatePassword, updatePhone } from './profileApi';
+import { getTrackPeriodList, getUserInfo } from './profileApi';
 
 export function useUserInfoDataQuery() {
   const {
@@ -17,22 +17,14 @@ export function useUserInfoDataQuery() {
   return { userData, isPending, isError };
 }
 
-export function useUserPatchPhoneQuery(phoneNumber: string) {
-  const { data, isPending, isError } = useQuery({
-    queryKey: [PROFILE_QUERY_KEYS.PROFILE],
-    queryFn: () => updatePhone(phoneNumber),
-    enabled: !!phoneNumber,
+export function usePeriodListQuery(trackName: string) {
+  const { data } = useQuery({
+    queryKey: [PROFILE_QUERY_KEYS.PERIODLIST, trackName],
+    queryFn: () => getTrackPeriodList(trackName),
+    enabled: !!trackName,
   });
 
-  return { data, isPending, isError };
-}
+  const periodList = data?.data?.trackPeriodList;
 
-export function useUserPatchPasswordQuery(password: string) {
-  const { data, isPending, isError } = useQuery({
-    queryKey: [PROFILE_QUERY_KEYS.PROFILE],
-    queryFn: () => updatePassword(password),
-    enabled: !!password,
-  });
-
-  return { data, isPending, isError };
+  return periodList;
 }

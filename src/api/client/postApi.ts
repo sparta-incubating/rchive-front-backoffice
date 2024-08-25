@@ -68,7 +68,7 @@ export const postThumbnailUpload = async (file: File) => {
 export const getThumbnailDelete = async (thumbnailUrl: string) => {
   try {
     return await client.get(
-      `api/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
+      `/apis/v1/s3/thumbnail/delete?thumbnailUrl=${thumbnailUrl}`,
     );
   } catch (error) {
     throw new Error('파일 삭제에 실패했습니다.');
@@ -96,7 +96,7 @@ export const getSearchTutor = async (
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
   try {
-    const response = await axios.get(`/api/notion/content?url=${pageId}`);
+    const response = await axios.get(`/apis/notion/content?url=${pageId}`);
 
     return response.data.result.replace('"', '');
   } catch (error) {

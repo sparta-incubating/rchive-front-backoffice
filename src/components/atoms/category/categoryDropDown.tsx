@@ -2,10 +2,10 @@ import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
-const divVariants = cva('absolute left-0', {
+const divVariants = cva('absolute left-0 ', {
   variants: {
     variant: {
-      permission: 'top-[35px]',
+      permission: 'top-[38px]',
       category: 'top-[26px]',
     },
   },

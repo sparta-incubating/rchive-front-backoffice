@@ -19,7 +19,7 @@ import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 interface PostListProps {

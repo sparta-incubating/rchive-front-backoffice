@@ -5,7 +5,6 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/posts.constnat';
 import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { createServerAPI } from '@/utils/serverAPI';
 import axios from 'axios';
-import React from 'react';
 
 export const revalidate = 1;
 

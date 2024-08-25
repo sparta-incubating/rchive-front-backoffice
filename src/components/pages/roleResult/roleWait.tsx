@@ -2,7 +2,6 @@
 
 import Button from '@/components/atoms/button';
 import { signOut } from 'next-auth/react';
-import React from 'react';
 
 const RoleWait = () => {
   const handleGoToLogin = async () => {
