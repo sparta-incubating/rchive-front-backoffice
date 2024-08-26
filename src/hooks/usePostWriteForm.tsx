@@ -5,15 +5,11 @@ import {
   patchDataPost,
   postDataPost,
 } from '@/api/client/postApi';
+import { PostForm } from '@/class/postForm';
 import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
-import {
-  postFetchData,
-  postsEndPointFormData,
-  PostsFormSchema,
-  TrackType,
-} from '@/types/posts.types';
+import { postFetchData, PostsFormSchema, TrackType } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
@@ -76,22 +72,20 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
     setIsSubmitLoading(true);
     setLoadingMessage('노션 자료를 찾아오는 중...');
-    const formData: postsEndPointFormData = {
-      postType: data.postType,
-      title: data.title,
-      tagNameList: tags.map((tag) => tag.tagName),
-      tutorId: Number(tutor?.tutorId),
-      postPeriod: Number(data.postPeriod),
-      isOpened: Boolean(data.isOpened),
-      uploadedAt: dayjs(data.uploadedAt).format('YYYY-MM-DD'),
-      // notion content api route 요청
-      content: contentLink
-        ? (await getNotionPageData(extractPageId(contentLink!)!)) || ''
-        : '',
-      contentLink: data.contentLink || '',
-      videoLink: data.videoLink || '',
-      thumbnailUrl: data.thumbnailUrl || '',
-    };
+    const formData = new PostForm(
+      data.postType,
+      data.title,
+      tags.map((tag) => tag.tagName),
+      Number(tutor?.tutorId),
+      Number(data.postPeriod),
+      Boolean(data.isOpened),
+      dayjs(data.uploadedAt).format('YYYY-MM-DD'),
+      contentLink ? await getNotionPageData(extractPageId(contentLink)!) : '',
+      data.contentLink,
+      data.videoLink,
+      data.thumbnailUrl,
+    );
+
     setLoadingMessage('데이터를 서버에 등록 중...');
     try {
       if (!postData) {

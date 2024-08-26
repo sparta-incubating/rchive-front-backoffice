@@ -1,8 +1,5 @@
-import {
-  postsEndPointFormData,
-  TrackType,
-  tutorApiType,
-} from '@/types/posts.types';
+import { PostForm } from '@/class/postForm';
+import { TrackType, tutorApiType } from '@/types/posts.types';
 import { client } from '@/utils/clientAPI';
 import axios from 'axios';
 
@@ -114,7 +111,7 @@ export const getNotionPageData = async (pageId: string) => {
 export const postDataPost = async (
   trackName: string,
   period: number,
-  data: postsEndPointFormData,
+  data: PostForm,
 ) => {
   try {
     const response = await client.post(
@@ -132,7 +129,7 @@ export const postDataPost = async (
 export const patchDataPost = async (
   trackName: string,
   period: number,
-  data: postsEndPointFormData,
+  data: PostForm,
   postId: number,
 ) => {
   try {
