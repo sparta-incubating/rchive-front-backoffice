@@ -12,16 +12,16 @@ interface PhoneFormProps {
   register: UseFormRegister<SignupFormSchema>;
   usernameCheck: string;
   authCheck: (authInfo: authCodeType) => Promise<void>;
-  pwErrorMsg: string | null;
-  setpwErrorMsg: Dispatch<SetStateAction<string | null>>;
+  isErrorMsg: string | null;
+  setIsErrorMsg: Dispatch<SetStateAction<string | null>>;
 }
 
 const PhoneForm = ({
   register,
   usernameCheck,
   authCheck,
-  pwErrorMsg,
-  setpwErrorMsg,
+  isErrorMsg,
+  setIsErrorMsg,
 }: PhoneFormProps) => {
   return (
     <>
@@ -32,8 +32,8 @@ const PhoneForm = ({
             register={register}
             usernameCheck={usernameCheck}
             authCheck={authCheck}
-            pwErrorMsg={pwErrorMsg}
-            setpwErrorMsg={setpwErrorMsg}
+            isErrorMsg={isErrorMsg}
+            setIsErrorMsg={setIsErrorMsg}
           />
         </InputField>
       </PasswordContainer>

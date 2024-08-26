@@ -32,8 +32,8 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     isEmailUnique,
     isValid,
     authCheck,
-    pwErrorMsg,
-    setpwErrorMsg,
+    isErrorMsg,
+    setIsErrorMsg,
   } = useSignupForm(signupModalType);
 
   const usernameCheck = watch('username');
@@ -133,8 +133,8 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           register={register}
           usernameCheck={usernameCheck}
           authCheck={authCheck}
-          pwErrorMsg={pwErrorMsg}
-          setpwErrorMsg={setpwErrorMsg}
+          isErrorMsg={isErrorMsg}
+          setIsErrorMsg={setIsErrorMsg}
         />
 
         {/* birthday */}

@@ -14,16 +14,16 @@ interface PhoneFieldProps {
   register: UseFormRegister<SignupFormSchema>;
   usernameCheck: string;
   authCheck: (authInfo: authCodeType) => Promise<void>;
-  pwErrorMsg: string | null;
-  setpwErrorMsg: Dispatch<SetStateAction<string | null>>;
+  isErrorMsg: string | null;
+  setIsErrorMsg: Dispatch<SetStateAction<string | null>>;
 }
 
 const PhoneField = ({
   register,
   usernameCheck,
   authCheck,
-  pwErrorMsg,
-  setpwErrorMsg,
+  isErrorMsg,
+  setIsErrorMsg,
 }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [isAuthFilled, setisAuthFilled] = useState<string>('');
@@ -44,12 +44,12 @@ const PhoneField = ({
     try {
       postPhoneAuthNumberMutate.mutate(userInfo);
       setRequestAuthNumber(false);
-      setpwErrorMsg(null);
+      setIsErrorMsg(null);
       setTimeout(() => {
         setRequestAuthNumber(true);
       }, 0);
     } catch (error) {
-      setpwErrorMsg('휴대폰 인증번호 요청 실패');
+      setIsErrorMsg('휴대폰 인증번호 요청 실패');
     }
   };
   const authInfo = {
@@ -101,15 +101,15 @@ const PhoneField = ({
           </button>
         )}
       </InputContainer>
-      {pwErrorMsg && (
+      {isErrorMsg && (
         <span
           className={
-            pwErrorMsg.includes('일치하지 않습니다')
+            isErrorMsg.includes('일치하지 않습니다')
               ? 'text-primary-400'
               : 'text-success-green'
           }
         >
-          {pwErrorMsg}
+          {isErrorMsg}
         </span>
       )}
       {requestAuthNumber && <AuthTimer setExpire={setExpire} />}

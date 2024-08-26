@@ -40,7 +40,7 @@ const useSignupForm = (signupType: signupModalType) => {
   /*미확인 시  */
   const [emailChecked, setEmailChecked] = useState<boolean>(false);
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
-  const [pwErrorMsg, setpwErrorMsg] = useState<string | null>(null);
+  const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
   /*회원가입 실패  */
 
   const { open } = useModalContext();
@@ -95,11 +95,11 @@ const useSignupForm = (signupType: signupModalType) => {
   const authCheck = async (authInfo: authCodeType) => {
     try {
       await checkPhoneAuthMutate.mutateAsync(authInfo);
-      setpwErrorMsg('인증이 완료됐습니다.');
+      setIsErrorMsg('인증이 완료됐습니다.');
       setPhoneVerified(true);
     } catch (error) {
       setPhoneVerified(false);
-      setpwErrorMsg('인증 번호가 일치하지 않습니다.');
+      setIsErrorMsg('인증 번호가 일치하지 않습니다.');
     }
   };
 
@@ -117,8 +117,8 @@ const useSignupForm = (signupType: signupModalType) => {
     isValid,
     emailChecked,
     authCheck,
-    pwErrorMsg,
-    setpwErrorMsg,
+    isErrorMsg,
+    setIsErrorMsg,
   };
 };
 

@@ -17,7 +17,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const [init, setInit] = useState<string>(profileImg);
 
   useEffect(() => {
-    if (!profileImg.includes('MRT') || profileImg === '') {
+    if (profileImg === 'default') {
       setInit('MRT_1');
     } else {
       setInit(profileImg);
