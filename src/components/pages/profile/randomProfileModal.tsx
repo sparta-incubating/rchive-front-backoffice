@@ -51,7 +51,6 @@ const RandomProfileModal = ({
     nickname: nickname ?? '',
   };
 
-  console.log(profileInfo, '정보');
   const onSubmit = async () => {
     try {
       updateProfileInfoMutate.mutate(profileInfo);
