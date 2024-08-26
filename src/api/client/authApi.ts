@@ -6,7 +6,7 @@ import axios from 'axios';
 export const postSignup = async (userData: User | Admin) => {
   const singupData = {
     ...userData,
-    nickname: '관리자271', //추후 이메일 중복 또는 이메일 required 해제 부탁하기
+    nickname: '관리자271', //Back-추후 닉네임 중복 또는 닉네임 required 해제요청
     profileImg: 'default',
   };
 
@@ -14,7 +14,6 @@ export const postSignup = async (userData: User | Admin) => {
     const response = await axiosAPI.post('/apis/v1/users/signup', singupData);
     return response.data;
   } catch (error) {
-    console.log(error, '회원가입 오류');
     throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
   }
 };

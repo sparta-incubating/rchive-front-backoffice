@@ -31,6 +31,7 @@ export const getBoardList = async (filters: Record<string, string>) => {
     size: '10',
     searchTrackRole: filters.trackRole || undefined,
   };
+
   try {
     const res = await client.get('/apis/v1/backoffice/role', { params });
     return res.data;

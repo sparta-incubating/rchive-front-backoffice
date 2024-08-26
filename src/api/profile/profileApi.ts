@@ -80,50 +80,6 @@ export const getTrackPeriodList = async (trackName: string) => {
   }
 };
 
-// //휴대폰 인증 전송
-// export const sendPhoneAuthNumber = async (userInfo: PhoneInfo) => {
-//   //유저이름 & 바꿀 휴대폰 번호
-//   const { username, phone } = userInfo;
-
-//   try {
-//     const res = await client.post(`/apis/v1/users/auth/phone/send`, {
-//       username,
-//       phone,
-//     });
-//     return res.data;
-//   } catch (error) {
-//     console.log(error, 'error');
-//     throw new Error('휴대폰 인증 전송에 실패했습니다. 다시 시도해주세요.');
-//   }
-// };
-
-// //휴대폰 인증 확인
-// export const checkPhoneAuth = async (userInfo: PhoneChange) => {
-//   //유저이름 & 바꿀 휴대폰 번호 & 인증번호
-//   const { username, phone, authCode } = userInfo;
-//   try {
-//     const res = await client.post(`/apis/v1/users/auth/phone/valid`, {
-//       username,
-//       phone,
-//       authCode,
-//     });
-//     return res.data;
-//   } catch (error) {
-//     throw new Error('휴대폰 번호 변경에 실패했습니다. 다시 시도해주세요.');
-//   }
-// };
-
-// export const updatePhoneNumber = async (phone: string) => {
-//   try {
-//     const res = await client.patch(`/apis/v1/profile/phone`, {
-//       phone,
-//     });
-//     return res.data;
-//   } catch (error) {
-//     throw new Error('휴대폰 번호 변경에 실패했습니다. 다시 시도해주세요.');
-//   }
-// };
-
 //휴대폰 인증 전송
 export const sendPhoneAuthNumber = async (userInfo: PhoneInfo) => {
   //유저이름 & 바꿀 휴대폰 번호
@@ -136,7 +92,6 @@ export const sendPhoneAuthNumber = async (userInfo: PhoneInfo) => {
     });
     return res.data;
   } catch (error) {
-    console.log(error, 'error');
     throw new Error('휴대폰 인증 전송에 실패했습니다. 다시 시도해주세요.');
   }
 };
