@@ -5,17 +5,26 @@ import AuthTimer from '@/components/atoms/authTimer';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
-import { SignupFormSchema } from '@/types/signup.types';
+import { authCodeType, SignupFormSchema } from '@/types/signup.types';
 
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
 interface PhoneFieldProps {
   register: UseFormRegister<SignupFormSchema>;
   usernameCheck: string;
+  authCheck: (authInfo: authCodeType) => Promise<void>;
+  pwErrorMsg: string | null;
+  setpwErrorMsg: Dispatch<SetStateAction<string | null>>;
 }
 
-const PhoneField = ({ register, usernameCheck }: PhoneFieldProps) => {
+const PhoneField = ({
+  register,
+  usernameCheck,
+  authCheck,
+  pwErrorMsg,
+  setpwErrorMsg,
+}: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [isAuthFilled, setisAuthFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -24,7 +33,6 @@ const PhoneField = ({ register, usernameCheck }: PhoneFieldProps) => {
 
   const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
   const [expire, setExpire] = useState<boolean>(false);
-  const [pwErrorMsg, setpwErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setDisabled(isInputFilled.length <= 10);
@@ -44,25 +52,11 @@ const PhoneField = ({ register, usernameCheck }: PhoneFieldProps) => {
       setpwErrorMsg('휴대폰 인증번호 요청 실패');
     }
   };
-
-  const { checkPhoneAuthMutate } = useProfileUpdate();
-
-  const authCheck = async () => {
-    const userInfo = {
-      username: usernameCheck,
-      phone: isInputFilled,
-      authCode: isAuthFilled,
-    };
-    try {
-      await checkPhoneAuthMutate.mutateAsync(userInfo);
-      setpwErrorMsg('인증이 완료됐습니다.');
-    } catch (error) {
-      setpwErrorMsg('인증 번호가 일치하지 않습니다.');
-    }
+  const authInfo = {
+    username: usernameCheck,
+    phone: isInputFilled,
+    authCode: isAuthFilled,
   };
-
-  console.log(pwErrorMsg, '현재 메시지');
-
   return (
     <>
       <InputContainer variant="secondary">
@@ -101,7 +95,7 @@ const PhoneField = ({ register, usernameCheck }: PhoneFieldProps) => {
           <button
             type="button"
             className="h-[36px] w-[56px]"
-            onClick={authCheck}
+            onClick={() => authCheck(authInfo)}
           >
             확인
           </button>

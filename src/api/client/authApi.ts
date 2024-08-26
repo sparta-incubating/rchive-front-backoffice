@@ -6,10 +6,10 @@ import axios from 'axios';
 export const postSignup = async (userData: User | Admin) => {
   const singupData = {
     ...userData,
-    nickname: '매니저12',
+    nickname: '관리자27', //추후 이메일 중복 또는 이메일 required 해제 부탁하기
     profileImg: 'default',
   };
-
+  console.log(singupData, '????');
   try {
     const response = await axiosAPI.post('/apis/v1/users/signup', singupData);
     return response.data;

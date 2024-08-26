@@ -49,10 +49,3 @@ export type authCodeType = {
   phone: string;
   authCode: string;
 };
-
-export type authCodeResponseType = {
-  username: string;
-  phone: string;
-  authCode: string;
-  data: false;
-};

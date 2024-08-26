@@ -31,6 +31,9 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     checkEmail,
     isEmailUnique,
     isValid,
+    authCheck,
+    pwErrorMsg,
+    setpwErrorMsg,
   } = useSignupForm(signupModalType);
 
   const usernameCheck = watch('username');
@@ -126,7 +129,13 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
         </section>
 
         {/* phone */}
-        <PhoneForm register={register} usernameCheck={usernameCheck} />
+        <PhoneForm
+          register={register}
+          usernameCheck={usernameCheck}
+          authCheck={authCheck}
+          pwErrorMsg={pwErrorMsg}
+          setpwErrorMsg={setpwErrorMsg}
+        />
 
         {/* birthday */}
         <section>
