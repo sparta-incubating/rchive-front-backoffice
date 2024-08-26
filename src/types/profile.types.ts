@@ -42,7 +42,6 @@ export interface RoleChangeModalProps {
 
 export interface RandomProfileModalProps {
   onClose: () => void;
-  nickname: string;
   profileImg: string;
 }
 
@@ -60,7 +59,6 @@ export interface RoleChange {
 
 export interface ProfileChange {
   profileImg: string;
-  nickname: string;
 }
 
 export interface PhoneInfo {

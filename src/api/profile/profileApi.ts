@@ -55,12 +55,11 @@ export const updateRole = async (roleInfo: RoleChange) => {
 };
 
 export const updateProfileInfo = async (profileInfo: ProfileChange) => {
-  const { profileImg, nickname } = profileInfo;
+  const { profileImg } = profileInfo;
 
   try {
-    const res = await client.patch(`/apis/v1/profile`, {
+    const res = await client.patch(`/apis/v1/profile/img`, {
       profileImg,
-      nickname,
     });
     return res.data;
   } catch (error) {

@@ -4,6 +4,7 @@ import { client } from '@/utils/clientAPI';
 
 // 권한 신청 endpoint
 export const postRoleApply = async (data: RoleFormSchema) => {
+  console.log(data, 'dataaa');
   try {
     const response = await client.post('/apis/v1/role', data);
     return response.data;

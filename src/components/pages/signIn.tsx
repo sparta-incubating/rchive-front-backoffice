@@ -65,7 +65,7 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      //로그인 시 권한 설정 페이지로 이동
+      //로그인 시 권한 설정 페이지로
       router.push('/admin');
     }
   }, [dispatch, router, session]);
