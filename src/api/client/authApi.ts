@@ -4,10 +4,12 @@ import axiosAPI from '@/utils/axiosAPI';
 import axios from 'axios';
 
 export const postSignup = async (userData: User | Admin) => {
+  const singupData = { ...userData, nickname: '' };
   try {
-    const response = await axiosAPI.post('/apis/v1/users/signup', userData);
+    const response = await axiosAPI.post('/apis/v1/users/signup', singupData);
     return response.data;
   } catch (error) {
+    console.log(error, 'error');
     throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
   }
 };
