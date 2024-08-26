@@ -21,7 +21,7 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
     searchTags,
     handleClickDropDownData,
   } = useTagContext();
-
+  console.log({ tags });
   return (
     <TitleContainer title="태그">
       <div
@@ -29,8 +29,8 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
         onClick={handleFocusTagInput}
         className="group relative flex h-auto w-full flex-wrap gap-2 space-x-2 rounded-[12px] border border-blue-100 p-5"
       >
-        {tags.map((tag) => (
-          <TagCard key={tag.tagId}>
+        {tags.map((tag, index) => (
+          <TagCard key={tag.tagId + index}>
             {tag.tagName}
             <CloseButton onClick={() => deleteTag(tag.tagId)} />
           </TagCard>

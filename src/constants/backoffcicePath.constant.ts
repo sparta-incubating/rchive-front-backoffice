@@ -5,4 +5,5 @@ export const links: Links[] = [
   { href: '/posts/write', title: '게시물 작성' },
   { href: '/posts', title: '게시물 관리' },
   { href: '/profile', title: '프로필 관리' },
+  { href: '/posts/*', title: '게시물 관리' },
 ];

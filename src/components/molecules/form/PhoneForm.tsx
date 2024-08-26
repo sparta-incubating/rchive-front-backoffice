@@ -5,7 +5,6 @@ import Label from '@/components/atoms/label';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import InputField from '@/components/molecules/InputField';
 import { SignupFormSchema } from '@/types/signup.types';
-import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import PhoneField from './PhoneField';
 
@@ -17,7 +16,7 @@ const PhoneForm = ({ register }: PhoneFormProps) => {
   return (
     <PasswordContainer variant="primary">
       <InputField>
-        <Label htmlFor="phone">비밀번호</Label>
+        <Label htmlFor="phone">휴대폰 번호</Label>
         <PhoneField register={register} />
         <div className="w-[320px] border" />
         <Input

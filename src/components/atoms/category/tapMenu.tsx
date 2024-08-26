@@ -1,60 +1,65 @@
-/*
 'use client';
 
-import { useMemo } from 'react';
+import { useRoleCountDataQuery } from '@/api/admin/useQuery';
+import { TapProps } from '@/types/admin.types';
 
-type TabProps = {
-  data: {
-    id: number;
-    title: string;
-    className: string;
-    bgColor: string;
-    textColor: string;
-  }[];
-  activeTab: number;
-  setActiveTab: (idx: number) => void;
-  listData: any[]; // 전체 데이터 리스트
-};
+const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
+  const { countList } = useRoleCountDataQuery();
 
-const TapMenu = ({ data, activeTab, setActiveTab, listData }: TabProps) => {
-  // 각 탭에 해당하는 아이템 갯수를 계산
-  const tabCounts = useMemo(() => {
-    const counts = [listData.length, 0, 0]; // 전체, 대기 중, 승인 순서
-    listData.forEach((item) => {
-      if (item.permission === '대기') counts[1]++;
-      else if (item.permission === '승인') counts[2]++;
-    });
-    return counts;
-  }, [listData]);
-
-  const handleTabChange = (idx: number) => {
-    setActiveTab(idx);
-  };
+  const allCount = countList?.data?.statusAll;
+  const approveCount = countList?.data?.statusApprove;
+  const waitCount = countList?.data?.statusWait;
 
   return (
-    <section className="h-[64px] w-full border-b-2">
-      <div className="ml-[36px] flex gap-[6px] pt-[16px]">
-        {data.map((item, idx) => (
-          <button
-            className={`flex h-[48px] items-center justify-center gap-[10px] border-b-2 ${item.className} ${
-              activeTab === idx ? 'border-gray-900' : ''
-            }`}
-            key={item.id}
-            type="button"
-            onClick={() => handleTabChange(idx)}
-          >
-            <p className="h-[20px] text-sm">{item.title}</p>
-            <div
-              className={`flex h-[28px] w-[33px] items-center justify-center ${item.bgColor} rounded-[8px]`}
+    <section className="h-[65px] w-full border-b pt-[16px]">
+      <div className="flex h-full flex-row gap-[6px]">
+        <div
+          className={`flex h-[48px] w-[104px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'All' ? `border-b-2 border-black` : ``}`}
+        >
+          <button onClick={() => onTabChange('All')}>
+            <p
+              className={`text-sm ${selectedTab === 'All' ? `font-semibold` : `font-normal`}`}
             >
-              <p className={item.textColor}>{tabCounts[idx]}</p>
-            </div>
+              전체
+            </p>
           </button>
-        ))}
+          <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-blue-55 p-[4px] text-sm font-semibold text-blue-400">
+            {allCount}
+          </p>
+        </div>
+
+        <div
+          className={`flex h-[48px] w-[119px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'WAIT' ? `border-b-2 border-black` : ``}`}
+        >
+          <button onClick={() => onTabChange('WAIT')}>
+            <p
+              className={`text-sm ${selectedTab === 'WAIT' ? `font-semibold` : `font-normal`}`}
+            >
+              대기 중
+            </p>
+          </button>
+          <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-[#ff9900]/10 p-[4px] text-sm font-semibold text-[#FF9900]">
+            {waitCount}
+          </p>
+        </div>
+
+        <div
+          className={`flex h-[48px] w-[105px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'APPROVE' ? `border-b-2 border-black` : ``}`}
+        >
+          <button onClick={() => onTabChange('APPROVE')}>
+            <p
+              className={`text-sm ${selectedTab === 'APPROVE' ? `font-semibold` : `font-normal`}`}
+            >
+              승인
+            </p>
+          </button>
+          <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-[#58b32e]/10 p-[4px] text-sm font-semibold text-success-green">
+            {approveCount}
+          </p>
+        </div>
       </div>
     </section>
   );
 };
 
 export default TapMenu;
-*/

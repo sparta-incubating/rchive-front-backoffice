@@ -70,30 +70,6 @@ export const postHeaders: TableHeaderItem[] = [
   },
 ];
 
-export const tabArr = [
-  {
-    id: 0,
-    title: '전체',
-    className: 'w-[104px]',
-    bgColor: 'bg-blue-55',
-    textColor: 'text-blue-400',
-  },
-  {
-    id: 1,
-    title: '대기 중',
-    className: 'w-[114px]',
-    bgColor: 'bg-[#ff9900]/10',
-    textColor: 'text-[#FF9900]',
-  },
-  {
-    id: 3,
-    title: '승인',
-    className: 'w-[104px]',
-    bgColor: 'bg-[#58b32e]/10',
-    textColor: 'text-success-green',
-  },
-];
-
 export const postTabArr: PostTabType[] = [
   {
     id: 'all',
@@ -139,70 +115,4 @@ export const subArr = [
   { id: 2, title: '수준별 강의', className: 'w-[123px]' },
   { id: 3, title: '과제 해설', className: 'w-[88px]' },
   { id: 4, title: '특강/실시간 세션', className: 'w-[129px]' },
-];
-
-export const mockData = [
-  {
-    id: 1,
-    name: '홍길동',
-    job: '팀장',
-    track: '1기',
-    email: 'hong@example.com',
-    date: '2024-07-31',
-    permission: '승인',
-  },
-  {
-    id: 2,
-    name: '김철수',
-    job: '사원',
-    track: '2기',
-    email: 'kim@example.com',
-    date: '2024-07-30',
-    permission: '대기',
-  },
-  {
-    id: 3,
-    name: '이영희',
-    job: '부장',
-    track: '3기',
-    email: 'lee@example.com',
-    date: '2024-07-29',
-    permission: '승인',
-  },
-  {
-    id: 4,
-    name: '박지민',
-    job: '대리',
-    track: '4기',
-    email: 'park@example.com',
-    date: '2024-07-28',
-    permission: '승인',
-  },
-  {
-    id: 5,
-    name: '최수빈',
-    job: '사원',
-    track: '5기',
-    email: 'choi@example.com',
-    date: '2024-07-27',
-    permission: '대기',
-  },
-  {
-    id: 6,
-    name: '최수빈',
-    job: '사원',
-    track: '5기',
-    email: 'choi@example.com',
-    date: '2024-07-27',
-    permission: '대기',
-  },
-  {
-    id: 7,
-    name: '최수빈',
-    job: '사원',
-    track: '5기',
-    email: 'choi@example.com',
-    date: '2024-07-27',
-    permission: '대기',
-  },
 ];

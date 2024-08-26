@@ -12,6 +12,7 @@ const postTypeEnum = z.enum(
     'Level_Standard',
     'Level_Basic',
     'Project_Description',
+    'all',
   ],
   { required_error: '카테고리를 선택해주세요.' },
 );
@@ -25,7 +26,7 @@ const isOpenEnum = z.enum(['true', 'false'], {
 });
 
 const tagSchema = z.object({
-  tagId: z.number(),
+  tagId: z.string(),
   tagName: z.string(),
 });
 

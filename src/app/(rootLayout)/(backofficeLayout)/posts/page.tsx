@@ -1,13 +1,12 @@
+import { getPostList, getPostPeriod } from '@/api/server/postsApi';
 import { auth } from '@/auth';
 import CustomError from '@/components/atoms/customError';
 import PostListPage from '@/components/pages/postListPage';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/posts.constnat';
-import { PostListResponse, SearchParamsType } from '@/types/posts.types';
-import { createServerAPI } from '@/utils/serverAPI';
+import { SearchParamsType } from '@/types/posts.types';
 import axios from 'axios';
-import React from 'react';
 
-export const revalidate = 1;
+export const revalidate = 0;
 
 interface PostProps {
   searchParams: SearchParamsType;
@@ -30,7 +29,6 @@ const Post = async ({ searchParams }: PostProps) => {
 
   const period = session?.user?.loginPeriod;
   const trackName = session?.user?.trackName;
-  const serverAPI = await createServerAPI();
 
   const query = new URLSearchParams();
   if (searchParamsData.postType && searchParams.postType !== 'all')
@@ -49,10 +47,8 @@ const Post = async ({ searchParams }: PostProps) => {
 
   try {
     const [postListResponse, periodResponse] = await Promise.all([
-      serverAPI.get<PostListResponse>(
-        `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${query.toString()}`,
-      ),
-      serverAPI.get(`/apis/v1/role/track/period?trackName=${trackName}`),
+      getPostList(trackName || '', Number(period), query.toString()),
+      getPostPeriod(trackName || ''),
     ]);
 
     const periodData = periodResponse?.data.data.trackPeriodList.map(

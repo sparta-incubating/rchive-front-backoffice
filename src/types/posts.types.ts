@@ -37,7 +37,7 @@ export const trackOptions: SelectOptionType[] = [
   },
   {
     value: 'SPRING_JAVA',
-    label: 'Sprign(Java)',
+    label: 'Spring(Java)',
     selected: false,
   },
   {
@@ -46,7 +46,7 @@ export const trackOptions: SelectOptionType[] = [
     selected: false,
   },
   {
-    value: 'FRONT_REACT',
+    value: 'REACT',
     label: 'React',
     selected: false,
   },
@@ -88,7 +88,8 @@ export type TrackType =
   | 'NODEJS'
   | 'SPRING_JAVA'
   | 'SPRING_KOTLIN'
-  | 'FRONT_REACT'
+  | 'REACT'
+  | 'AI'
   | 'ANDROID'
   | 'IOS'
   | 'DATA'
@@ -122,6 +123,21 @@ export type postsEndPointFormData = {
   isOpened: boolean;
   thumbnailUrl: string;
   content: string;
+};
+
+export type postFetchData = {
+  title: string;
+  tutorRes: { tutorId: number; tutorName: string };
+  contentLink: string;
+  videoLink: string;
+  tagNameList: string[];
+  uploadedAt: string;
+  postType: PostType;
+  period: number;
+  isOpened: boolean;
+  thumbnailUrl: string;
+  content: string;
+  postId: string;
 };
 
 export type SearchParamsType = {
