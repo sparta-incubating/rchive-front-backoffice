@@ -1,5 +1,4 @@
 import Button from '@/components/atoms/button';
-import SocialButton from '@/components/atoms/postDetail/socialButton';
 import { PropsWithChildren } from 'react';
 
 const PreviewContainer = ({ children }: PropsWithChildren) => {
@@ -12,9 +11,7 @@ const PreviewContainer = ({ children }: PropsWithChildren) => {
           제공합니다.
         </p>
       </section>
-      <section>
-        <SocialButton image="/assets/icons/bookmark.svg" />
-        <SocialButton image="/assets/icons/comment.svg" />
+      <section className="m-6 flex overflow-scroll border border-gray-200">
         {children}
       </section>
       <section className="flex flex-col gap-2 border border-t-gray-100 bg-blue-50 py-4">
