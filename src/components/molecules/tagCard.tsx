@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 const tagCardVariants = cva('inline-block rounded-full pl-3 pr-1 py-1', {
   variants: {
     variant: {
-      primary: 'bg-secondary-50 text-secondary-500',
+      primary: 'bg-secondary-55 text-secondary-500',
       secondary: 'bg-gray-500 text-white border-gray-500',
       ghost: 'bg-transparent text-black border-black',
     },

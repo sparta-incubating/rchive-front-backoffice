@@ -40,9 +40,6 @@ export const authConfig = {
           return null;
         } catch (error) {
           if (axios.isAxiosError(error)) {
-            console.log('-------------login error----------------');
-            console.log(error.response);
-            console.log('-------------login error----------------');
             const message = Object.values(error.response?.data)[0] as string;
             throw new Error(message);
           }

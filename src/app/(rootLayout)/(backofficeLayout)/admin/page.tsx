@@ -109,7 +109,6 @@ const Admin = () => {
 
     if (key === 'date' && value) {
       const dateRange = value as DateRange;
-      console.log({ dateRange });
       if (dateRange.from)
         query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
       if (dateRange.to)

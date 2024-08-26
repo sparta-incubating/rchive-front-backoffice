@@ -28,6 +28,7 @@ export async function POST() {
     let newRefreshToken = '';
     if (setCookie) {
       newRefreshToken = extractRefreshToken(setCookie);
+      console.log({ newRefreshToken });
     }
 
     const accessToken = response.headers.authorization.replace('Bearer ', '');
