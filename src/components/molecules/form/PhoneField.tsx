@@ -1,18 +1,60 @@
 'use client';
 
+import { useProfileUpdate } from '@/api/profile/useMutation';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
 import { SignupFormSchema } from '@/types/signup.types';
-import React, { useState } from 'react';
+
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
 interface PhoneFieldProps {
   register: UseFormRegister<SignupFormSchema>;
+  setpwErrorMsg: Dispatch<SetStateAction<boolean>>;
+  setRequestAuthNumber: Dispatch<SetStateAction<boolean>>;
+  expire: boolean;
+  usernameCheck: string;
 }
 
-const PhoneField = ({ register }: PhoneFieldProps) => {
+const PhoneField = ({
+  register,
+  setpwErrorMsg,
+  setRequestAuthNumber,
+  expire,
+  usernameCheck,
+}: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
+  const [disabled, setDisabled] = useState<boolean>(true);
+
+  const { postPhoneAuthNumberMutate } = useProfileUpdate();
+
+  useEffect(() => {
+    if (isInputFilled.length > 10) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [isInputFilled]);
+
+  const handleRequestAuth = () => {
+    const userInfo = { username: usernameCheck, phone: isInputFilled };
+    console.log(userInfo, 'userInfo');
+    try {
+      postPhoneAuthNumberMutate.mutate(userInfo);
+      try {
+        setpwErrorMsg(false);
+        setRequestAuthNumber(false);
+        setTimeout(() => {
+          setRequestAuthNumber(true);
+        }, 0);
+      } catch (error) {
+        throw new Error('휴대폰 인증번호 재요청 실패');
+      }
+    } catch (error) {
+      throw new Error('휴대폰 인증번호 요청 실패');
+    }
+  };
 
   return (
     <>
@@ -29,10 +71,12 @@ const PhoneField = ({ register }: PhoneFieldProps) => {
           <Button
             size="sm"
             variant="submit"
-            disabled={true}
+            disabled={disabled}
             className="h-[44px] w-[87px] px-5 py-3 text-xs"
+            type="button"
+            onClick={handleRequestAuth}
           >
-            인증 요청
+            {expire ? '재요청' : '인증요청'}
           </Button>
         )}
       </InputContainer>

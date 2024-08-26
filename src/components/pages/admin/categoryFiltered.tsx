@@ -70,9 +70,9 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
       ) : (
         <div>
           <AuthFilterCategory
-            label="기수"
-            data={periodCategory}
-            setValue={(value) => handleCategoryChange('searchPeriod', value)}
+            label="최신순"
+            data={sortCategory}
+            setValue={(value) => handleCategoryChange('sort', value)}
           />
         </div>
       )}

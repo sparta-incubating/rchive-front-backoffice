@@ -33,6 +33,8 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     isValid,
   } = useSignupForm(signupModalType);
 
+  const usernameCheck = watch('username');
+
   return (
     <Modal inboardClassName="w-auto max-w-full p-4">
       {/*modal 헤더*/}
@@ -124,7 +126,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
         </section>
 
         {/* phone */}
-        <PhoneForm register={register} />
+        <PhoneForm register={register} usernameCheck={usernameCheck} />
 
         {/* birthday */}
         <section>
