@@ -7,6 +7,7 @@ class SignupUserForm {
   password: string;
   birth: string;
   phone: string;
+  authCode: string;
   gender: GenderEnum;
   userRole: UserRoleEnum;
   termUserAge: boolean;
@@ -22,6 +23,7 @@ class SignupUserForm {
     password: string,
     birth: string,
     phone: string,
+    authCode: string,
     gender: GenderEnum,
     userRole: UserRoleEnum,
     termUserAge: boolean,
@@ -36,6 +38,7 @@ class SignupUserForm {
     this.password = password;
     this.birth = birth;
     this.phone = phone;
+    this.authCode = authCode;
     this.gender = gender;
     this.userRole = userRole;
     this.termUserAge = termUserAge;
@@ -54,6 +57,7 @@ export class Admin extends SignupUserForm {
     password: string,
     birth: string,
     phone: string,
+    authCode: string,
     gender: GenderEnum,
     userRole: UserRoleEnum,
     termUserAge: boolean,
@@ -69,6 +73,7 @@ export class Admin extends SignupUserForm {
       password,
       birth,
       phone,
+      authCode,
       gender,
       userRole,
       termUserAge,
@@ -90,6 +95,7 @@ export class User extends SignupUserForm {
     password: string,
     birth: string,
     phone: string,
+    authCode: string,
     gender: GenderEnum,
     userRole: UserRoleEnum,
     termUserAge: boolean,
@@ -106,6 +112,7 @@ export class User extends SignupUserForm {
       password,
       birth,
       phone,
+      authCode,
       gender,
       userRole,
       termUserAge,

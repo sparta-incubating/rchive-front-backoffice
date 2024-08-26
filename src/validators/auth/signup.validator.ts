@@ -17,6 +17,7 @@ export const signupSchema = z
       ),
     passwordConfirm: z.string(),
     phone: z.string().min(8),
+    authCode: z.string().min(6, '인증번호는 필수 입니다.'),
     birth: z
       .string()
       .min(8, '생년월일을 입력해주세요.')
