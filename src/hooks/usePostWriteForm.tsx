@@ -97,7 +97,6 @@ const usePostWriteForm = (postData?: postFetchData) => {
       if (!postData) {
         await postDataPost(watch('trackName'), Number(loginPeriod), formData);
         createToast('게시물 등록이 완료되었습니다.', 'primary');
-        router.push('/posts');
       } else {
         await patchDataPost(
           watch('trackName'),
@@ -106,7 +105,6 @@ const usePostWriteForm = (postData?: postFetchData) => {
           Number(postData.postId),
         );
         createToast('게시물 수정이 완료되었습니다.', 'primary');
-        router.back();
       }
     } catch (error) {
       if (!postData) {
@@ -115,7 +113,9 @@ const usePostWriteForm = (postData?: postFetchData) => {
         createToast('게시물 수정 중 오류가 발생했습니다.', 'warning');
       }
     } finally {
+      router.push('/posts');
       setIsSubmitLoading(false);
+      router.refresh();
     }
   };
 

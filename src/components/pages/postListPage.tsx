@@ -49,6 +49,35 @@ const PostListPage = ({
     searchParams?.postType || 'all',
   );
 
+  // URL 파라미터를 유지하면서 업데이트하는 함수
+  const updateQueryParams = (
+    key: string,
+    value: string | number | DateRange | undefined,
+  ) => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (key === 'date' && value) {
+      const dateRange = value as DateRange;
+      if (dateRange.from)
+        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
+      if (dateRange.to)
+        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
+    } else if (key === 'date' && !value) {
+      query.delete('startDate');
+      query.delete('endDate');
+    } else if (value) {
+      query.set(key, String(value));
+    } else {
+      query.delete(key);
+    }
+    if (key !== 'page') {
+      setCurrentPage(1);
+      query.set('page', '1');
+    }
+
+    router.push(`/posts?${query.toString()}`);
+  };
+
   const handleTabChange = (newTab: string) => {
     setActiveTab(newTab);
     updateQueryParams('postType', newTab);
@@ -76,7 +105,7 @@ const PostListPage = ({
         }
       }
     }
-  }, [getFetchTutors, tutor, searchParams?.tutorId]);
+  }, [getFetchTutors, tutor, searchParams?.tutorId, updateQueryParams]);
 
   // 공개여부
   const isOpenedOptionsData: SelectOptionType[] = [
@@ -109,35 +138,6 @@ const PostListPage = ({
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     updateQueryParams('page', page);
-  };
-
-  // URL 파라미터를 유지하면서 업데이트하는 함수
-  const updateQueryParams = (
-    key: string,
-    value: string | number | DateRange | undefined,
-  ) => {
-    const query = new URLSearchParams(window.location.search);
-
-    if (key === 'date' && value) {
-      const dateRange = value as DateRange;
-      if (dateRange.from)
-        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
-      if (dateRange.to)
-        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
-    } else if (key === 'date' && !value) {
-      query.delete('startDate');
-      query.delete('endDate');
-    } else if (value) {
-      query.set(key, String(value));
-    } else {
-      query.delete(key);
-    }
-    if (key !== 'page') {
-      setCurrentPage(1);
-      query.set('page', '1');
-    }
-
-    router.push(`/posts?${query.toString()}`);
   };
 
   const updatePostsIsOpen = usePostIsOpenUpdate();

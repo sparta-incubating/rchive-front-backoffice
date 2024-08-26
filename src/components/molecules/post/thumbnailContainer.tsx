@@ -58,7 +58,7 @@ const ThumbnailContainer = ({
   };
 
   const handleDeleteThumbnail = () => {
-    thumbnailDeleteMutate(data.data || initValue);
+    thumbnailDeleteMutate(data?.data || initValue);
   };
 
   useEffect(() => {
