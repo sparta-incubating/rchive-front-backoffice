@@ -1,13 +1,20 @@
 import PostDetailHeaderCategory from '@/components/atoms/postDetail/postDetailHeaderCategory';
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 const TITLE_OPTIONS = {
   VIDEO: '영상자료',
   CONTENT: '노션자료',
 };
 
-const PostDetailHeader = () => {
-  const [currentState, setCurrentState] = useState(TITLE_OPTIONS.VIDEO);
+interface PostDetailHeaderProps {
+  currentState: string;
+  setCurrentState: Dispatch<SetStateAction<string>>;
+}
+
+const PostDetailHeader = ({
+  currentState,
+  setCurrentState,
+}: PostDetailHeaderProps) => {
   return (
     <header className="mx-auto mb-[62px] flex">
       <PostDetailHeaderCategory

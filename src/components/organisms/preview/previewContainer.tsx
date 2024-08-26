@@ -1,7 +1,17 @@
 import Button from '@/components/atoms/button';
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 
-const PreviewContainer = ({ children }: PropsWithChildren) => {
+interface PreviewContainerProps {
+  children: ReactNode;
+  onClose: () => void;
+  onSubmit: () => void;
+}
+
+const PreviewContainer = ({
+  children,
+  onClose,
+  onSubmit,
+}: PreviewContainerProps) => {
   return (
     <div className="flex flex-col">
       <section className="flex flex-col gap-2 border border-b-gray-100 bg-blue-50 py-4">
@@ -16,10 +26,10 @@ const PreviewContainer = ({ children }: PropsWithChildren) => {
       </section>
       <section className="flex flex-col gap-2 border border-t-gray-100 bg-blue-50 py-4">
         <div className="flex items-center justify-center gap-5">
-          <Button variant="secondary" size="sm">
+          <Button variant="secondary" size="sm" onClick={onClose}>
             닫기
           </Button>
-          <Button variant="submit" size="sm">
+          <Button variant="submit" size="sm" onClick={onSubmit}>
             게시하기
           </Button>
         </div>

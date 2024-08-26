@@ -67,12 +67,14 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === 'POPUP_LOADED') {
         popupWindow?.postMessage({ type: 'FORM_DATA', data: watch() }, '*');
+      } else if (event.data.type === 'SUBMIT_FORM') {
+        handleSubmit(onSubmit)();
       }
     };
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [popupWindow, watch]);
+  }, [popupWindow, watch, handleSubmit, onSubmit]);
 
   return (
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
