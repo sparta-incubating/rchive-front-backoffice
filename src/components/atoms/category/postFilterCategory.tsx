@@ -43,7 +43,7 @@ const FilterCategory = ({
     if (defaultValue !== '0') {
       setSelectedItem(filterData.find((data) => data.value === defaultValue));
     }
-  }, [defaultValue]);
+  }, [defaultValue, filterData]);
 
   return (
     <CategoryContainer

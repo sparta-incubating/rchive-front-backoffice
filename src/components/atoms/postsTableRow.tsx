@@ -31,9 +31,8 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
 
   const handleCheckChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log('handleCheckChange');
-
       setChecked(e.target.checked);
+      console.log({ postId: postData.postId });
       dispatch(setPostId({ postId: postData.postId }));
     },
     [dispatch, postData.postId],
@@ -83,7 +82,7 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
         </div>
       </td>
       <td className="w-60 px-4 text-gray-400">
-        <Link href={'#'}>
+        <Link href={`/posts/${postData.postId}`}>
           <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
             {postData.title}
           </span>

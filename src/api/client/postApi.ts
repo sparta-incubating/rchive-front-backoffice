@@ -34,6 +34,11 @@ export const getPeriod = async <T>(track: string): Promise<T> => {
   try {
     const response = await client.get(
       `/apis/v1/role/track/period?trackName=${track}`,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
 
     const periodResponseData = response?.data.data.trackPeriodList;
@@ -96,7 +101,7 @@ export const getSearchTutor = async (
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
   try {
-    const response = await axios.get(`/apis/notion/content?url=${pageId}`);
+    const response = await axios.get(`/api/notion/content?url=${pageId}`);
 
     return response.data.result.replace('"', '');
   } catch (error) {
@@ -120,6 +125,25 @@ export const postDataPost = async (
     return response.data;
   } catch (error) {
     throw new Error('게시물 등록에 실패했습니다.');
+  }
+};
+
+// 게시물 수정 endpoint
+export const patchDataPost = async (
+  trackName: string,
+  period: number,
+  data: postsEndPointFormData,
+  postId: number,
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      data,
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('게시물 수정에 실패했습니다.');
   }
 };
 

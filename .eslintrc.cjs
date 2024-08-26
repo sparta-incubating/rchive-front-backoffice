@@ -13,10 +13,7 @@ module.exports = {
   plugins: ['react-refresh', 'prettier'],
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    '@typescript-eslint/no-unused-vars': 'off', // @typescript-eslint/no-unused-vars 규칙 끄기
+    'react-refresh/only-export-components': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 };

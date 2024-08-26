@@ -6,8 +6,8 @@ import TutorInput from '@/components/atoms/tutorInput';
 import DropDownContainer from '@/components/molecules/dropDownContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TutorCard from '@/components/molecules/tutorCard';
+import { useAppSelector } from '@/redux/storeConfig';
 import { PostsFormSchema, TutorType } from '@/types/posts.types';
-import { getCookie } from 'cookies-next';
 import { debounce } from 'lodash';
 import { useRef, useState } from 'react';
 import { FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form';
@@ -19,7 +19,7 @@ interface TutorContainerProps {
 }
 
 const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
-  const loginPeriod = String(getCookie('period'));
+  const { period: loginPeriod } = useAppSelector((state) => state.authSlice);
   const inputRef = useRef<HTMLDivElement>(null);
   const [periodError, setPeriodError] = useState<string>('');
   const [searchTutors, setSearchTutors] = useState<TutorType[] | null>(null);

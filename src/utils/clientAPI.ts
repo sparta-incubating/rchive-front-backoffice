@@ -25,13 +25,16 @@ const getAuthorizationToken = async () => {
 
 export const client = axios.create({
   baseURL: BACKEND_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 client.interceptors.request.use(
   async (config) => {
+    if (config.data instanceof FormData) {
+      config.headers['Content-Type'] = 'multipart/form-data';
+    } else {
+      config.headers['Content-Type'] = 'application/json';
+    }
+
     const accessToken = await getAuthorizationToken();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;

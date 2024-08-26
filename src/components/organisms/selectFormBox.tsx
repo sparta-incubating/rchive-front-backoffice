@@ -8,7 +8,7 @@ import SelectLabel from '@/components/atoms/selectLabel';
 import SelectLayout from '@/components/atoms/selectLayout';
 import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SelectBoxProps {
   options: SelectOptionType[];
@@ -41,6 +41,12 @@ const SelectFormBox = ({
     setIsOpen(false);
     onSelect(option.value);
   };
+
+  // 초기값이 있다면 초기값을 선택한 상태로 만들어줌
+  useEffect(() => {
+    const option = options.find((option) => option.value === value);
+    setSelectedOption(option || null);
+  }, [value, options]);
 
   return (
     <SelectContainer className={className}>

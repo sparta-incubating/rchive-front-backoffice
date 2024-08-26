@@ -125,6 +125,21 @@ export type postsEndPointFormData = {
   content: string;
 };
 
+export type postFetchData = {
+  title: string;
+  tutorRes: { tutorId: number; tutorName: string };
+  contentLink: string;
+  videoLink: string;
+  tagNameList: string[];
+  uploadedAt: string;
+  postType: PostType;
+  period: number;
+  isOpened: boolean;
+  thumbnailUrl: string;
+  content: string;
+  postId: string;
+};
+
 export type SearchParamsType = {
   postType: string | undefined;
   startDate: string | undefined;
