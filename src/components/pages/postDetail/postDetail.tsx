@@ -5,7 +5,6 @@ import PostDetailTag from '@/components/molecules/postDetail/postDetailTag';
 import SocialButtonGroup from '@/components/molecules/postDetail/socialButtonGroup';
 import VideoContainer from '@/components/molecules/postDetail/videoContainer';
 import useSocialButtonPosition from '@/hooks/useSocialButtonPosition';
-import { extractPageId } from '@/utils/notionAPI';
 import { useMemo, useState } from 'react';
 
 interface PostDetailProps {
@@ -63,9 +62,7 @@ const PostDetail = ({ postData }: PostDetailProps) => {
                   currentView === TITLE_OPTIONS.CONTENT ? 'block' : 'hidden'
                 }
               >
-                <NotionContainer
-                  pageId={extractPageId(postData.contentLink)!}
-                />
+                <NotionContainer notionLink={postData.contentLink!} />
               </div>
             )}
           </div>

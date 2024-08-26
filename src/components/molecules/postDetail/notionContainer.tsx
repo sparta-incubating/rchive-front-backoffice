@@ -8,6 +8,8 @@ import 'prismjs/themes/prism-tomorrow.css';
 
 // used for rendering equations (optional)
 import 'katex/dist/katex.min.css';
+import NotionLink from '@/components/molecules/postDetail/notionLink';
+import { extractPageId } from '@/utils/notionAPI';
 
 import axios from 'axios';
 import Link from 'next/link';
@@ -20,10 +22,10 @@ import { Equation } from 'react-notion-x/build/third-party/equation';
 import { Modal } from 'react-notion-x/build/third-party/modal';
 import { Pdf } from 'react-notion-x/build/third-party/pdf';
 
-const NotionContainer = ({ pageId }: { pageId: string }) => {
+const NotionContainer = ({ notionLink }: { notionLink: string }) => {
   const [recordMap, setRecordMap] = useState<ExtendedRecordMap | null>(null);
   const handleNotion = async () => {
-    return axios.get(`/api/notion/page?pageId=${pageId}`);
+    return axios.get(`/api/notion/page?pageId=${extractPageId(notionLink)}`);
   };
 
   useEffect(() => {
@@ -36,23 +38,26 @@ const NotionContainer = ({ pageId }: { pageId: string }) => {
   if (recordMap === null) return <div>로딩중...</div>;
 
   return (
-    <NotionRenderer
-      recordMap={recordMap}
-      fullPage={false}
-      darkMode={false}
-      mapPageUrl={(pageId) =>
-        `https://www.notion.so/${pageId.replace(/-/g, '')}`
-      }
-      components={{
-        Code,
-        Collection,
-        Equation,
-        Modal,
-        Pdf,
-        nextImage: Image,
-        nextLink: Link,
-      }}
-    />
+    <section className="flex flex-col">
+      <NotionLink notionLink={notionLink} />
+      <NotionRenderer
+        recordMap={recordMap}
+        fullPage={false}
+        darkMode={false}
+        mapPageUrl={(pageId) =>
+          `https://www.notion.so/${pageId.replace(/-/g, '')}`
+        }
+        components={{
+          Code,
+          Collection,
+          Equation,
+          Modal,
+          Pdf,
+          nextImage: Image,
+          nextLink: Link,
+        }}
+      />
+    </section>
   );
 };
 
