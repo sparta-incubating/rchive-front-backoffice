@@ -61,7 +61,7 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
         popup.postMessage({ type: 'FORM_DATA', data: formData }, '*');
       };
     }
-  }, [watch]);
+  }, [tags, watch]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
