@@ -4,8 +4,6 @@ import { cache } from 'react';
 
 export const getPostList = cache(
   async (trackName: TrackType, period: number, queryString: string) => {
-    console.log('getposts');
-
     const serverAPI = await createServerAPI();
     return serverAPI.get<PostListResponse>(
       `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${queryString}`,

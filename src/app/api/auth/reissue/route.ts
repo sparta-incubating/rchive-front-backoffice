@@ -25,10 +25,11 @@ export async function POST() {
 
     // refresh token cookie에 저장
     const setCookie = response.headers['set-cookie'] as string[];
+
     let newRefreshToken = '';
+
     if (setCookie) {
       newRefreshToken = extractRefreshToken(setCookie);
-      console.log({ newRefreshToken });
     }
 
     const accessToken = response.headers.authorization.replace('Bearer ', '');

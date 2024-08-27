@@ -46,10 +46,13 @@ const Post = async ({ searchParams }: PostProps) => {
   query.set('size', searchParamsData.size || DEFAULT_PAGE_SIZE);
 
   try {
-    const [postListResponse, periodResponse] = await Promise.all([
-      getPostList(trackName || '', Number(period), query.toString()),
-      getPostPeriod(trackName || ''),
-    ]);
+    const postListResponse = await getPostList(
+      trackName || '',
+      Number(period),
+      query.toString(),
+    );
+
+    const periodResponse = await getPostPeriod(trackName || '');
 
     const periodData = periodResponse?.data.data.trackPeriodList.map(
       (periodNumber: number) => ({

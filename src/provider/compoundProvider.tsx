@@ -11,8 +11,7 @@ const CompoundProvider = async ({ children }: PropsWithChildren) => {
   const accessToken = session?.user.accessToken || '';
   const trackName = session?.user.trackName || '';
   const trackRole = session?.user.trackRole || 'USER';
-  const period = session?.user.loginPeriod || '';
-
+  const period = String(session?.user.loginPeriod) || '';
   return (
     <StoreProvider>
       <TanstackQueryProvider>
