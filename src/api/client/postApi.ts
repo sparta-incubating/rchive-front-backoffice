@@ -102,7 +102,6 @@ export const getNotionPageData = async (pageId: string) => {
 
     return response.data.result.replace('"', '');
   } catch (error) {
-    console.log({ error });
     throw new Error('notion Page Data호출에 실패했습니다.');
   }
 };

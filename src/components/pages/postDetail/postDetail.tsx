@@ -30,8 +30,6 @@ const PostDetail = ({ postData }: PostDetailProps) => {
   const [currentView, setCurrentView] = useState(initialView);
   const { containerRef, fixedPosition } = useSocialButtonPosition();
 
-  console.log(postData.tagNameList);
-
   return (
     <div className="mx-auto min-w-[1392px]">
       <div className="relative m-6 w-full" ref={containerRef}>
