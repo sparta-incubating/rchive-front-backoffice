@@ -1,4 +1,8 @@
-import { getThumbnailDelete, postThumbnailUpload } from '@/api/client/postApi';
+import {
+  deletePost,
+  getThumbnailDelete,
+  postThumbnailUpload,
+} from '@/api/client/postApi';
 import Button from '@/components/atoms/button';
 import Confirm from '@/components/atoms/confirm';
 import FormSpan from '@/components/atoms/formSpan';
@@ -6,9 +10,11 @@ import UploadThumbnail from '@/components/atoms/uploadThumbnail';
 import UploadThumbnailText from '@/components/atoms/uploadThumbnailText';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import { useConfirmContext } from '@/context/useConfirmContext';
+import { useAppSelector } from '@/redux/storeConfig';
 import { postFetchData, PostsFormSchema } from '@/types/posts.types';
 import { createToast } from '@/utils/toast';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
@@ -23,6 +29,10 @@ const ThumbnailContainer = ({
   initValue,
   postData,
 }: ThumbnailContainerProps) => {
+  const { trackName, period: loginPeriod } = useAppSelector(
+    (state) => state.authSlice,
+  );
+  const router = useRouter();
   const [uploadState, setUploadState] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileUploadError, setFileUploadError] = useState<string | null>();
@@ -83,7 +93,10 @@ const ThumbnailContainer = ({
     );
 
     if (result) {
-      console.log('삭제 완료', postId);
+      const response = await deletePost(trackName, Number(loginPeriod), postId);
+      createToast(response.message, 'primary');
+      router.push('/posts');
+      router.refresh();
     } else {
       console.log('삭제 취소');
     }
