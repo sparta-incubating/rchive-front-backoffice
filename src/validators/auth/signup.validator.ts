@@ -25,7 +25,7 @@ export const signupSchema = z
       .min(8, '생년월일을 입력해주세요.')
       .refine(
         (value) => BIRTHDATE_REG.test(value),
-        'YYYYMMDD 형식으로 입력해주세요.',
+        '생년월일을 다시 확인해 주세요.',
       ),
     age: z.boolean().refine((value) => value, {
       message: '만 14세 이상이어야 합니다.',
@@ -39,6 +39,6 @@ export const signupSchema = z
     ad: z.boolean(),
   })
   .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-    message: '비밀번호가 일치하지 않습니다. 다시 입력해 주세요.',
+    message: '비밀번호가 일치하지 않습니다.',
     path: ['passwordConfirm'],
   });

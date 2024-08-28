@@ -15,7 +15,7 @@ const MenuLinkCard = ({ url, children }: MenuLinkCardProps) => {
     <MenubarLink active={isActive} href={url}>
       <article
         data-active={isActive}
-        className="group h-16 w-[292px] rounded-[12px] px-9 py-5 hover:bg-[#1F2122] data-[active=true]:bg-[#1F2122]"
+        className="group h-16 w-[292px] px-9 py-5 hover:bg-[#1F2122] data-[active=true]:bg-[#1F2122]"
       >
         {children}
       </article>

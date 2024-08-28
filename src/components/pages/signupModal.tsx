@@ -76,7 +76,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             <FormSpan variant="success">사용가능한 이메일입니다.</FormSpan>
           )}
           {isEmailUnique && (
-            <FormSpan variant="error">이미 사용중인 이메일입니다.</FormSpan>
+            <FormSpan variant="error">이미 사용 중인 이메일입니다.</FormSpan>
           )}
           {!errors.email?.message && !isEmailUnique && emailError && (
             <FormSpan variant="error">{emailError}</FormSpan>
@@ -178,7 +178,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             disabled={!isValid || isEmailUnique}
             className="mb-5 w-80 px-7"
           >
-            다음
+            가입하기
           </Button>
         </div>
       </form>

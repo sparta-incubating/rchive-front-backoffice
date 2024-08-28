@@ -142,7 +142,7 @@ const SignIn = () => {
               </section>
               {/* 회원가입*/}
               <section className="flex justify-center py-5">
-                <Button size="sm" className="w-[300px]" variant="submit">
+                <Button size="sm" className="w-[360px]" variant="submit">
                   로그인
                 </Button>
               </section>

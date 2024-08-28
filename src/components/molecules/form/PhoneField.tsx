@@ -38,8 +38,6 @@ const PhoneField = ({
     setDisabled(isInputFilled.length <= 10);
   }, [isInputFilled]);
 
-  console.log(isAuthFilled, '???');
-
   const handleRequestAuth = () => {
     const userInfo = { username: usernameCheck, phone: isInputFilled };
 
