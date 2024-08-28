@@ -69,7 +69,7 @@ const useSignupForm = (signupType: signupModalType) => {
       console.log(emailChecked, '이메일 중복');
       console.log(phoneVerified, '휴대폰 인증');
 
-      return null;
+      console.log(data, 'data');
     }
     const signUpFormData = createSignupForm(signupType, data);
     await postSignup(signUpFormData);

@@ -12,7 +12,10 @@ import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
 import CategoryFiltered from '@/components/pages/admin/categoryFiltered';
 import BackofficePage from '@/components/pages/backofficePage';
-import { setAllAdminIds } from '@/redux/slice/adminCheckBox.slice';
+import {
+  clearAdminIds,
+  setAllAdminIds,
+} from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType, AdminListInfoType } from '@/types/admin.types';
 import { createToast } from '@/utils/toast';
@@ -144,26 +147,28 @@ const Admin = () => {
     email,
   }));
 
-  const allApproveItems = () => {
+  const allApproveItems = async () => {
     extractedData.forEach((item) => {
-      postUserApproveMutate.mutate(item);
+      postUserApproveMutate.mutateAsync(item);
     });
     createToast(
       `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
       'primary',
       false,
     );
+    dispatch(clearAdminIds());
   };
 
-  const allRejectItems = () => {
+  const allRejectItems = async () => {
     extractedData.forEach((item) => {
-      deleteUsrRoleMutate.mutate(item);
+      deleteUsrRoleMutate.mutateAsync(item);
     });
     createToast(
       `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
       'primary',
       false,
     );
+    dispatch(clearAdminIds());
   };
 
   return (
