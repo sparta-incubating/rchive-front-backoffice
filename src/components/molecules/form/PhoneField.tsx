@@ -104,17 +104,15 @@ const PhoneField = ({
       {isErrorMsg && (
         <span
           className={
-            isErrorMsg.includes('인증이 완료되었습니다.')
-              ? 'text-sm text-success-green'
-              : 'text-sm text-primary-400'
+            isErrorMsg.includes('일치하지 않습니다')
+              ? 'text-primary-400'
+              : 'text-success-green'
           }
         >
           {isErrorMsg}
         </span>
       )}
-      {/* {isError && (
-        <FormSpan variant="error">휴대폰 인증은 필수입니다.</FormSpan>
-      )} */}
+
       {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
     </>
   );

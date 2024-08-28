@@ -42,8 +42,8 @@ const useSignupForm = (signupType: signupModalType) => {
   /*미확인 시  */
   const [emailChecked, setEmailChecked] = useState<boolean>(false);
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
+  const [isSignupError, setIsSignupError] = useState<boolean>(false);
   /*회원가입 실패  */
 
   const { open } = useModalContext();
@@ -65,9 +65,7 @@ const useSignupForm = (signupType: signupModalType) => {
 
   const onSubmit = async (data: SignupFormSchema) => {
     // if (!emailChecked || !phoneVerified) {
-    //   alert('이메일 중복 및 휴대폰 인증을 마무리 하세요');
-    //   console.log(emailChecked, '이메일 중복');
-    //   console.log(phoneVerified, '휴대폰 인증');
+    //   setIsErrorMsg('확인은 필숭비니다.');
     // }
 
     try {
@@ -76,8 +74,7 @@ const useSignupForm = (signupType: signupModalType) => {
       open(<SignUpCompleteModal />);
     } catch (error) {
       console.log(error);
-      setIsError(true);
-      setIsErrorMsg('휴대폰 인증은 필수입니다.');
+      setIsSignupError(true);
     }
   };
 
@@ -107,8 +104,8 @@ const useSignupForm = (signupType: signupModalType) => {
       setIsErrorMsg('인증이 완료됐습니다.');
       setPhoneVerified(true);
     } catch (error) {
-      setPhoneVerified(false);
       setIsErrorMsg('인증 번호가 일치하지 않습니다.');
+      setPhoneVerified(false);
     }
   };
 
@@ -125,10 +122,11 @@ const useSignupForm = (signupType: signupModalType) => {
     isEmailUnique,
     isValid,
     emailChecked,
+    phoneVerified,
     authCheck,
     isErrorMsg,
     setIsErrorMsg,
-    isError,
+    isSignupError,
   };
 };
 

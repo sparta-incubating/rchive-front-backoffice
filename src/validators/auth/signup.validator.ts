@@ -16,8 +16,8 @@ export const signupSchema = z
         '영문, 숫자 조합으로 6자 이상 입력해 주세요.',
       ),
     passwordConfirm: z.string(),
-    phone: z.string().min(8),
-    authCode: z.string().min(6, '인증번호는 필수 입니다.'),
+    phone: z.string().min(8, '휴대폰 인증은 필수입니다.'),
+    authCode: z.string().min(6, '휴대폰 인증은 필수입니다.'),
     nickname: z.string().default(''),
     profileImg: z.string().default('default'),
     birth: z
