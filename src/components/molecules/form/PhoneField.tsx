@@ -26,7 +26,7 @@ const PhoneField = ({
   setIsErrorMsg,
 }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
-  const [isAuthFilled, setisAuthFilled] = useState<string>('');
+  const [isAuthFilled, setIsAuthFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const { postPhoneAuthNumberMutate } = useProfileUpdate();
@@ -38,6 +38,8 @@ const PhoneField = ({
     setDisabled(isInputFilled.length <= 10);
   }, [isInputFilled]);
 
+  console.log(isAuthFilled, '???');
+
   const handleRequestAuth = () => {
     const userInfo = { username: usernameCheck, phone: isInputFilled };
 
@@ -45,6 +47,7 @@ const PhoneField = ({
       postPhoneAuthNumberMutate.mutate(userInfo);
       setRequestAuthNumber(false);
       setIsErrorMsg(null);
+      setIsAuthFilled('');
       setTimeout(() => {
         setRequestAuthNumber(true);
       }, 0);
@@ -88,8 +91,9 @@ const PhoneField = ({
           className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setisAuthFilled(e.target.value)
+            setIsAuthFilled(e.target.value)
           }
+          value={isAuthFilled}
         />
         {isAuthFilled.length > 0 && (
           <button
