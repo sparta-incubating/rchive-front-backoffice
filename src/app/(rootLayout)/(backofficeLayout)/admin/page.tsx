@@ -1,7 +1,10 @@
 'use client';
 
 import { usePermissionList } from '@/api/admin/useMutation';
-import { usePermissionDataQuery } from '@/api/admin/useQuery';
+import {
+  usePermissionDataQuery,
+  useRoleCountDataQuery,
+} from '@/api/admin/useQuery';
 import AdminTableHeader from '@/components/atoms/admin/adminTableHeader';
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import NoDataList from '@/components/atoms/category/noDataList';
@@ -27,6 +30,7 @@ import { DateRange } from 'react-day-picker';
 const Admin = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedTab, setSelectedTab] = useState<string>('All');
+  const [selectedTabCount, setSelectedTabCount] = useState<number>(0);
   const [filters, setFilters] = useState({
     trackRole: '',
     sort: 'DATE_LATELY',
@@ -40,10 +44,27 @@ const Admin = () => {
   const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
+  const { countList } = useRoleCountDataQuery();
+
+  // 탭 변경 핸들러
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
+    const count =
+      tab === 'All'
+        ? countList?.data?.statusAll || 0
+        : tab === 'WAIT'
+          ? countList?.data?.statusWait || 0
+          : countList?.data?.statusApprove || 0;
+    setSelectedTabCount(count);
   };
 
+  // 초기 로드 시 기본 탭('All')의 카운트를 설정
+  useEffect(() => {
+    if (countList) {
+      const initialCount = countList.data?.statusAll || 0;
+      setSelectedTabCount(initialCount);
+    }
+  }, [countList]);
   /*검색 */
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -180,7 +201,11 @@ const Admin = () => {
         {/* 게시판 */}
         <PermissionBoard>
           {/* 탭 메뉴 */}
-          <TapMenu onTabChange={handleTabChange} selectedTab={selectedTab} />
+          <TapMenu
+            onTabChange={handleTabChange}
+            selectedTab={selectedTab}
+            countList={countList}
+          />
           {/* 탭 메뉴 */}
           {/*카테고리 및 체크박스*/}
 
@@ -209,27 +234,33 @@ const Admin = () => {
           </div>
 
           {/*카테고리 및 체크박스*/}
-          {viewList?.length > 0 ? (
-            <AdminTableHeader
-              handleAllCheck={handleAllCheck}
-              isAllChecked={isAllChecked}
-            />
-          ) : (
-            ''
-          )}
-          {viewList?.length > 0 ? (
-            <AuthFilteredList data={filteredData} />
-          ) : (
+          {selectedTabCount === 0 ? (
             <NoDataList />
+          ) : (
+            <>
+              {viewList?.length > 0 && (
+                <AdminTableHeader
+                  handleAllCheck={handleAllCheck}
+                  isAllChecked={isAllChecked}
+                />
+              )}
+              {viewList?.length > 0 ? (
+                <>
+                  <AuthFilteredList data={filteredData} />
+                  <div className="py-[24px]">
+                    <PageNation
+                      currentPage={currentPage}
+                      totalElements={boardList?.data?.totalElements}
+                      size={boardList?.data?.size}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
+                </>
+              ) : (
+                <NoDataList />
+              )}
+            </>
           )}
-          <div className="py-[24px]">
-            <PageNation
-              currentPage={currentPage}
-              totalElements={boardList?.data?.totalElements}
-              size={boardList?.data?.size}
-              onPageChange={handlePageChange}
-            />
-          </div>
         </PermissionBoard>
       </BackofficePage>
     </>

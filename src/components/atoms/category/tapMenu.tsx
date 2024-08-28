@@ -1,14 +1,15 @@
-'use client';
-
-import { useRoleCountDataQuery } from '@/api/admin/useQuery';
 import { TapProps } from '@/types/admin.types';
 
-const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
-  const { countList } = useRoleCountDataQuery();
+const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
+  const allCount = countList?.data?.statusAll || 0;
+  const approveCount = countList?.data?.statusApprove || 0;
+  const waitCount = countList?.data?.statusWait || 0;
 
-  const allCount = countList?.data?.statusAll;
-  const approveCount = countList?.data?.statusApprove;
-  const waitCount = countList?.data?.statusWait;
+  const handleTabClick = (tab: string) => {
+    const count =
+      tab === 'All' ? allCount : tab === 'WAIT' ? waitCount : approveCount;
+    onTabChange(tab, count);
+  };
 
   return (
     <section className="h-[65px] w-full border-b pt-[16px]">
@@ -16,7 +17,7 @@ const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
         <div
           className={`flex h-[48px] w-[104px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'All' ? `border-b-2 border-black` : ``}`}
         >
-          <button onClick={() => onTabChange('All')}>
+          <button onClick={() => handleTabClick('All')}>
             <p
               className={`text-sm ${selectedTab === 'All' ? `font-semibold` : `font-normal`}`}
             >
@@ -31,7 +32,7 @@ const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
         <div
           className={`flex h-[48px] w-[119px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'WAIT' ? `border-b-2 border-black` : ``}`}
         >
-          <button onClick={() => onTabChange('WAIT')}>
+          <button onClick={() => handleTabClick('WAIT')}>
             <p
               className={`text-sm ${selectedTab === 'WAIT' ? `font-semibold` : `font-normal`}`}
             >
@@ -46,7 +47,7 @@ const TapMenu = ({ onTabChange, selectedTab }: TapProps) => {
         <div
           className={`flex h-[48px] w-[105px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'APPROVE' ? `border-b-2 border-black` : ``}`}
         >
-          <button onClick={() => onTabChange('APPROVE')}>
+          <button onClick={() => handleTabClick('APPROVE')}>
             <p
               className={`text-sm ${selectedTab === 'APPROVE' ? `font-semibold` : `font-normal`}`}
             >

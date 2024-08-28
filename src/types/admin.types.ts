@@ -40,22 +40,19 @@ export type ApproveItem = Pick<
   'trackName' | 'email' | 'trackRole' | 'period'
 >;
 
-// export type searchListItem = {
-//   trackName: string;
-//   period: number;
-//   trackRole: string;
-//   keyword: string;
-//   selectItem: number;
-// };
-
 export type RejectionItem = Pick<
   USERDATA,
   'trackName' | 'loginPeriod' | 'trackId'
 >;
-
+export type CountListData = {
+  statusAll: number;
+  statusApprove: number;
+  statusWait: number;
+};
 export interface TapProps {
   selectedTab: string;
-  onTabChange: (tab: string) => void;
+  onTabChange: (tab: string, count: number) => void;
+  countList: { data: CountListData };
 }
 
 export interface FilteredListProps {
