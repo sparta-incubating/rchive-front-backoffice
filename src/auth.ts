@@ -2,6 +2,7 @@ import { getLastConnectRole, getRoleApplyStatus } from '@/api/server/authApi';
 import { authConfig } from '@/auth.config';
 import { trackRole } from '@/types/auth.types';
 import { TrackType } from '@/types/posts.types';
+import axiosAPI from '@/utils/axiosAPI';
 import NextAuth from 'next-auth';
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
@@ -60,7 +61,42 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   },
   events: {
     async signOut(token) {
-      console.log('signOut이 진행되고있어요.');
+      let refreshToken;
+      let accessToken;
+      if (
+        'session' in token &&
+        token.session &&
+        'refreshToken' in token.session
+      ) {
+        refreshToken = token.session.refreshToken;
+      } else if (
+        'token' in token &&
+        token.token &&
+        'refreshToken' in token.token
+      ) {
+        refreshToken = token.token.refreshToken;
+      }
+
+      if (
+        'session' in token &&
+        token.session &&
+        'accessToken' in token.session
+      ) {
+        accessToken = token.session.accessToken;
+      } else if (
+        'token' in token &&
+        token.token &&
+        'accessToken' in token.token
+      ) {
+        accessToken = token.token.accessToken;
+      }
+
+      await axiosAPI.delete('/apis/v1/users/logout', {
+        headers: {
+          Cookie: `Refresh=${refreshToken}`,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
     },
   },
 });

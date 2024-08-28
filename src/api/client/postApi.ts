@@ -1,6 +1,7 @@
 import { PostForm } from '@/class/postForm';
 import { TrackType, tutorApiType } from '@/types/posts.types';
 import { client } from '@/utils/clientAPI';
+import { createToast } from '@/utils/toast';
 import axios from 'axios';
 
 // 태그 검색 함수
@@ -102,7 +103,6 @@ export const getNotionPageData = async (pageId: string) => {
 
     return response.data.result.replace('"', '');
   } catch (error) {
-    console.log({ error });
     throw new Error('notion Page Data호출에 실패했습니다.');
   }
 };
@@ -179,5 +179,26 @@ export const patchPostClose = async (
     return response.data;
   } catch (error) {
     throw new Error('게시물 비공개에 실패했습니다.');
+  }
+};
+
+// 게시물 삭제 endpoiont
+export const deletePost = async (
+  trackName: TrackType,
+  loginPeriod: number,
+  postId: string,
+) => {
+  try {
+    const response = await client.delete(
+      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const data = error?.response?.data;
+      createToast(data.message, 'warning');
+      console.error(data.message);
+    }
   }
 };

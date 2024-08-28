@@ -21,9 +21,11 @@ const PreviewContainer = ({
           제공합니다.
         </p>
       </section>
+
       <section className="m-6 flex overflow-scroll border border-gray-200">
         {children}
       </section>
+
       <section className="flex flex-col gap-2 border border-t-gray-100 bg-blue-50 py-4">
         <div className="flex items-center justify-center gap-5">
           <Button variant="secondary" size="sm" onClick={onClose}>

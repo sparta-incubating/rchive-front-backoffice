@@ -84,6 +84,7 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
           <ThumbnailContainer
             setValue={setValue}
             initValue={watch('thumbnailUrl')}
+            postData={postData}
           />
 
           {/* Inputs */}
