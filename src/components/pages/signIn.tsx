@@ -56,7 +56,6 @@ const SignIn = () => {
     });
 
     if (result?.error) {
-      // 오류 발생 시 오류 메시지를 상태에 설정
       setSignInError(
         '가입되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.',
       );
@@ -76,7 +75,6 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      //로그인 시 권한 설정 페이지로
       router.push('/admin');
     }
   }, [dispatch, router, session]);
@@ -151,12 +149,15 @@ const SignIn = () => {
             </form>
             <section className="mx-auto flex h-[53px] flex-row justify-center p-[16px] text-center">
               <span className="w-[120px] text-sm text-gray-500">
-                <button onClick={handleSignupModalOpen}>회원가입</button>
+                <button onClick={handleSignupModalOpen}>
+                  <p className="underline">회원가입</p>
+                </button>
               </span>
+              {/* 추후 api 연결 
               <div className="border" />
               <span className="w-[120px] text-sm text-gray-500">
                 비밀번호 찾기
-              </span>
+              </span> */}
             </section>
           </aside>
 
