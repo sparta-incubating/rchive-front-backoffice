@@ -43,8 +43,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const [emailChecked, setEmailChecked] = useState<boolean>(false);
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
-  const [isSignupError, setIsSignupError] = useState<boolean>(false);
-  /*회원가입 실패  */
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const { open } = useModalContext();
   const {
@@ -64,31 +63,25 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormSchema) => {
-    let errorMsg = '';
-
-    if (!emailChecked) {
-      errorMsg = '이메일 인증은 필수입니다.';
-    }
-    if (!phoneVerified) {
-      errorMsg = errorMsg
-        ? `${errorMsg} 휴대폰 인증은 필수입니다.`
-        : '휴대폰 인증은 필수입니다.';
-    }
-
-    if (errorMsg) {
-      setIsErrorMsg(errorMsg);
-      setIsSignupError(true);
+    if (!emailChecked && !phoneVerified) {
+      setEmailError('이메일 중복 확인은 필수입니다.');
+      setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
       return;
     }
-
-    setIsErrorMsg('');
-    setIsSignupError(false);
+    if (!emailChecked) {
+      setEmailError('이메일 중복 확인은 필수입니다.');
+      return;
+    }
+    if (!phoneVerified) {
+      setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
+      return;
+    }
     try {
       const signUpFormData = createSignupForm(signupType, data);
       await postSignup(signUpFormData);
       open(<SignUpCompleteModal />);
     } catch (error) {
-      setIsSignupError(true);
+      throw new Error('회원가입 오류 발생');
     }
   };
 
@@ -97,7 +90,7 @@ const useSignupForm = (signupType: signupModalType) => {
       const data = await getMailCheck(email);
       setIsEmailUnique(data.data);
       setEmailChecked(true);
-      setIsSignupError(false);
+      setEmailError(null);
     } catch (error) {
       console.error('Error checking email uniqueness', error);
       setIsEmailUnique(false);
@@ -140,7 +133,8 @@ const useSignupForm = (signupType: signupModalType) => {
     authCheck,
     isErrorMsg,
     setIsErrorMsg,
-    isSignupError,
+    phoneVerified,
+    emailError,
   };
 };
 
