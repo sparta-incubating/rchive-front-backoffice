@@ -15,7 +15,7 @@ import { formatDate } from '@/utils/utils';
 import { signupSchema } from '@/validators/auth/signup.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldError, useForm } from 'react-hook-form';
 
 const DEFAULT_VALUE = {
   email: '',
@@ -24,6 +24,8 @@ const DEFAULT_VALUE = {
   passwordConfirm: '',
   phone: '',
   authCode: '',
+  nickname: '',
+  profileImg: 'default',
   birth: '',
   // phoneConfirm: false,
   ad: false,
@@ -40,6 +42,7 @@ const useSignupForm = (signupType: signupModalType) => {
   /*미확인 시  */
   const [emailChecked, setEmailChecked] = useState<boolean>(false);
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
+  const [error, setError] = useState<FieldError | null>(null);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
   /*회원가입 실패  */
 
@@ -61,12 +64,13 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormSchema) => {
-    // if (!emailChecked || !phoneVerified) {
-    //   alert('이메일 중복 및 휴대폰 인증을 마무리 하세요');
-    //   console.log(emailChecked, '이메일 중복');
-    //   console.log(phoneVerified, '휴대폰 인증');
-    //   return null;
-    // }
+    if (!emailChecked || !phoneVerified) {
+      alert('이메일 중복 및 휴대폰 인증을 마무리 하세요');
+      console.log(emailChecked, '이메일 중복');
+      console.log(phoneVerified, '휴대폰 인증');
+
+      return null;
+    }
     const signUpFormData = createSignupForm(signupType, data);
     await postSignup(signUpFormData);
     open(<SignUpCompleteModal />);
@@ -119,7 +123,6 @@ const useSignupForm = (signupType: signupModalType) => {
     authCheck,
     isErrorMsg,
     setIsErrorMsg,
-    phoneVerified,
   };
 };
 
@@ -141,7 +144,8 @@ const createSignupForm = (
       data.service,
       data.privacy,
       data.ad,
-      '',
+      data.nickname,
+      data.profileImg,
     );
   } else {
     return new User(
@@ -157,8 +161,8 @@ const createSignupForm = (
       data.service,
       data.privacy,
       data.ad,
-      '',
-      '',
+      data.nickname,
+      data.profileImg,
     );
   }
 };
