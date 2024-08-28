@@ -100,7 +100,7 @@ const SignIn = () => {
                       <Label htmlFor="username">이메일</Label>
                       <Input
                         {...register('username')}
-                        placeholder="ex.123@eamil.com"
+                        placeholder="ex.123@email.com"
                         className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
                       />
                     </InputField>

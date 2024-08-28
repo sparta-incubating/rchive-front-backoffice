@@ -61,12 +61,12 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormSchema) => {
-    if (!emailChecked || !phoneVerified) {
-      alert('이메일 중복 및 휴대폰 인증을 마무리 하세요');
-      console.log(emailChecked, '이메일 중복');
-      console.log(phoneVerified, '휴대폰 인증');
-      return null;
-    }
+    // if (!emailChecked || !phoneVerified) {
+    //   alert('이메일 중복 및 휴대폰 인증을 마무리 하세요');
+    //   console.log(emailChecked, '이메일 중복');
+    //   console.log(phoneVerified, '휴대폰 인증');
+    //   return null;
+    // }
     const signUpFormData = createSignupForm(signupType, data);
     await postSignup(signUpFormData);
     open(<SignUpCompleteModal />);
@@ -119,6 +119,7 @@ const useSignupForm = (signupType: signupModalType) => {
     authCheck,
     isErrorMsg,
     setIsErrorMsg,
+    phoneVerified,
   };
 };
 

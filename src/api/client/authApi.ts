@@ -6,7 +6,7 @@ import axios from 'axios';
 export const postSignup = async (userData: User | Admin) => {
   const singupData = {
     ...userData,
-    nickname: '관리자271', //Back-추후 닉네임 중복 또는 닉네임 required 해제요청
+    nickname: '',
     profileImg: 'default',
   };
 
@@ -34,6 +34,6 @@ export const getLastConnectRole = async () => {
   try {
     await axios.get('/api/auth/lastConnectRole');
   } catch (error) {
-    throw new Error('마지막 권환 조회에 실패했습니다.');
+    throw new Error('마지막 권한 조회에 실패했습니다.');
   }
 };

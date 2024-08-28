@@ -80,30 +80,25 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
           <p className="text-red-500">{errors.trackName.message}</p>
         )}
 
-        <Controller
-          name="period"
-          control={control}
-          render={({ field: { onChange, value, disabled } }) => (
-            <div
-              onClick={() => {
-                if (!watchTrackName) {
-                  createToast('트랙을 먼저 선택해주세요', 'warning');
-                }
-              }}
-            >
-              <SelectFormBox
-                className="w-[360px]"
-                options={period || []}
-                label={'기수'}
-                onSelect={onChange}
-                value={value! ?? '기수 선택'}
-                disabled={!watchTrackName ?? disabled}
-              />
-            </div>
-          )}
-        />
-        {errors.period && (
-          <p className="text-red-500">{errors.period.message}</p>
+        {trackRole === 'APM' && period && (
+          <>
+            <Controller
+              name="period"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <SelectFormBox
+                  className="w-[360px]"
+                  options={period}
+                  label={'기수'}
+                  onSelect={onChange}
+                  value={value!}
+                />
+              )}
+            />
+            {errors.period && (
+              <p className="text-red-500">{errors.period.message}</p>
+            )}
+          </>
         )}
       </ProfileChangeForm>
     </form>
