@@ -64,16 +64,30 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormSchema) => {
-    // if (!emailChecked || !phoneVerified) {
-    //   setIsErrorMsg('확인은 필숭비니다.');
-    // }
+    let errorMsg = '';
 
+    if (!emailChecked) {
+      errorMsg = '이메일 인증은 필수입니다.';
+    }
+    if (!phoneVerified) {
+      errorMsg = errorMsg
+        ? `${errorMsg} 휴대폰 인증은 필수입니다.`
+        : '휴대폰 인증은 필수입니다.';
+    }
+
+    if (errorMsg) {
+      setIsErrorMsg(errorMsg);
+      setIsSignupError(true);
+      return;
+    }
+
+    setIsErrorMsg('');
+    setIsSignupError(false);
     try {
       const signUpFormData = createSignupForm(signupType, data);
       await postSignup(signUpFormData);
       open(<SignUpCompleteModal />);
     } catch (error) {
-      console.log(error);
       setIsSignupError(true);
     }
   };
@@ -83,6 +97,7 @@ const useSignupForm = (signupType: signupModalType) => {
       const data = await getMailCheck(email);
       setIsEmailUnique(data.data);
       setEmailChecked(true);
+      setIsSignupError(false);
     } catch (error) {
       console.error('Error checking email uniqueness', error);
       setIsEmailUnique(false);
@@ -122,7 +137,6 @@ const useSignupForm = (signupType: signupModalType) => {
     isEmailUnique,
     isValid,
     emailChecked,
-    phoneVerified,
     authCheck,
     isErrorMsg,
     setIsErrorMsg,

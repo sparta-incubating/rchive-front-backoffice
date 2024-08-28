@@ -40,7 +40,7 @@ const PhoneField = ({
 
   const handleRequestAuth = () => {
     const userInfo = { username: usernameCheck, phone: isInputFilled };
-    console.log(userInfo, 'userInfo');
+
     try {
       postPhoneAuthNumberMutate.mutate(userInfo);
       setRequestAuthNumber(false);
@@ -104,9 +104,9 @@ const PhoneField = ({
       {isErrorMsg && (
         <span
           className={
-            isErrorMsg.includes('일치하지 않습니다')
-              ? 'text-primary-400'
-              : 'text-success-green'
+            isErrorMsg.includes('완료됐습니다')
+              ? 'text-success-green'
+              : 'text-primary-400'
           }
         >
           {isErrorMsg}

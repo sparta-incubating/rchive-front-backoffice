@@ -33,15 +33,13 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     isValid,
     authCheck,
     isErrorMsg,
-    phoneVerified,
     emailChecked,
     setIsErrorMsg,
     isSignupError,
   } = useSignupForm(signupModalType);
 
   const usernameCheck = watch('username');
-  console.log(emailChecked, '이메일 중복');
-  console.log(phoneVerified, '휴대폰 인증');
+  console.log(emailChecked, 'mailChecked');
   return (
     <Modal inboardClassName="w-auto max-w-full p-4">
       {/*modal 헤더*/}
@@ -81,9 +79,10 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           {isEmailUnique && (
             <FormSpan variant="error">이미 사용중인 이메일입니다.</FormSpan>
           )}
-          {!emailChecked && isSignupError && (
-            <FormSpan variant="error">이메일 인증은 필수입니다.</FormSpan>
-          )}
+          {!emailChecked ||
+            (isSignupError && (
+              <FormSpan variant="error">이메일 인증은 필수입니다.</FormSpan>
+            ))}
         </section>
 
         {/* password */}
@@ -146,9 +145,6 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           />
           {errors.phone?.message && (
             <FormSpan variant="error">휴대폰 인증번호는 필수입니다.</FormSpan>
-          )}
-          {isSignupError && !phoneVerified && (
-            <FormSpan variant="error">휴대폰 인증은 필수입니다.</FormSpan>
           )}
         </section>
         {/* birthday */}
