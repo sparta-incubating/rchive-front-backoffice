@@ -33,6 +33,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     isValid,
     authCheck,
     isErrorMsg,
+    isError,
     setIsErrorMsg,
   } = useSignupForm(signupModalType);
 
@@ -76,6 +77,9 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           )}
           {isEmailUnique && (
             <FormSpan variant="error">이미 사용중인 이메일입니다.</FormSpan>
+          )}
+          {isError && (
+            <FormSpan variant="error">이메일 중복확인은 필수입니다.</FormSpan>
           )}
         </section>
 
