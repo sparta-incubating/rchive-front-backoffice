@@ -97,7 +97,6 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
             isUpdatedMod={!!postData}
             initialContentLink={postData?.contentLink || ''}
           />
-
           {/* Info */}
           <PostInfoContainer
             setValue={setValue}
@@ -106,10 +105,8 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
             watch={watch}
             errors={errors}
           />
-
           {/* Tag */}
           <TagContainer placeholder="태그 입력 최대 개수는 10개까지 가능해요." />
-
           {/* calendar and Radio button */}
           <div className="flex gap-4">
             <CalendarContainer control={control} />
@@ -133,7 +130,6 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
               </div>
             </TitleContainer>
           </div>
-
           <div className="flex justify-end gap-4">
             <Button type="button" variant="secondary" onClick={handlePreview}>
               미리보기

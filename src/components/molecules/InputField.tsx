@@ -1,6 +1,6 @@
-import React, { ComponentProps, ReactNode } from 'react';
-import { cva, VariantProps } from 'class-variance-authority';
 import { classMerge } from '@/utils/utils';
+import { cva, VariantProps } from 'class-variance-authority';
+import { ComponentProps, ReactNode } from 'react';
 
 const divVariants = cva('group flex flex-col w-[360px]', {
   variants: {

@@ -8,6 +8,7 @@ export const postSignup = async (userData: User | Admin) => {
     const response = await axiosAPI.post('/apis/v1/users/signup', userData);
     return response.data;
   } catch (error) {
+    console.log(error, '에러메시지 출력');
     throw new Error('회원가입에 실패했습니다. 다시 시도해주세요.');
   }
 };
@@ -28,6 +29,6 @@ export const getLastConnectRole = async () => {
   try {
     await axios.get('/api/auth/lastConnectRole');
   } catch (error) {
-    throw new Error('마지막 권환 조회에 실패했습니다.');
+    throw new Error('마지막 권한 조회에 실패했습니다.');
   }
 };

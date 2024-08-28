@@ -27,7 +27,7 @@ const ProfileContainer = ({
             className="h-[36px] w-[80px] rounded-[26px] bg-gray-900"
             onClick={onClick}
           >
-            <p className="text-white">변경</p>
+            <p className="text-xs text-white">변경</p>
           </button>
         )}
       </div>

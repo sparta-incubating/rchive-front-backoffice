@@ -37,7 +37,6 @@ const Admin = () => {
   const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
-
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
   };

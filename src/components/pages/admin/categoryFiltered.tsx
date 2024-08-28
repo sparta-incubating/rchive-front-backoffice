@@ -43,20 +43,13 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
 
   return (
     <div className="flex flex-row gap-[10px]">
-      <div>
-        <AuthFilterCategory
-          label="직책"
-          data={roleCategory}
-          setValue={(value) => handleCategoryChange('trackRole', value)}
-        />
-      </div>
-      {trackRole === 'PM' && (
+      {trackRole === 'PM' ? (
         <>
           <div>
             <AuthFilterCategory
-              label="최신순"
-              data={sortCategory}
-              setValue={(value) => handleCategoryChange('sort', value)}
+              label="직책"
+              data={roleCategory}
+              setValue={(value) => handleCategoryChange('trackRole', value)}
             />
           </div>
           <div>
@@ -66,7 +59,22 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
               setValue={(value) => handleCategoryChange('searchPeriod', value)}
             />
           </div>
+          <div>
+            <AuthFilterCategory
+              label="최신순"
+              data={sortCategory}
+              setValue={(value) => handleCategoryChange('sort', value)}
+            />
+          </div>
         </>
+      ) : (
+        <div>
+          <AuthFilterCategory
+            label="최신순"
+            data={sortCategory}
+            setValue={(value) => handleCategoryChange('sort', value)}
+          />
+        </div>
       )}
     </div>
   );

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 
 const RandomProfileModal = ({
   onClose,
-  nickname,
   profileImg,
 }: RandomProfileModalProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -17,7 +16,7 @@ const RandomProfileModal = ({
   const [selectImg, setSelectImg] = useState<number>(0);
 
   useEffect(() => {
-    if (!profileImg.includes('MRT')) {
+    if (profileImg === 'default') {
       setInitImg('MRT_1');
     } else {
       setInitImg(profileImg);
@@ -48,7 +47,6 @@ const RandomProfileModal = ({
 
   const profileInfo = {
     profileImg: initImg,
-    nickname: nickname ?? '',
   };
 
   const onSubmit = async () => {
