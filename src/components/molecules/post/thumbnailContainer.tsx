@@ -95,7 +95,7 @@ const ThumbnailContainer = ({
     if (result) {
       const response = await deletePost(trackName, Number(loginPeriod), postId);
       createToast(response.message, 'primary');
-      router.push('/posts');
+      router.push('/backoffice/posts');
       router.refresh();
     } else {
       console.log('삭제 취소');

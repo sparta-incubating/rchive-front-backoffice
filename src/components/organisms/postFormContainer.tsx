@@ -53,7 +53,11 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
       watch('thumbnailUrl'),
     );
 
-    const popup = window.open('/preview', '_blank', 'width=800,height=600');
+    const popup = window.open(
+      '/backoffice/preview',
+      '_blank',
+      'width=800,height=600',
+    );
     setPopupWindow(popup);
 
     if (popup) {
