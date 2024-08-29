@@ -6,7 +6,7 @@ import Image from 'next/image';
 import React, { PropsWithChildren } from 'react';
 
 export const SelectInputVariants = cva(
-  'relative flex justify-self-start text-md font-semibold',
+  'relative flex justify-self-start text-md font-medium',
   {
     variants: {
       variant: {

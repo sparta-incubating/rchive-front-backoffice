@@ -35,16 +35,16 @@ const AuthTimer = memo(({ setExpire }: AuthTimerProps) => {
     <div>
       {timeLeft <= 0 ? (
         <>
-          <span className="text-base font-medium text-primary-400">
+          <span className="text-sm font-medium text-primary-400">
             유효 시간이 만료되었습니다. 인증 번호를 재요청해 주세요.
           </span>
         </>
       ) : (
         <>
-          <span className="text-base font-medium text-gray-300">
+          <span className="text-sm font-medium text-gray-300">
             인증번호가 발송되었습니다. 유효시간&nbsp;
           </span>
-          <span className="text-base font-medium text-primary-400">
+          <span className="text-sm font-medium text-primary-400">
             {minutes}:{seconds}
           </span>
         </>

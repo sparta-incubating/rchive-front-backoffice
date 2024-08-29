@@ -15,7 +15,7 @@ import { formatDate } from '@/utils/utils';
 import { signupSchema } from '@/validators/auth/signup.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import { FieldError, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 const DEFAULT_VALUE = {
   email: '',
@@ -42,9 +42,8 @@ const useSignupForm = (signupType: signupModalType) => {
   /*미확인 시  */
   const [emailChecked, setEmailChecked] = useState<boolean>(false);
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
-  const [error, setError] = useState<FieldError | null>(null);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
-  /*회원가입 실패  */
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const { open } = useModalContext();
   const {
@@ -64,16 +63,26 @@ const useSignupForm = (signupType: signupModalType) => {
   });
 
   const onSubmit = async (data: SignupFormSchema) => {
-    if (!emailChecked || !phoneVerified) {
-      alert('이메일 중복 및 휴대폰 인증을 마무리 하세요');
-      console.log(emailChecked, '이메일 중복');
-      console.log(phoneVerified, '휴대폰 인증');
-
-      return null;
+    if (!emailChecked && !phoneVerified) {
+      setEmailError('이메일 중복 확인은 필수입니다.');
+      setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
+      return;
     }
-    const signUpFormData = createSignupForm(signupType, data);
-    await postSignup(signUpFormData);
-    open(<SignUpCompleteModal />);
+    if (!emailChecked) {
+      setEmailError('이메일 중복 확인은 필수입니다.');
+      return;
+    }
+    if (!phoneVerified) {
+      setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
+      return;
+    }
+    try {
+      const signUpFormData = createSignupForm(signupType, data);
+      await postSignup(signUpFormData);
+      open(<SignUpCompleteModal />);
+    } catch (error) {
+      throw new Error('회원가입 오류 발생');
+    }
   };
 
   const checkEmail = async (email: string) => {
@@ -81,6 +90,7 @@ const useSignupForm = (signupType: signupModalType) => {
       const data = await getMailCheck(email);
       setIsEmailUnique(data.data);
       setEmailChecked(true);
+      setEmailError(null);
     } catch (error) {
       console.error('Error checking email uniqueness', error);
       setIsEmailUnique(false);
@@ -102,8 +112,8 @@ const useSignupForm = (signupType: signupModalType) => {
       setIsErrorMsg('인증이 완료됐습니다.');
       setPhoneVerified(true);
     } catch (error) {
-      setPhoneVerified(false);
       setIsErrorMsg('인증 번호가 일치하지 않습니다.');
+      setPhoneVerified(false);
     }
   };
 
@@ -123,6 +133,8 @@ const useSignupForm = (signupType: signupModalType) => {
     authCheck,
     isErrorMsg,
     setIsErrorMsg,
+    phoneVerified,
+    emailError,
   };
 };
 

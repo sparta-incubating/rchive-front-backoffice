@@ -34,6 +34,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
     authCheck,
     isErrorMsg,
     setIsErrorMsg,
+    emailError,
   } = useSignupForm(signupModalType);
 
   const usernameCheck = watch('username');
@@ -75,7 +76,10 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             <FormSpan variant="success">사용가능한 이메일입니다.</FormSpan>
           )}
           {isEmailUnique && (
-            <FormSpan variant="error">이미 사용중인 이메일입니다.</FormSpan>
+            <FormSpan variant="error">이미 사용 중인 이메일입니다.</FormSpan>
+          )}
+          {!errors.email?.message && !isEmailUnique && emailError && (
+            <FormSpan variant="error">{emailError}</FormSpan>
           )}
         </section>
 
@@ -129,14 +133,18 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
         </section>
 
         {/* phone */}
-        <PhoneForm
-          register={register}
-          usernameCheck={usernameCheck}
-          authCheck={authCheck}
-          isErrorMsg={isErrorMsg}
-          setIsErrorMsg={setIsErrorMsg}
-        />
-
+        <section>
+          <PhoneForm
+            register={register}
+            usernameCheck={usernameCheck}
+            authCheck={authCheck}
+            isErrorMsg={isErrorMsg}
+            setIsErrorMsg={setIsErrorMsg}
+          />
+          {errors.phone?.message && (
+            <FormSpan variant="error">휴대폰 인증번호는 필수입니다.</FormSpan>
+          )}
+        </section>
         {/* birthday */}
         <section>
           <InputContainer>
@@ -170,7 +178,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             disabled={!isValid || isEmailUnique}
             className="mb-5 w-80 px-7"
           >
-            다음
+            가입하기
           </Button>
         </div>
       </form>

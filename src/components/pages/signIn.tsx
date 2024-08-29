@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Button from '../atoms/button';
+import FormSpan from '../atoms/formSpan';
 import Input from '../atoms/input';
 import InputContainer from '../atoms/InputContainer';
 import Label from '../atoms/label';
@@ -25,13 +26,15 @@ import InputField from '../molecules/InputField';
 import SignupModal from './signupModal';
 
 const SignIn = () => {
-  const [pwErrorMsg, setpwErrorMsg] = useState<string>('');
+  const [signInError, setSignInError] = useState<string>('');
+
   const { data: session } = useSession();
   const { open } = useModalContext();
   const dispatch = useAppDispatch();
   const handleSignupModalOpen = () => {
     open(<SignupModal signupModalType={signupModalType.MANAGER} />, false);
   };
+  const router = useRouter();
 
   const {
     register,
@@ -45,13 +48,20 @@ const SignIn = () => {
     },
   });
 
-  const router = useRouter();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       username: data.username,
       password: data.password,
       redirect: false,
     });
+
+    if (result?.error) {
+      setSignInError(
+        '가입되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.',
+      );
+    } else {
+      router.push('/admin');
+    }
   };
 
   useEffect(() => {
@@ -65,7 +75,6 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      //로그인 시 권한 설정 페이지로
       router.push('/admin');
     }
   }, [dispatch, router, session]);
@@ -124,25 +133,31 @@ const SignIn = () => {
                     </InputField>
                   </InputContainer>
                   <span className="text-sm text-primary-400">
-                    {errors.password?.message || pwErrorMsg}
+                    {errors.password?.message}
                   </span>
+                  {signInError && (
+                    <FormSpan variant="error">{signInError}</FormSpan>
+                  )}
                 </section>
               </section>
               {/* 회원가입*/}
               <section className="flex justify-center py-5">
-                <Button size="sm" className="w-[300px]" variant="submit">
+                <Button size="sm" className="w-[360px]" variant="submit">
                   로그인
                 </Button>
               </section>
             </form>
             <section className="mx-auto flex h-[53px] flex-row justify-center p-[16px] text-center">
               <span className="w-[120px] text-sm text-gray-500">
-                <button onClick={handleSignupModalOpen}>회원가입</button>
+                <button onClick={handleSignupModalOpen}>
+                  <p className="underline">회원가입</p>
+                </button>
               </span>
+              {/* 추후 api 연결 
               <div className="border" />
               <span className="w-[120px] text-sm text-gray-500">
                 비밀번호 찾기
-              </span>
+              </span> */}
             </section>
           </aside>
 

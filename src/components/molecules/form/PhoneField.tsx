@@ -26,7 +26,7 @@ const PhoneField = ({
   setIsErrorMsg,
 }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
-  const [isAuthFilled, setisAuthFilled] = useState<string>('');
+  const [isAuthFilled, setIsAuthFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const { postPhoneAuthNumberMutate } = useProfileUpdate();
@@ -40,11 +40,12 @@ const PhoneField = ({
 
   const handleRequestAuth = () => {
     const userInfo = { username: usernameCheck, phone: isInputFilled };
-    console.log(userInfo, 'userInfo');
+
     try {
       postPhoneAuthNumberMutate.mutate(userInfo);
       setRequestAuthNumber(false);
       setIsErrorMsg(null);
+      setIsAuthFilled('');
       setTimeout(() => {
         setRequestAuthNumber(true);
       }, 0);
@@ -88,8 +89,9 @@ const PhoneField = ({
           className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setisAuthFilled(e.target.value)
+            setIsAuthFilled(e.target.value)
           }
+          value={isAuthFilled}
         />
         {isAuthFilled.length > 0 && (
           <button
@@ -104,14 +106,15 @@ const PhoneField = ({
       {isErrorMsg && (
         <span
           className={
-            isErrorMsg.includes('일치하지 않습니다')
-              ? 'text-primary-400'
-              : 'text-success-green'
+            isErrorMsg.includes('완료됐습니다')
+              ? 'text-success-green'
+              : 'text-primary-400'
           }
         >
           {isErrorMsg}
         </span>
       )}
+
       {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
     </>
   );
