@@ -26,7 +26,7 @@ const SetAuthInfo = ({
   const router = useRouter();
   useEffect(() => {
     const handleAuthError = () => {
-      router.push('/login');
+      router.push('/backoffice/login');
     };
 
     window.addEventListener('AUTH_ERROR', handleAuthError);

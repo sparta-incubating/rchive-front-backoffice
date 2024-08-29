@@ -62,7 +62,7 @@ client.interceptors.response.use(
         const refreshToken = session?.user.refreshToken;
 
         if (refreshToken) {
-          const response = await axios.post('/api/auth/reissue');
+          const response = await axios.post('/api/backoffice/auth/reissue');
 
           // 새로운 액세스 토큰을 전역 변수에 저장
           currentAccessToken = response.data.accessToken;

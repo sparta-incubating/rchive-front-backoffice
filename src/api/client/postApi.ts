@@ -99,7 +99,9 @@ export const getSearchTutor = async (
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
   try {
-    const response = await axios.get(`/api/notion/content?url=${pageId}`);
+    const response = await axios.get(
+      `/api/backoffice/notion/content?url=${pageId}`,
+    );
 
     return response.data.result.replace('"', '');
   } catch (error) {

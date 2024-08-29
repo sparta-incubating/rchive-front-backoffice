@@ -79,7 +79,7 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
         </div>
       </td>
       <td className="w-60 px-4 text-gray-400">
-        <Link href={`/posts/${postData.postId}`}>
+        <Link href={`/backoffice/posts/${postData.postId}`}>
           <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
             {postData.title}
           </span>

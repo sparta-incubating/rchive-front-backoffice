@@ -25,7 +25,9 @@ import { Pdf } from 'react-notion-x/build/third-party/pdf';
 const NotionContainer = ({ notionLink }: { notionLink: string }) => {
   const [recordMap, setRecordMap] = useState<ExtendedRecordMap | null>(null);
   const handleNotion = async () => {
-    return axios.get(`/api/notion/page?pageId=${extractPageId(notionLink)}`);
+    return axios.get(
+      `/api/backoffice/notion/page?pageId=${extractPageId(notionLink)}`,
+    );
   };
 
   useEffect(() => {

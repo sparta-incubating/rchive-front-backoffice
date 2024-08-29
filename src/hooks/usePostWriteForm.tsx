@@ -107,7 +107,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
         createToast('게시물 수정 중 오류가 발생했습니다.', 'warning');
       }
     } finally {
-      router.push('/posts');
+      router.push('/backoffice/posts');
       setIsSubmitLoading(false);
       router.refresh();
     }

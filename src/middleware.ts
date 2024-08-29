@@ -25,18 +25,29 @@ export default async function middleware(req: NextRequest) {
   const loginPeriod = session?.user.loginPeriod;
   const roleApply = session?.user.roleApply;
 
-  console.log('this is middle ware');
-
   const role = trackRole;
   const { pathname } = req.nextUrl;
 
+  // 루트 경로('/')로 접속하는 모든 사용자를 '/backoffice'로 리다이렉트
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/backoffice', req.url));
+  }
+
   // /login 페이지는 아무 조건 없이 접근 가능
-  if (pathname === '/login') {
+  if (pathname === '/backoffice/login') {
     return NextResponse.next();
   }
 
+  if (pathname === '/backoffice' || !accessToken) {
+    return NextResponse.redirect(new URL('/backoffice/login', req.url));
+  }
+
   // /role, /role/result는 AccessToken이 있어야 접근 가능
-  if ((pathname === '/role' || pathname === '/role/result') && accessToken) {
+  if (
+    (pathname === '/backoffice/role' ||
+      pathname === '/backoffice/role/result') &&
+    accessToken
+  ) {
     return NextResponse.next();
   }
 
@@ -49,14 +60,14 @@ export default async function middleware(req: NextRequest) {
   if (accessToken && !role) {
     if (roleApply) {
       // 3. AccessToken은 있지만 Role이 없고, roleApply가 있다면 /role/result로 리다이렉션
-      return NextResponse.redirect(new URL('/role/result', req.url));
+      return NextResponse.redirect(new URL('/backoffice/role/result', req.url));
     } else {
-      return NextResponse.redirect(new URL('/role', req.url));
+      return NextResponse.redirect(new URL('/backoffice/role', req.url));
     }
   }
 
   // 기타 경우: 로그인 페이지로 리다이렉션
-  return NextResponse.redirect(new URL('/login', req.url));
+  return NextResponse.redirect(new URL('/backoffice/login', req.url));
 }
 
 export const config = {

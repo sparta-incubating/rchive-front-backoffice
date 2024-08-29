@@ -25,7 +25,7 @@ const useServerComponentErrorHandling = (errorData: ErrorResponseType) => {
         if (data === 'access token expired') {
           (async () => {
             try {
-              axios.post('/api/auth/reissue').then(() => {
+              axios.post('/api/backoffice/auth/reissue').then(() => {
                 router.refresh();
               });
             } catch (error) {

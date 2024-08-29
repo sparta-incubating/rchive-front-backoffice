@@ -75,7 +75,7 @@ const PostListPage = ({
       query.set('page', '1');
     }
 
-    router.push(`/posts?${query.toString()}`);
+    router.push(`/backoffice/posts?${query.toString()}`);
   };
 
   const handleTabChange = (newTab: string) => {

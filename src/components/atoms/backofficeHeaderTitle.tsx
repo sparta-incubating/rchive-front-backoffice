@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 
 const dynamicRouteCheck = (url: string): boolean => {
-  const dynamicRoutePattern = /^\/posts\/(\d+)$/;
+  const dynamicRoutePattern = /^\/backoffice\/posts\/(\d+)$/;
   const match = url.match(dynamicRoutePattern);
 
   if (match) {
@@ -21,7 +21,7 @@ const BackofficeHeaderTitle = () => {
   const pathName = usePathname();
 
   const currentLink = links.find((link) => {
-    if (link.href === '/posts/*') {
+    if (link.href === '/backoffice/posts/*') {
       return dynamicRouteCheck(pathName);
     }
     return link.href === pathName;
