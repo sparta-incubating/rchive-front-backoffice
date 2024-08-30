@@ -24,14 +24,10 @@ export default async function middleware(req: NextRequest) {
 
   const role = trackRole;
   const { pathname } = req.nextUrl;
-  console.log({
-    pathname,
-  });
 
   // 루트 경로('/')로 접속하는 모든 사용자를 '/backoffice'로 리다이렉트
   console.log(pathname === '/' || !accessToken, 'asdfasdf');
   if (pathname === '/' || !accessToken) {
-    console.log('리다이렉트하라고');
     return NextResponse.redirect(new URL('/backoffice/login', req.url));
   }
 
@@ -41,7 +37,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   if (pathname === '' || !accessToken) {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/backoffice/login', req.url));
   }
 
   // /role, /role/result는 AccessToken이 있어야 접근 가능
