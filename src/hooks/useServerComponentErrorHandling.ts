@@ -19,19 +19,26 @@ const useServerComponentErrorHandling = (errorData: ErrorResponseType) => {
           data.errorCode === TOKEN_EXPIRATION_ERROR_CODE &&
           data.status === TOKEN_EXPIRATION_ERROR_STATUS
         ) {
-          (async () => await signOut())();
+          (async () =>
+            await signOut({
+              callbackUrl: '/backoffice/login',
+              redirect: true,
+            }))();
         }
       } else {
         if (data === 'access token expired') {
           (async () => {
             try {
-              axios.post('/api/backoffice/auth/reissue').then(() => {
+              axios.post('/backoffice/api/auth/reissue').then(() => {
                 router.refresh();
               });
             } catch (error) {
               if (axios.isAxiosError(error)) {
                 if (error.response?.status === 400) {
-                  await signOut();
+                  await signOut({
+                    callbackUrl: '/backoffice/login',
+                    redirect: true,
+                  });
                 }
               }
             }

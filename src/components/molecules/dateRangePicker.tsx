@@ -58,7 +58,7 @@ export function DateRangePicker({
               )}
               <div className="relative h-5 w-5">
                 <Image
-                  src={'/assets/icons/selectArrow.svg'}
+                  src={'/backoffice/assets/icons/selectArrow.svg'}
                   alt={'select arrow icon'}
                   fill
                 />

@@ -60,7 +60,7 @@ const SignIn = () => {
         '가입되지 않은 이메일이거나 비밀번호가 일치하지 않습니다.',
       );
     } else {
-      router.push('/backoffice/admin');
+      router.push('/admin');
     }
   };
 
@@ -75,7 +75,7 @@ const SignIn = () => {
           period: String(loginPeriod) || '',
         }),
       );
-      router.push('/backoffice/admin');
+      router.push('/admin');
     }
   }, [dispatch, router, session]);
 

@@ -23,8 +23,8 @@ export default function CategoryBox({
         checked={checked}
         className={`h-[20px] w-[20px] appearance-none ${
           checked
-            ? "bg-[url('/assets/icons/Checkbox.svg')]"
-            : "bg-[url('/assets/icons/unCheckbox.svg')]"
+            ? "bg-[url('/backoffice/assets/icons/Checkbox.svg')]"
+            : "bg-[url('/backoffice/assets/icons/unCheckbox.svg')]"
         }`}
       />
       <label htmlFor={id}>{text}</label>

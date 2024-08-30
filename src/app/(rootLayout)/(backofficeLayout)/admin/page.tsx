@@ -149,7 +149,7 @@ const Admin = () => {
       query.set('page', '1');
     }
 
-    router.push(`/backoffice/admin?${query.toString()}`);
+    router.push(`/admin?${query.toString()}`);
   };
 
   useEffect(() => {

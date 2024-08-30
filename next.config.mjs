@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: '/backoffice',
   reactStrictMode: false,
   images: {
     remotePatterns: [

@@ -71,7 +71,10 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       <td className="w-[65.5px] text-gray-400">
         <div className="relative h-[38px] w-full">
           <Image
-            src={postData.thumbnailUrl || '/assets/icons/defaultThumbnail.png'}
+            src={
+              postData.thumbnailUrl ||
+              '/backoffice/assets/icons/defaultThumbnail.png'
+            }
             alt={postData.title}
             style={{ borderRadius: '4px' }}
             fill
@@ -79,7 +82,7 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
         </div>
       </td>
       <td className="w-60 px-4 text-gray-400">
-        <Link href={`/backoffice/posts/${postData.postId}`}>
+        <Link href={`/posts/${postData.postId}`}>
           <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
             {postData.title}
           </span>

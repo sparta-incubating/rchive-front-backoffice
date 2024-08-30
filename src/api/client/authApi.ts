@@ -26,7 +26,7 @@ export const getMailCheck = async (email: string) => {
 // 마지막 접속 권한 endpoint
 export const getLastConnectRole = async () => {
   try {
-    await axios.get('/api/backoffice/auth/lastConnectRole');
+    await axios.get('/backoffice/api/auth/lastConnectRole');
   } catch (error) {
     throw new Error('마지막 권한 조회에 실패했습니다.');
   }

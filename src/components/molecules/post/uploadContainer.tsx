@@ -13,7 +13,7 @@ const UploadContainer = () => {
   const fetchOgImage = async (inputUrl: string) => {
     try {
       const response = await fetch(
-        `/api/backoffice/og-image?url=${encodeURIComponent(inputUrl)}`,
+        `/backoffice/api/og-image?url=${encodeURIComponent(inputUrl)}`,
       );
       const data = await response.json();
       setOgImage(data.ogImage);

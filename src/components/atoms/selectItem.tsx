@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import Image from 'next/image';
 import SelectItemSpan from '@/components/atoms/selectItemSpan';
 import { cva, VariantProps } from 'class-variance-authority';
+import Image from 'next/image';
+import { ReactNode } from 'react';
 
 const SelectItemVariants = cva(
   'relative mx-3 flex cursor-pointer justify-between rounded-[12px] px-[14px] py-5 ',
@@ -40,7 +40,7 @@ const SelectItem = ({
         className="right-0 flex h-5 w-5 items-center justify-center data-[selected=true]:absolute data-[selected=false]:hidden"
       >
         <Image
-          src={`${variant === 'primary' ? '/assets/icons/redCheck.svg' : '/assets/icons/blueCheck.svg'}`}
+          src={`${variant === 'primary' ? '/backoffice/assets/icons/redCheck.svg' : '/backoffice/assets/icons/blueCheck.svg'}`}
           alt={'select box check'}
           fill
         />

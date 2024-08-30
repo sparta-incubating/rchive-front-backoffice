@@ -27,10 +27,10 @@ export const extractPageId = (url: string): string | null => {
 export const validateNotionPageId = async (pageId: string) => {
   await Promise.all([
     axios.get(
-      `/api/backoffice/notion/database?url=${encodeURIComponent(pageId)}`,
+      `/backoffice/api/notion/database?url=${encodeURIComponent(pageId)}`,
     ),
     axios.get(
-      `/api/backoffice/notion/webShare?url=${encodeURIComponent(pageId)}`,
+      `/backoffice/api/notion/webShare?url=${encodeURIComponent(pageId)}`,
     ),
   ]);
 };

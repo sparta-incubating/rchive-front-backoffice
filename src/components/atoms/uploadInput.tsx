@@ -53,7 +53,7 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
             {isLoading ? (
               <div className="relative h-5 w-5">
                 <Image
-                  src={'/assets/icons/gif/transparentProgress.gif'}
+                  src={'/backoffice/assets/icons/gif/transparentProgress.gif'}
                   alt={'progress gif'}
                   fill
                 />

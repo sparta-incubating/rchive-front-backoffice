@@ -19,35 +19,33 @@ export default async function middleware(req: NextRequest) {
   const session = await auth();
 
   const accessToken = session?.user.accessToken;
-  const trackId = session?.user.trackId;
   const trackRole = session?.user.trackRole;
-  const trackName = session?.user.trackName;
-  const loginPeriod = session?.user.loginPeriod;
   const roleApply = session?.user.roleApply;
 
   const role = trackRole;
   const { pathname } = req.nextUrl;
+  console.log({
+    pathname,
+  });
 
   // 루트 경로('/')로 접속하는 모든 사용자를 '/backoffice'로 리다이렉트
-  if (pathname === '/') {
-    return NextResponse.redirect(new URL('/backoffice', req.url));
-  }
-
-  // /login 페이지는 아무 조건 없이 접근 가능
-  if (pathname === '/backoffice/login') {
-    return NextResponse.next();
-  }
-
-  if (pathname === '/backoffice' || !accessToken) {
+  console.log(pathname === '/' || !accessToken, 'asdfasdf');
+  if (pathname === '/' || !accessToken) {
+    console.log('리다이렉트하라고');
     return NextResponse.redirect(new URL('/backoffice/login', req.url));
   }
 
+  // /login 페이지는 아무 조건 없이 접근 가능
+  if (pathname === '/login') {
+    return NextResponse.next();
+  }
+
+  if (pathname === '' || !accessToken) {
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+
   // /role, /role/result는 AccessToken이 있어야 접근 가능
-  if (
-    (pathname === '/backoffice/role' ||
-      pathname === '/backoffice/role/result') &&
-    accessToken
-  ) {
+  if ((pathname === '/role' || pathname === '/role/result') && accessToken) {
     return NextResponse.next();
   }
 
@@ -60,9 +58,9 @@ export default async function middleware(req: NextRequest) {
   if (accessToken && !role) {
     if (roleApply) {
       // 3. AccessToken은 있지만 Role이 없고, roleApply가 있다면 /role/result로 리다이렉션
-      return NextResponse.redirect(new URL('/backoffice/role/result', req.url));
+      return NextResponse.redirect(new URL('/role/result', req.url));
     } else {
-      return NextResponse.redirect(new URL('/backoffice/role', req.url));
+      return NextResponse.redirect(new URL('/role', req.url));
     }
   }
 
@@ -71,5 +69,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|assets/icons).*)'],
+  matcher: ['/', '/backoffice/:path*'],
 };

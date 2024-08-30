@@ -3,8 +3,8 @@ import { PropsWithChildren } from 'react';
 
 const BackofficePage = ({ children }: PropsWithChildren) => {
   return (
-    <div className="flex w-full flex-col bg-blue-55">
-      <div className="mx-auto">
+    <div className="flex flex-grow flex-col bg-blue-55">
+      <div className="mx-auto flex-grow">
         <BackofficeHeader />
         {children}
       </div>

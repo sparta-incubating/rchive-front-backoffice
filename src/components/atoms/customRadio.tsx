@@ -28,8 +28,8 @@ const CustomRadio = ({ values, value, onChange }: CustomRadioProps) => {
             <Image
               src={
                 value === radioValue.value
-                  ? '/assets/icons/radioChecked.svg'
-                  : '/assets/icons/radioUnchecked.svg'
+                  ? '/backoffice/assets/icons/radioChecked.svg'
+                  : '/backoffice/assets/icons/radioUnchecked.svg'
               }
               alt="radio button"
               fill

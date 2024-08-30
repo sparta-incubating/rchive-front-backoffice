@@ -11,7 +11,7 @@ const NotionLink = ({ notionLink }: { notionLink: string }) => {
           <span className="text-md font-bold text-secondary-500">바로가기</span>
           <div className="relative">
             <Image
-              src="/assets/icons/arrowOutward.svg"
+              src="/backoffice/assets/icons/arrowOutward.svg"
               alt="external link"
               width={20}
               height={20}

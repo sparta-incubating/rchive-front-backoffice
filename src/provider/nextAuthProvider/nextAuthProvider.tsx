@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 
 const NextAuthProvider = ({ children }: PropsWithChildren) => {
   return (
-    <SessionProvider basePath={'/api/backoffice/auth'}>
+    <SessionProvider basePath={'/backoffice/api/auth'}>
       {children}
     </SessionProvider>
   );
