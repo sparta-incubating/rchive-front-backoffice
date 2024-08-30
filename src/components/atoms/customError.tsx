@@ -30,7 +30,7 @@ const CustomError = ({ errorData }: ServerComponentCustomErrorProps) => {
         <div className="flex h-[65px] w-[64px] items-center justify-center rounded-full bg-primary-50 p-2.5">
           <div className="relative h-[50px] w-[40px]">
             <Image
-              src={'/assets/icons/gif/rtanRun.gif'}
+              src={'/backoffice/assets/icons/gif/rtanRun.gif'}
               alt={'progress gif'}
               style={{ transform: 'scaleX(-1)' }}
               fill

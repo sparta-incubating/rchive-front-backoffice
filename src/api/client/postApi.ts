@@ -100,7 +100,7 @@ export const getSearchTutor = async (
 export const getNotionPageData = async (pageId: string) => {
   try {
     const response = await axios.get(
-      `/api/backoffice/notion/content?url=${pageId}`,
+      `/backoffice/api/notion/content?url=${pageId}`,
     );
 
     return response.data.result.replace('"', '');

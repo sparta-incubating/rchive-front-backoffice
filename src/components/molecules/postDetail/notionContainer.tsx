@@ -26,7 +26,7 @@ const NotionContainer = ({ notionLink }: { notionLink: string }) => {
   const [recordMap, setRecordMap] = useState<ExtendedRecordMap | null>(null);
   const handleNotion = async () => {
     return axios.get(
-      `/api/backoffice/notion/page?pageId=${extractPageId(notionLink)}`,
+      `/backoffice/api/notion/page?pageId=${extractPageId(notionLink)}`,
     );
   };
 

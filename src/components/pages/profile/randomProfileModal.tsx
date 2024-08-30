@@ -70,7 +70,7 @@ const RandomProfileModal = ({
         >
           <figure>
             <Image
-              src={`/assets/icons/${initImg}.svg`}
+              src={`/backoffice/assets/icons/${initImg}.svg`}
               height={160}
               width={160}
               alt="랜덤프로필"

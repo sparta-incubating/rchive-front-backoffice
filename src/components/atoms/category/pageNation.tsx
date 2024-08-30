@@ -27,7 +27,7 @@ const PageNation = ({
             onClick={() => onPageChange(pagination.getPreviousGroupFirstPage())}
           >
             <Image
-              src={'/assets/icons/initPage.svg'}
+              src={'/backoffice/assets/icons/initPage.svg'}
               width={32}
               height={32}
               alt="이전 그룹"
@@ -37,7 +37,7 @@ const PageNation = ({
         {pagination.hasPreviousPage() && (
           <button onClick={() => onPageChange(pagination.getPreviousPage())}>
             <Image
-              src={'/assets/icons/prevPage.svg'}
+              src={'/backoffice/assets/icons/prevPage.svg'}
               width={32}
               height={32}
               alt="이전 페이지"
@@ -62,7 +62,7 @@ const PageNation = ({
         {pagination.hasNextPage() && (
           <button onClick={() => onPageChange(pagination.getNextPage())}>
             <Image
-              src={'/assets/icons/nextPage.svg'}
+              src={'/backoffice/assets/icons/nextPage.svg'}
               width={32}
               height={32}
               alt="다음 페이지"
@@ -72,7 +72,7 @@ const PageNation = ({
         {pagination.hasNextGroup() && (
           <button onClick={() => onPageChange(pagination.getLastPage())}>
             <Image
-              src={'/assets/icons/nonNext.svg'}
+              src={'/backoffice/assets/icons/nonNext.svg'}
               width={32}
               height={32}
               alt="마지막 페이지"

@@ -21,7 +21,7 @@ const BackofficeHeaderTitle = () => {
   const pathName = usePathname();
 
   const currentLink = links.find((link) => {
-    if (link.href === '/backoffice/posts/*') {
+    if (link.href === '/posts/*') {
       return dynamicRouteCheck(pathName);
     }
     return link.href === pathName;
@@ -34,7 +34,11 @@ const BackofficeHeaderTitle = () => {
           className="relative h-9 w-9 cursor-pointer"
           onClick={() => router.back()}
         >
-          <Image src="/assets/icons/prevPageBlack.svg" alt="이전페이지" fill />
+          <Image
+            src="/backoffice/assets/icons/prevPageBlack.svg"
+            alt="이전페이지"
+            fill
+          />
         </div>
       )}
       <h1 className="text-[24px] font-bold">

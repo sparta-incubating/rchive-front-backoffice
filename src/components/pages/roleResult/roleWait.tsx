@@ -5,7 +5,7 @@ import { signOut } from 'next-auth/react';
 
 const RoleWait = () => {
   const handleGoToLogin = async () => {
-    await signOut();
+    await signOut({ callbackUrl: '/backoffice/login', redirect: true });
   };
 
   return (

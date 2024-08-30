@@ -12,7 +12,7 @@ const InquiryButton = ({ ...props }: InquiryButtonProps) => {
       <div className="flex gap-[10px]">
         <div className="relative h-6 w-6">
           <Image
-            src="/assets/icons/email.svg"
+            src="/backoffice/assets/icons/email.svg"
             alt={'문의하기 메일 아이콘'}
             fill
           />

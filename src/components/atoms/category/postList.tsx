@@ -26,7 +26,7 @@ const PostList = ({ postListData }: PostListProps) => {
     postListData.every((item) => postIds.includes(item.postId));
 
   return (
-    <section className="mx-auto my-[24px] h-[568px] w-full">
+    <section className="mx-auto my-[24px] w-full">
       <table className="table-auto">
         <PostTableHeader
           variant="postList"
