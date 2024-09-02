@@ -47,8 +47,8 @@ const SelectInput = ({
         <Image
           src={
             variant === 'menubar'
-              ? '/backoffice/assets/icons/selectArrowWhite.svg'
-              : '/backoffice/assets/icons/selectArrow.svg'
+              ? '/assets/icons/selectArrowWhite.svg'
+              : '/assets/icons/selectArrow.svg'
           }
           alt={'select arrow icon'}
           fill

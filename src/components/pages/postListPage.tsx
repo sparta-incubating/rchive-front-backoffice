@@ -35,6 +35,7 @@ const PostListPage = ({
 }: PostListProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const {
     trackName,
@@ -50,33 +51,33 @@ const PostListPage = ({
   );
 
   // URL 파라미터를 유지하면서 업데이트하는 함수
-  const updateQueryParams = (
-    key: string,
-    value: string | number | DateRange | undefined,
-  ) => {
-    const query = new URLSearchParams(window.location.search);
+  const updateQueryParams = useCallback(
+    (key: string, value: string | number | DateRange | undefined) => {
+      const query = new URLSearchParams(window.location.search);
 
-    if (key === 'date' && value) {
-      const dateRange = value as DateRange;
-      if (dateRange.from)
-        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
-      if (dateRange.to)
-        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
-    } else if (key === 'date' && !value) {
-      query.delete('startDate');
-      query.delete('endDate');
-    } else if (value) {
-      query.set(key, String(value));
-    } else {
-      query.delete(key);
-    }
-    if (key !== 'page') {
-      setCurrentPage(1);
-      query.set('page', '1');
-    }
+      if (key === 'date' && value) {
+        const dateRange = value as DateRange;
+        if (dateRange.from)
+          query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
+        if (dateRange.to)
+          query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
+      } else if (key === 'date' && !value) {
+        query.delete('startDate');
+        query.delete('endDate');
+      } else if (value) {
+        query.set(key, String(value));
+      } else {
+        query.delete(key);
+      }
+      if (key !== 'page') {
+        setCurrentPage(1);
+        query.set('page', '1');
+      }
 
-    router.push(`/posts?${query.toString()}`);
-  };
+      router.push(`/posts?${query.toString()}`);
+    },
+    [router],
+  );
 
   const handleTabChange = (newTab: string) => {
     setActiveTab(newTab);
@@ -131,8 +132,6 @@ const PostListPage = ({
     setDate(date);
     updateQueryParams('date', date);
   };
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
