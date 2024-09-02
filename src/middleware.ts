@@ -29,8 +29,6 @@ export default async function middleware(req: NextRequest) {
   const roleApply = session?.user.roleApply;
   const role = trackRole;
 
-  console.log('middleware:', { pathname, accessToken, role });
-
   // AccessToken이 없는 경우, /login으로 리다이렉트 (루트 경로 포함)
   if (!accessToken && pathname !== '/login') {
     return NextResponse.redirect(new URL('/backoffice/login', req.url));
