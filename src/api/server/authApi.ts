@@ -14,7 +14,7 @@ export const postRoleApply = async (data: RoleFormSchema) => {
 
 // 마지막 접속 정보 endpoint
 export const getLastConnectRole = async (accessToken: string) => {
-  return await axiosInstance.get('/apis/v1/role/select/last', {
+  return await axiosInstance.get('/apis/v1/backoffice/role/select/last', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

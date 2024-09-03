@@ -8,7 +8,7 @@ export const GET = async (req: NextRequest) => {
   const serverAPI = await createServerAPI();
   try {
     const { data } = await serverAPI.get<LastConnectRoleResponseType>(
-      '/apis/v1/role/select/last',
+      '/apis/v1/backoffice/role/select/last',
     );
 
     await setServerCookieRole(data.data);
