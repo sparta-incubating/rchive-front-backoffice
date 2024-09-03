@@ -6,6 +6,7 @@ import axiosAPI from '@/utils/axiosAPI';
 import NextAuth from 'next-auth';
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
+  basePath: '/api/auth',
   ...authConfig,
   callbacks: {
     async jwt({ token, user, trigger, session }) {
@@ -99,4 +100,5 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       });
     },
   },
+  debug: true,
 });

@@ -9,6 +9,7 @@ env:
   NEXT_PUBLIC_BACKEND_URL: ${{secrets.NEXT_PUBLIC_BACKEND_URL_DEV}}
   NOTION_API: ${{secrets.NOTION_API}}
   AUTH_SECRET: ${{secrets.AUTH_SECRET}}
+  AUTH_URL: ${{secrets.AUTH_URL_DEV}}
   TZ: Asia/Seoul
 
 permissions:

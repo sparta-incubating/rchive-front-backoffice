@@ -6,8 +6,8 @@ import Credentials from 'next-auth/providers/credentials';
 
 export const authConfig = {
   pages: {
-    signIn: '/backoffice/login',
-    signOut: '/backoffice/login',
+    signIn: '/login',
+    signOut: '/login',
   },
   providers: [
     Credentials({
