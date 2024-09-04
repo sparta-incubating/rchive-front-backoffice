@@ -107,7 +107,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
     sessionToken: {
       name:
         process.env.NEXT_PUBLIC_RUN_MODE === 'development'
-          ? `__Secure-next-auth.session-token`
+          ? `__Secure-next-auth.session-token.backoffice`
           : `next-auth.session-token`,
       options: {
         httpOnly: true,
