@@ -7,6 +7,7 @@ import { postHeaders } from '@/constants/permission.constant';
 import { setAllPostIds } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
+import { useRouter } from 'next/navigation';
 
 interface PostListProps {
   postListData: PostContentType[];
@@ -14,6 +15,7 @@ interface PostListProps {
 
 const PostList = ({ postListData }: PostListProps) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const postIds = useAppSelector((state) => state.postCheckBoxSlice.postIds);
 
   const handleAllCheck = (checked: boolean) => {
@@ -38,8 +40,21 @@ const PostList = ({ postListData }: PostListProps) => {
           {postListData.length === 0 ? (
             <tr>
               <td colSpan={postHeaders.length}>
-                <p>최근에 작성된 게시물이 없어요</p>
-                <Button>작성하기</Button>
+                <div className="flex h-[568px] w-[1012px]">
+                  <div className="m-auto flex flex-col gap-6">
+                    <p className="text-center text-lg font-semibold">
+                      최근에 작성된 게시물이 없어요
+                    </p>
+                    <Button
+                      className="mx-auto"
+                      variant="submit"
+                      size="sm"
+                      onClick={() => router.push('/posts/write')}
+                    >
+                      게시물 작성하기
+                    </Button>
+                  </div>
+                </div>
               </td>
             </tr>
           ) : (
