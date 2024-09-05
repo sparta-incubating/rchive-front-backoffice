@@ -7,9 +7,9 @@ export const removeMarkdown = (text: string) => {
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/__(.*?)__/g, '$1')
       // Remove links [text](url)
-      .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
       // Remove images ![alt](url) and inline image text
-      .replace(/!\[.*?\]\([^\)]+\)/g, '') // Remove markdown image
+      .replace(/!\[.*?\]\(([^)]+)\)/g, '') // Remove markdown image
       .replace(/!\S+\.(jpg|jpeg|png|gif)/g, '') // Remove inline image text
       // Remove videos (e.g., video.mp4)
       .replace(/\b\S+?\.(mp4|webm|ogg)\b/g, '') // Remove video links
