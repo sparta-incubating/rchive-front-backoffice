@@ -2,7 +2,7 @@
 
 import refreshIcon from '@/../public/assets/icons/refresh.svg';
 import refreshDisableIcon from '@/../public/assets/icons/refreshDisable.svg';
-import { getNotionPageData } from '@/api/client/postApi';
+import { getNotionPageData, patchNotionContent } from '@/api/client/postApi';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import PostIsOpenSelectBoxCategory from '@/components/atoms/category/postIsOpenSelectBoxCategory';
 import RefreshButton from '@/components/atoms/refreshButton';
@@ -24,6 +24,9 @@ interface PostsTableRowProps {
 const PostsTableRow = ({ postData }: PostsTableRowProps) => {
   const dispatch = useAppDispatch();
   const postIds = useAppSelector((state) => state.postCheckBoxSlice.postIds);
+  const { period: loginPeriod, trackName } = useAppSelector(
+    (state) => state.authSlice,
+  );
 
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -51,6 +54,13 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
 
     setLoadingMessage('데이터를 서버에 등록 중...');
     // server data patch
+
+    await patchNotionContent(
+      trackName,
+      Number(loginPeriod),
+      { content: responseNotionData, contentLink: postData.contentLink },
+      Number(postData.postId),
+    );
 
     setIsSubmitLoading(false);
     createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
