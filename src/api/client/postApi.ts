@@ -1,6 +1,7 @@
 import { PostForm } from '@/class/postForm';
 import { TrackType, tutorApiType } from '@/types/posts.types';
 import { client } from '@/utils/clientAPI';
+import { removeMarkdown } from '@/utils/removeMarkDown.util';
 import { createToast } from '@/utils/toast';
 import axios from 'axios';
 
@@ -103,7 +104,7 @@ export const getNotionPageData = async (pageId: string) => {
       `/backoffice/api/notion/content?url=${pageId}`,
     );
 
-    return response.data.result.replace('"', '');
+    return removeMarkdown(response.data.result).replace('"', '');
   } catch (error) {
     throw new Error('notion Page Data호출에 실패했습니다.');
   }
@@ -132,6 +133,25 @@ export const patchDataPost = async (
   trackName: string,
   period: number,
   data: PostForm,
+  postId: number,
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      data,
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('게시물 수정에 실패했습니다.');
+  }
+};
+
+// notion content 갱신 endpoint
+export const patchNotionContent = async (
+  trackName: string,
+  period: number,
+  data: { content: string; contentLink: string },
   postId: number,
 ) => {
   try {

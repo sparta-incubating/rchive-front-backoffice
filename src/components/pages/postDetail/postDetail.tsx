@@ -50,7 +50,7 @@ const PostDetail = ({ postData }: PostDetailProps) => {
               >
                 <div className="flex flex-col gap-[35px]">
                   <VideoContainer videoLink={postData.videoLink} />
-                  {!postData.tagNameList && (
+                  {!!postData.tagNameList && (
                     <PostDetailTag tags={postData.tagNameList!} />
                   )}
                 </div>

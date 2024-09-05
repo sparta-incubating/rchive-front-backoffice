@@ -1,12 +1,6 @@
 import { Client } from '@notionhq/client';
 import { NextResponse } from 'next/server';
 import { NotionToMarkdown } from 'notion-to-md';
-import rehypeStringify from 'rehype-stringify';
-import remarkBreaks from 'remark-breaks';
-import remarkGfm from 'remark-gfm';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import { unified } from 'unified';
 
 const notionAPIURL = process.env.NOTION_API;
 
@@ -25,24 +19,7 @@ export async function GET(request: Request) {
       const mdblocks = await n2m.pageToMarkdown(url);
       const mdString = n2m.toMarkdownString(mdblocks);
 
-      const load = await unified()
-        .use(remarkParse)
-        .use(remarkGfm)
-        .use(remarkBreaks)
-        .use(remarkRehype, { allowDangerousHtml: true })
-        .use(rehypeStringify, { allowDangerousHtml: true })
-        .process(mdString.parent);
-      const data = load.value
-        .toString()
-        .replace(
-          /<([^>]+)>|!\[[^\]]*\]\([^)]+\)|\[\S+?\]\([^)]+\)|\*\*|\s+|[`~!@#$%^&*()_+\-=$begin:math:display$$end:math:display${};':"\\|,.<>/?]/gi,
-          '',
-        );
-      // .replace(
-      //   /<([^>]+)>|!\[[^\]]*\]\([^)]+\)|\[\S+?\]\([^)]+\)|\*\*|\s+|[`~!@#$%^&*()_+\-=$begin:math:display$$end:math:display${};':"\\|,.<>\/?]/gi,
-      //   '',
-      // );
-      return NextResponse.json({ result: data });
+      return NextResponse.json({ result: mdString.parent.toString() });
     }
   } catch (error) {
     return NextResponse.json(
