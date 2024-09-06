@@ -41,6 +41,7 @@ client.interceptors.request.use(
     } else {
       console.log('액세스 토큰 오류');
     }
+
     return config;
   },
   (error) => Promise.reject(error),
@@ -61,7 +62,7 @@ client.interceptors.response.use(
         const refreshToken = session?.user.refreshToken;
 
         if (refreshToken) {
-          const response = await axios.post('/api/auth/reissue');
+          const response = await axios.post('/backoffice/api/auth/reissue');
 
           // 새로운 액세스 토큰을 전역 변수에 저장
           currentAccessToken = response.data.accessToken;
@@ -78,8 +79,7 @@ client.interceptors.response.use(
         console.error('Failed to refresh token, logging out');
 
         try {
-          console.log('로그아웃 시도해요');
-          await signOut();
+          await signOut({ callbackUrl: '/backoffice/login', redirect: true });
         } catch (logoutError) {
           console.error('Failed to sign out:', logoutError);
         } finally {

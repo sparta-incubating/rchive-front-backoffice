@@ -6,7 +6,7 @@ import Image from 'next/image';
 import React, { PropsWithChildren } from 'react';
 
 export const SelectInputVariants = cva(
-  'relative flex justify-self-start text-md font-semibold',
+  'relative flex justify-self-start text-md font-medium',
   {
     variants: {
       variant: {
@@ -48,8 +48,8 @@ const SelectInput = ({
           <Image
             src={
               variant === 'menubar'
-                ? '/assets/icons/selectArrowWhite.svg'
-                : '/assets/icons/selectArrow.svg'
+                ? '/backoffice/assets/icons/selectArrowWhite.svg'
+                : '/backoffice/assets/icons/selectArrow.svg'
             }
             alt={'select arrow icon'}
             fill

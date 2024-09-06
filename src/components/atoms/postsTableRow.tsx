@@ -2,7 +2,7 @@
 
 import refreshIcon from '@/../public/assets/icons/refresh.svg';
 import refreshDisableIcon from '@/../public/assets/icons/refreshDisable.svg';
-import { getNotionPageData } from '@/api/client/postApi';
+import { getNotionPageData, patchNotionContent } from '@/api/client/postApi';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import PostIsOpenSelectBoxCategory from '@/components/atoms/category/postIsOpenSelectBoxCategory';
 import RefreshButton from '@/components/atoms/refreshButton';
@@ -24,6 +24,9 @@ interface PostsTableRowProps {
 const PostsTableRow = ({ postData }: PostsTableRowProps) => {
   const dispatch = useAppDispatch();
   const postIds = useAppSelector((state) => state.postCheckBoxSlice.postIds);
+  const { period: loginPeriod, trackName } = useAppSelector(
+    (state) => state.authSlice,
+  );
 
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -32,7 +35,6 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
   const handleCheckChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setChecked(e.target.checked);
-      console.log({ postId: postData.postId });
       dispatch(setPostId({ postId: postData.postId }));
     },
     [dispatch, postData.postId],
@@ -50,10 +52,15 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       extractPageId(postData.contentLink!)!,
     );
 
-    console.log({ responseNotionData });
-
     setLoadingMessage('데이터를 서버에 등록 중...');
     // server data patch
+
+    await patchNotionContent(
+      trackName,
+      Number(loginPeriod),
+      { content: responseNotionData, contentLink: postData.contentLink },
+      Number(postData.postId),
+    );
 
     setIsSubmitLoading(false);
     createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
@@ -74,7 +81,10 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       <td className="w-[65.5px] text-gray-400">
         <div className="relative h-[38px] w-full">
           <Image
-            src={postData.thumbnailUrl || '/assets/icons/defaultThumbnail.png'}
+            src={
+              postData.thumbnailUrl ||
+              '/backoffice/assets/icons/defaultThumbnail.png'
+            }
             alt={postData.title}
             style={{ borderRadius: '4px' }}
             fill

@@ -1,9 +1,8 @@
-import {
-  postsEndPointFormData,
-  TrackType,
-  tutorApiType,
-} from '@/types/posts.types';
+import { PostForm } from '@/class/postForm';
+import { TrackType, tutorApiType } from '@/types/posts.types';
 import { client } from '@/utils/clientAPI';
+import { removeMarkdown } from '@/utils/removeMarkDown.util';
+import { createToast } from '@/utils/toast';
 import axios from 'axios';
 
 // 태그 검색 함수
@@ -101,11 +100,12 @@ export const getSearchTutor = async (
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
   try {
-    const response = await axios.get(`/api/notion/content?url=${pageId}`);
+    const response = await axios.get(
+      `/backoffice/api/notion/content?url=${pageId}`,
+    );
 
-    return response.data.result.replace('"', '');
+    return removeMarkdown(response.data.result).replace('"', '');
   } catch (error) {
-    console.log({ error });
     throw new Error('notion Page Data호출에 실패했습니다.');
   }
 };
@@ -114,7 +114,7 @@ export const getNotionPageData = async (pageId: string) => {
 export const postDataPost = async (
   trackName: string,
   period: number,
-  data: postsEndPointFormData,
+  data: PostForm,
 ) => {
   try {
     const response = await client.post(
@@ -132,7 +132,26 @@ export const postDataPost = async (
 export const patchDataPost = async (
   trackName: string,
   period: number,
-  data: postsEndPointFormData,
+  data: PostForm,
+  postId: number,
+) => {
+  try {
+    const response = await client.patch(
+      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      data,
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('게시물 수정에 실패했습니다.');
+  }
+};
+
+// notion content 갱신 endpoint
+export const patchNotionContent = async (
+  trackName: string,
+  period: number,
+  data: { content: string; contentLink: string },
   postId: number,
 ) => {
   try {
@@ -182,5 +201,26 @@ export const patchPostClose = async (
     return response.data;
   } catch (error) {
     throw new Error('게시물 비공개에 실패했습니다.');
+  }
+};
+
+// 게시물 삭제 endpoiont
+export const deletePost = async (
+  trackName: TrackType,
+  loginPeriod: number,
+  postId: string,
+) => {
+  try {
+    const response = await client.delete(
+      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${loginPeriod}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const data = error?.response?.data;
+      createToast(data.message, 'warning');
+      console.error(data.message);
+    }
   }
 };

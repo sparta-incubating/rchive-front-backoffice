@@ -43,3 +43,9 @@ export enum signupModalType {
   MANAGER = 'MANAGER',
   USER = 'USER',
 }
+
+export type authCodeType = {
+  username: string;
+  phone: string;
+  authCode: string;
+};

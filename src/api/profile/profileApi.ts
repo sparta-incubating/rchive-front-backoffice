@@ -5,6 +5,7 @@ import {
   ProfileChange,
   RoleChange,
 } from '@/types/profile.types';
+import axiosInstance from '@/utils/axiosAPI';
 import { client } from '@/utils/clientAPI';
 import { getSession } from 'next-auth/react';
 
@@ -55,12 +56,11 @@ export const updateRole = async (roleInfo: RoleChange) => {
 };
 
 export const updateProfileInfo = async (profileInfo: ProfileChange) => {
-  const { profileImg, nickname } = profileInfo;
+  const { profileImg } = profileInfo;
 
   try {
-    const res = await client.patch(`/apis/v1/profile`, {
+    const res = await client.patch(`/apis/v1/profile/img`, {
       profileImg,
-      nickname,
     });
     return res.data;
   } catch (error) {
@@ -86,7 +86,7 @@ export const sendPhoneAuthNumber = async (userInfo: PhoneInfo) => {
   const { username, phone } = userInfo;
 
   try {
-    const res = await client.post(`/apis/v1/users/auth/phone/send`, {
+    const res = await axiosInstance.post(`/apis/v1/users/auth/phone/send`, {
       username,
       phone,
     });
@@ -100,15 +100,16 @@ export const sendPhoneAuthNumber = async (userInfo: PhoneInfo) => {
 export const checkPhoneAuth = async (userInfo: PhoneChange) => {
   //유저이름 & 바꿀 휴대폰 번호 & 인증번호
   const { username, phone, authCode } = userInfo;
+
   try {
-    const res = await client.post(`/apis/v1/users/auth/phone/valid`, {
+    const res = await axiosInstance.post(`/apis/v1/users/auth/phone/valid`, {
       username,
       phone,
       authCode,
     });
     return res.data;
   } catch (error) {
-    throw new Error('휴대폰 번호 변경에 실패했습니다. 다시 시도해주세요.');
+    throw new Error('휴대폰 인증번호 확인에 실패했습니다. 다시 시도해주세요.');
   }
 };
 

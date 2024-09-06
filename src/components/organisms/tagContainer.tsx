@@ -21,7 +21,6 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
     searchTags,
     handleClickDropDownData,
   } = useTagContext();
-  console.log({ tags });
   return (
     <TitleContainer title="태그">
       <div

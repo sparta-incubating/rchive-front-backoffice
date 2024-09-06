@@ -5,7 +5,7 @@ const UploadThumbnailText = ({ children }: PropsWithChildren) => {
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       <Image
-        src={'/assets/icons/defaultThumbnail.png'}
+        src={'/backoffice/assets/icons/defaultThumbnail.png'}
         alt="기본 썸네일"
         fill
       />

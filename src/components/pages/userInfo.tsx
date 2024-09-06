@@ -17,12 +17,10 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const [init, setInit] = useState<string>(profileImg);
 
   useEffect(() => {
-    if (profileImg) {
-      if (!profileImg.includes('MRT')) {
-        setInit('MRT_1');
-      } else {
-        setInit(profileImg);
-      }
+    if (profileImg === 'default') {
+      setInit('MRT_1');
+    } else {
+      setInit(profileImg);
     }
   }, [profileImg, init]);
 
@@ -50,7 +48,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <article className="flex h-[160px] flex-row">
           <figure className="group relative w-[calc(100%-860px)]">
             <Image
-              src={`/assets/icons/${init}.svg`}
+              src={`/backoffice/assets/icons/${init}.svg`}
               height={160}
               width={160}
               alt="랜덤프로필"

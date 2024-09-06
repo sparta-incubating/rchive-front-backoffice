@@ -9,7 +9,7 @@ interface MenubarLogoutProps extends ComponentProps<'button'> {
 
 const MenubarLogout = ({ children, ...props }: MenubarLogoutProps) => {
   const handleLogout = async () => {
-    await signOut();
+    await signOut({ callbackUrl: '/backoffice/login', redirect: true });
   };
 
   return (

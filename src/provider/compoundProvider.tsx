@@ -1,4 +1,5 @@
 import { auth } from '@/auth';
+import { ConfirmProvider } from '@/context/ConfirmContext';
 import { ModalContextProvider } from '@/context/modal.context';
 import NextAuthProvider from '@/provider/nextAuthProvider/nextAuthProvider';
 import StoreProvider from '@/provider/reduxProvider/storeProvider';
@@ -11,19 +12,20 @@ const CompoundProvider = async ({ children }: PropsWithChildren) => {
   const accessToken = session?.user.accessToken || '';
   const trackName = session?.user.trackName || '';
   const trackRole = session?.user.trackRole || 'USER';
-  const period = session?.user.loginPeriod || '';
-
+  const period = String(session?.user.loginPeriod) || '';
   return (
     <StoreProvider>
       <TanstackQueryProvider>
         <ModalContextProvider>
-          <SetAuthInfo
-            accessToken={accessToken}
-            trackName={trackName}
-            trackRole={trackRole}
-            period={String(period)}
-          />
-          <NextAuthProvider>{children}</NextAuthProvider>
+          <ConfirmProvider>
+            <SetAuthInfo
+              accessToken={accessToken}
+              trackName={trackName}
+              trackRole={trackRole}
+              period={String(period)}
+            />
+            <NextAuthProvider>{children}</NextAuthProvider>
+          </ConfirmProvider>
         </ModalContextProvider>
       </TanstackQueryProvider>
     </StoreProvider>

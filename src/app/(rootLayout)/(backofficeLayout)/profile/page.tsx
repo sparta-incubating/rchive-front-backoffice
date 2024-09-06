@@ -16,16 +16,8 @@ const Profile = () => {
   const { userData, isError, isPending } = useUserInfoDataQuery();
   const [modalType, setModalType] = useState<string | null>(null);
 
-  const {
-    email,
-    username,
-    profileImg,
-    trackName,
-    period,
-    trackRole,
-    phone,
-    nickname,
-  } = userData?.data ?? '';
+  const { email, username, profileImg, trackName, period, trackRole, phone } =
+    userData?.data ?? '';
   const openModal = (type: string) => setModalType(type);
   const closeModal = () => setModalType(null);
 
@@ -71,11 +63,7 @@ const Profile = () => {
         <RoleChangeModal onClose={closeModal} trackRole={trackRole} />
       )}
       {modalType === 'image' && (
-        <RandomProfileModal
-          onClose={closeModal}
-          profileImg={profileImg}
-          nickname={nickname}
-        />
+        <RandomProfileModal onClose={closeModal} profileImg={profileImg} />
       )}
     </BackofficePage>
   );

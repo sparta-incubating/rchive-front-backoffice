@@ -39,7 +39,7 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
   const onSubmit = async (data: RoleFormSchema) => {
     const response = await postRoleApply(data);
     if (response.status === 200) {
-      window.location.href = '/role/result';
+      window.location.href = '/backoffice/role/result';
     }
   };
 

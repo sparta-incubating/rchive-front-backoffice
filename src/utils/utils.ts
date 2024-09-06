@@ -59,3 +59,24 @@ export const isTeamSpartaEmail = (email: string): boolean => {
  * false: server
  */
 export const isBrowser = () => typeof window !== 'undefined';
+
+export const extractYouTubeId = (url: string): string | null => {
+  if (!url) return null;
+
+  // 정규표현식 패턴
+  const patterns = [
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/i, // 표준 YouTube URL
+    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/i, // 짧은 youtu.be URL
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/i, // 임베드 URL
+    /^([a-zA-Z0-9_-]{11})$/, // 직접 video ID
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  return null; // 일치하는 패턴이 없으면 null 반환
+};

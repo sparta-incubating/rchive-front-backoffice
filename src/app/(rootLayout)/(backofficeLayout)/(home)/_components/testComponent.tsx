@@ -12,7 +12,7 @@ const TestComponent = () => {
 
   const handleServerRefresh = async () => {
     try {
-      const response = await axios.post('/api/auth/reissue');
+      const response = await axios.post('/backoffice/api/auth/reissue');
     } catch (error) {
       console.log(error);
     }

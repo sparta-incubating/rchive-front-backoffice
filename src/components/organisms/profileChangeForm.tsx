@@ -28,14 +28,14 @@ const ProfileChangeForm = ({
           <div className="flex h-[72px] w-full justify-end p-[28px]">
             <IconButton onClick={onClose}>
               <div className="relative h-5 w-5">
-                <div className="relative flex h-5 w-5 items-center justify-center bg-[url('/assets/icons/close.svg')] bg-center bg-no-repeat"></div>
+                <div className="relative flex h-5 w-5 items-center justify-center bg-[url('/backoffice/assets/icons/close.svg')] bg-center bg-no-repeat"></div>
               </div>
             </IconButton>
           </div>
           {/* 나가기버튼 */}
           <div className="flex flex-col">
             <div className="flex flex-col gap-[8px]">
-              <p className="h-[30px] text-center text-xl font-medium text-gray-900">
+              <p className="h-[30px] text-center text-xl font-semibold text-gray-900">
                 {labels.main}
               </p>
               {labels.sub && (
