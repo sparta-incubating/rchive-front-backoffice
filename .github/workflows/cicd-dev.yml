@@ -3,8 +3,6 @@ name: CI/CD on Dev
 on:
   push:
     branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
 
 env:
   NEXT_PUBLIC_RUN_MODE: ${{secrets.NEXT_PUBLIC_RUN_MODE_DEV}}
