@@ -19,7 +19,6 @@ export default async function middleware(req: NextRequest) {
   );
 
   if (pathname === '/') {
-    console.log('Root path detected, redirecting to admin');
     return NextResponse.redirect(new URL('/backoffice/admin', req.url));
   }
 
