@@ -49,7 +49,6 @@ client.interceptors.request.use(
 
 client.interceptors.response.use(
   (response) => {
-    console.log('응답 받음:', response.status, response.config.url);
     return response;
   },
   async (error) => {

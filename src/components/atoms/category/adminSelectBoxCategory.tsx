@@ -41,8 +41,6 @@ const AdminSelectBoxCategory = ({
       trackRole,
       email,
     };
-    // console.log(isStatus, 'isStatus');
-    // console.log(userInfo, 'userInfo');
     try {
       if (isStatus === 'APPROVE') {
         await postUserApproveMutate.mutate(userInfo);

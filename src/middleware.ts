@@ -18,6 +18,10 @@ export default async function middleware(req: NextRequest) {
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
   );
 
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/backoffice/admin', req.url));
+  }
+
   // /login 페이지는 항상 접근 가능
   if (pathname === '/login') {
     return NextResponse.next();
@@ -58,5 +62,8 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|assets/icons).*)'],
+  matcher: [
+    '/',
+    '/((?!api|_next/static|_next/image|favicon.ico|assets/icons).*)',
+  ],
 };

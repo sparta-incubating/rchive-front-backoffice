@@ -1,7 +1,13 @@
-import TestComponent from '@/app/(rootLayout)/(backofficeLayout)/(home)/_components/testComponent';
+'use client';
+
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
-  return <TestComponent />;
+  const router = useRouter();
+  /*  useEffect(() => {
+      router.push('/backoffice/admin');
+    }, [router]);*/
+  return <></>;
 };
 
 export default Home;
