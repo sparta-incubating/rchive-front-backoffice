@@ -19,7 +19,6 @@ export const updateAccessToken = async (accessToken: string) => {
   const session = await auth();
 
   if (session && session.user) {
-    console.log('updateAccessToken', accessToken);
     session.user.accessToken = accessToken;
   }
 
