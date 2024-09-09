@@ -13,7 +13,7 @@ const PreviewContainer = ({
   onSubmit,
 }: PreviewContainerProps) => {
   return (
-    <div className="relative flex flex-col">
+    <div className="relative flex flex-col scrollbar-hide">
       <section className="flex flex-col gap-2 border border-b-gray-100 bg-blue-50 py-4">
         <h1 className="text-center text-2xl font-bold">미리보기 화면입니다.</h1>
         <p className="text-center text-lg font-normal">

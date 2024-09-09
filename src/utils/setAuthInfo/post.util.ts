@@ -9,7 +9,7 @@ export const getNameCategory = (postType: PostType) => {
     case 'Level_Basic':
       return '베이직';
     case 'Level_Standard':
-      return '스텐다드';
+      return '스탠다드';
     case 'Special_Lecture':
       return '특강/실시간 세션';
     default:

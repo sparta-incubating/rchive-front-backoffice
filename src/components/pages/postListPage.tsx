@@ -114,7 +114,6 @@ const PostListPage = ({
 
   // 공개여부
   const isOpenedOptionsData: SelectOptionType[] = [
-    { value: 'all', label: '전체', selected: true },
     { value: 'true', label: '공개', selected: false },
     { value: 'false', label: '비공개', selected: false },
   ];
