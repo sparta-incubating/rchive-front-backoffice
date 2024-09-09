@@ -51,7 +51,7 @@ export type CountListData = {
 };
 export interface TapProps {
   selectedTab: string;
-  onTabChange: (tab: string, count: number) => void;
+  onTabChange: (tab: string) => void;
   countList: { data: CountListData };
 }
 
@@ -59,13 +59,15 @@ export interface FilteredListProps {
   data: AdminDataInfoType[];
 }
 
+export type adminStatus = 'WAIT' | 'APPROVE' | 'REJECT' | '';
 export interface FilterParams {
   trackRole: string;
-  sort: string;
+  sort: 'DATE_LATELY' | 'NAME_ALPHABETICALLY' | '';
   searchPeriod: string;
   keyword: string;
   page: number;
   size: string;
+  status: adminStatus;
 }
 
 export type SearchAdminType = {

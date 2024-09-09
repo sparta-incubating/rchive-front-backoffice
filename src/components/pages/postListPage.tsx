@@ -65,6 +65,10 @@ const PostListPage = ({
     } else if (key === 'date' && !value) {
       query.delete('startDate');
       query.delete('endDate');
+    } else if (key === 'tutorId' && value === 'all') {
+      query.delete('tutorId');
+    } else if (key === 'searchPeriod' && value === 'all') {
+      query.delete('searchPeriod');
     } else if (value) {
       query.set(key, String(value));
     } else {
@@ -180,7 +184,7 @@ const PostListPage = ({
           setActiveTab={handleTabChange}
         />
 
-        <section className="px-9 py-6">
+        <section className="py-6">
           {/* 카테고리 */}
           <section className="mx-auto mb-[24px] flex w-full flex-row justify-between">
             <section className="flex flex-row gap-2.5">

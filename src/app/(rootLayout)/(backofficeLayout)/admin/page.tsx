@@ -6,25 +6,19 @@ import {
   useRoleCountDataQuery,
 } from '@/api/admin/useQuery';
 import AdminTableHeader from '@/components/atoms/admin/adminTableHeader';
-import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import NoDataList from '@/components/atoms/category/noDataList';
+import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
-import CategoryFiltered from '@/components/pages/admin/categoryFiltered';
 import BackofficePage from '@/components/pages/backofficePage';
-import {
-  clearAdminIds,
-  setAllAdminIds,
-} from '@/redux/slice/adminCheckBox.slice';
+import { adminPerItem } from '@/constants/permission.constant';
+import { setAllAdminIds } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
-import { AdminDataInfoType, AdminListInfoType } from '@/types/admin.types';
-import { createToast } from '@/utils/toast';
-import dayjs from 'dayjs';
+import { AdminDataInfoType } from '@/types/admin.types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { DateRange } from 'react-day-picker';
 
 const Admin = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -35,6 +29,9 @@ const Admin = () => {
     sort: 'DATE_LATELY',
     searchPeriod: '',
     keyword: '',
+    status: '',
+    page: currentPage,
+    size: adminPerItem,
   });
 
   const { trackName: statusTrackName } = useAppSelector(
@@ -42,14 +39,16 @@ const Admin = () => {
   );
   const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
   const { boardList } = usePermissionDataQuery(filters);
+
   const viewList = boardList?.data?.content;
+  const totalElements = boardList?.data?.totalElements;
+  console.log(viewList, 'viewList');
   const { countList } = useRoleCountDataQuery();
   const router = useRouter();
 
-  // 탭 변경 핸들러
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
-    setCurrentPage(1); // 페이지를 1로 초기화
+    setCurrentPage(1);
 
     const count =
       tab === 'All'
@@ -89,22 +88,18 @@ const Admin = () => {
   const dispatch = useAppDispatch();
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
   //id 추가
-  const dataList = viewList?.map((item: AdminListInfoType) => ({
-    ...item,
-    adminId: item.email,
-  }));
 
   const handleAllCheck = (checked: boolean) => {
     //체크한 id 목록들
-    const currentPagePostIds = dataList.map(
-      (item: AdminDataInfoType) => item.adminId,
+    const currentPagePostIds = viewList?.map(
+      (item: AdminDataInfoType) => item.email,
     );
     dispatch(setAllAdminIds({ adminIds: currentPagePostIds, checked }));
   };
 
   const isAllChecked =
-    dataList?.length > 0 &&
-    dataList?.every((item: AdminDataInfoType) =>
+    viewList?.length > 0 &&
+    viewList?.every((item: AdminDataInfoType) =>
       adminIds.includes(item.adminId),
     );
 
@@ -117,35 +112,6 @@ const Admin = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    updateQueryParams('page', page);
-  };
-
-  const updateQueryParams = (
-    key: string,
-    value: string | number | DateRange | undefined,
-  ) => {
-    const query = new URLSearchParams(window.location.search);
-
-    if (key === 'date' && value) {
-      const dateRange = value as DateRange;
-      if (dateRange.from)
-        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
-      if (dateRange.to)
-        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
-    } else if (key === 'date' && !value) {
-      query.delete('startDate');
-      query.delete('endDate');
-    } else if (value) {
-      query.set(key, String(value));
-    } else {
-      query.delete(key);
-    }
-    if (key !== 'page') {
-      setCurrentPage(1);
-      query.set('page', '1');
-    }
-
-    router.push(`/admin?${query.toString()}`);
   };
 
   useEffect(() => {
@@ -155,44 +121,44 @@ const Admin = () => {
   const filteredData =
     viewList?.filter(
       (item: AdminDataInfoType) =>
-        selectedTab === 'All' || item.auth === selectedTab,
+        selectedTab === 'All' || item.email === selectedTab,
     ) ?? [];
 
   /**전체 승인 조회 */
-  const foundItems = checkedAdminIds.flatMap((email) =>
-    viewList?.filter((item: AdminDataInfoType) => item.email === email),
-  );
+  // const foundItems = checkedAdminIds.flatMap((email) =>
+  //   viewList?.filter((item: AdminDataInfoType) => item.email === email),
+  // );
 
-  const extractedData = foundItems.map(({ period, trackRole, email }) => ({
-    trackName: statusTrackName,
-    period,
-    trackRole,
-    email,
-  }));
+  // const extractedData = foundItems.map(({ period, trackRole, email }) => ({
+  //   trackName: statusTrackName,
+  //   period,
+  //   trackRole,
+  //   email,
+  // }));
 
-  const allApproveItems = async () => {
-    extractedData.forEach((item) => {
-      postUserApproveMutate.mutateAsync(item);
-    });
-    createToast(
-      `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
-      'primary',
-      false,
-    );
-    dispatch(clearAdminIds());
-  };
+  // const allApproveItems = async () => {
+  //   extractedData.forEach((item) => {
+  //     postUserApproveMutate.mutateAsync(item);
+  //   });
+  //   createToast(
+  //     `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
+  //     'primary',
+  //     false,
+  //   );
+  //   dispatch(clearAdminIds());
+  // };
 
-  const allRejectItems = async () => {
-    extractedData.forEach((item) => {
-      deleteUsrRoleMutate.mutateAsync(item);
-    });
-    createToast(
-      `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
-      'primary',
-      false,
-    );
-    dispatch(clearAdminIds());
-  };
+  // const allRejectItems = async () => {
+  //   extractedData.forEach((item) => {
+  //     deleteUsrRoleMutate.mutateAsync(item);
+  //   });
+  //   createToast(
+  //     `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
+  //     'primary',
+  //     false,
+  //   );
+  //   dispatch(clearAdminIds());
+  // };
 
   return (
     <>
@@ -211,7 +177,7 @@ const Admin = () => {
           {/* 탭 메뉴 */}
           {/*카테고리 및 체크박스*/}
 
-          <div className="flex flex-row justify-between py-[24px]">
+          {/* <div className="flex flex-row justify-between py-[24px]">
             <CategoryFiltered handleCategoryChange={handleCategoryChange} />
             {checkedAdminIds.length > 0 && (
               <section className="flex flex-row gap-[8px]">
@@ -226,7 +192,7 @@ const Admin = () => {
                 </BackOfficeButton>
               </section>
             )}
-          </div>
+          </div> */}
 
           {selectedTabCount === 0 ? (
             <NoDataList />
@@ -239,7 +205,15 @@ const Admin = () => {
                 />
               )}
               {viewList?.length > 0 ? (
-                <AuthFilteredList data={filteredData} />
+                <>
+                  <AuthFilteredList data={viewList} />
+                  <PageNation
+                    currentPage={currentPage}
+                    totalElements={totalElements}
+                    size={adminPerItem}
+                    onPageChange={handlePageChange}
+                  />
+                </>
               ) : (
                 <NoDataList />
               )}

@@ -32,7 +32,7 @@ function TagCard({ children, variant, size, className = '' }: TagCardProps) {
       onClick={(e) => e.stopPropagation()}
       className={classMerge(tagCardVariants({ variant, size }), className)}
     >
-      <div className="flex w-full items-center justify-between gap-2">
+      <div className="text-md flex w-full items-center justify-between gap-2">
         {children}
       </div>
     </div>

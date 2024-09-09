@@ -32,6 +32,8 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
+  const [customIsValid, setCustomIsValid] = useState(false);
+
   const router = useRouter();
   const {
     register,
@@ -39,7 +41,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid: formIsValid },
   } = useForm<PostsFormSchema>({
     resolver: zodResolver(postsSchema),
     mode: 'all',
@@ -140,6 +142,21 @@ const usePostWriteForm = (postData?: postFetchData) => {
     }
   }, [setValue]);
 
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      const contentLink = value.contentLink;
+      const videoLink = value.videoLink;
+      const uploadedAt = value.uploadedAt;
+
+      const isContentValid = !!(contentLink || videoLink);
+      const isUploadedAtValid = !!uploadedAt;
+
+      setCustomIsValid(formIsValid && isContentValid && isUploadedAtValid);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, formIsValid]);
+
   return {
     register,
     watch,
@@ -150,7 +167,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     onSubmit,
     notionValidateState,
     setNotionValidateState,
-    isValid,
+    isValid: customIsValid,
   };
 };
 

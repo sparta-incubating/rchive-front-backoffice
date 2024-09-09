@@ -1,3 +1,4 @@
+import { adminPerItem } from '@/constants/permission.constant';
 import {
   ApproveItem,
   DeleteUserType,
@@ -29,6 +30,8 @@ export const getBoardList = async (filters: FilterParams) => {
     searchPeriod: filters.searchPeriod || undefined,
     searchKeyword: filters.keyword || undefined,
     searchTrackRole: filters.trackRole || undefined,
+    page: filters.page,
+    size: adminPerItem,
   };
 
   try {

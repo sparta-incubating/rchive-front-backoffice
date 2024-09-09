@@ -40,7 +40,7 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
           type="text"
           ref={ref}
           {...props}
-          className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap outline-none"
+          className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm placeholder-gray-300 outline-none"
         />
         {showButton && (
           <Button

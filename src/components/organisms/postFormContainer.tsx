@@ -135,16 +135,22 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
             </TitleContainer>
           </div>
           <div className="flex justify-end gap-4">
-            <Button type="button" variant="secondary" onClick={handlePreview}>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={!isValid}
+              onClick={handlePreview}
+              className="w-[176px]"
+            >
               미리보기
             </Button>
             <Button
               type="submit"
               variant="submit"
               disabled={!isValid}
-              className="w-[178px]"
+              className="w-[176px]"
             >
-              {postData ? '수정하기' : '등록하기'}
+              {postData ? '수정하기' : '게시하기'}
             </Button>
           </div>
         </div>

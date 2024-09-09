@@ -32,7 +32,11 @@ const PostInfoContainer = ({
   watch,
   errors,
 }: PostInputContainerProps) => {
-  const { trackRole, trackName } = useAppSelector((state) => state.authSlice);
+  const {
+    trackRole,
+    trackName,
+    period: loginPeriod,
+  } = useAppSelector((state) => state.authSlice);
 
   const period = useGetPeriod(trackName);
   const { handleSelected: handlePeriodSelected } = useSelectBox(
@@ -59,7 +63,7 @@ const PostInfoContainer = ({
                 onChange(value);
               }}
               variant="secondary"
-              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
+              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               value={value}
               disabled={trackRole === 'APM'}
             />
@@ -83,7 +87,7 @@ const PostInfoContainer = ({
                 field.onChange(value);
               }}
               variant="secondary"
-              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
+              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               field={field}
             />
           )}

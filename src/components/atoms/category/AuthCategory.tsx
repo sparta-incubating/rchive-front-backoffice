@@ -47,10 +47,10 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
         />
       </CategoryLayout>
       <CategoryDropDown show={isDropdownOpen}>
-        {data?.map((item, index) => (
+        {data?.map((item: AdminCateoryType) => (
           <div
             className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-            key={item.id + index}
+            key={item?.id}
             onClick={() => handleClick(item)}
           >
             <p

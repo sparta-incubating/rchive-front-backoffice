@@ -147,8 +147,10 @@ const ThumbnailContainer = ({
         />
 
         <div className="flex flex-col gap-2 text-sm text-gray-300">
-          <span>이미지를 업로드하지 않은 경우 기본 이미지로 보여집니다.</span>
-          <span>최대 이미지 용량: 3MB</span>
+          <div className="flex flex-col">
+            <span>이미지를 업로드하지 않은 경우 기본 이미지로 보여집니다.</span>
+            <span>최대 이미지 용량: 3MB</span>
+          </div>
           <div className="flex gap-2">
             {!uploadState ? (
               <Button
