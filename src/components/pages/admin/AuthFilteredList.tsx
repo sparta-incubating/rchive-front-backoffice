@@ -52,7 +52,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
               {item.username}
             </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
-              {item.trackRole}
+              {item.trackRole === 'STUDENT' ? '수강생' : item.trackRole}
             </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
               {item.period}
