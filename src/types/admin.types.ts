@@ -70,7 +70,6 @@ export interface FilterParams {
   status: AdminStatus;
   page: number;
   size: string;
-  status: adminStatus;
 }
 
 export type SearchAdminType = {

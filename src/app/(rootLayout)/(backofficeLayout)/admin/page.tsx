@@ -108,10 +108,15 @@ const Admin = () => {
 
   const handleSearchChange = () => {
     const value = inputRef.current?.value ?? '';
+
+    setCurrentPage(currentPage);
+
     setFilters((prevFilters) => ({
       ...prevFilters,
       keyword: value,
     }));
+
+    // console.log(filters);
   };
 
   const handleCategoryChange = (category: string, value: string) => {
