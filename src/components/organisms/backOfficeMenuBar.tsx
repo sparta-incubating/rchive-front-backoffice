@@ -13,8 +13,10 @@ const BackOfficeMenuBar = () => {
   }, []);
 
   const handleGoArchive = () => {
+    console.log({ archiveUrl });
+    console.log('onClick!!!!!!!!!!!!');
     if (archiveUrl) {
-      window.open(archiveUrl, '_blank', 'noopener,noreferrer');
+      window.open('https://rchive.kr', '_blank');
     }
   };
 
