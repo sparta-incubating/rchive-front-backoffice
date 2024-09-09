@@ -1,4 +1,4 @@
-import { adminPerItem } from '@/constants/permission.constant';
+import { ADMIN_DEFAULT_PAGE_SIZE } from '@/constants/admin.constant';
 import {
   ApproveItem,
   DeleteUserType,
@@ -23,15 +23,18 @@ export const getBoardList = async (filters: FilterParams) => {
   const trackName = session?.user.trackName;
   const loginPeriod = session?.user.loginPeriod;
 
+  console.log({ filters });
+
   const params = {
     sort: filters.sort || 'DATE_LATELY',
     trackName,
     loginPeriod,
+    status: filters.status || undefined,
     searchPeriod: filters.searchPeriod || undefined,
     searchKeyword: filters.keyword || undefined,
     searchTrackRole: filters.trackRole || undefined,
     page: filters.page,
-    size: adminPerItem,
+    size: ADMIN_DEFAULT_PAGE_SIZE,
   };
 
   try {

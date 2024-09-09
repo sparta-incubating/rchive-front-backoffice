@@ -1,6 +1,5 @@
 //체크박스 type
 export type AdminDataInfoType = {
-  adminId: string;
   username: string;
   trackRole: string;
   period: number;
@@ -49,6 +48,7 @@ export type CountListData = {
   statusApprove: number;
   statusWait: number;
 };
+
 export interface TapProps {
   selectedTab: string;
   onTabChange: (tab: string) => void;
@@ -59,12 +59,15 @@ export interface FilteredListProps {
   data: AdminDataInfoType[];
 }
 
-export type adminStatus = 'WAIT' | 'APPROVE' | 'REJECT' | '';
+export type AdminStatus = 'WAIT' | 'APPROVE' | '' | 'REJECT';
+export type AdminSort = 'DATE_LATELY' | 'NAME_ALPHABETICALLY';
+
 export interface FilterParams {
   trackRole: string;
-  sort: 'DATE_LATELY' | 'NAME_ALPHABETICALLY' | '';
+  sort: AdminSort;
   searchPeriod: string;
   keyword: string;
+  status: AdminStatus;
   page: number;
   size: string;
   status: adminStatus;

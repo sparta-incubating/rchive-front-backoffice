@@ -13,8 +13,6 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
 
   const [checked, setChecked] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(8);
 
   const handleCheckChange =
     (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,15 +28,9 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   useEffect(() => {
     setChecked(
       adminIds.length === data.length &&
-        data.every((item) => adminIds.includes(item.adminId)),
+        data.every((item) => adminIds.includes(item.email)),
     );
   }, [adminIds, data]);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  console.log(data, 'datadatadatadata');
 
   return (
     <div className="w-[1012px] border-gray-300">
@@ -51,7 +43,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
             <div className="flex h-[64px] w-[92px] items-center pl-[24px]">
               <CategoryBox
                 text=""
-                onChange={() => handleCheckChange(item.email)}
+                onChange={handleCheckChange(item.email)}
                 checked={adminIds.includes(item.email)}
               />
             </div>
