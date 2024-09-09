@@ -143,18 +143,11 @@ const usePostWriteForm = (postData?: postFetchData) => {
   }, [setValue]);
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      const contentLink = value.contentLink;
-      const videoLink = value.videoLink;
-      const uploadedAt = value.uploadedAt;
-
-      const isContentValid = !!(contentLink || videoLink);
-      const isUploadedAtValid = !!uploadedAt;
-
-      setCustomIsValid(formIsValid && isContentValid && isUploadedAtValid);
-    });
-
-    return () => subscription.unsubscribe();
+    setCustomIsValid(
+      formIsValid &&
+        !!(watch('contentLink') || watch('videoLink')) &&
+        !!watch('uploadedAt'),
+    );
   }, [watch, formIsValid]);
 
   return {

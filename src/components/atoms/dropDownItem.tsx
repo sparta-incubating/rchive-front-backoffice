@@ -24,7 +24,7 @@ interface DropDownItemProps extends VariantProps<typeof dropDownItemVariants> {
 const DropDownItem = ({ children, onClick, variant }: DropDownItemProps) => {
   return (
     <div onClick={onClick} className={dropDownItemVariants({ variant })}>
-      <span className="text-gary-900 text-sm font-normal group-hover:font-bold">
+      <span className="text-gary-900 text-sm font-normal hover:font-bold">
         {children}
       </span>
     </div>

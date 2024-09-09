@@ -3,21 +3,18 @@
 import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
-
-// const options: SelectOptionType[] = [
-//   { value: '0', label: '르탄이의 아카이브 바로 가기', selected: false },
-//   { value: '1', label: '옵션1', selected: false },
-//   { value: '2', label: '옵션2', selected: false },
-//   { value: '3', label: '옵션3', selected: false },
-// ];
+import { useEffect, useState } from 'react';
 
 const BackOfficeMenuBar = () => {
-  // const handleSelect = (value: SelectOptionType['value']) => {};
+  const [archiveUrl, setArchiveUrl] = useState('');
+
+  useEffect(() => {
+    setArchiveUrl(process.env.NEXT_PUBLIC_BACKEND_URL || '');
+  }, []);
 
   const handleGoArchive = () => {
-    const archiveUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     if (archiveUrl) {
-      window.open(archiveUrl, '_blank');
+      window.open(archiveUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -37,13 +34,6 @@ const BackOfficeMenuBar = () => {
             르탄이의 아카이브 바로 가기
           </p>
         </button>
-        {/* <SelectBox
-          options={options}
-          label={''}
-          onSelect={handleSelect}
-          selectInputVariant={'menubar'}
-          className="w-[256px] bg-primary-400 px-4"
-        /> */}
       </section>
 
       {/* nav */}
