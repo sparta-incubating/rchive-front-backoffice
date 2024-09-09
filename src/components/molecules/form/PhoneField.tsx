@@ -94,7 +94,7 @@ const PhoneField = ({
         {isAuthFilled.length > 0 && (
           <button
             type="button"
-            className={`h-[36px] w-[100px] ${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
+            className={`h-[36px] w-[100px] text-xs ${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
             onClick={() => authCheck(authInfo)}
           >
             확인
