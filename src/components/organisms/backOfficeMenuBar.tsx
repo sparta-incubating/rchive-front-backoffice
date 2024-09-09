@@ -14,6 +14,13 @@ import MenubarLinks from '@/components/organisms/menubarLinks';
 const BackOfficeMenuBar = () => {
   // const handleSelect = (value: SelectOptionType['value']) => {};
 
+  const handleGoArchive = () => {
+    const archiveUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    if (archiveUrl) {
+      window.open(archiveUrl, '_blank');
+    }
+  };
+
   return (
     <aside className="w-[292px] bg-black text-white">
       {/* header */}
@@ -25,9 +32,11 @@ const BackOfficeMenuBar = () => {
 
       {/* selectBox */}
       <section className="mb-8 flex items-center justify-center">
-        <p className="h-[67px] w-[256px] rounded-xl bg-primary-400 px-4 py-5 text-center text-[18px] font-semibold">
-          르탄이의 아카이브 바로 가기
-        </p>
+        <button onClick={handleGoArchive}>
+          <p className="h-[67px] w-[256px] rounded-xl bg-primary-400 px-4 py-5 text-center text-[18px] font-semibold">
+            르탄이의 아카이브 바로 가기
+          </p>
+        </button>
         {/* <SelectBox
           options={options}
           label={''}
