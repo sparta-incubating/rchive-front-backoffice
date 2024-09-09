@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
+import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -25,6 +26,8 @@ export function DateRangePicker({
   setDate,
   className,
 }: DateRangePickerProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <div className={classMerge('grid gap-2', className)}>
       <Popover>
@@ -36,6 +39,7 @@ export function DateRangePicker({
               'flex h-[39px] w-fit min-w-[100px] items-center justify-between rounded-full px-2.5 py-0 text-left font-normal',
               !date && 'text-muted-foreground',
             )}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <div className="flex items-center gap-2.5">
               <CalendarIcon className="h-4 w-4" />
@@ -54,13 +58,16 @@ export function DateRangePicker({
                   dayjs(date.from).format('YY/MM/DD')
                 )
               ) : (
-                <span className="text-sm font-semibold">기간</span>
+                <span className="text-sm font-normal">기간</span>
               )}
-              <div className="relative h-5 w-5">
+              <div className="relative h-[12px] w-[12px]">
                 <Image
                   src={'/backoffice/assets/icons/selectArrow.svg'}
                   alt={'select arrow icon'}
                   fill
+                  className={`transition-transform duration-500 ${
+                    isDropdownOpen ? 'rotate-180' : 'rotate-0'
+                  }`}
                 />
               </div>
             </div>

@@ -78,7 +78,7 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       <td className="ml-6 mr-7 flex h-5 w-5 items-center justify-center">
         <CategoryBox text="" onChange={handleCheckChange} checked={checked} />
       </td>
-      <td className="w-[65.5px] text-gray-400">
+      <td className="w-[65.5px] text-gray-700">
         <div className="relative h-[38px] w-full">
           <Image
             src={
@@ -91,26 +91,26 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
           />
         </div>
       </td>
-      <td className="w-60 px-4 text-gray-400">
+      <td className="w-60 px-4 text-gray-700">
         <Link href={`/posts/${postData.postId}`}>
           <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
             {postData.title}
           </span>
         </Link>
       </td>
-      <td className="w-[153px] px-2.5 text-gray-400">
+      <td className="w-[153px] px-2.5 text-gray-700">
         {getNameCategory(postData.postType)}
       </td>
-      <td className="w-[97px] px-2.5 text-gray-400">{postData.tutor}</td>
-      <td className="w-[69px] text-gray-400">{postData.period}기</td>
-      <td className="w-[137px] px-2.5 text-gray-400">
+      <td className="w-[97px] px-2.5 text-gray-700">{postData.tutor}</td>
+      <td className="w-[69px] text-gray-700">{postData.period}기</td>
+      <td className="w-[137px] px-2.5 text-gray-700">
         <PostIsOpenSelectBoxCategory
           isOpen={postData.isOpened}
           postId={String(postData.postId)}
         />
       </td>
-      <td className="w-[106px] text-gray-400">{postData.uploadedAt}</td>
-      <td className="w-[74px] text-gray-400">
+      <td className="w-[106px] text-gray-700">{postData.uploadedAt}</td>
+      <td className="w-[74px] text-gray-700">
         <RefreshButton
           disabled={!postData.contentLink}
           onClick={handleRefreshContent}

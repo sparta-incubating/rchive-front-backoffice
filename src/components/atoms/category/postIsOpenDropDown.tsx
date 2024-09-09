@@ -21,6 +21,7 @@ interface DivProps
   className?: string;
   show: boolean;
   isClicked?: boolean;
+  backdropClassname?: string;
 }
 
 const PostIsOpenDropDown = ({
@@ -29,6 +30,7 @@ const PostIsOpenDropDown = ({
   variant,
   show,
   isClicked = false,
+  backdropClassname,
   ...props
 }: DivProps) => {
   return (
@@ -41,7 +43,10 @@ const PostIsOpenDropDown = ({
       )}
     >
       <div
-        className="flex h-[64px] w-[160px] flex-col items-center justify-center rounded-[14px] bg-white shadow-dropDownBox"
+        className={classMerge(
+          'flex h-[64px] w-[160px] flex-col items-center justify-center rounded-[14px] bg-white shadow-dropDownBox',
+          backdropClassname,
+        )}
         data-clicked={isClicked}
       >
         {children}

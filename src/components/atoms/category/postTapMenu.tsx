@@ -19,7 +19,7 @@ const PostTapMenu = ({ data, activeTab, setActiveTab }: TabProps) => {
         {data?.map((item) => (
           <button
             className={`flex h-[48px] items-center justify-center gap-[10px] border-b font-light ${
-              activeTab === item.id && 'border-gray-900'
+              activeTab === item.id && 'border-b-2 border-gray-900'
             }`}
             key={item.title}
             type="button"
