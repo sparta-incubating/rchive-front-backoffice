@@ -21,8 +21,8 @@ const RefreshButton = ({
     >
       <div
         className={classMerge(
-          'relative m-auto h-4 w-4',
-          disabled ? '' : 'group-hover:rotate-180 group-hover:duration-500',
+          'relative m-auto h-3.5 w-3.5',
+          disabled ? '' : 'group-hover:-rotate-180 group-hover:duration-500',
         )}
       >
         {children}

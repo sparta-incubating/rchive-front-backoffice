@@ -40,12 +40,21 @@ const PostIsOpenSelectBoxCategory = ({
           alt={isOpen ? '공개' : '비공개'}
         />
         <SelectLabel>{isOpen ? '공개' : '비공개'}</SelectLabel>
-        <Image src={arrow} width={12} height={12} alt="화살표" />
+        <Image
+          src={arrow}
+          width={12}
+          height={12}
+          alt="화살표"
+          className={`transition-transform duration-500 ${
+            showOptions ? 'rotate-180' : 'rotate-0'
+          }`}
+        />
       </PostIsOpenSelectBoxLayout>
       <PostIsOpenDropDown
         variant="permission"
         show={showOptions}
         className="bottom-0"
+        backdropClassname="rounded-[8px]"
       >
         <div
           className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
@@ -58,7 +67,7 @@ const PostIsOpenSelectBoxCategory = ({
             height={8}
             className="mx-[14px]"
           />
-          <p className="text-sm">{isOpen ? '비공개' : '공개'}</p>
+          <p className="text-sm text-gray-900">{isOpen ? '비공개' : '공개'}</p>
         </div>
       </PostIsOpenDropDown>
     </PostIsOpenSelectBoxContainer>
