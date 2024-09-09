@@ -58,9 +58,9 @@ const PhoneField = ({
   };
   return (
     <>
-      <InputContainer variant="secondary">
+      <InputContainer variant="secondary" className="relative">
         <Input
-          className="my-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          className="mb-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="휴대폰 번호 입력 (-) 제외"
           {...register('phone')}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -72,7 +72,7 @@ const PhoneField = ({
             size="sm"
             variant="submit"
             disabled={disabled}
-            className="h-[44px] w-[87px] px-5 py-3 text-xs"
+            className="absolute -top-[11px] right-1 h-[44px] w-[87px] px-5 py-3 text-xs"
             type="button"
             onClick={handleRequestAuth}
           >
@@ -84,7 +84,7 @@ const PhoneField = ({
       <InputContainer variant="secondary">
         <Input
           {...register('authCode')}
-          className="w-80 bg-blue-50 pb-5 pt-[24px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          className="mb-[28px] mt-[44px] w-80 bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setIsAuthFilled(e.target.value)
