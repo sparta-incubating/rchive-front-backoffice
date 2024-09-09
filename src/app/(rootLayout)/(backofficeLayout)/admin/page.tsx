@@ -38,14 +38,24 @@ const Admin = () => {
     keyword: '',
   });
 
+  /*페이지 네이션 */
+  const router = useRouter();
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    updateQueryParams('page', page);
+  };
+
   const { trackName: statusTrackName } = useAppSelector(
     (state) => state.authSlice,
   );
   const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
-  const { boardList } = usePermissionDataQuery(filters);
+  const { boardList } = usePermissionDataQuery({
+    ...filters,
+    page: currentPage,
+  });
   const viewList = boardList?.data?.content;
   const { countList } = useRoleCountDataQuery();
-  const router = useRouter();
+
   // 탭 변경 핸들러
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -65,6 +75,7 @@ const Admin = () => {
       setSelectedTabCount(initialCount);
     }
   }, [countList]);
+
   /*검색 */
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -82,12 +93,12 @@ const Admin = () => {
       ...prevFilters,
       [category]: value,
     }));
+    setCurrentPage(1);
   };
 
   /*체크박스*/
   const dispatch = useAppDispatch();
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
-  //id 추가
   const dataList = viewList?.map((item: AdminListInfoType) => ({
     ...item,
     adminId: item.email,
@@ -99,7 +110,6 @@ const Admin = () => {
   );
 
   const handleAllCheck = (checked: boolean) => {
-    //체크한 id 목록들
     const currentPagePostIds = dataList.map(
       (item: AdminDataInfoType) => item.adminId,
     );
@@ -115,9 +125,9 @@ const Admin = () => {
   const { adminIds: checkedAdminIds } = useAppSelector(
     (state) => state.adminCheckBoxSlice,
   );
+
   /*체크박스*/
 
-  // URL 파라미터를 유지하면서 업데이트하는 함수
   const updateQueryParams = (
     key: string,
     value: string | number | DateRange | undefined,
@@ -141,16 +151,11 @@ const Admin = () => {
     if (key !== 'page') {
       setCurrentPage(1);
       query.set('page', '1');
+    } else {
+      query.set('page', String(value));
     }
 
     router.push(`/admin?${query.toString()}`);
-  };
-
-  /*페이지 네이션 */
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    updateQueryParams('tap', page);
   };
 
   useEffect(() => {
@@ -192,11 +197,7 @@ const Admin = () => {
     );
     dispatch(clearAdminIds());
   };
-  const itemsPerPage = 8;
-  console.log(boardList?.data, '????????');
-  console.log(currentPage, 'current');
-  console.log(boardList?.data?.totalElements, ' 10');
-  console.log(itemsPerPage, ' itemsPerPage');
+  const totalElements = boardList?.data?.totalElements || 0;
 
   return (
     <>
@@ -253,14 +254,16 @@ const Admin = () => {
               {viewList?.length > 0 ? (
                 <>
                   <AuthFilteredList data={filteredData} />
-                  <div className="py-[24px]">
-                    <PageNation
-                      currentPage={currentPage}
-                      totalElements={boardList?.data?.totalElements}
-                      size={itemsPerPage}
-                      onPageChange={handlePageChange}
-                    />
-                  </div>
+                  {totalElements > 8 && (
+                    <div className="py-[24px]">
+                      <PageNation
+                        currentPage={currentPage}
+                        totalElements={totalElements}
+                        size={8}
+                        onPageChange={handlePageChange}
+                      />
+                    </div>
+                  )}
                 </>
               ) : (
                 <NoDataList />

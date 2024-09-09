@@ -58,3 +58,11 @@ export interface TapProps {
 export interface FilteredListProps {
   data: AdminDataInfoType[];
 }
+
+export interface FilterParams {
+  trackRole: string;
+  sort: string;
+  searchPeriod: string;
+  keyword: string;
+  page: number;
+}

@@ -1,6 +1,7 @@
 import {
   ApproveItem,
   DeleteUserType,
+  FilterParams,
   RejectionItem,
 } from '@/types/admin.types';
 import { client } from '@/utils/clientAPI';
@@ -16,7 +17,7 @@ export const getBackOfficeInfo = async () => {
   }
 };
 
-export const getBoardList = async (filters: Record<string, string>) => {
+export const getBoardList = async (filters: FilterParams) => {
   const session = await getSession();
   const trackName = session?.user.trackName;
   const loginPeriod = session?.user.loginPeriod;
@@ -27,9 +28,9 @@ export const getBoardList = async (filters: Record<string, string>) => {
     loginPeriod,
     searchPeriod: filters.searchPeriod || undefined,
     searchKeyword: filters.keyword || undefined,
-    page: '1',
-    size: '10',
     searchTrackRole: filters.trackRole || undefined,
+    page: filters.page.toString(),
+    size: '8', // size를 8로 고정
   };
 
   try {
@@ -73,7 +74,6 @@ export const postUserApprove = async (userInfo: ApproveItem) => {
     ]);
     return res.data;
   } catch (error) {
-    console.log(error, 'error');
     throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
   }
 };
@@ -88,7 +88,6 @@ export const deleteUsrRole = async (userInfo: DeleteUserType) => {
     });
     return res.data;
   } catch (error) {
-    console.log(error, 'error');
     throw new Error('권한 수락에 실패했습니다. 다시 시도해주세요.');
   }
 };
