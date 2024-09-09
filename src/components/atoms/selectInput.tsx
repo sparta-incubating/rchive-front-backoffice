@@ -36,7 +36,10 @@ const SelectInput = ({
   onClick,
 }: SelectInputProps) => {
   return (
-    <div className="flex cursor-pointer justify-between" onClick={onClick}>
+    <div
+      className="flex cursor-pointer items-center justify-between"
+      onClick={onClick}
+    >
       <span className={classMerge(SelectInputVariants({ variant }), className)}>
         {children}
       </span>

@@ -1,6 +1,6 @@
 .empty-placeholder::before {
   content: attr(data-placeholder);
-  color: gray;
+  color: #A8AFB3;
   position: absolute;
   pointer-events: none;
   user-select: none;

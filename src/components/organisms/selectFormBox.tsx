@@ -42,6 +42,8 @@ const SelectFormBox = ({
     onSelect(option.value);
   };
 
+  console.log(!disabled);
+
   // 초기값이 있다면 초기값을 선택한 상태로 만들어줌
   useEffect(() => {
     const option = options.find((option) => option.value === value);
@@ -65,7 +67,7 @@ const SelectFormBox = ({
             variant={selectedOption ? 'selected' : 'unSelected'}
             clicked={isOpen}
           >
-            {`${value ? `기` : `트랙을 먼저 선택하세요`}`}
+            {`${value ? `${value}기` : `트랙을 먼저 선택하세요`}`}
           </SelectInput>
         )}
 

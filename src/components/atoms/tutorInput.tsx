@@ -42,7 +42,7 @@ const TagInput = React.forwardRef<HTMLDivElement, TagInputProps>(
       <div
         {...props}
         ref={ref}
-        className={`relative flex w-auto min-w-[280px] max-w-full items-center font-medium outline-none ${props.className || ''}`}
+        className={`relative flex w-auto min-w-[280px] max-w-full items-center text-sm font-medium outline-none ${props.className || ''}`}
         contentEditable="true"
         role="textbox"
         aria-multiline="false"

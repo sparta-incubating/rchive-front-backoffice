@@ -32,7 +32,7 @@ const Calendar = ({ control, className }: CalendarProps) => {
               <Button
                 variant={'outline'}
                 className={cn(
-                  'w-[280px] justify-start text-left font-normal',
+                  'w-[280px] justify-start rounded-[12px] text-left font-normal',
                   !value && 'text-muted-foreground',
                   className,
                 )}
@@ -41,7 +41,7 @@ const Calendar = ({ control, className }: CalendarProps) => {
                 {value ? (
                   dayjs(value).format('YYYY-MM-DD')
                 ) : (
-                  <span>날짜를 선택해주세요.</span>
+                  <span className="text-gray-300">날짜를 선택해주세요.</span>
                 )}
               </Button>
             </PopoverTrigger>
