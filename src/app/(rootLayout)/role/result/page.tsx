@@ -29,7 +29,7 @@ const RoleResultPage = async () => {
     <RoleContainerPage>
       <section className="m-auto flex w-[520px] flex-col items-center gap-5 rounded-[12px] bg-white pb-7 pt-5">
         {roleApplyResult === RoleResultEnum.WAIT && (
-          <div className="flex h-[577px]">
+          <div className="flex h-[507px]">
             <div className="m-auto flex flex-col gap-2.5">
               <div className="flex flex-col gap-2">
                 <span className="text-center text-xl font-medium text-gray-900">
