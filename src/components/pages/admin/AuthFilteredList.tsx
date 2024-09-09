@@ -3,7 +3,6 @@
 import AdminSelectBoxCategory from '@/components/atoms/category/adminSelectBoxCategory';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import NoDataList from '@/components/atoms/category/noDataList';
-import PageNation from '@/components/atoms/category/pageNation';
 import { setAdminId } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { FilteredListProps } from '@/types/admin.types';
@@ -14,8 +13,6 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
 
   const [checked, setChecked] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(8);
 
   const handleCheckChange =
     (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,32 +28,23 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   useEffect(() => {
     setChecked(
       adminIds.length === data.length &&
-        data.every((item) => adminIds.includes(item.adminId)),
+        data.every((item) => adminIds.includes(item.email)),
     );
   }, [adminIds, data]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const paginatedData = data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
   return (
     <div className="w-[1012px] border-gray-300">
-      {paginatedData.length > 0 ? (
-        paginatedData.map((item, index) => (
+      {data.length > 0 ? (
+        data.map((item) => (
           <div
-            key={item.adminId + index}
-            className={`flex flex-row hover:bg-blue-50 ${adminIds.includes(item.adminId) ? 'bg-secondary-55' : ''}`}
+            key={item.email}
+            className={`flex flex-row hover:bg-blue-50 ${adminIds.includes(item.email) ? 'bg-secondary-55' : ''}`}
           >
             <div className="flex h-[64px] w-[92px] items-center pl-[24px]">
               <CategoryBox
                 text=""
-                onChange={handleCheckChange(item.adminId)}
-                checked={adminIds.includes(item.adminId)}
+                onChange={handleCheckChange(item.email)}
+                checked={adminIds.includes(item.email)}
               />
             </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
@@ -82,14 +70,6 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
       ) : (
         <NoDataList />
       )}
-      <div className="py-[24px]">
-        <PageNation
-          currentPage={currentPage}
-          totalElements={data.length}
-          size={itemsPerPage}
-          onPageChange={handlePageChange}
-        />
-      </div>
     </div>
   );
 };

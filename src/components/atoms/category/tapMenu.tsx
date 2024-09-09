@@ -6,9 +6,7 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
   const waitCount = countList?.data?.statusWait || 0;
 
   const handleTabClick = (tab: string) => {
-    const count =
-      tab === 'All' ? allCount : tab === 'WAIT' ? waitCount : approveCount;
-    onTabChange(tab, count);
+    onTabChange(tab);
   };
 
   return (
