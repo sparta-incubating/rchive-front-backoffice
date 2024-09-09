@@ -59,6 +59,19 @@ const Admin = () => {
   const viewList = boardList?.data?.content;
   const { countList } = useRoleCountDataQuery();
 
+  useEffect(() => {
+    setFilters((prevFilters) => ({
+      trackRole: '',
+      sort: 'DATE_LATELY',
+      searchPeriod: '',
+      keyword: '',
+      status: selectedTab === 'All' ? '' : (selectedTab as AdminStatus),
+      page: 1,
+      size: ADMIN_DEFAULT_PAGE_SIZE,
+    }));
+    setCurrentPage(1);
+  }, [selectedTab]);
+
   // 탭 변경 핸들러
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -203,7 +216,10 @@ const Admin = () => {
           {/*카테고리 및 체크박스*/}
 
           <div className="flex flex-row justify-between py-[24px]">
-            <CategoryFiltered handleCategoryChange={handleCategoryChange} />
+            <CategoryFiltered
+              handleCategoryChange={handleCategoryChange}
+              key={selectedTab}
+            />
             {checkedAdminIds.length > 0 && (
               <section className="flex flex-row gap-[8px]">
                 <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
