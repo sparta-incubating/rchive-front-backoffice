@@ -29,12 +29,27 @@ const RoleResultPage = async () => {
     <RoleContainerPage>
       <section className="m-auto flex w-[520px] flex-col items-center gap-5 rounded-[12px] bg-white pb-7 pt-5">
         {roleApplyResult === RoleResultEnum.WAIT && (
-          <>
-            <span className="text-center text-xl font-medium text-gray-900">
-              현재 승인대기 상태입니다.
-            </span>
-            <RoleWait />
-          </>
+          <div className="flex h-[577px]">
+            <div className="m-auto flex flex-col gap-2.5">
+              <div className="flex flex-col gap-2">
+                <span className="text-center text-xl font-medium text-gray-900">
+                  현재 승인대기 상태입니다.
+                </span>
+                <div className="flex flex-col items-center gap-2.5">
+                  <span className="text-sm text-gray-900">
+                    승인 처리가 지연될 시, 시스템 관리자에게 문의바랍니다.
+                  </span>
+                </div>
+              </div>
+
+              <a
+                target="_blank"
+                className="text-center text-sm text-gray-400 underline"
+              >
+                문의하기
+              </a>
+            </div>
+          </div>
         )}
 
         {roleApplyResult === RoleResultEnum.REJECT && (
