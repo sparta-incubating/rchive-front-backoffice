@@ -44,8 +44,8 @@ class SignupUserForm {
     this.termUseService = termUseService;
     this.termPersonalInfo = termPersonalInfo;
     this.termAdvertisement = termAdvertisement;
-    this.profileImg = profileImg;
     this.nickname = nickname;
+    this.profileImg = profileImg;
   }
 }
 
@@ -63,8 +63,8 @@ export class Admin extends SignupUserForm {
     termUseService: boolean,
     termPersonalInfo: boolean,
     termAdvertisement: boolean,
-    profileImg: string,
     nickname: string,
+    profileImg: string,
   ) {
     super(
       oAuthType,
@@ -79,8 +79,8 @@ export class Admin extends SignupUserForm {
       termUseService,
       termPersonalInfo,
       termAdvertisement,
-      profileImg,
       nickname,
+      profileImg,
     );
   }
 }
@@ -117,8 +117,8 @@ export class User extends SignupUserForm {
       termUseService,
       termPersonalInfo,
       termAdvertisement,
-      profileImg,
       nickname,
+      profileImg,
     );
     this.nickname = nickname;
   }
