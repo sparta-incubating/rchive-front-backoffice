@@ -3,7 +3,6 @@
 import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
-import { useRouter } from 'next/navigation';
 
 // const options: SelectOptionType[] = [
 //   { value: '0', label: '르탄이의 아카이브 바로 가기', selected: false },
@@ -13,7 +12,6 @@ import { useRouter } from 'next/navigation';
 // ];
 
 const BackOfficeMenuBar = () => {
-  const router = useRouter();
   // const handleSelect = (value: SelectOptionType['value']) => {};
 
   const handleGoArchive = () => {
