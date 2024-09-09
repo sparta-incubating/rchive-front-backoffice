@@ -90,13 +90,13 @@ const AdminSelectBoxCategory = ({
               showOptions ? 'rotate-180' : 'rotate-0'
             }`}
           />
-          <p className="text-sm">
+          <div className="text-sm">
             {isStatus === 'WAIT' ? (
               <p onClick={() => handleClick('APPROVE')}>승인</p>
             ) : (
               <p onClick={() => handleClick('REJECT')}>거절</p>
             )}
-          </p>
+          </div>
         </div>
         {isStatus === 'WAIT' && (
           <div className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55">
@@ -107,13 +107,13 @@ const AdminSelectBoxCategory = ({
               height={8}
               className="mx-[14px]"
             />
-            <p className="text-sm">
+            <div className="text-sm">
               {isStatus === 'WAIT' ? (
                 <p onClick={() => handleClick('REJECT')}>거절</p>
               ) : (
                 <p onClick={() => handleClick('APPROVE')}>승인</p>
               )}
-            </p>
+            </div>
           </div>
         )}
       </AdminIsOpenDropDown>

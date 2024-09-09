@@ -8,7 +8,6 @@ import {
 import AdminTableHeader from '@/components/atoms/admin/adminTableHeader';
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import NoDataList from '@/components/atoms/category/noDataList';
-import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
@@ -38,27 +37,20 @@ const Admin = () => {
     keyword: '',
   });
 
-  /*페이지 네이션 */
-  const router = useRouter();
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    updateQueryParams('page', page);
-  };
-
   const { trackName: statusTrackName } = useAppSelector(
     (state) => state.authSlice,
   );
   const { postUserApproveMutate, deleteUsrRoleMutate } = usePermissionList();
-  const { boardList } = usePermissionDataQuery({
-    ...filters,
-    page: currentPage,
-  });
+  const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
   const { countList } = useRoleCountDataQuery();
+  const router = useRouter();
 
   // 탭 변경 핸들러
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
+    setCurrentPage(1); // 페이지를 1로 초기화
+
     const count =
       tab === 'All'
         ? countList?.data?.statusAll || 0
@@ -75,13 +67,11 @@ const Admin = () => {
       setSelectedTabCount(initialCount);
     }
   }, [countList]);
-
   /*검색 */
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchChange = () => {
     const value = inputRef.current?.value ?? '';
-
     setFilters((prevFilters) => ({
       ...prevFilters,
       keyword: value,
@@ -93,23 +83,19 @@ const Admin = () => {
       ...prevFilters,
       [category]: value,
     }));
-    setCurrentPage(1);
   };
 
   /*체크박스*/
   const dispatch = useAppDispatch();
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
+  //id 추가
   const dataList = viewList?.map((item: AdminListInfoType) => ({
     ...item,
     adminId: item.email,
   }));
 
-  const filteredData = dataList?.filter(
-    (item: AdminDataInfoType) =>
-      selectedTab === 'All' || item.auth === selectedTab,
-  );
-
   const handleAllCheck = (checked: boolean) => {
+    //체크한 id 목록들
     const currentPagePostIds = dataList.map(
       (item: AdminDataInfoType) => item.adminId,
     );
@@ -125,8 +111,14 @@ const Admin = () => {
   const { adminIds: checkedAdminIds } = useAppSelector(
     (state) => state.adminCheckBoxSlice,
   );
-
   /*체크박스*/
+
+  /*페이지 네이션 */
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    updateQueryParams('page', page);
+  };
 
   const updateQueryParams = (
     key: string,
@@ -151,8 +143,6 @@ const Admin = () => {
     if (key !== 'page') {
       setCurrentPage(1);
       query.set('page', '1');
-    } else {
-      query.set('page', String(value));
     }
 
     router.push(`/admin?${query.toString()}`);
@@ -161,6 +151,12 @@ const Admin = () => {
   useEffect(() => {
     handleSearchChange();
   }, [filters.keyword]);
+
+  const filteredData =
+    viewList?.filter(
+      (item: AdminDataInfoType) =>
+        selectedTab === 'All' || item.auth === selectedTab,
+    ) ?? [];
 
   /**전체 승인 조회 */
   const foundItems = checkedAdminIds.flatMap((email) =>
@@ -197,7 +193,6 @@ const Admin = () => {
     );
     dispatch(clearAdminIds());
   };
-  const totalElements = boardList?.data?.totalElements || 0;
 
   return (
     <>
@@ -217,30 +212,22 @@ const Admin = () => {
           {/*카테고리 및 체크박스*/}
 
           <div className="flex flex-row justify-between py-[24px]">
-            {/* 카테고리 */}
             <CategoryFiltered handleCategoryChange={handleCategoryChange} />
-            {/* 조회 리스트 */}
-            <section>
-              {checkedAdminIds.length > 0 && (
-                <section className="flex flex-row gap-[8px]">
-                  <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
-                    {checkedAdminIds.length}개 선택
-                  </p>
-                  <BackOfficeButton onClick={allApproveItems}>
-                    승인
-                  </BackOfficeButton>
-                  <BackOfficeButton
-                    variant="secondary"
-                    onClick={allRejectItems}
-                  >
-                    거절
-                  </BackOfficeButton>
-                </section>
-              )}
-            </section>
+            {checkedAdminIds.length > 0 && (
+              <section className="flex flex-row gap-[8px]">
+                <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
+                  {checkedAdminIds.length}개 선택
+                </p>
+                <BackOfficeButton onClick={allApproveItems}>
+                  승인
+                </BackOfficeButton>
+                <BackOfficeButton variant="secondary" onClick={allRejectItems}>
+                  거절
+                </BackOfficeButton>
+              </section>
+            )}
           </div>
 
-          {/*카테고리 및 체크박스*/}
           {selectedTabCount === 0 ? (
             <NoDataList />
           ) : (
@@ -252,19 +239,7 @@ const Admin = () => {
                 />
               )}
               {viewList?.length > 0 ? (
-                <>
-                  <AuthFilteredList data={filteredData} />
-                  {totalElements > 8 && (
-                    <div className="py-[24px]">
-                      <PageNation
-                        currentPage={currentPage}
-                        totalElements={totalElements}
-                        size={8}
-                        onPageChange={handlePageChange}
-                      />
-                    </div>
-                  )}
-                </>
+                <AuthFilteredList data={filteredData} />
               ) : (
                 <NoDataList />
               )}

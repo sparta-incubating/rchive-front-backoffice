@@ -29,8 +29,6 @@ export const getBoardList = async (filters: FilterParams) => {
     searchPeriod: filters.searchPeriod || undefined,
     searchKeyword: filters.keyword || undefined,
     searchTrackRole: filters.trackRole || undefined,
-    page: filters.page.toString(),
-    size: '8', // size를 8로 고정
   };
 
   try {

@@ -65,4 +65,19 @@ export interface FilterParams {
   searchPeriod: string;
   keyword: string;
   page: number;
+  size: string;
 }
+
+export type SearchAdminType = {
+  tapType: string | undefined;
+  searchPeriod: string | undefined;
+  searchKeyword: string | undefined;
+  page: string | undefined;
+  size: string | undefined;
+};
+
+export type TabCountMapProps = {
+  All: string;
+  WAIT: string;
+  APPROVE: string;
+};
