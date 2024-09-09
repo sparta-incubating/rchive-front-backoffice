@@ -45,7 +45,7 @@ const Admin = () => {
   const { boardList } = usePermissionDataQuery(filters);
   const viewList = boardList?.data?.content;
   const { countList } = useRoleCountDataQuery();
-
+  const router = useRouter();
   // 탭 변경 핸들러
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -117,13 +117,7 @@ const Admin = () => {
   );
   /*체크박스*/
 
-  /*페이지 네이션 */
-  const router = useRouter();
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    updateQueryParams('page', page);
-  };
-
+  // URL 파라미터를 유지하면서 업데이트하는 함수
   const updateQueryParams = (
     key: string,
     value: string | number | DateRange | undefined,
@@ -150,6 +144,13 @@ const Admin = () => {
     }
 
     router.push(`/admin?${query.toString()}`);
+  };
+
+  /*페이지 네이션 */
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    updateQueryParams('tap', page);
   };
 
   useEffect(() => {
@@ -191,6 +192,11 @@ const Admin = () => {
     );
     dispatch(clearAdminIds());
   };
+  const itemsPerPage = 8;
+  console.log(boardList?.data, '????????');
+  console.log(currentPage, 'current');
+  console.log(boardList?.data?.totalElements, ' 10');
+  console.log(itemsPerPage, ' itemsPerPage');
 
   return (
     <>
@@ -251,7 +257,7 @@ const Admin = () => {
                     <PageNation
                       currentPage={currentPage}
                       totalElements={boardList?.data?.totalElements}
-                      size={boardList?.data?.size}
+                      size={itemsPerPage}
                       onPageChange={handlePageChange}
                     />
                   </div>
