@@ -86,7 +86,7 @@ const PhoneField = ({
       <InputContainer variant="secondary">
         <Input
           {...register('authCode')}
-          className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          className="w-80 bg-blue-50 pb-5 pt-[24px] text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setIsAuthFilled(e.target.value)

@@ -21,7 +21,7 @@ export const handleKeyPressOnlyNumber = (
 
 export function formatDate(dateStr: string) {
   if (dateStr.length !== 8) {
-    throw new Error('YYYYMMDD 형식으로 입력해주세요.');
+    throw new Error('생년월일을 다시 확인해 주세요.');
   }
 
   // YYYY, MM, DD로 분할
