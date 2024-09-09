@@ -3,14 +3,18 @@
 import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
+import { useEffect, useState } from 'react';
 
 const BackOfficeMenuBar = () => {
+  const [archiveUrl, setArchiveUrl] = useState('');
+
+  useEffect(() => {
+    setArchiveUrl(process.env.NEXT_PUBLIC_BACKEND_URL || '');
+  }, []);
+
   const handleGoArchive = () => {
-    if (typeof window !== 'undefined') {
-      const archiveUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-      if (archiveUrl) {
-        window.open(archiveUrl, '_blank');
-      }
+    if (archiveUrl) {
+      window.open(archiveUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
