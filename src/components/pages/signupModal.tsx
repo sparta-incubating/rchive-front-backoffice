@@ -40,7 +40,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
   const usernameCheck = watch('username');
 
   return (
-    <Modal inboardClassName="w-auto max-w-full p-4">
+    <Modal inboardClassName="w-auto max-w-full p-6">
       {/*modal 헤더*/}
       <SignupHeader />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -62,7 +62,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
                 variant={'submit'}
                 type="button"
                 disabled={!!errors.email?.message}
-                className="h-[42px] w-[85px] p-2 text-xs"
+                className="absolute right-3.5 h-[42px] w-[85px] border-0 p-3 px-5 text-xs"
                 onClick={() => checkEmail(getValues('email'))}
               >
                 중복 확인
@@ -100,7 +100,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
               type="password"
               {...register('passwordConfirm')}
               placeholder="비밀번호 재입력"
-              className="my-[28px] h-[20px] w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+              className="mb-[28px] mt-[32px] h-[20px] w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
             />
           </PasswordContainer>
           <div className="flex flex-col gap-1">
@@ -176,7 +176,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           <Button
             type="submit"
             disabled={!isValid || isEmailUnique}
-            className="mb-5 w-80 px-7"
+            className="mb-5 w-80 w-full px-7"
           >
             가입하기
           </Button>

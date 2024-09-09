@@ -1,6 +1,5 @@
 'use client';
 
-import FormSpan from '@/components/atoms/formSpan';
 import MoreLink from '@/components/atoms/moreLink';
 import AcceptAllTerm from '@/components/molecules/acceptAllTerm';
 import AcceptTerm from '@/components/molecules/acceptTerm';
@@ -54,7 +53,7 @@ const AcceptTermsGroup = ({
   } = useSignupCheckBox(terms, setValue);
 
   return (
-    <div className="flex w-full flex-col gap-[18px] px-6 pb-6">
+    <div className="flex w-full flex-col gap-[18px] pb-6">
       <AcceptAllTerm
         checkBoxId={'all'}
         isChecked={checkList.every((check) => check.isChecked)}
@@ -80,15 +79,6 @@ const AcceptTermsGroup = ({
           </div>
         ))}
       </div>
-      {errors.age?.message && (
-        <FormSpan variant="error">{errors.age.message}</FormSpan>
-      )}
-      {errors.service?.message && (
-        <FormSpan variant="error">{errors.service.message}</FormSpan>
-      )}
-      {errors.privacy?.message && (
-        <FormSpan variant="error">{errors.privacy.message}</FormSpan>
-      )}
     </div>
   );
 };
