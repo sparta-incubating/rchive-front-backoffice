@@ -1,5 +1,6 @@
 'use client';
 
+import AuthTimer from '@/components/atoms/authTimer';
 import Button from '@/components/atoms/button';
 import FormSpan from '@/components/atoms/formSpan';
 import Input from '@/components/atoms/input';
@@ -14,12 +15,15 @@ import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
 import useSignupForm from '@/hooks/useSignupForm';
 import { signupModalType } from '@/types/signup.types';
 import { handleKeyPressOnlyNumber } from '@/utils/utils';
+import React, { useState } from 'react';
 
 interface SignupModalProps {
   signupModalType: signupModalType;
 }
 
 const SignupModal = ({ signupModalType }: SignupModalProps) => {
+  const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
+  const [expire, setExpire] = useState<boolean>(false);
   const {
     handleSubmit,
     onSubmit,
@@ -138,12 +142,25 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             register={register}
             usernameCheck={usernameCheck}
             authCheck={authCheck}
-            isErrorMsg={isErrorMsg}
             setIsErrorMsg={setIsErrorMsg}
+            setRequestAuthNumber={setRequestAuthNumber}
+            expire={expire}
           />
           {errors.phone?.message && (
             <FormSpan variant="error">휴대폰 인증번호는 필수입니다.</FormSpan>
           )}
+          {isErrorMsg && (
+            <span
+              className={
+                isErrorMsg.includes('완료됐습니다')
+                  ? 'text-success-green'
+                  : 'text-primary-400'
+              }
+            >
+              {isErrorMsg}
+            </span>
+          )}
+          {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
         </section>
         {/* birthday */}
         <section>

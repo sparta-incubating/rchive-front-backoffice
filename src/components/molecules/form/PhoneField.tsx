@@ -1,7 +1,6 @@
 'use client';
 
 import { useProfileUpdate } from '@/api/profile/useMutation';
-import AuthTimer from '@/components/atoms/authTimer';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
@@ -14,25 +13,24 @@ interface PhoneFieldProps {
   register: UseFormRegister<SignupFormSchema>;
   usernameCheck: string;
   authCheck: (authInfo: authCodeType) => Promise<void>;
-  isErrorMsg: string | null;
   setIsErrorMsg: Dispatch<SetStateAction<string | null>>;
+  setRequestAuthNumber: React.Dispatch<React.SetStateAction<boolean>>;
+  expire: boolean;
 }
 
 const PhoneField = ({
   register,
   usernameCheck,
   authCheck,
-  isErrorMsg,
   setIsErrorMsg,
+  setRequestAuthNumber,
+  expire,
 }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [isAuthFilled, setIsAuthFilled] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const { postPhoneAuthNumberMutate } = useProfileUpdate();
-
-  const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
-  const [expire, setExpire] = useState<boolean>(false);
 
   useEffect(() => {
     setDisabled(isInputFilled.length <= 10);
@@ -103,19 +101,6 @@ const PhoneField = ({
           </button>
         )}
       </InputContainer>
-      {isErrorMsg && (
-        <span
-          className={
-            isErrorMsg.includes('완료됐습니다')
-              ? 'text-success-green'
-              : 'text-primary-400'
-          }
-        >
-          {isErrorMsg}
-        </span>
-      )}
-
-      {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
     </>
   );
 };
