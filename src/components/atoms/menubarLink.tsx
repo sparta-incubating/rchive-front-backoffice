@@ -3,7 +3,7 @@ import { ComponentProps, ReactNode } from 'react';
 
 interface MenubarLinkProps extends ComponentProps<typeof Link> {
   children: ReactNode;
-  active: boolean; // true: 활성상태, false: 비활성상태
+  active: boolean;
   href: string;
 }
 

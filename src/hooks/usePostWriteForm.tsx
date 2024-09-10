@@ -80,7 +80,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       tags.map((tag) => tag.tagName),
       Number(tutor?.tutorId),
       Number(data.postPeriod),
-      Boolean(data.isOpened),
+      data.isOpened === 'true',
       dayjs(data.uploadedAt).format('YYYY-MM-DD'),
       contentLink ? await getNotionPageData(extractPageId(contentLink)!) : '',
       data.contentLink,
@@ -142,13 +142,14 @@ const usePostWriteForm = (postData?: postFetchData) => {
     }
   }, [setValue]);
 
+  const contentLink = watch('contentLink');
+  const videoLink = watch('videoLink');
+  const uploadedAt = watch('uploadedAt');
   useEffect(() => {
     setCustomIsValid(
-      formIsValid &&
-        !!(watch('contentLink') || watch('videoLink')) &&
-        !!watch('uploadedAt'),
+      formIsValid && !!(contentLink || videoLink) && !!uploadedAt,
     );
-  }, [watch, formIsValid]);
+  }, [contentLink, videoLink, uploadedAt, formIsValid]);
 
   return {
     register,
