@@ -139,7 +139,6 @@ const Admin = () => {
   /*체크박스*/
   const dispatch = useAppDispatch();
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
-  //id 추가
   const dataList = viewList?.map((item: AdminListInfoType) => ({
     ...item,
     adminId: item.email,
