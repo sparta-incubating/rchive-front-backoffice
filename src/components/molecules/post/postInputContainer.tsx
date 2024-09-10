@@ -5,7 +5,7 @@ import UploadInput from '@/components/atoms/uploadInput';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import useIsLoading from '@/hooks/useIsLoading';
 import { PostsFormSchema } from '@/types/posts.types';
-import { extractPageId, validateNotionPageId } from '@/utils/notionAPI';
+import { extractPageId, validateNotionPageId } from '@/utils/notion/notionAPI';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';

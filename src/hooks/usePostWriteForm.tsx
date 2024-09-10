@@ -10,7 +10,7 @@ import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
 import { postFetchData, PostsFormSchema, TrackType } from '@/types/posts.types';
-import { extractPageId } from '@/utils/notionAPI';
+import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';

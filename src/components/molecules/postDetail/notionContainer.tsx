@@ -9,7 +9,7 @@ import 'prismjs/themes/prism-tomorrow.css';
 // used for rendering equations (optional)
 import 'katex/dist/katex.min.css';
 import NotionLink from '@/components/molecules/postDetail/notionLink';
-import { extractPageId } from '@/utils/notionAPI';
+import { extractPageId } from '@/utils/notion/notionAPI';
 
 import axios from 'axios';
 import Link from 'next/link';
