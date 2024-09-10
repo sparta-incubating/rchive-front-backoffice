@@ -80,40 +80,34 @@ const AdminSelectBoxCategory = ({
       </PostIsOpenSelectBoxLayout>
 
       <AdminIsOpenDropDown show={showOptions} isLargeSize={isStatus === 'WAIT'}>
-        <div className="flex w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55">
+        <div
+          onClick={() =>
+            handleClick(isStatus === 'WAIT' ? 'APPROVE' : 'REJECT')
+          }
+          className="flex w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
+        >
           <Image
             src={isStatus === 'WAIT' ? green : red}
             alt=""
             width={8}
             height={8}
-            className={`mx-[14px] transition-transform duration-500 ${
-              showOptions ? 'rotate-180' : 'rotate-0'
-            }`}
+            className="mx-[14px]"
           />
-          <div className="text-sm">
-            {isStatus === 'WAIT' ? (
-              <p onClick={() => handleClick('APPROVE')}>승인</p>
-            ) : (
-              <p onClick={() => handleClick('REJECT')}>거절</p>
-            )}
-          </div>
+          <div className="text-sm">{isStatus === 'WAIT' ? '승인' : '거절'}</div>
         </div>
         {isStatus === 'WAIT' && (
-          <div className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55">
+          <div
+            onClick={() => handleClick('REJECT')}
+            className="flex h-[36px] w-[136px] flex-row rounded-[8px] py-[9px] hover:bg-secondary-55"
+          >
             <Image
-              src={isStatus === 'WAIT' ? red : green}
+              src={red}
               alt=""
               width={8}
               height={8}
               className="mx-[14px]"
             />
-            <div className="text-sm">
-              {isStatus === 'WAIT' ? (
-                <p onClick={() => handleClick('REJECT')}>거절</p>
-              ) : (
-                <p onClick={() => handleClick('APPROVE')}>승인</p>
-              )}
-            </div>
+            <div className="text-sm">거절</div>
           </div>
         )}
       </AdminIsOpenDropDown>
