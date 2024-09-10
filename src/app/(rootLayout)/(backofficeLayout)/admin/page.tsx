@@ -115,8 +115,6 @@ const Admin = () => {
       ...prevFilters,
       keyword: value,
     }));
-
-    // console.log(filters);
   };
 
   const handleCategoryChange = (category: string, value: string) => {
