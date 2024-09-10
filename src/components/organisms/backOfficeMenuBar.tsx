@@ -6,7 +6,7 @@ import MenubarLinks from '@/components/organisms/menubarLinks';
 
 const BackOfficeMenuBar = () => {
   const handleGoArchive = () => {
-    window.open('https://rchive.kr', '_blank');
+    window.open('https://dev.rchive.kr', '_blank');
   };
 
   return (
