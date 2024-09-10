@@ -81,10 +81,10 @@ const FilterCategory = ({
           )}
         </div>
         {filterData &&
-          filterData.map((data) => (
+          filterData.map((data, index) => (
             <div
               className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-              key={data.value}
+              key={data.value + index}
               onClick={() => handleClick(data)}
             >
               <p

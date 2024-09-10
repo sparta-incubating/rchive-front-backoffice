@@ -28,31 +28,30 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   useEffect(() => {
     setChecked(
       adminIds.length === data.length &&
-        data.every((item) => adminIds.includes(item.adminId)),
+        data.every((item) => adminIds.includes(item.email)),
     );
   }, [adminIds, data]);
 
   return (
-    <table className="w-[1012px]">
-      <tr className="h-full w-full">
-        {/* 단건 체크 */}
-        {data?.map((item) => (
-          <tr
-            key={item.adminId}
-            className={`flex flex-row hover:bg-blue-50 ${adminIds.includes(item.adminId) ? `bg-secondary-55` : ''}`}
+    <div className="w-[1012px] border-gray-300">
+      {data.length > 0 ? (
+        data.map((item) => (
+          <div
+            key={item.email}
+            className={`flex flex-row hover:bg-blue-50 ${adminIds.includes(item.email) ? 'bg-secondary-55' : ''}`}
           >
-            <td className="flex h-[64px] w-[92px] items-center pl-[24px]">
+            <div className="flex h-[64px] w-[92px] items-center pl-[24px]">
               <CategoryBox
                 text=""
-                onChange={handleCheckChange(item.adminId)}
-                checked={adminIds.includes(item.adminId)}
+                onChange={handleCheckChange(item.email)}
+                checked={adminIds.includes(item.email)}
               />
-            </td>
+            </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
               {item.username}
             </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
-              {item.trackRole}
+              {item.trackRole === 'STUDENT' ? '수강생' : item.trackRole}
             </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
               {item.period}
@@ -66,10 +65,12 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
             <div className="flex h-[64px] w-[123px] items-center px-[10px] text-sm font-medium text-gray-700">
               <AdminSelectBoxCategory dataList={item} isStatus={item.auth} />
             </div>
-          </tr>
-        )) ?? <NoDataList />}
-      </tr>
-    </table>
+          </div>
+        ))
+      ) : (
+        <NoDataList />
+      )}
+    </div>
   );
 };
 

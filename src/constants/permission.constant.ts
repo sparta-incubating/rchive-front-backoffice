@@ -116,3 +116,5 @@ export const subArr = [
   { id: 3, title: '과제 해설', className: 'w-[88px]' },
   { id: 4, title: '특강/실시간 세션', className: 'w-[129px]' },
 ];
+
+export const adminPerItem = 8;

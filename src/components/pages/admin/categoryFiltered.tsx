@@ -28,8 +28,7 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
   ];
 
   const periodList = usePeriodListQuery(trackName) ?? [];
-  const reversPeriod = [...periodList].reverse();
-  const periodItem = reversPeriod?.map((item: number) => ({
+  const periodItem = periodList?.map((item: number) => ({
     id: item,
     name: `${item}기`,
     value: item.toString(),
