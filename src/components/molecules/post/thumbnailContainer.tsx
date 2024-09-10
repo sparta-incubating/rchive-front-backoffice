@@ -1,5 +1,6 @@
 import {
   deletePost,
+  deleteThumbnailDeletePost,
   getThumbnailDelete,
   postThumbnailUpload,
 } from '@/api/client/postApi';
@@ -45,11 +46,22 @@ const ThumbnailContainer = ({
       setValue('thumbnailUrl', data.data);
     },
   });
+  const { mutate: thumbnailDeletePostUpdateMutate } = useMutation({
+    mutationFn: deleteThumbnailDeletePost,
+  });
+
   const { mutate: thumbnailDeleteMutate } = useMutation({
     mutationFn: getThumbnailDelete,
     onSuccess: () => {
       setUploadState(false);
       setValue('thumbnailUrl', '');
+      if (postData?.postId) {
+        thumbnailDeletePostUpdateMutate({
+          trackName,
+          period: Number(loginPeriod),
+          postId: postData.postId,
+        });
+      }
     },
   });
 

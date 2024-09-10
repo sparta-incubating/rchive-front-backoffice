@@ -79,6 +79,28 @@ export const getThumbnailDelete = async (thumbnailUrl: string) => {
   }
 };
 
+// update thumbnail delete
+export const deleteThumbnailDeletePost = async ({
+  trackName,
+  period,
+  postId,
+}: {
+  trackName: TrackType;
+  period: number;
+  postId: string;
+}) => {
+  try {
+    return await client.delete(`/apis/v1/posts/${postId}/thumbnail`, {
+      data: {
+        trackName,
+        period,
+      },
+    });
+  } catch (error) {
+    throw new Error('파일 삭제에 실패했습니다.');
+  }
+};
+
 // 튜터 검색
 export const getSearchTutor = async (
   track: TrackType,
