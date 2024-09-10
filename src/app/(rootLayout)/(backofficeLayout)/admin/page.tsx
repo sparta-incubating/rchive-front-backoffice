@@ -103,7 +103,8 @@ const Admin = () => {
       setSelectedTabCount(initialCount);
     }
   }, [countList]);
-  /*검색 */
+
+  /*검색 기능*/
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -126,6 +127,7 @@ const Admin = () => {
       }));
     }
   };
+  /*검색 기능*/
 
   const handleCategoryChange = (category: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -161,7 +163,6 @@ const Admin = () => {
   /*체크박스*/
 
   /*페이지 네이션 */
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setFilters((prevFilters) => ({
