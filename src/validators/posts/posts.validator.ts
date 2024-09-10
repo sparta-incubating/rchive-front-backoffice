@@ -2,7 +2,7 @@ import { trackEnum } from '@/validators/commons';
 import { z } from 'zod';
 
 const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-const notionPattern = /^(https?:\/\/)(www\.)?notion\.so\/.+$/;
+const notionPattern = /^(https?:\/\/)(.*\.)?(notion\.so|notion\.site)\/.+$/;
 
 const postTypeEnum = z.enum(
   [
