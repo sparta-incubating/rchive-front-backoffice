@@ -4,7 +4,7 @@ import Label from '@/components/atoms/label';
 import PasswordContainer from '@/components/atoms/PasswordContainer';
 import InputField from '@/components/molecules/InputField';
 import { authCodeType, SignupFormSchema } from '@/types/signup.types';
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import PhoneField from './PhoneField';
 
@@ -12,16 +12,18 @@ interface PhoneFormProps {
   register: UseFormRegister<SignupFormSchema>;
   usernameCheck: string;
   authCheck: (authInfo: authCodeType) => Promise<void>;
-  isErrorMsg: string | null;
   setIsErrorMsg: Dispatch<SetStateAction<string | null>>;
+  setRequestAuthNumber: React.Dispatch<React.SetStateAction<boolean>>;
+  expire: boolean;
 }
 
 const PhoneForm = ({
   register,
   usernameCheck,
   authCheck,
-  isErrorMsg,
   setIsErrorMsg,
+  setRequestAuthNumber,
+  expire,
 }: PhoneFormProps) => {
   return (
     <>
@@ -32,8 +34,9 @@ const PhoneForm = ({
             register={register}
             usernameCheck={usernameCheck}
             authCheck={authCheck}
-            isErrorMsg={isErrorMsg}
             setIsErrorMsg={setIsErrorMsg}
+            setRequestAuthNumber={setRequestAuthNumber}
+            expire={expire}
           />
         </InputField>
       </PasswordContainer>

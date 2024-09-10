@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 
 const dynamicRouteCheck = (url: string): boolean => {
-  const dynamicRoutePattern = /^\/backoffice\/posts\/(\d+)$/;
+  const dynamicRoutePattern = /^\/posts\/(\d+)$/;
   const match = url.match(dynamicRoutePattern);
 
   if (match) {

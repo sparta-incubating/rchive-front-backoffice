@@ -3,19 +3,10 @@
 import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
-import { useEffect, useState } from 'react';
 
 const BackOfficeMenuBar = () => {
-  const [archiveUrl, setArchiveUrl] = useState('');
-
-  useEffect(() => {
-    setArchiveUrl(process.env.NEXT_PUBLIC_BACKEND_URL || '');
-  }, []);
-
   const handleGoArchive = () => {
-    if (archiveUrl) {
-      window.open(archiveUrl, '_blank', 'noopener,noreferrer');
-    }
+    window.open('https://dev.rchive.kr', '_blank');
   };
 
   return (
