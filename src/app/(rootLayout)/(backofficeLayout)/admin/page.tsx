@@ -139,7 +139,6 @@ const Admin = () => {
   /*체크박스*/
   const dispatch = useAppDispatch();
   const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
-  //id 추가
   const dataList = viewList?.map((item: AdminListInfoType) => ({
     ...item,
     adminId: item.email,
@@ -172,16 +171,21 @@ const Admin = () => {
   };
 
   /**전체 승인 조회 */
-  const foundItems = checkedAdminIds.flatMap((email) =>
-    viewList?.filter((item: AdminDataInfoType) => item.email === email),
-  );
+  const foundItems = checkedAdminIds
+    .flatMap((email) =>
+      viewList?.filter((item: AdminDataInfoType) => item.email === email),
+    )
+    .filter((item) => item !== undefined); // undefined 항목 제거
 
-  const extractedData = foundItems.map(({ period, trackRole, email }) => ({
-    trackName: statusTrackName,
-    period,
-    trackRole,
-    email,
-  }));
+  const extractedData = foundItems.map((item) => {
+    const { period, trackRole, email } = item || {}; // item이 undefined일 경우 빈 객체 할당
+    return {
+      trackName: statusTrackName,
+      period,
+      trackRole,
+      email,
+    };
+  });
 
   const allApproveItems = async () => {
     extractedData.forEach((item) => {
