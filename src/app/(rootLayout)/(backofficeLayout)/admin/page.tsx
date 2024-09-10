@@ -144,14 +144,15 @@ const Admin = () => {
     adminId: item.email,
   }));
 
+  //체크한 id 목록들
   const handleAllCheck = (checked: boolean) => {
-    //체크한 id 목록들
     const currentPagePostIds = dataList.map(
       (item: AdminDataInfoType) => item.email,
     );
     dispatch(setAllAdminIds({ adminIds: currentPagePostIds, checked }));
   };
 
+  /*체크박스*/
   const isAllChecked =
     dataList?.length > 0 &&
     dataList?.every((item: AdminDataInfoType) => adminIds.includes(item.email));
@@ -159,7 +160,6 @@ const Admin = () => {
   const { adminIds: checkedAdminIds } = useAppSelector(
     (state) => state.adminCheckBoxSlice,
   );
-  /*체크박스*/
 
   /*페이지 네이션 */
   const handlePageChange = (page: number) => {
@@ -175,10 +175,10 @@ const Admin = () => {
     .flatMap((email) =>
       viewList?.filter((item: AdminDataInfoType) => item.email === email),
     )
-    .filter((item) => item !== undefined); // undefined 항목 제거
+    .filter((item) => item !== undefined);
 
   const extractedData = foundItems.map((item) => {
-    const { period, trackRole, email } = item || {}; // item이 undefined일 경우 빈 객체 할당
+    const { period, trackRole, email } = item || {};
     return {
       trackName: statusTrackName,
       period,
@@ -225,10 +225,8 @@ const Admin = () => {
             selectedTab={selectedTab}
             countList={countList}
           />
-          {/* 탭 메뉴 */}
 
           {/*카테고리 및 체크박스*/}
-
           <div className="flex flex-row justify-between py-[24px]">
             <CategoryFiltered
               handleCategoryChange={handleCategoryChange}
