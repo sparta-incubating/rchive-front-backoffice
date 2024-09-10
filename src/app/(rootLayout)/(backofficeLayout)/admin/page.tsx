@@ -103,19 +103,31 @@ const Admin = () => {
       setSelectedTabCount(initialCount);
     }
   }, [countList]);
-  /*검색 */
+
+  /*검색 기능*/
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSearchChange = () => {
+  const handleSearchChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const value = inputRef.current?.value ?? '';
 
-    setCurrentPage(currentPage);
+    if (event.key === 'Enter') {
+      setCurrentPage(1);
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        keyword: value,
+        page: 1,
+      }));
+    }
 
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      keyword: value,
-    }));
+    if (value === '') {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        keyword: '',
+        page: 1,
+      }));
+    }
   };
+  /*검색 기능*/
 
   const handleCategoryChange = (category: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -151,7 +163,6 @@ const Admin = () => {
   /*체크박스*/
 
   /*페이지 네이션 */
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setFilters((prevFilters) => ({
@@ -159,10 +170,6 @@ const Admin = () => {
       page,
     }));
   };
-
-  useEffect(() => {
-    handleSearchChange();
-  }, [filters.keyword]);
 
   /**전체 승인 조회 */
   const foundItems = checkedAdminIds.flatMap((email) =>
@@ -204,7 +211,7 @@ const Admin = () => {
     <>
       <BackofficePage>
         {/* 검색바 */}
-        <SearchBar ref={inputRef} onChange={handleSearchChange} />
+        <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
 
         {/* 게시판 */}
         <PermissionBoard>
