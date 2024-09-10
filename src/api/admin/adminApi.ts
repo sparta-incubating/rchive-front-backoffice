@@ -23,8 +23,6 @@ export const getBoardList = async (filters: FilterParams) => {
   const trackName = session?.user.trackName;
   const loginPeriod = session?.user.loginPeriod;
 
-  console.log({ filters });
-
   const params = {
     sort: filters.sort || 'DATE_LATELY',
     trackName,
