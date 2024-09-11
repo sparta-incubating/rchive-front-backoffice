@@ -25,7 +25,7 @@ export type TractTypeResponse = {
   data: { trackNameList: TrackType[] };
 };
 
-type PostType2 = {
+type PostType = {
   key: string;
   value: string;
 };
@@ -33,7 +33,7 @@ type PostType2 = {
 export type PostTypeResponse = {
   status: number;
   message: string;
-  data: PostType2[];
+  data: PostType[];
 };
 
 export type tutorApiType = {
@@ -49,7 +49,7 @@ export type postFetchData = {
   videoLink: string;
   tagNameList: string[];
   uploadedAt: string;
-  postType: PostType2;
+  postType: PostType;
   period: number;
   isOpened: boolean;
   thumbnailUrl: string;
@@ -103,7 +103,7 @@ export type PostContentType = {
   postId: number;
   thumbnailUrl: string;
   title: string;
-  postType: PostType2;
+  postType: PostType;
   tutor: string;
   period: number;
   isOpened: boolean;
