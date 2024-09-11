@@ -10,7 +10,7 @@ import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { setPostId } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
-import { extractPageId } from '@/utils/notionAPI';
+import { extractPageId } from '@/utils/notion/notionAPI';
 import { getNameCategory } from '@/utils/setAuthInfo/post.util';
 import { createToast } from '@/utils/toast';
 import Image from 'next/image';
