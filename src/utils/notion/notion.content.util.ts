@@ -115,16 +115,14 @@ async function extractTextFromBlock(
   } else if (isChildDatabaseBlock(block)) {
     text += removeAllWhitespace(block.child_database.title);
   } else if (isBulletedListItemBlock(block)) {
-    text +=
-      '-' + (await extractTextFromRichText(block.bulleted_list_item.rich_text));
+    text += await extractTextFromRichText(block.bulleted_list_item.rich_text);
   } else if (isNumberedListItemBlock(block)) {
-    text +=
-      '1.' +
-      (await extractTextFromRichText(block.numbered_list_item.rich_text));
+    text += await extractTextFromRichText(block.numbered_list_item.rich_text);
+    if (block.has_children) {
+      text += await extractTextFromChildren(block.id, notionClient);
+    }
   } else if (isToDoBlock(block)) {
-    text +=
-      (block.to_do.checked ? '[x]' : '[]') +
-      (await extractTextFromRichText(block.to_do.rich_text));
+    text += await extractTextFromRichText(block.to_do.rich_text);
   } else if (isToggleBlock(block)) {
     text += '>' + (await extractTextFromRichText(block.toggle.rich_text));
     text += await extractTextFromChildren(block.id, notionClient);
