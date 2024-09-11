@@ -1,7 +1,7 @@
 import SelectItemSpan from '@/components/atoms/selectItemSpan';
 import { cva, VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
-import { ReactNode } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 const SelectItemVariants = cva(
   'relative mx-3 flex cursor-pointer justify-between rounded-[12px] px-[14px] py-5 ',
@@ -18,20 +18,21 @@ const SelectItemVariants = cva(
   },
 );
 
-interface SelectItemProps extends VariantProps<typeof SelectItemVariants> {
+interface SelectItemProps
+  extends VariantProps<typeof SelectItemVariants>,
+    ComponentProps<'div'> {
   children: ReactNode;
-  onClick: () => void;
   selected?: boolean;
 }
 
 const SelectItem = ({
   children,
-  onClick,
   selected = false,
   variant = 'primary',
+  ...props
 }: SelectItemProps) => {
   return (
-    <div onClick={onClick} className={SelectItemVariants({ variant })}>
+    <div {...props} className={SelectItemVariants({ variant })}>
       <SelectItemSpan selected={selected} variant={variant}>
         {children}
       </SelectItemSpan>

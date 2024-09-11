@@ -10,7 +10,8 @@ import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { useAppSelector } from '@/redux/storeConfig';
 import { PostsFormSchema } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
-import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
 import { FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 interface TutorContainerProps {
@@ -22,7 +23,9 @@ interface TutorContainerProps {
 const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
   const { isOpen, setIsOpen, dropdownRef, handleClick } =
     useDropDownOutsideClick();
-
+  console.log({ isOpen });
+  const [placeHolder, setPlaceHolder] =
+    useState<string>('기수를 먼저 선택해주세요.');
   const { period: loginPeriod } = useAppSelector((state) => state.authSlice);
   const inputRef = useRef<HTMLDivElement>(null);
   const [periodError, setPeriodError] = useState<string>('');
@@ -59,17 +62,19 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
     }
 
     setPeriodError('');
-
-    const response = await getSearchTutor(
-      watch('trackName'),
-      Number(loginPeriod),
-      Number(period),
-      '',
-    );
+    let response;
+    if (!isOpen) {
+      response = await getSearchTutor(
+        watch('trackName'),
+        Number(loginPeriod),
+        Number(period),
+        '',
+      );
+    }
 
     let tutors: SelectOptionType[] = [];
 
-    if (response.data) {
+    if (response?.data) {
       tutors = response.data.map((tutor) => ({
         value: String(tutor.tutorId),
         label: tutor.tutorName,
@@ -81,8 +86,10 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
     handleClick(e);
   };
 
-  const deleteTutor = () => {
+  const deleteTutor = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setValue('tutor', null);
+    setSelectedOption(null);
     if (inputRef.current) {
       inputRef.current.innerText = '';
     }
@@ -90,6 +97,9 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
 
   useEffect(() => {
     setValue('tutor', null);
+    if (period) {
+      setPlaceHolder('튜터를 선택해주세요.');
+    }
   }, [period, setValue]);
 
   return (
@@ -99,16 +109,26 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
         className="group relative flex h-[61px] w-full items-center gap-2 rounded-[12px] border border-blue-100 px-5"
       >
         {tutor ? (
-          <TutorCard>
-            {tutor.tutorName}
-            <CloseButton onClick={deleteTutor} />
-          </TutorCard>
+          <div className="flex min-w-[280px] max-w-full gap-4">
+            <TutorCard>
+              {tutor.tutorName}
+              <CloseButton onClick={deleteTutor} />
+            </TutorCard>
+          </div>
         ) : (
-          <TutorInput
-            key="tutor"
-            placeholder="튜터를 입력해주세요."
-            ref={inputRef}
-          />
+          <TutorInput key="tutor" placeholder={placeHolder} ref={inputRef} />
+        )}
+        {period && (
+          <div
+            data-clicked={isOpen}
+            className="flex h-6 w-6 rotate-180 items-center justify-center transition-transform duration-500 ease-in-out data-[clicked=false]:rotate-0"
+          >
+            <Image
+              src={'/backoffice/assets/icons/selectArrow.svg'}
+              alt={'select arrow icon'}
+              fill
+            />
+          </div>
         )}
 
         <CustomDropDown clicked={isOpen} ref={dropdownRef}>
@@ -118,7 +138,10 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
               data-value={tutorItem.value}
               selected={tutorItem.value === selectedOption?.value}
               variant="secondary"
-              onClick={() => handleSelect(tutorItem)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSelect(tutorItem);
+              }}
             >
               {tutorItem.label}
             </SelectItem>

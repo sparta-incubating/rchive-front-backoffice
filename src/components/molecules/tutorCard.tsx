@@ -28,10 +28,7 @@ interface TagCardProps
 
 function TagCard({ children, variant, size, className = '' }: TagCardProps) {
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className={classMerge(tagCardVariants({ variant, size }), className)}
-    >
+    <div className={classMerge(tagCardVariants({ variant, size }), className)}>
       <div className="text-md flex w-full items-center justify-between gap-2">
         {children}
       </div>
