@@ -5,11 +5,10 @@ import React, { ComponentProps, useEffect } from 'react';
 
 interface TagInputProps extends ComponentProps<'div'> {
   placeholder?: string;
-  handleInput: () => void;
 }
 
 const TagInput = React.forwardRef<HTMLDivElement, TagInputProps>(
-  ({ placeholder = 'Enter text...', handleInput, ...props }, ref) => {
+  ({ placeholder = 'Enter text...', ...props }, ref) => {
     // div placeholder 적용
     const handleFocus = () => {
       if (ref && 'current' in ref && ref.current) {
@@ -42,11 +41,9 @@ const TagInput = React.forwardRef<HTMLDivElement, TagInputProps>(
       <div
         {...props}
         ref={ref}
-        className={`relative flex w-auto min-w-[280px] max-w-full items-center text-sm font-medium outline-none ${props.className || ''}`}
-        contentEditable="true"
+        className={`relative flex w-auto min-w-[280px] max-w-full cursor-pointer items-center text-sm font-medium outline-none ${props.className || ''}`}
         role="textbox"
         aria-multiline="false"
-        onInput={handleInput}
         onFocus={handleFocus}
         onBlur={handleBlur}
         data-placeholder={placeholder}
