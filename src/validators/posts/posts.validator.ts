@@ -1,4 +1,3 @@
-import { trackEnum } from '@/validators/commons';
 import { z } from 'zod';
 
 const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
@@ -48,7 +47,7 @@ export const postsSchema = z
       }),
     tagNameList: z.array(tagSchema).max(10, '태그는 10개까지 입력가능합니다.'),
     uploadedAt: z.date().nullable(),
-    trackName: trackEnum,
+    trackName: z.string(),
     postType: postTypeEnum,
     postPeriod: z.string().min(1, '기수를 선택해주세요.'),
     isOpened: isOpenEnum,

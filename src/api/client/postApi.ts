@@ -1,5 +1,5 @@
 import { PostForm } from '@/class/postForm';
-import { TrackType, tutorApiType } from '@/types/posts.types';
+import { tutorApiType } from '@/types/posts.types';
 import { client } from '@/utils/clientAPI';
 import { removeMarkdown } from '@/utils/removeMarkDown.util';
 import { createToast } from '@/utils/toast';
@@ -85,7 +85,7 @@ export const deleteThumbnailDeletePost = async ({
   period,
   postId,
 }: {
-  trackName: TrackType;
+  trackName: string;
   period: number;
   postId: string;
 }) => {
@@ -103,7 +103,7 @@ export const deleteThumbnailDeletePost = async ({
 
 // 튜터 검색
 export const getSearchTutor = async (
-  track: TrackType,
+  track: string,
   loginPeriod: number,
   inputPeriod: number,
   keyword: string,
@@ -228,7 +228,7 @@ export const patchPostClose = async (
 
 // 게시물 삭제 endpoiont
 export const deletePost = async (
-  trackName: TrackType,
+  trackName: string,
   loginPeriod: number,
   postId: string,
 ) => {
