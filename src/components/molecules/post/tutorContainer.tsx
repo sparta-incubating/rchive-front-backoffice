@@ -23,7 +23,6 @@ interface TutorContainerProps {
 const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
   const { isOpen, setIsOpen, dropdownRef, handleClick } =
     useDropDownOutsideClick();
-  console.log({ isOpen });
   const [placeHolder, setPlaceHolder] =
     useState<string>('기수를 먼저 선택해주세요.');
   const { period: loginPeriod } = useAppSelector((state) => state.authSlice);
