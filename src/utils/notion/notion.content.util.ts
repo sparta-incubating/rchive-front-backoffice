@@ -17,6 +17,18 @@ function removeAllWhitespace(text: string): string {
   return text.replace(/\s+/g, '');
 }
 
+// 텍스트 추출 함수
+function extractTextFromRichTextReduce(
+  richText: RichTextItemResponse[],
+): string {
+  return removeAllWhitespace(
+    richText.reduce((acc, cur) => {
+      acc += cur.plain_text;
+      return acc;
+    }, ''),
+  );
+}
+
 async function extractTextFromRichText(
   richText: RichTextItemResponse[],
 ): Promise<string> {
@@ -116,7 +128,15 @@ async function extractTextFromBlock(
   } else if (isToggleBlock(block)) {
     text += '>' + (await extractTextFromRichText(block.toggle.rich_text));
     text += await extractTextFromChildren(block.id, notionClient);
+  } else if (block.type === 'callout') {
+    text += extractTextFromRichTextReduce(block.callout.rich_text);
+  } else if (block.type === 'quote') {
+    text += extractTextFromRichTextReduce(block.quote.rich_text);
   }
+  // embed link 추출 가능
+  /* if (block.type === 'embed') {
+     console.log({ block });
+   }*/
 
   // Handle other specific block types
   switch (block.type) {
@@ -174,6 +194,7 @@ async function extractTextFromChildren(
 ): Promise<string> {
   const children = await getBlockChildren(blockId, notionClient);
   let text = '';
+
   for (const child of children) {
     text += await extractTextFromBlock(child, notionClient);
   }
