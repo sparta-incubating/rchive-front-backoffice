@@ -24,64 +24,6 @@ export type trackPeriodResponse = {
 
 export type TutorType = { tutorId: number; tutorName: string };
 
-export const trackOptions: SelectOptionType[] = [
-  {
-    value: 'UNITY',
-    label: 'Unity',
-    selected: false,
-  },
-  {
-    value: 'NODEJS',
-    label: 'Node.js',
-    selected: false,
-  },
-  {
-    value: 'SPRING_JAVA',
-    label: 'Spring(Java)',
-    selected: false,
-  },
-  {
-    value: 'SPRING_KOTLIN',
-    label: 'Spring(Kotlin)',
-    selected: false,
-  },
-  {
-    value: 'REACT',
-    label: 'React',
-    selected: false,
-  },
-  {
-    value: 'AI',
-    label: 'AI',
-    selected: false,
-  },
-  {
-    value: 'ANDROID',
-    label: 'Android',
-    selected: false,
-  },
-  {
-    value: 'IOS',
-    label: 'IOS',
-    selected: false,
-  },
-  {
-    value: 'DATA',
-    label: 'Data',
-    selected: false,
-  },
-  {
-    value: 'UXUI',
-    label: 'UX/UI',
-    selected: false,
-  },
-  {
-    value: 'SPRING_DEEP',
-    label: 'Spring(단기 심화)',
-    selected: false,
-  },
-];
-
 export type TrackType =
   | ''
   | 'UNITY'
@@ -95,6 +37,17 @@ export type TrackType =
   | 'DATA'
   | 'UXUI'
   | 'SPRING_DEEP';
+
+type TrackType2 = {
+  key: string;
+  value: string;
+};
+
+export type TractTypeResponse = {
+  status: number;
+  message: string;
+  data: { trackNameList: TrackType2[] };
+};
 
 export type PostType =
   | 'Sparta_Lecture'
