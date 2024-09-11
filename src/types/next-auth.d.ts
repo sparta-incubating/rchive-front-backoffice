@@ -1,5 +1,4 @@
 import { trackRole } from '@/types/auth.types';
-import { TrackType } from '@/types/posts.types';
 
 declare module 'next-auth' {
   // user 타입확장
@@ -8,7 +7,8 @@ declare module 'next-auth' {
     refreshToken: string;
     trackId?: number;
     trackRole?: trackRole;
-    trackName?: TrackType;
+    trackName?: string;
+    trackLabel?: string;
     loginPeriod?: number;
     roleApply?: boolean;
     roleError?: string;
@@ -28,7 +28,8 @@ declare module 'next-auth/jwt' {
     refreshToken: string;
     trackId?: number;
     trackRole?: trackRole;
-    trackName?: TrackType;
+    trackName?: string;
+    trackLabel?: string;
     loginPeriod?: number;
     roleApply?: boolean;
     error?: 'tokenErrors';

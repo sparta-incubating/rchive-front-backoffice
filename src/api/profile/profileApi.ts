@@ -27,8 +27,6 @@ export const getUserInfo = async () => {
 
 export const updatePassword = async (password: PassWordChange) => {
   const { originPassword, newPassword } = password;
-  // console.log(originPassword, '기존비밀번호');
-  // console.log(newPassword, '변경할 비밀번호');
   try {
     const res = await client.patch(`/apis/v1/profile/password`, {
       originPassword,

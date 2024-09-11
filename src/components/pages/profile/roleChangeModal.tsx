@@ -2,7 +2,7 @@ import { useProfileUpdate } from '@/api/profile/useMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
-import { trackOptions } from '@/types/posts.types';
+import useTrackName from '@/hooks/useTrackName';
 import { RoleChangeModalProps } from '@/types/profile.types';
 import { RoleFormSchema } from '@/types/role.types';
 import { createToast } from '@/utils/toast';
@@ -30,8 +30,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     },
   });
 
-  const watchTrackName = watch('trackName');
-
+  const { trackNameOptions } = useTrackName();
   const period = useGetPeriod(watch('trackName'), trackRole);
 
   const { updateRoleMutate } = useProfileUpdate();
@@ -69,7 +68,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
           render={({ field: { onChange, value } }) => (
             <SelectFormBox
               className="w-[360px]"
-              options={trackOptions}
+              options={trackNameOptions}
               label={'트랙'}
               onSelect={onChange}
               value={value}

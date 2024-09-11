@@ -9,7 +9,6 @@ import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import BackofficePage from '@/components/pages/backofficePage';
-import { postTabArr } from '@/constants/permission.constant';
 import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
 import useSearchKeyword from '@/hooks/useSearchKeyword';
 import useSearchTutor from '@/hooks/useSearchTutor';
@@ -177,11 +176,7 @@ const PostListPage = ({
       {/* 게시판 */}
       <PermissionBoard>
         {/* 탭메뉴 */}
-        <PostTapMenu
-          data={postTabArr}
-          activeTab={activeTab}
-          setActiveTab={handleTabChange}
-        />
+        <PostTapMenu activeTab={activeTab} setActiveTab={handleTabChange} />
 
         <section className="py-6">
           {/* 카테고리 */}

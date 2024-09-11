@@ -1,10 +1,9 @@
-import { trackEnum } from '@/validators/commons';
 import { z } from 'zod';
 
 export const roleSchema = z
   .object({
     trackRole: z.string().optional(),
-    trackName: trackEnum,
+    trackName: z.string(),
     period: z.string().optional(),
   })
   .refine(

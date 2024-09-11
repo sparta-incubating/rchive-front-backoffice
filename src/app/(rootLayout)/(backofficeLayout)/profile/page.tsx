@@ -39,7 +39,7 @@ const Profile = () => {
         <UserInfo
           profileImg={profileImg}
           username={username}
-          trackName={trackName}
+          trackName={trackName.value}
           period={period}
           trackRole={trackRole}
           handleChangeRole={() => openModal('role')}

@@ -1,11 +1,9 @@
-import { TrackType } from '@/types/posts.types';
-
 export type trackRole = 'PM' | 'APM' | 'USER';
 
 export type LastConnectRoleDataType = {
   trackId: number;
   trackRole: trackRole;
-  trackName: TrackType;
+  trackName: string;
   period: number;
 };
 export type LastConnectRoleResponseType = {

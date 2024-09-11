@@ -66,11 +66,13 @@ const SignIn = () => {
 
   useEffect(() => {
     if (session) {
-      const { trackName, trackRole, accessToken, loginPeriod } = session.user;
+      const { trackName, trackLabel, trackRole, accessToken, loginPeriod } =
+        session.user;
       dispatch(
         setAuth({
           accessToken,
           trackName: trackName || '',
+          trackLabel: trackLabel || '',
           trackRole: trackRole || 'USER',
           period: String(loginPeriod) || '',
         }),

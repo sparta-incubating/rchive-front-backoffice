@@ -9,7 +9,7 @@ import { PostForm } from '@/class/postForm';
 import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
-import { postFetchData, PostsFormSchema, TrackType } from '@/types/posts.types';
+import { postFetchData, PostsFormSchema } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
@@ -54,7 +54,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       videoLink: '',
       tagNameList: [],
       uploadedAt: null,
-      trackName: trackName as TrackType,
+      trackName: trackName,
       postPeriod: trackRole === 'APM' ? loginPeriod : '',
       isOpened: 'true',
     },
@@ -123,7 +123,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       setNotionValidateState(!!postData.contentLink);
       setValue('videoLink', postData.videoLink);
       setValue('postPeriod', String(postData.period));
-      setValue('postType', postData.postType);
+      setValue('postType', postData.postType.key);
       setValue('uploadedAt', dayjs(postData.uploadedAt).toDate());
       setValue('tutor', { ...postData.tutorRes });
       setValue('isOpened', String(postData.isOpened) as 'true' | 'false');

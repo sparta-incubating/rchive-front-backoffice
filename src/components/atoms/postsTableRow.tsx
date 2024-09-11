@@ -11,7 +11,6 @@ import { setPostId } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notion/notionAPI';
-import { getNameCategory } from '@/utils/setAuthInfo/post.util';
 import { createToast } from '@/utils/toast';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -99,7 +98,7 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
         </Link>
       </td>
       <td className="w-[153px] px-2.5 text-gray-700">
-        {getNameCategory(postData.postType)}
+        {postData.postType.value}
       </td>
       <td className="w-[97px] px-2.5 text-gray-700">{postData.tutor}</td>
       <td className="w-[69px] text-gray-700">{postData.period}기</td>

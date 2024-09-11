@@ -1,12 +1,11 @@
 import { auth, signOut } from '@/auth';
 import { trackRole } from '@/types/auth.types';
-import { TrackType } from '@/types/posts.types';
 
 export const serverSession = async () => {
   const session = await auth();
 
   const period = session?.user.loginPeriod as number;
-  const trackName = session?.user.trackName as TrackType;
+  const trackName = session?.user.trackName as string;
   const trackRole = session?.user.trackRole as trackRole;
   const trackId = session?.user.trackId as number;
   const accessToken = session?.user.accessToken as string;
