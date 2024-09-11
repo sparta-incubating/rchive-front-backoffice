@@ -123,7 +123,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       setNotionValidateState(!!postData.contentLink);
       setValue('videoLink', postData.videoLink);
       setValue('postPeriod', String(postData.period));
-      setValue('postType', postData.postType);
+      setValue('postType', postData.postType.key);
       setValue('uploadedAt', dayjs(postData.uploadedAt).toDate());
       setValue('tutor', { ...postData.tutorRes });
       setValue('isOpened', String(postData.isOpened) as 'true' | 'false');

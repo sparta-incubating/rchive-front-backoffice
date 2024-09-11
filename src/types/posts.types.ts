@@ -36,33 +36,10 @@ export type PostTypeResponse = {
   data: PostType2[];
 };
 
-export type PostType =
-  | 'Sparta_Lecture'
-  | 'Special_Lecture'
-  | 'Level_Challenge'
-  | 'Level_Standard'
-  | 'Level_Basic'
-  | 'Project_Description'
-  | 'all';
-
 export type tutorApiType = {
   data: TutorType[];
   message: string;
   status: number;
-};
-
-export type postsEndPointFormData = {
-  title: string;
-  tutorId: number;
-  contentLink: string;
-  videoLink: string;
-  tagNameList: string[];
-  uploadedAt: string;
-  postType: PostType2;
-  postPeriod: number;
-  isOpened: boolean;
-  thumbnailUrl: string;
-  content: string;
 };
 
 export type postFetchData = {
@@ -72,7 +49,7 @@ export type postFetchData = {
   videoLink: string;
   tagNameList: string[];
   uploadedAt: string;
-  postType: PostType;
+  postType: PostType2;
   period: number;
   isOpened: boolean;
   thumbnailUrl: string;
