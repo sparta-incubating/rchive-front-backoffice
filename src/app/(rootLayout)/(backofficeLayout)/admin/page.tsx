@@ -268,28 +268,23 @@ const Admin = () => {
               </section>
             )}
           </div>
-
+          <AdminTableHeader
+            handleAllCheck={handleAllCheck}
+            isAllChecked={isAllChecked}
+          />
           {selectedTabCount === 0 ? (
             <NoDataList />
           ) : (
             <>
-              {viewList?.length > 0 && (
-                <AdminTableHeader
-                  handleAllCheck={handleAllCheck}
-                  isAllChecked={isAllChecked}
-                />
-              )}
               {viewList?.length > 0 ? (
                 <>
                   <AuthFilteredList data={viewList} />
-                  <div className="py-[24px]">
-                    <PageNation
-                      currentPage={currentPage}
-                      totalElements={totalElements}
-                      size={Number(ADMIN_DEFAULT_PAGE_SIZE)}
-                      onPageChange={handlePageChange}
-                    />
-                  </div>
+                  <PageNation
+                    currentPage={currentPage}
+                    totalElements={totalElements}
+                    size={Number(ADMIN_DEFAULT_PAGE_SIZE)}
+                    onPageChange={handlePageChange}
+                  />
                 </>
               ) : (
                 <NoDataList />
