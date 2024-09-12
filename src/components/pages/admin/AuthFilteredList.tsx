@@ -44,7 +44,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
     <div className="h-[471px] border-gray-300">
       {data.length > 0 ? (
         data.map((item) => (
-          <tr
+          <div
             key={item.email + item.period}
             className={`flex h-[64px] items-center border-b text-sm hover:bg-blue-50 ${
               adminIds.findIndex(
@@ -55,7 +55,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
                 : ''
             }`}
           >
-            <td className="ml-6 mr-7 flex h-5 w-5 items-center justify-center">
+            <div className="ml-6 mr-7 flex h-5 w-5 items-center justify-center">
               <CategoryBox
                 text=""
                 onChange={handleCheckChange({
@@ -70,26 +70,26 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
                   ) !== -1
                 }
               />
-            </td>
-            <td className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
+            </div>
+            <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
               {item.username}
-            </td>
-            <td className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
+            </div>
+            <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
               {item.trackRole === 'STUDENT' ? '수강생' : item.trackRole}
-            </td>
-            <td className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
+            </div>
+            <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">
               {item.period}
-            </td>
-            <td className="flex h-[64px] w-[268px] items-center px-[16px] py-[12px] text-sm font-medium text-gray-700">
+            </div>
+            <div className="flex h-[64px] w-[268px] items-center px-[16px] py-[12px] text-sm font-medium text-gray-700">
               {item.email}
-            </td>
-            <td className="flex h-[64px] w-[171px] items-center text-sm font-medium text-gray-700">
+            </div>
+            <div className="flex h-[64px] w-[171px] items-center text-sm font-medium text-gray-700">
               {item.createdAt}
-            </td>
-            <td className="flex h-[64px] w-[123px] items-center px-[10px] text-sm font-medium text-gray-700">
+            </div>
+            <div className="flex h-[64px] w-[123px] items-center px-[10px] text-sm font-medium text-gray-700">
               <AdminSelectBoxCategory dataList={item} isStatus={item.auth} />
-            </td>
-          </tr>
+            </div>
+          </div>
         ))
       ) : (
         <NoDataList />
