@@ -20,20 +20,26 @@ interface AuthCategoryProps {
   label: string;
   data: AdminCateoryType[];
   setValue: (value: string) => void;
+  isOpen: boolean;
+  onClick: () => void;
 }
 
-const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
+const AuthFilterCategory = ({
+  label,
+  data,
+  setValue,
+  isOpen,
+  onClick,
+}: AuthCategoryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(label);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleClick = (data: { label: string; value: string }) => {
     setSelectedCategory(data.label);
-    setIsDropdownOpen(false);
     setValue(data.value);
   };
 
   return (
-    <CategoryContainer onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+    <CategoryContainer onClick={onClick}>
       <CategoryLayout>
         <SelectLabel>{selectedCategory}</SelectLabel>
         <Image
@@ -42,15 +48,15 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
           height={12}
           alt="화살표"
           className={`transition-transform duration-500 ${
-            isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            isOpen ? 'rotate-180' : 'rotate-0'
           }`}
         />
       </CategoryLayout>
-      <CategoryDropDown show={isDropdownOpen}>
+      <CategoryDropDown show={isOpen}>
         {data?.map((item: AdminCateoryType) => (
           <div
             className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-            key={item?.id}
+            key={item?.id + item.value}
             onClick={() => handleClick(item)}
           >
             <p

@@ -65,7 +65,7 @@ const AdminSelectBoxCategory = ({
           src={isStatus === 'WAIT' ? orange : green}
           width={8}
           height={8}
-          alt=""
+          alt="권한"
         />
         <SelectLabel>{isStatus === 'WAIT' ? '대기' : '승인'}</SelectLabel>
         <Image

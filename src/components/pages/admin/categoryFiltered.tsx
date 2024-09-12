@@ -3,6 +3,7 @@
 import { usePeriodListQuery } from '@/api/profile/useQuery';
 import AuthFilterCategory from '@/components/atoms/category/AuthCategory';
 import { useAppSelector } from '@/redux/storeConfig';
+import { useState } from 'react';
 
 interface CategoryProps {
   handleCategoryChange: (category: string, value: string) => void;
@@ -10,6 +11,7 @@ interface CategoryProps {
 
 const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
   const { trackName, trackRole } = useAppSelector((state) => state.authSlice);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const roleCategory = [
     { id: 1, name: '전체', label: '직책', value: '' },
@@ -40,6 +42,10 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
     ...periodItem,
   ];
 
+  const handleCategoryClick = (category: string) => {
+    setActiveCategory((prev) => (prev === category ? null : category));
+  };
+
   return (
     <div className="flex flex-row gap-[10px]">
       {trackRole === 'PM' ? (
@@ -48,21 +54,36 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
             <AuthFilterCategory
               label="직책"
               data={roleCategory}
-              setValue={(value) => handleCategoryChange('trackRole', value)}
+              isOpen={activeCategory === 'trackRole'}
+              setValue={(value) => {
+                handleCategoryChange('trackRole', value);
+                handleCategoryClick('trackRole');
+              }}
+              onClick={() => handleCategoryClick('trackRole')}
             />
           </div>
           <div>
             <AuthFilterCategory
               label="기수"
               data={periodCategory}
-              setValue={(value) => handleCategoryChange('searchPeriod', value)}
+              isOpen={activeCategory === 'searchPeriod'}
+              setValue={(value) => {
+                handleCategoryChange('searchPeriod', value);
+                handleCategoryClick('searchPeriod');
+              }}
+              onClick={() => handleCategoryClick('searchPeriod')}
             />
           </div>
           <div>
             <AuthFilterCategory
               label="최신순"
               data={sortCategory}
-              setValue={(value) => handleCategoryChange('sort', value)}
+              isOpen={activeCategory === 'sort'}
+              setValue={(value) => {
+                handleCategoryChange('sort', value);
+                handleCategoryClick('sort');
+              }}
+              onClick={() => handleCategoryClick('sort')}
             />
           </div>
         </>
@@ -71,7 +92,12 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
           <AuthFilterCategory
             label="최신순"
             data={sortCategory}
-            setValue={(value) => handleCategoryChange('sort', value)}
+            isOpen={activeCategory === 'sort'}
+            setValue={(value) => {
+              handleCategoryChange('sort', value);
+              handleCategoryClick('sort');
+            }}
+            onClick={() => handleCategoryClick('sort')}
           />
         </div>
       )}
