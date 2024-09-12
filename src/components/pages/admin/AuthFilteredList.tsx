@@ -3,32 +3,40 @@
 import AdminSelectBoxCategory from '@/components/atoms/category/adminSelectBoxCategory';
 import CategoryBox from '@/components/atoms/category/categoryBox';
 import NoDataList from '@/components/atoms/category/noDataList';
-import { setAdminId } from '@/redux/slice/adminCheckBox.slice';
+import { selectItem } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
-import { FilteredListProps } from '@/types/admin.types';
+import { AdminDataInfoType, FilteredListProps } from '@/types/admin.types';
 import { useEffect, useState } from 'react';
+
+interface AdminItem {
+  email: string;
+  period: number;
+}
 
 const AuthFilteredList = ({ data }: FilteredListProps) => {
   const dispatch = useAppDispatch();
-  const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
+  const adminIds = useAppSelector(
+    (state) => state.adminCheckBoxSlice.selectedItems,
+  );
 
   const [checked, setChecked] = useState<boolean>(false);
 
   const handleCheckChange =
-    (adminId: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { checked } = e.target;
-      // 개별 체크박스 상태 변경
-      if (checked) {
-        dispatch(setAdminId({ adminId }));
-      } else {
-        dispatch(setAdminId({ adminId }));
-      }
+    (adminId: AdminItem) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { email, period } = adminId;
+      dispatch(selectItem({ email, period }));
     };
 
   useEffect(() => {
     setChecked(
       adminIds.length === data.length &&
-        data.every((item) => adminIds.includes(item.email)),
+        data.every(
+          (item: AdminDataInfoType) =>
+            adminIds.findIndex(
+              (admin) =>
+                admin.email === item.email && admin.period === item.period,
+            ) !== -1,
+        ),
     );
   }, [adminIds, data]);
 
@@ -37,14 +45,30 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
       {data.length > 0 ? (
         data.map((item) => (
           <div
-            key={item.email}
-            className={`flex flex-row hover:bg-blue-50 ${adminIds.includes(item.email) ? 'bg-secondary-55' : ''}`}
+            key={item.email + item.period}
+            className={`flex flex-row hover:bg-blue-50 ${
+              adminIds.findIndex(
+                (admin) =>
+                  admin.email === item.email && admin.period === item.period,
+              ) !== -1
+                ? 'bg-secondary-55'
+                : ''
+            }`}
           >
             <div className="flex h-[64px] w-[92px] items-center pl-[24px]">
               <CategoryBox
                 text=""
-                onChange={handleCheckChange(item.email)}
-                checked={adminIds.includes(item.email)}
+                onChange={handleCheckChange({
+                  email: item.email,
+                  period: item.period,
+                })}
+                checked={
+                  adminIds.findIndex(
+                    (admin) =>
+                      admin.email === item.email &&
+                      admin.period === item.period,
+                  ) !== -1
+                }
               />
             </div>
             <div className="flex h-[64px] w-[118px] items-center pl-[10px] pr-[16px] text-sm font-medium text-gray-700">

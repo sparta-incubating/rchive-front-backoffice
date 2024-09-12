@@ -38,7 +38,6 @@ const AdminTableHeader = ({
           승인상태
         </div>
       </div>
-      {/* 이 부분에 데이터 항목이 들어갑니다 */}
     </div>
   );
 };

@@ -20,8 +20,8 @@ import {
   ADMIN_DEFAULT_PAGE_SIZE,
 } from '@/constants/admin.constant';
 import {
-  clearAdminIds,
-  setAllAdminIds,
+  clearSelectedItems,
+  selectAllItems,
 } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import {
@@ -32,6 +32,11 @@ import {
 } from '@/types/admin.types';
 import { createToast } from '@/utils/toast';
 import { useEffect, useRef, useState } from 'react';
+
+interface AdminItem {
+  email: string;
+  period: number;
+}
 
 const Admin = () => {
   const [currentPage, setCurrentPage] = useState<number>(
@@ -138,7 +143,9 @@ const Admin = () => {
 
   /*체크박스*/
   const dispatch = useAppDispatch();
-  const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
+  const adminIds = useAppSelector(
+    (state) => state.adminCheckBoxSlice.selectedItems,
+  );
   const dataList = viewList?.map((item: AdminListInfoType) => ({
     ...item,
     adminId: item.email,
@@ -146,18 +153,30 @@ const Admin = () => {
 
   //체크한 id 목록들
   const handleAllCheck = (checked: boolean) => {
-    const currentPagePostIds = dataList.map(
-      (item: AdminDataInfoType) => item.email,
+    const currentPageItems = dataList.map((item: AdminDataInfoType) => ({
+      email: item.email,
+      period: item.period,
+    }));
+    dispatch(
+      selectAllItems({
+        adminIds: currentPageItems,
+        period: filters.searchPeriod,
+        checked,
+      }),
     );
-    dispatch(setAllAdminIds({ adminIds: currentPagePostIds, checked }));
   };
 
   /*체크박스*/
   const isAllChecked =
     dataList?.length > 0 &&
-    dataList?.every((item: AdminDataInfoType) => adminIds.includes(item.email));
+    dataList?.every(
+      (item: AdminDataInfoType) =>
+        adminIds.findIndex(
+          (admin) => admin.email === item.email && admin.period === item.period,
+        ) !== -1,
+    );
 
-  const { adminIds: checkedAdminIds } = useAppSelector(
+  const { selectedItems: checkedAdminIds } = useAppSelector(
     (state) => state.adminCheckBoxSlice,
   );
 
@@ -172,11 +191,14 @@ const Admin = () => {
 
   /**전체 승인 조회 */
   const foundItems = checkedAdminIds
-    .flatMap((email) =>
-      viewList?.filter((item: AdminDataInfoType) => item.email === email),
+    .map((selectedItem) =>
+      viewList?.find(
+        (item: AdminDataInfoType) =>
+          item.email === selectedItem.email &&
+          item.period === selectedItem.period,
+      ),
     )
     .filter((item) => item !== undefined);
-
   const extractedData = foundItems.map((item) => {
     const { period, trackRole, email } = item || {};
     return {
@@ -189,6 +211,7 @@ const Admin = () => {
 
   const allApproveItems = async () => {
     extractedData.forEach((item) => {
+      console.log(item, 'item');
       postUserApproveMutate.mutateAsync(item);
     });
     createToast(
@@ -196,7 +219,7 @@ const Admin = () => {
       'primary',
       false,
     );
-    dispatch(clearAdminIds());
+    dispatch(clearSelectedItems());
   };
 
   const allRejectItems = async () => {
@@ -208,7 +231,7 @@ const Admin = () => {
       'primary',
       false,
     );
-    dispatch(clearAdminIds());
+    dispatch(clearSelectedItems());
   };
 
   return (

@@ -3,6 +3,7 @@
 import MenubarLogout from '@/components/atoms/menubarLogout';
 import Spacer from '@/components/atoms/spacer';
 import MenubarLinks from '@/components/organisms/menubarLinks';
+import Link from 'next/link';
 
 const BackOfficeMenuBar = () => {
   const handleGoArchive = () => {
@@ -14,7 +15,9 @@ const BackOfficeMenuBar = () => {
       {/* header */}
       <section className="h-32 py-10">
         <div className="mx-auto max-w-[174px]">
-          <h1 className="text-2xl font-bold">르탄이의 백오피스 </h1>
+          <Link href="/admin">
+            <h1 className="text-2xl font-bold">르탄이의 백오피스 </h1>
+          </Link>
         </div>
       </section>
 
