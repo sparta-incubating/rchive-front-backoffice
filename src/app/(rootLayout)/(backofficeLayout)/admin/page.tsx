@@ -211,7 +211,6 @@ const Admin = () => {
 
   const allApproveItems = async () => {
     extractedData.forEach((item) => {
-      console.log(item, 'item');
       postUserApproveMutate.mutateAsync(item);
     });
     createToast(
