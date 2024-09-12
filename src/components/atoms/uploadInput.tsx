@@ -45,7 +45,7 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
         {showButton && (
           <Button
             size="sm"
-            variant="secondary"
+            variant="submit"
             onClick={onClick}
             className="right-2 top-1/2 flex h-[44px] w-full min-w-[74px] max-w-[84px] items-center justify-center px-5 py-3 text-xs font-semibold"
             disabled={!!isLoading}
