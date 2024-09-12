@@ -56,7 +56,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       uploadedAt: null,
       trackName: trackName,
       postPeriod: trackRole === 'APM' ? loginPeriod : '',
-      isOpened: 'true',
+      isOpened: 'false',
     },
   });
 
