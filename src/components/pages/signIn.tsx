@@ -84,78 +84,77 @@ const SignIn = () => {
   return (
     <>
       <div className="flex h-screen w-full overflow-hidden">
-        <form
-          onSubmit={handleSubmit((data) => onSubmit(data))}
-          className="flex w-[500px] items-center justify-center"
-        >
-          <div className="flex w-full flex-col items-center justify-center py-[148px]">
-            <div className="flex w-full items-center justify-center">
-              <figure className="h-[174px] pb-[20px]">
-                <Image src={rtan} height={152} width={152} alt="르탄이" />
-              </figure>
-            </div>
-            <div className="flex h-[32px] w-full flex-col items-center justify-center pb-[26px] pt-[36px]">
-              <p className="text-2xl font-bold">르탄이의 아카이브</p>
-              <p className="flex justify-center text-2xl font-bold">
-                BackOffice
-              </p>
-            </div>
-            <div className="flex w-full flex-col items-center justify-center gap-[20px] p-[20px]">
-              {/*이메일*/}
-              <div className="h-[84px] w-[360px]">
-                <InputContainer>
-                  <InputField>
-                    <Label htmlFor="username">이메일</Label>
-                    <Input
-                      {...register('username')}
-                      placeholder="ex.123@email.com"
-                      className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                    />
-                  </InputField>
-                </InputContainer>
-                <span className="flex h-[20px] text-sm text-primary-400">
-                  {errors.username?.message}
-                </span>
+        <div className="flex w-[500px] items-center justify-center">
+          <section className="flex w-full flex-col items-center justify-center py-[148px]">
+            <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+              <div className="flex w-full items-center justify-center">
+                <figure className="h-[174px] pb-[20px]">
+                  <Image src={rtan} height={152} width={152} alt="르탄이" />
+                </figure>
               </div>
-              {/*이메일*/}
-              <div className="h-[84px] w-[360px]">
-                {/*비밀번호*/}
-                <InputContainer>
-                  <InputField>
-                    <Label htmlFor="password">비밀번호</Label>
-                    <Input
-                      {...register('password')}
-                      placeholder="비밀번호 입력"
-                      type="password"
-                      className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
-                      autoComplete="current-password"
-                    />
-                  </InputField>
-                </InputContainer>
-                <div>
-                  {errors.password?.message ? (
-                    <span className="h-[20px] text-sm text-primary-400">
-                      {errors.password?.message}
-                    </span>
-                  ) : signInError ? (
-                    <FormSpan variant="error">{signInError}</FormSpan>
-                  ) : null}
+              <div className="flex h-[32px] w-full flex-col items-center justify-center pb-[26px] pt-[36px]">
+                <p className="text-2xl font-bold">르탄이의 아카이브</p>
+                <p className="flex justify-center text-2xl font-bold">
+                  BackOffice
+                </p>
+              </div>
+              <div className="flex w-full flex-col items-center justify-center gap-[20px] p-[20px]">
+                {/*이메일*/}
+                <div className="h-[84px] w-[360px]">
+                  <InputContainer>
+                    <InputField>
+                      <Label htmlFor="username">이메일</Label>
+                      <Input
+                        {...register('username')}
+                        placeholder="ex.123@email.com"
+                        className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                      />
+                    </InputField>
+                  </InputContainer>
+                  <span className="flex h-[20px] text-sm text-primary-400">
+                    {errors.username?.message}
+                  </span>
                 </div>
+                {/*이메일*/}
+                <div className="h-[84px] w-[360px]">
+                  {/*비밀번호*/}
+                  <InputContainer>
+                    <InputField>
+                      <Label htmlFor="password">비밀번호</Label>
+                      <Input
+                        {...register('password')}
+                        placeholder="비밀번호 입력"
+                        type="password"
+                        className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                        autoComplete="current-password"
+                      />
+                    </InputField>
+                  </InputContainer>
+                  <div>
+                    {errors.password?.message ? (
+                      <span className="h-[20px] text-sm text-primary-400">
+                        {errors.password?.message}
+                      </span>
+                    ) : signInError ? (
+                      <FormSpan variant="error">{signInError}</FormSpan>
+                    ) : null}
+                  </div>
+                </div>
+                {/*이메일*/}
               </div>
-              {/*이메일*/}
-            </div>
-            <div className="flex h-[104px] w-full items-center justify-center py-[20px]">
-              <Button size="sm" className="w-[360px]" variant="submit">
-                로그인
-              </Button>
-            </div>
+              <div className="flex h-[104px] w-full items-center justify-center py-[20px]">
+                <Button size="sm" className="w-[360px]" variant="submit">
+                  로그인
+                </Button>
+              </div>
+            </form>
             <div className="flex h-[56px] w-[360px] items-center justify-center">
               <button onClick={handleSignupModalOpen}>
                 <p className="text-sm text-gray-500 underline">회원가입</p>
               </button>
             </div>
-          </div>
-        </form>
+          </section>
+        </div>
 
         <div className="flex flex-1 items-center justify-center bg-custom-gradient shadow-signInBox">
           <section>

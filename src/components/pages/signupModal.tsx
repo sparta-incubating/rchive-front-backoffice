@@ -15,7 +15,7 @@ import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
 import useSignupForm from '@/hooks/useSignupForm';
 import { signupModalType } from '@/types/signup.types';
 import { handleKeyPressOnlyNumber } from '@/utils/utils';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface SignupModalProps {
   signupModalType: signupModalType;
@@ -149,18 +149,24 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           {errors.phone?.message && (
             <FormSpan variant="error">휴대폰 인증번호는 필수입니다.</FormSpan>
           )}
-          {isErrorMsg && (
-            <span
-              className={
-                isErrorMsg.includes('완료됐습니다')
-                  ? 'text-success-green'
-                  : 'text-primary-400'
-              }
-            >
-              {isErrorMsg}
-            </span>
+          {!errors.phone?.message && (
+            <>
+              {isErrorMsg && (
+                <span
+                  className={
+                    isErrorMsg.includes('완료됐습니다')
+                      ? 'text-sm text-success-green'
+                      : 'text-sm text-primary-400'
+                  }
+                >
+                  {isErrorMsg}
+                </span>
+              )}
+              {requestAuthNumber && !isErrorMsg && (
+                <AuthTimer setExpire={setExpire} />
+              )}
+            </>
           )}
-          {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
         </section>
         {/* birthday */}
         <section>
