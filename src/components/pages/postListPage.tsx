@@ -177,7 +177,6 @@ const PostListPage = ({
       <PermissionBoard>
         {/* 탭메뉴 */}
         <PostTapMenu activeTab={activeTab} setActiveTab={handleTabChange} />
-
         <section className="py-6">
           {/* 카테고리 */}
           <section className="mx-auto mb-[24px] flex w-full flex-row justify-between">

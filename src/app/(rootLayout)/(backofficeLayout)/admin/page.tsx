@@ -242,6 +242,7 @@ const Admin = () => {
     <>
       <BackofficePage>
         {/* 검색바 */}
+
         <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
 
         {/* 게시판 */}

@@ -16,6 +16,7 @@ import { radioType } from '@/types/radio.types';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import PermissionBoard from '../atoms/permissionBoard';
 
 interface PostFormContainerProps {
   postData?: postFetchData;
@@ -81,9 +82,9 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
   }, [popupWindow, watch, handleSubmit, onSubmit]);
 
   return (
-    <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
-      <section className="flex flex-col">
-        <div className="m-6 flex max-w-[1102px] flex-col gap-4 rounded-[14px] border border-blue-100 bg-white px-9 py-8">
+    <PermissionBoard variant="post">
+      <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
+        <section className="flex flex-col">
           {/* Thumbnail */}
           <ThumbnailContainer
             setValue={setValue}
@@ -153,9 +154,9 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
               {postData ? '수정하기' : '게시하기'}
             </Button>
           </div>
-        </div>
-      </section>
-    </form>
+        </section>
+      </form>{' '}
+    </PermissionBoard>
   );
 };
 
