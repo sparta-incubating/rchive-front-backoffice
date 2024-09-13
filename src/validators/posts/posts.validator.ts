@@ -3,18 +3,6 @@ import { z } from 'zod';
 const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
 const notionPattern = /^(https?:\/\/)(.*\.)?(notion\.so|notion\.site)\/.+$/;
 
-const postTypeEnum = z.enum(
-  [
-    'Sparta_Lecture',
-    'Special_Lecture',
-    'Level_Challenge',
-    'Level_Standard',
-    'Level_Basic',
-    'Project_Description',
-    'all',
-  ],
-  { required_error: '카테고리를 선택해주세요.' },
-);
 const tutor = z.object({
   tutorId: z.number(),
   tutorName: z.string(),

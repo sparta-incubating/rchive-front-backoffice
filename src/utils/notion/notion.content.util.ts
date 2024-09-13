@@ -12,30 +12,22 @@ import {
   ToggleBlockObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
-// 텍스트 정제 함수 추가
-function removeAllWhitespace(text: string): string {
-  return text.replace(/\s+/g, '');
+// 단어 사이의 공백은 유지하고 줄바꿈만 제거
+function cleanText(text: string): string {
+  return text.replace(/[\n\r]+/g, ' ').trim();
 }
 
-// 텍스트 추출 함수
-function extractTextFromRichTextReduce(
-  richText: RichTextItemResponse[],
-): string {
-  return removeAllWhitespace(
-    richText.reduce((acc, cur) => {
-      acc += cur.plain_text;
-      return acc;
-    }, ''),
+// 텍스트 추출 함수 (링크 제외)
+function extractTextFromRichText(richText: RichTextItemResponse[]): string {
+  return cleanText(
+    richText
+      .filter((text) => !text.href) // 링크가 없는 텍스트만 포함
+      .map((text) => text.plain_text)
+      .join(' '),
   );
 }
 
-async function extractTextFromRichText(
-  richText: RichTextItemResponse[],
-): Promise<string> {
-  return removeAllWhitespace(richText.map((text) => text.plain_text).join(''));
-}
-
-// 타입 가드 함수들
+// 타입 가드 함수들 (생략, 기존 코드 동일)
 function isParagraphBlock(
   block: BlockObjectResponse,
 ): block is ParagraphBlockObjectResponse {
@@ -96,72 +88,107 @@ function isChildDatabaseBlock(
   return block.type === 'child_database';
 }
 
+// 블록 타입 필터링 (이미지, 영상 제외)
+const BLOCK_TYPES_TO_PROCESS = new Set([
+  'paragraph',
+  'heading_1',
+  'heading_2',
+  'heading_3',
+  'bulleted_list_item',
+  'numbered_list_item',
+  'to_do',
+  'toggle',
+  'callout',
+  'quote',
+  'child_page',
+  'child_database',
+  'table',
+  'column_list',
+]);
+
 async function extractTextFromBlock(
   block: BlockObjectResponse,
   notionClient: Client,
 ): Promise<string> {
   let text = '';
 
+  if (!BLOCK_TYPES_TO_PROCESS.has(block.type)) {
+    return text;
+  }
+
   if (isParagraphBlock(block)) {
-    text += await extractTextFromRichText(block.paragraph.rich_text);
+    text += extractTextFromRichText(block.paragraph.rich_text);
   } else if (isHeading1Block(block)) {
-    text += await extractTextFromRichText(block.heading_1.rich_text);
+    text += extractTextFromRichText(block.heading_1.rich_text);
   } else if (isHeading2Block(block)) {
-    text += await extractTextFromRichText(block.heading_2.rich_text);
+    text += extractTextFromRichText(block.heading_2.rich_text);
   } else if (isHeading3Block(block)) {
-    text += await extractTextFromRichText(block.heading_3.rich_text);
+    text += extractTextFromRichText(block.heading_3.rich_text);
   } else if (isChildPageBlock(block)) {
-    text += removeAllWhitespace(block.child_page.title);
+    text += cleanText(block.child_page.title);
   } else if (isChildDatabaseBlock(block)) {
-    text += removeAllWhitespace(block.child_database.title);
+    text += cleanText(block.child_database.title);
   } else if (isBulletedListItemBlock(block)) {
-    text += await extractTextFromRichText(block.bulleted_list_item.rich_text);
+    text += extractTextFromRichText(block.bulleted_list_item.rich_text);
   } else if (isNumberedListItemBlock(block)) {
-    text += await extractTextFromRichText(block.numbered_list_item.rich_text);
-    if (block.has_children) {
-      text += await extractTextFromChildren(block.id, notionClient);
-    }
+    text += extractTextFromRichText(block.numbered_list_item.rich_text);
   } else if (isToDoBlock(block)) {
-    text += await extractTextFromRichText(block.to_do.rich_text);
+    text += extractTextFromRichText(block.to_do.rich_text);
   } else if (isToggleBlock(block)) {
-    text += '>' + (await extractTextFromRichText(block.toggle.rich_text));
-    text += await extractTextFromChildren(block.id, notionClient);
+    text += '>' + extractTextFromRichText(block.toggle.rich_text);
   } else if (block.type === 'callout') {
-    text += extractTextFromRichTextReduce(block.callout.rich_text);
+    text += extractTextFromRichText(block.callout.rich_text);
   } else if (block.type === 'quote') {
-    text += extractTextFromRichTextReduce(block.quote.rich_text);
+    text += extractTextFromRichText(block.quote.rich_text);
   }
-  // embed link 추출 가능
-  /* if (block.type === 'embed') {
-     console.log({ block });
-   }*/
 
-  // Handle other specific block types
-  switch (block.type) {
-    case 'table': {
-      const tableRows = await getBlockChildren(block.id, notionClient);
-      for (const row of tableRows) {
+  // 자식 블록 처리 (병렬 처리)
+  if (
+    [
+      'toggle',
+      'numbered_list_item',
+      'bulleted_list_item',
+      'column',
+      'child_page',
+      'child_database',
+      'table',
+    ].includes(block.type) &&
+    block.has_children
+  ) {
+    text += await extractTextFromChildren(block.id, notionClient);
+  }
+
+  // 테이블 및 컬럼 리스트 처리
+  if (block.type === 'table') {
+    const tableRows = await getBlockChildren(block.id, notionClient);
+    const rowTexts = await Promise.all(
+      tableRows.map(async (row) => {
         if (row.type === 'table_row') {
-          const cellTexts = await Promise.all(
-            row.table_row.cells.map(extractTextFromRichText),
+          const cellTexts = row.table_row.cells.map((cell) =>
+            cleanText(cell.map((text) => text.plain_text).join(' ')),
           );
-          text += cellTexts.join(' | ');
+          return cellTexts.join(' | ');
         }
-      }
-      break;
-    }
-    case 'column_list': {
-      const columns = await getBlockChildren(block.id, notionClient);
-      for (const column of columns) {
-        if (column.type === 'column') {
-          text += await extractTextFromChildren(column.id, notionClient);
-        }
-      }
-      break;
-    }
+        return '';
+      }),
+    );
+    text += rowTexts.join('\n');
   }
 
-  return removeAllWhitespace(text);
+  if (block.type === 'column_list') {
+    const columns = await getBlockChildren(block.id, notionClient);
+    const columnTexts = await Promise.all(
+      columns.map(async (column) => {
+        if (column.type === 'column') {
+          return await extractTextFromChildren(column.id, notionClient);
+        }
+        return '';
+      }),
+    );
+    text += columnTexts.join(' | ');
+  }
+
+  return cleanText(text);
 }
 
 async function getBlockChildren(
@@ -176,6 +203,7 @@ async function getBlockChildren(
     const response = await notionClient.blocks.children.list({
       block_id: blockId,
       start_cursor: startCursor,
+      page_size: 100, // 최대 페이지 사이즈로 설정
     });
 
     allChildren = allChildren.concat(response.results as BlockObjectResponse[]);
@@ -191,12 +219,10 @@ async function extractTextFromChildren(
   notionClient: Client,
 ): Promise<string> {
   const children = await getBlockChildren(blockId, notionClient);
-  let text = '';
-
-  for (const child of children) {
-    text += await extractTextFromBlock(child, notionClient);
-  }
-  return removeAllWhitespace(text);
+  const texts = await Promise.all(
+    children.map((child) => extractTextFromBlock(child, notionClient)),
+  );
+  return cleanText(texts.join(' '));
 }
 
 export async function getPageContent(
@@ -204,8 +230,7 @@ export async function getPageContent(
   notionClient: Client,
 ): Promise<string> {
   try {
-    const content = await extractTextFromChildren(pageId, notionClient);
-    return removeAllWhitespace(content);
+    return await extractTextFromChildren(pageId, notionClient);
   } catch (error) {
     console.error('Error extracting page content:', error);
     throw error;
