@@ -153,10 +153,6 @@ const usePostWriteForm = (postData?: postFetchData) => {
     );
   }, [contentLink, videoLink, uploadedAt, formIsValid, tutor]);
 
-  useEffect(() => {
-    trigger('tutor');
-  }, [trigger, tutor]);
-
   return {
     register,
     watch,
