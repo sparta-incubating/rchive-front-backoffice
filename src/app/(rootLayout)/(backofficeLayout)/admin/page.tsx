@@ -210,9 +210,14 @@ const Admin = () => {
   });
 
   const allApproveItems = async () => {
-    extractedData.forEach((item) => {
-      postUserApproveMutate.mutateAsync(item);
-    });
+    for (const item of extractedData) {
+      try {
+        await postUserApproveMutate.mutateAsync(item);
+      } catch (error) {
+        console.log(`전체 승인 요청 충돌: ${item.email}`, error);
+      }
+    }
+
     createToast(
       `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
       'primary',
