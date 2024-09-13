@@ -42,10 +42,14 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
 
   const handleSelect = (option: SelectOptionType) => {
     setSelectedOption(option);
-    setValue('tutor', {
-      tutorId: Number(option.value),
-      tutorName: option.label,
-    });
+    setValue(
+      'tutor',
+      {
+        tutorId: Number(option.value),
+        tutorName: option.label,
+      },
+      { shouldValidate: true },
+    );
     setIsOpen(false);
   };
 
@@ -87,7 +91,7 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
 
   const deleteTutor = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setValue('tutor', undefined);
+    setValue('tutor', undefined, { shouldValidate: true });
     setSelectedOption(null);
     if (inputRef.current) {
       inputRef.current.innerText = '';
