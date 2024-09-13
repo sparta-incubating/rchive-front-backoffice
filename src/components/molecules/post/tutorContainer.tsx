@@ -11,7 +11,7 @@ import { useAppSelector } from '@/redux/storeConfig';
 import { PostsFormSchema } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 interface TutorContainerProps {
@@ -87,33 +87,24 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
 
   const deleteTutor = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setValue('tutor', null);
+    setValue('tutor', undefined);
     setSelectedOption(null);
     if (inputRef.current) {
       inputRef.current.innerText = '';
     }
   };
 
-  useEffect(() => {
-    setValue('tutor', null);
-    if (period) {
-      setPlaceHolder('튜터를 선택해주세요.');
-    }
-  }, [period, setValue]);
-
   return (
     <TitleContainer title="튜터" className="w-full">
       <div
         onClick={handleInputClick}
-        className="group relative flex h-[61px] w-full items-center gap-2 rounded-[12px] border border-blue-100 px-5"
+        className="group relative flex h-[61px] w-full items-center justify-between gap-2 rounded-[12px] border border-blue-100 px-5"
       >
         {tutor ? (
-          <div className="flex min-w-[280px] max-w-full gap-4">
-            <TutorCard>
-              {tutor.tutorName}
-              <CloseButton onClick={deleteTutor} />
-            </TutorCard>
-          </div>
+          <TutorCard>
+            {tutor.tutorName}
+            <CloseButton onClick={deleteTutor} />
+          </TutorCard>
         ) : (
           <TutorInput key="tutor" placeholder={placeHolder} ref={inputRef} />
         )}
@@ -131,20 +122,26 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
         )}
 
         <CustomDropDown clicked={isOpen} ref={dropdownRef}>
-          {searchTutors?.map((tutorItem) => (
-            <SelectItem
-              key={tutorItem.value}
-              data-value={tutorItem.value}
-              selected={tutorItem.value === selectedOption?.value}
-              variant="secondary"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSelect(tutorItem);
-              }}
-            >
-              {tutorItem.label}
-            </SelectItem>
-          ))}
+          {searchTutors && searchTutors?.length > 0 ? (
+            searchTutors?.map((tutorItem) => (
+              <SelectItem
+                key={tutorItem.value}
+                data-value={tutorItem.value}
+                selected={tutorItem.value === selectedOption?.value}
+                variant="secondary"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelect(tutorItem);
+                }}
+              >
+                {tutorItem.label}
+              </SelectItem>
+            ))
+          ) : (
+            <div className="flex w-full">
+              <span className="mx-auto text-sm">튜터 데이터가 없습니다.</span>
+            </div>
+          )}
         </CustomDropDown>
       </div>
       {periodError && <FormSpan variant="error">{periodError}</FormSpan>}

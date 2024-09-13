@@ -64,6 +64,7 @@ const PostInfoContainer = ({
               onSelect={(value) => {
                 handlePeriodSelected(value);
                 onChange(value);
+                setValue('tutor', undefined);
               }}
               variant="secondary"
               className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
