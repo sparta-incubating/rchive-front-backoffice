@@ -41,6 +41,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     control,
     handleSubmit,
     setValue,
+    trigger,
     formState: { errors, isValid: formIsValid },
   } = useForm<PostsFormSchema>({
     resolver: zodResolver(postsSchema),
@@ -48,7 +49,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     reValidateMode: 'onChange',
     defaultValues: {
       title: '',
-      tutor: null,
+      tutor: undefined,
       thumbnailUrl: '',
       contentLink: '',
       videoLink: '',
@@ -142,14 +143,15 @@ const usePostWriteForm = (postData?: postFetchData) => {
     }
   }, [setValue]);
 
+  const tutor = watch('tutor');
   const contentLink = watch('contentLink');
   const videoLink = watch('videoLink');
   const uploadedAt = watch('uploadedAt');
   useEffect(() => {
     setCustomIsValid(
-      formIsValid && !!(contentLink || videoLink) && !!uploadedAt,
+      formIsValid && !!(contentLink || videoLink) && !!uploadedAt && !!tutor,
     );
-  }, [contentLink, videoLink, uploadedAt, formIsValid]);
+  }, [contentLink, videoLink, uploadedAt, formIsValid, tutor]);
 
   return {
     register,

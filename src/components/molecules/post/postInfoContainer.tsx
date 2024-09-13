@@ -33,11 +33,7 @@ const PostInfoContainer = ({
   watch,
   errors,
 }: PostInputContainerProps) => {
-  const {
-    trackRole,
-    trackName,
-    period: loginPeriod,
-  } = useAppSelector((state) => state.authSlice);
+  const { trackRole, trackName } = useAppSelector((state) => state.authSlice);
 
   const period = useGetPeriod(trackName);
   const { handleSelected: handlePeriodSelected } = useSelectBox(
@@ -64,6 +60,7 @@ const PostInfoContainer = ({
               onSelect={(value) => {
                 handlePeriodSelected(value);
                 onChange(value);
+                setValue('tutor', undefined, { shouldValidate: true });
               }}
               variant="secondary"
               className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
