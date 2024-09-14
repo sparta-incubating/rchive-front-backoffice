@@ -12,7 +12,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, InputProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     return (
-      <div className="w-full pt-[29px]">
+      <div className="w-full">
         <label className="relative block">
           <span className="sr-only">Search</span>
           <input
@@ -20,7 +20,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
             ref={ref}
             type="text"
-            className="h-[64px] w-full rounded-[14px] border border-blue-100 pl-12 pr-4 placeholder:text-sm"
+            className="h-[64px] w-full rounded-xl border border-blue-100 pl-12 pr-4 placeholder:text-sm"
           />
           <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-[20px]">
             <Image src={search} width={18} height={18} alt="돋보기" />

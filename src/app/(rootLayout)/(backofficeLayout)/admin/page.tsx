@@ -246,7 +246,7 @@ const Admin = () => {
         <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
 
         {/* 게시판 */}
-        <PermissionBoard>
+        <PermissionBoard className="w-full max-w-lg">
           {/* 탭 메뉴 */}
           <TapMenu
             onTabChange={handleTabChange}

@@ -46,6 +46,7 @@ const Profile = () => {
           handleChangeImage={() => openModal('image')}
         />
       </PermissionBoard>
+
       <PermissionBoard variant="accountInfo">
         <AccountInfo
           email={email}

@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
 const ProfileBoardVariants = cva(
-  ' mt-[29px] rounded-[14px] bg-white w-full px-9 border border-blue-100',
+  ' mt-[29px] rounded-[14px] bg-white max-w-[1086px] px-9 border border-blue-100',
 
   {
     variants: {
