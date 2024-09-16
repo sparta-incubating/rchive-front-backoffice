@@ -241,10 +241,8 @@ const Admin = () => {
   return (
     <>
       <BackofficePage>
-        {/* 검색바 */}
-
+        검색바
         <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
-
         {/* 게시판 */}
         <PermissionBoard className="w-full max-w-lg">
           {/* 탭 메뉴 */}
