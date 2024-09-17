@@ -81,12 +81,12 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
             </PasswordContainer>
             {/** */}
             {errors.phone && (
-              <span className="text-sm text-primary-400">
+              <span className="text-xs text-primary-400">
                 {errors.phone.message}
               </span>
             )}
             {pwErrorMsg ? (
-              <span className="text-sm text-primary-400">
+              <span className="text-xs text-primary-400">
                 인증 번호가 일치하지 않습니다.
               </span>
             ) : (

@@ -24,10 +24,8 @@ const DEFAULT_VALUE = {
   passwordConfirm: '',
   phone: '',
   authCode: '',
-  nickname: '',
   profileImg: 'default',
   birth: '',
-  // phoneConfirm: false,
   ad: false,
   age: false,
   privacy: false,
@@ -150,14 +148,13 @@ const createSignupForm = (
       data.password,
       formatDate(data.birth),
       data.phone,
+      data.profileImg,
       GenderEnum.NONE,
       UserRoleEnum.MANAGER,
       data.age,
       data.service,
       data.privacy,
       data.ad,
-      data.nickname,
-      data.profileImg,
     );
   } else {
     return new User(
@@ -167,14 +164,13 @@ const createSignupForm = (
       data.password,
       formatDate(data.birth),
       data.phone,
+      data.profileImg,
       GenderEnum.NONE,
       UserRoleEnum.USER,
       data.age,
       data.service,
       data.privacy,
       data.ad,
-      data.nickname,
-      data.profileImg,
     );
   }
 };

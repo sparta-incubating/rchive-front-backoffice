@@ -20,7 +20,6 @@ export const signupSchema = z
     passwordConfirm: z.string(),
     phone: z.string().min(8, '휴대폰 인증은 필수입니다.'),
     authCode: z.string().min(6, '휴대폰 인증은 필수입니다.'),
-    nickname: z.string().default(''),
     profileImg: z.string().default('default'),
     birth: z
       .string()
