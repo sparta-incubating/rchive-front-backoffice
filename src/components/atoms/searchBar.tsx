@@ -12,7 +12,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, InputProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     return (
-      <div className="w-full px-[32px] pt-[24px]">
+      <div className="mb-[24px] w-full">
         <label className="relative block">
           <span className="sr-only">Search</span>
           <input

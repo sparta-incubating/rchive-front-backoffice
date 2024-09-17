@@ -26,13 +26,13 @@ const UserInfo: React.FC<UserInfoProps> = ({
 
   return (
     <main className="flex flex-col items-center justify-center gap-[24px]">
-      <section className="flex h-[24px] w-[1012px] flex-row items-center justify-between text-base">
-        <p className="flex h-[24px] w-[60px] text-base font-medium leading-6 text-gray-900">
+      <section className="flex h-[26px] w-full flex-row items-center justify-between text-base">
+        <p className="flex h-[24px] w-[60px] py-2 text-base font-medium leading-6 text-gray-900">
           회원정보
         </p>
         {trackRole === 'APM' && (
           <button
-            className="box-border h-[44px] w-[111px] rounded-[8px] border px-[20px] py-[12px]"
+            className="mt-2 box-border h-[44px] w-[111px] rounded-[8px] border px-[20px] py-[12px]"
             onClick={handleChangeRole}
           >
             <p className="text-xs font-semibold leading-[18px] text-gray-900">

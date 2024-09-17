@@ -35,7 +35,7 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
       (!isUpdateMod || (isUpdateMod && !validate));
 
     return (
-      <div className="flex h-[60px] w-[326px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
+      <div className="flex h-[60px] w-[328px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
         <input
           type="text"
           ref={ref}
