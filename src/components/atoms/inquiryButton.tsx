@@ -6,7 +6,7 @@ interface InquiryButtonProps extends ComponentProps<'button'> {}
 const InquiryButton = ({ ...props }: InquiryButtonProps) => {
   return (
     <button
-      className="rounded-[55px] bg-white p-[13px] shadow-inquiryButton"
+      className="shadow-inquiry Button rounded-[55px] bg-white p-[13px]"
       {...props}
     >
       <div className="flex gap-[10px]">

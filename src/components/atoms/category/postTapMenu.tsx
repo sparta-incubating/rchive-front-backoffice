@@ -31,11 +31,11 @@ const PostTapMenu = ({ activeTab, setActiveTab }: TabProps) => {
   }, [postTypeNames]);
 
   return (
-    <section className="h-[64px] w-full border-b">
-      <div className="flex gap-3.5 pt-[16px]">
+    <section className="h-[65px] w-full border-b">
+      <div className="flex gap-3.5">
         {tapData?.map((item) => (
           <button
-            className={`flex h-[48px] items-center justify-center gap-[10px] border-b px-[12px] font-light ${
+            className={`flex h-[65px] items-center justify-center gap-[10px] border-b px-[12px] font-light ${
               activeTab === item.id && 'border-b-2 border-gray-900'
             }`}
             key={item.title}

@@ -2,15 +2,15 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps, ReactNode } from 'react';
 
 const ProfileBoardVariants = cva(
-  ' mt-[29px] rounded-[14px] bg-white max-w-[1086px] px-9 border border-blue-100',
+  'rounded-[14px] bg-white  border border-blue-100 w-[1084px] px-[32px] py-[24px] ',
 
   {
     variants: {
       variant: {
-        primary: 'h-[800px] py-[24px]',
-        userInfo: 'h-[274px] py-[32px]',
-        accountInfo: 'h-[238px] py-[32px]',
-        post: 'flex flex-col gap-4 py-8',
+        primary: '',
+        userInfo: '',
+        accountInfo: '',
+        post: '',
       },
     },
     defaultVariants: {

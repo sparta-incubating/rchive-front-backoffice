@@ -2,11 +2,9 @@ import { getPost } from '@/api/server/postsApi';
 import { auth } from '@/auth';
 import CustomError from '@/components/atoms/customError';
 import PostFormContainer from '@/components/organisms/postFormContainer';
-import BackofficePage from '@/components/pages/backofficePage';
 import { TagContextProvider } from '@/context/tag.context';
 import { postFetchData } from '@/types/posts.types';
 import axios from 'axios';
-import React from 'react';
 
 export const revalidate = 0;
 
@@ -25,11 +23,9 @@ const PostUpdate = async ({ params }: { params: { id: string } }) => {
     const postData = { ...response.data.data, postId } as postFetchData;
 
     return (
-      <BackofficePage>
-        <TagContextProvider>
-          <PostFormContainer postData={postData} />
-        </TagContextProvider>
-      </BackofficePage>
+      <TagContextProvider>
+        <PostFormContainer postData={postData} />
+      </TagContextProvider>
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
