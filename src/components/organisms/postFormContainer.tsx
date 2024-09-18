@@ -82,6 +82,10 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
     return () => window.removeEventListener('message', handleMessage);
   }, [popupWindow, watch, handleSubmit, onSubmit]);
 
+  // useEffect(() => {
+  //   document.body.setAttribute('padding', '0px  24px 0px 0px');
+  // }, []);
+
   return (
     // 게시물작성
     <BackofficePage>
