@@ -121,15 +121,11 @@ export const getSearchTutor = async (
 
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
-  try {
-    const response = await axios.get(
-      `/backoffice/api/notion/content?url=${pageId}`,
-    );
+  const response = await axios.get(
+    `/backoffice/api/notion/content?url=${pageId}`,
+  );
 
-    return removeMarkdown(response.data.result).replace('"', '');
-  } catch (error) {
-    throw new Error('notion Page Data호출에 실패했습니다.');
-  }
+  return removeMarkdown(response.data.result).replace('"', '');
 };
 
 // 게시물 등록 endpoint
