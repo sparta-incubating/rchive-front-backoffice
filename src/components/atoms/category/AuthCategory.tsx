@@ -2,6 +2,7 @@
 
 import select from '@/../public/assets/icons/select-blue.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import Image from 'next/image';
 import { useState } from 'react';
 import SelectLabel from '../selectLabel';
@@ -20,26 +21,25 @@ interface AuthCategoryProps {
   label: string;
   data: AdminCateoryType[];
   setValue: (value: string) => void;
-  isOpen: boolean;
-  onClick: () => void;
 }
 
-const AuthFilterCategory = ({
-  label,
-  data,
-  setValue,
-  isOpen,
-  onClick,
-}: AuthCategoryProps) => {
+const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(label);
+  const {
+    isOpen,
+    setIsOpen,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
 
   const handleClick = (data: { label: string; value: string }) => {
     setSelectedCategory(data.label);
+    setIsOpen(false);
     setValue(data.value);
   };
 
   return (
-    <CategoryContainer onClick={onClick}>
+    <CategoryContainer ref={dropdownRef} onClick={handleDropdownClick}>
       <CategoryLayout>
         <SelectLabel>{selectedCategory}</SelectLabel>
         <Image
@@ -56,7 +56,7 @@ const AuthFilterCategory = ({
         {data?.map((item: AdminCateoryType) => (
           <div
             className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-            key={item?.id + item.value}
+            key={item?.id}
             onClick={() => handleClick(item)}
           >
             <p

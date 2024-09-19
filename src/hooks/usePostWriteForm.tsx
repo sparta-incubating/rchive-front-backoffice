@@ -14,6 +14,7 @@ import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -73,24 +74,25 @@ const usePostWriteForm = (postData?: postFetchData) => {
       return;
     }
 
-    setIsSubmitLoading(true);
-    setLoadingMessage('노션 자료를 찾아오는 중...');
-    const formData = new PostForm(
-      data.postType,
-      data.title,
-      tags.map((tag) => tag.tagName),
-      Number(tutor?.tutorId),
-      Number(data.postPeriod),
-      data.isOpened === 'true',
-      dayjs(data.uploadedAt).format('YYYY-MM-DD'),
-      contentLink ? await getNotionPageData(extractPageId(contentLink)!) : '',
-      data.contentLink,
-      data.videoLink,
-      data.thumbnailUrl,
-    );
-
-    setLoadingMessage('데이터를 서버에 등록 중...');
     try {
+      setIsSubmitLoading(true);
+      setLoadingMessage('노션 자료를 찾아오는 중...');
+      const formData = new PostForm(
+        data.postType,
+        data.title,
+        tags.map((tag) => tag.tagName),
+        Number(tutor?.tutorId),
+        Number(data.postPeriod),
+        data.isOpened === 'true',
+        dayjs(data.uploadedAt).format('YYYY-MM-DD'),
+        contentLink ? await getNotionPageData(extractPageId(contentLink)!) : '',
+        data.contentLink,
+        data.videoLink,
+        data.thumbnailUrl,
+      );
+
+      setLoadingMessage('데이터를 서버에 등록 중...');
+
       if (!postData) {
         await postDataPost(watch('trackName'), Number(loginPeriod), formData);
         createToast('게시물 등록이 완료되었습니다.', 'primary');
@@ -103,16 +105,29 @@ const usePostWriteForm = (postData?: postFetchData) => {
         );
         createToast('게시물 수정이 완료되었습니다.', 'primary');
       }
+
+      router.push('/posts');
+      router.refresh();
     } catch (error) {
-      if (!postData) {
-        createToast('게시물 등록 중 오류가 발생했습니다.', 'warning');
-      } else {
-        createToast('게시물 수정 중 오류가 발생했습니다.', 'warning');
+      if (axios.isAxiosError(error)) {
+        if (!postData) {
+          createToast(
+            error.response?.data.message
+              ? error.response?.data.message
+              : `게시물 등록 중 오류가 발생했습니다.`,
+            'warning',
+          );
+        } else {
+          createToast(
+            error.response?.data.message
+              ? error.response?.data.message
+              : `게시물 수정 중 오류가 발생했습니다.`,
+            'warning',
+          );
+        }
       }
     } finally {
-      router.push('/posts');
       setIsSubmitLoading(false);
-      router.refresh();
     }
   };
 

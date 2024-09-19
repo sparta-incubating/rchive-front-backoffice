@@ -7,9 +7,9 @@ import PostIsOpenDropDown from '@/components/atoms/category/postIsOpenDropDown';
 import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpenSelectBoxContainer';
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
 import Image from 'next/image';
-import { useState } from 'react';
 
 interface PostIsOpenSelectBoxCategoryProps {
   isOpen: boolean;
@@ -20,7 +20,13 @@ const PostIsOpenSelectBoxCategory = ({
   isOpen,
   postId,
 }: PostIsOpenSelectBoxCategoryProps) => {
-  const [showOptions, setShowOptions] = useState(false);
+  const {
+    isOpen: showOptions,
+    setIsOpen: setShowOptions,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
+
   const updatePostsIsOpen = usePostIsOpenUpdate();
 
   const handleClick = async (data: boolean) => {
@@ -30,7 +36,8 @@ const PostIsOpenSelectBoxCategory = ({
 
   return (
     <PostIsOpenSelectBoxContainer
-      onClick={() => setShowOptions((prev) => !prev)}
+      ref={dropdownRef}
+      onClick={handleDropdownClick}
     >
       <PostIsOpenSelectBoxLayout>
         <Image

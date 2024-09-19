@@ -17,7 +17,6 @@ import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import PermissionBoard from '../atoms/permissionBoard';
-import BackofficePage from '../pages/backofficePage';
 
 interface PostFormContainerProps {
   postData?: postFetchData;
@@ -82,89 +81,83 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
     return () => window.removeEventListener('message', handleMessage);
   }, [popupWindow, watch, handleSubmit, onSubmit]);
 
-  // useEffect(() => {
-  //   document.body.setAttribute('padding', '0px  24px 0px 0px');
-  // }, []);
-
   return (
-    // 게시물작성
-    <BackofficePage>
-      <PermissionBoard variant="post">
-        <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
-          <section className="flex flex-col gap-6">
-            {/* Thumbnail */}
-            <ThumbnailContainer
-              setValue={setValue}
-              initValue={watch('thumbnailUrl')}
-              postData={postData}
-            />
+    //게시물 관리
+    <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
+      <section className="flex flex-col">
+        <PermissionBoard variant="post">
+          {/* Thumbnail */}
+          <ThumbnailContainer
+            setValue={setValue}
+            initValue={watch('thumbnailUrl')}
+            postData={postData}
+          />
 
-            {/* Inputs */}
-            <PostInputContainer
-              register={register}
-              watch={watch}
-              errors={errors}
-              notionValidateState={notionValidateState}
-              setNotionValidateState={setNotionValidateState}
-              isUpdatedMod={!!postData}
-              initialContentLink={postData?.contentLink || ''}
-            />
-            {/* Info */}
-            <PostInfoContainer
-              setValue={setValue}
-              control={control}
-              register={register}
-              watch={watch}
-              errors={errors}
-            />
-            {/* Tag */}
-            <TagContainer placeholder="태그 입력 최대 개수는 10개까지 가능해요." />
-            {/* calendar and Radio button */}
-            <div className="flex gap-4">
-              <CalendarContainer control={control} />
+          {/* Inputs */}
+          <PostInputContainer
+            register={register}
+            watch={watch}
+            errors={errors}
+            notionValidateState={notionValidateState}
+            setNotionValidateState={setNotionValidateState}
+            isUpdatedMod={!!postData}
+            initialContentLink={postData?.contentLink || ''}
+          />
+          {/* Info */}
+          <PostInfoContainer
+            setValue={setValue}
+            control={control}
+            register={register}
+            watch={watch}
+            errors={errors}
+          />
+          {/* Tag */}
+          <TagContainer placeholder="태그 입력 최대 개수는 10개까지 가능해요." />
+          {/* calendar and Radio button */}
+          <div className="flex gap-4">
+            <CalendarContainer control={control} />
 
-              <TitleContainer title="공개여부">
-                <div className="flex h-[64px] items-center">
-                  <div className="flex space-x-4">
-                    <Controller
-                      name="isOpened"
-                      control={control}
-                      render={({ field: { onChange, value } }) => (
-                        <CustomRadio
-                          values={isOpenRadios}
-                          onChange={onChange}
-                          value={value}
-                          key={value}
-                        />
-                      )}
-                    />
-                  </div>
+            <TitleContainer title="공개여부">
+              <div className="flex h-[64px] items-center">
+                <div className="flex space-x-4">
+                  <Controller
+                    name="isOpened"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <CustomRadio
+                        values={isOpenRadios}
+                        onChange={onChange}
+                        value={value}
+                        key={value}
+                      />
+                    )}
+                  />
                 </div>
-              </TitleContainer>
-            </div>
-            <div className="flex justify-end gap-4">
-              <Button
-                type="button"
-                variant="secondary"
-                disabled={!isValid}
-                onClick={handlePreview}
-                className="w-[176px]"
-              >
-                미리보기
-              </Button>
-              <Button
-                type="submit"
-                variant="submit"
-                disabled={!isValid}
-                className="w-[176px]"
-              >
-                {postData ? '수정하기' : '게시하기'}
-              </Button>
-            </div>
-          </section>
-        </form>
-      </PermissionBoard>
-    </BackofficePage>
+              </div>
+            </TitleContainer>
+          </div>
+          <div className="flex justify-end gap-4">
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={!isValid}
+              onClick={handlePreview}
+              className="w-[176px]"
+            >
+              미리보기
+            </Button>
+            <Button
+              type="submit"
+              variant="submit"
+              disabled={!isValid}
+              className="w-[176px]"
+            >
+              {postData ? '수정하기' : '게시하기'}
+            </Button>
+          </div>
+        </PermissionBoard>
+      </section>
+    </form>
   );
 };
 
