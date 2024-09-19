@@ -84,7 +84,7 @@ const SignIn = () => {
   return (
     <>
       <div className="flex h-screen w-full overflow-hidden">
-        <div className="flex w-[500px] items-center justify-center">
+        <div className="flex w-[500px] items-center justify-center bg-white">
           <section className="flex w-full flex-col items-center justify-center py-[148px]">
             <form onSubmit={handleSubmit((data) => onSubmit(data))}>
               <div className="flex w-full items-center justify-center">
@@ -116,6 +116,7 @@ const SignIn = () => {
                   </span>
                 </div>
                 {/*이메일*/}
+
                 <div className="h-[84px] w-[360px]">
                   {/*비밀번호*/}
                   <InputContainer>
@@ -140,8 +141,9 @@ const SignIn = () => {
                     ) : null}
                   </div>
                 </div>
-                {/*이메일*/}
+                {/*비밀번호*/}
               </div>
+
               <div className="flex h-[104px] w-full items-center justify-center py-[20px]">
                 <Button size="sm" className="w-[360px]" variant="submit">
                   로그인

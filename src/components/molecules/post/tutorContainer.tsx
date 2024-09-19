@@ -102,7 +102,7 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
     <TitleContainer title="튜터" className="w-full">
       <div
         onClick={handleInputClick}
-        className="group relative flex h-[61px] w-full items-center justify-between gap-2 rounded-[12px] border border-blue-100 px-5"
+        className="group relative flex h-[60px] w-[328px] items-center justify-between gap-2 rounded-[12px] border border-blue-100 px-5"
       >
         {tutor ? (
           <TutorCard>

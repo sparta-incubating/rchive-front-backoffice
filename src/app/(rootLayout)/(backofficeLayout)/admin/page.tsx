@@ -10,6 +10,7 @@ import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import NoDataList from '@/components/atoms/category/noDataList';
 import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
+import Confirm from '@/components/atoms/confirm';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
@@ -19,9 +20,10 @@ import {
   ADMIN_DEFAULT_PAGE,
   ADMIN_DEFAULT_PAGE_SIZE,
 } from '@/constants/admin.constant';
+import { useConfirmContext } from '@/context/useConfirmContext';
 import {
-  clearAdminIds,
-  setAllAdminIds,
+  clearSelectedItems,
+  selectAllItems,
 } from '@/redux/slice/adminCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import {
@@ -58,6 +60,7 @@ const Admin = () => {
   const totalElements = boardList?.data.totalElements;
   const viewList = boardList?.data?.content;
   const { countList } = useRoleCountDataQuery();
+  const confirm = useConfirmContext();
 
   useEffect(() => {
     setFilters((prevFilters) => ({
@@ -138,7 +141,9 @@ const Admin = () => {
 
   /*체크박스*/
   const dispatch = useAppDispatch();
-  const adminIds = useAppSelector((state) => state.adminCheckBoxSlice.adminIds);
+  const adminIds = useAppSelector(
+    (state) => state.adminCheckBoxSlice.selectedItems,
+  );
   const dataList = viewList?.map((item: AdminListInfoType) => ({
     ...item,
     adminId: item.email,
@@ -146,18 +151,30 @@ const Admin = () => {
 
   //체크한 id 목록들
   const handleAllCheck = (checked: boolean) => {
-    const currentPagePostIds = dataList.map(
-      (item: AdminDataInfoType) => item.email,
+    const currentPageItems = dataList.map((item: AdminDataInfoType) => ({
+      email: item.email,
+      period: item.period,
+    }));
+    dispatch(
+      selectAllItems({
+        adminIds: currentPageItems,
+        period: filters.searchPeriod,
+        checked,
+      }),
     );
-    dispatch(setAllAdminIds({ adminIds: currentPagePostIds, checked }));
   };
 
   /*체크박스*/
   const isAllChecked =
     dataList?.length > 0 &&
-    dataList?.every((item: AdminDataInfoType) => adminIds.includes(item.email));
+    dataList?.every(
+      (item: AdminDataInfoType) =>
+        adminIds.findIndex(
+          (admin) => admin.email === item.email && admin.period === item.period,
+        ) !== -1,
+    );
 
-  const { adminIds: checkedAdminIds } = useAppSelector(
+  const { selectedItems: checkedAdminIds } = useAppSelector(
     (state) => state.adminCheckBoxSlice,
   );
 
@@ -172,11 +189,14 @@ const Admin = () => {
 
   /**전체 승인 조회 */
   const foundItems = checkedAdminIds
-    .flatMap((email) =>
-      viewList?.filter((item: AdminDataInfoType) => item.email === email),
+    .map((selectedItem) =>
+      viewList?.find(
+        (item: AdminDataInfoType) =>
+          item.email === selectedItem.email &&
+          item.period === selectedItem.period,
+      ),
     )
     .filter((item) => item !== undefined);
-
   const extractedData = foundItems.map((item) => {
     const { period, trackRole, email } = item || {};
     return {
@@ -188,38 +208,59 @@ const Admin = () => {
   });
 
   const allApproveItems = async () => {
-    extractedData.forEach((item) => {
-      postUserApproveMutate.mutateAsync(item);
-    });
+    for (const item of extractedData) {
+      try {
+        await postUserApproveMutate.mutateAsync(item);
+      } catch (error) {
+        console.log(`전체 승인 요청 충돌: ${item.email}`, error);
+      }
+    }
+
     createToast(
       `${checkedAdminIds.length}건의 요청이 승인되었습니다.`,
       'primary',
       false,
     );
-    dispatch(clearAdminIds());
+    dispatch(clearSelectedItems());
   };
 
   const allRejectItems = async () => {
-    extractedData.forEach((item) => {
-      deleteUsrRoleMutate.mutateAsync(item);
-    });
-    createToast(
-      `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
-      'primary',
+    const result = await confirm.handleConfirm(
+      <Confirm text="거절">
+        <div className="flex flex-col gap-2.5">
+          <span className="text-center text-xl font-bold">거절하시겠어요?</span>
+          <div className="flex flex-col justify-center">
+            <span className="text-center text-base font-medium text-gray-600">
+              거절할 경우 권한 설정 목록에서 사라지고,
+            </span>
+            <span className="text-center text-base font-medium text-gray-600">
+              다시 트랙 및 기수를 요청하게 되요.
+            </span>
+          </div>
+        </div>
+      </Confirm>,
       false,
     );
-    dispatch(clearAdminIds());
+
+    if (result) {
+      extractedData.forEach((item) => {
+        deleteUsrRoleMutate.mutateAsync(item);
+      });
+      createToast(
+        `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
+        'primary',
+        false,
+      );
+      dispatch(clearSelectedItems());
+    }
   };
 
   return (
     <>
       <BackofficePage>
-        {/* 검색바 */}
         <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
 
-        {/* 게시판 */}
         <PermissionBoard>
-          {/* 탭 메뉴 */}
           <TapMenu
             onTabChange={handleTabChange}
             selectedTab={selectedTab}
@@ -227,13 +268,13 @@ const Admin = () => {
           />
 
           {/*카테고리 및 체크박스*/}
-          <div className="flex flex-row justify-between py-[24px]">
+          <div className="flex flex-row justify-between py-6">
             <CategoryFiltered
               handleCategoryChange={handleCategoryChange}
               key={selectedTab}
             />
             {checkedAdminIds.length > 0 && (
-              <section className="flex flex-row gap-[8px]">
+              <section className="flex flex-row gap-2">
                 <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
                   {checkedAdminIds.length}개 선택
                 </p>
@@ -246,28 +287,23 @@ const Admin = () => {
               </section>
             )}
           </div>
-
+          <AdminTableHeader
+            handleAllCheck={handleAllCheck}
+            isAllChecked={isAllChecked}
+          />
           {selectedTabCount === 0 ? (
             <NoDataList />
           ) : (
             <>
-              {viewList?.length > 0 && (
-                <AdminTableHeader
-                  handleAllCheck={handleAllCheck}
-                  isAllChecked={isAllChecked}
-                />
-              )}
               {viewList?.length > 0 ? (
                 <>
                   <AuthFilteredList data={viewList} />
-                  <div className="py-[24px]">
-                    <PageNation
-                      currentPage={currentPage}
-                      totalElements={totalElements}
-                      size={Number(ADMIN_DEFAULT_PAGE_SIZE)}
-                      onPageChange={handlePageChange}
-                    />
-                  </div>
+                  <PageNation
+                    currentPage={currentPage}
+                    totalElements={totalElements}
+                    size={Number(ADMIN_DEFAULT_PAGE_SIZE)}
+                    onPageChange={handlePageChange}
+                  />
                 </>
               ) : (
                 <NoDataList />

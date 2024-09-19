@@ -10,9 +10,9 @@ const AdminTableHeader = ({
   isAllChecked,
 }: TableHeaderProps) => {
   return (
-    <div className="w-[1012px]">
-      <div className="flex border-b">
-        <div className="flex h-[56px] w-[90px] items-center px-[24px]">
+    <div>
+      <div className="flex h-[64px] w-[1012px] items-center border-b border-blue-100 pl-6 text-sm">
+        <div className="mr-7 flex h-5 w-5 items-center justify-center">
           <CategoryBox
             text=""
             onChange={(e) => handleAllCheck(e.target.checked)}
@@ -38,7 +38,6 @@ const AdminTableHeader = ({
           승인상태
         </div>
       </div>
-      {/* 이 부분에 데이터 항목이 들어갑니다 */}
     </div>
   );
 };

@@ -63,7 +63,7 @@ const PostInfoContainer = ({
                 setValue('tutor', undefined, { shouldValidate: true });
               }}
               variant="secondary"
-              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
+              className="h-[60px] w-[328px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               value={value}
               disabled={trackRole === 'APM'}
             />
@@ -87,7 +87,7 @@ const PostInfoContainer = ({
                 field.onChange(value);
               }}
               variant="secondary"
-              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
+              className="h-[60px] w-[328px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               field={field}
             />
           )}

@@ -1,9 +1,13 @@
 import Button from '@/components/atoms/button';
 import Modal from '@/components/atoms/modal';
 import { useConfirmContext } from '@/context/useConfirmContext';
-import { PropsWithChildren } from 'react';
 
-function Confirm({ children }: PropsWithChildren) {
+interface ConfirmProps {
+  children: React.ReactNode;
+  text: string;
+}
+
+function Confirm({ children, text }: ConfirmProps) {
   const { handleResult, backdropClosable } = useConfirmContext();
 
   const handleBackdrop = () => {
@@ -16,9 +20,9 @@ function Confirm({ children }: PropsWithChildren) {
     <Modal
       bgColor="black"
       variant="backOffice"
-      inboardClassName="h-[224px] w-[376px]"
+      inboardClassName="min-h-[224px] w-[376px] max-h-[248px] "
     >
-      <div className="m-auto flex flex-col gap-6">
+      <div className="m-auto flex flex-col gap-6 pb-[24px] pt-[48px]">
         <div>{children}</div>
         <div className="flex justify-center gap-2.5">
           <Button
@@ -29,7 +33,7 @@ function Confirm({ children }: PropsWithChildren) {
             취소
           </Button>
           <Button type="button" onClick={() => handleResult(true)}>
-            삭제
+            {text}
           </Button>
         </div>
       </div>

@@ -42,6 +42,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [originalPhone, setOriginalPhone] = useState<string>('');
 
   const { open } = useModalContext();
   const {
@@ -72,6 +73,11 @@ const useSignupForm = (signupType: signupModalType) => {
     }
     if (!phoneVerified) {
       setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
+      return;
+    }
+
+    if (originalPhone !== data.phone) {
+      setIsErrorMsg('인증이 확인된 휴대폰 번호와 일치하지 않습니다.');
       return;
     }
     try {
@@ -105,6 +111,8 @@ const useSignupForm = (signupType: signupModalType) => {
   const { checkPhoneAuthMutate } = useProfileUpdate();
 
   const authCheck = async (authInfo: authCodeType) => {
+    const { phone } = authInfo;
+    setOriginalPhone(phone);
     try {
       await checkPhoneAuthMutate.mutateAsync(authInfo);
       setIsErrorMsg('인증이 완료됐습니다.');
@@ -133,6 +141,7 @@ const useSignupForm = (signupType: signupModalType) => {
     setIsErrorMsg,
     phoneVerified,
     emailError,
+    originalPhone,
   };
 };
 

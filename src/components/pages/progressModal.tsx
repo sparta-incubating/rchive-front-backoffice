@@ -1,6 +1,6 @@
 import Modal from '@/components/atoms/modal';
 import Image from 'next/image';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 const ProgressModal = ({ children }: PropsWithChildren) => {
   return (
@@ -18,9 +18,11 @@ const ProgressModal = ({ children }: PropsWithChildren) => {
         </div>
         <div className="flex flex-col">
           <span className="text-lg font-medium">{children}</span>
-          <span className="text-lg font-medium">
-            다른 페이지로 이동 시 저장되지 않아요!
-          </span>
+          {children !== 'Loading...' && (
+            <span className="text-lg font-medium">
+              다른 페이지로 이동 시 저장되지 않아요!
+            </span>
+          )}
         </div>
       </section>
     </Modal>

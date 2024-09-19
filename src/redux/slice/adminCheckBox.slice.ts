@@ -1,46 +1,67 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface AdminId {
-  adminId: string;
+interface AdminItem {
+  email: string;
+  period: number;
 }
 
 interface PostCheckBoxInitialType {
-  adminIds: string[];
+  selectedItems: AdminItem[];
 }
 
 const initialState: PostCheckBoxInitialType = {
-  adminIds: [],
+  selectedItems: [],
 };
 
 const AdminCheckBoxSlice = createSlice({
-  name: ' AdminCheckBoxSlice',
+  name: 'AdminCheckBoxSlice',
   initialState,
   reducers: {
-    setAdminId: (state, action: PayloadAction<AdminId>) => {
-      const { adminId } = action.payload;
-      if (state.adminIds.includes(adminId)) {
-        state.adminIds = state.adminIds.filter((id) => id !== adminId);
+    selectItem: (state, action: PayloadAction<AdminItem>) => {
+      const { email, period } = action.payload;
+      const index = state.selectedItems.findIndex(
+        (item) => item.email === email && item.period === period,
+      );
+      if (index === -1) {
+        state.selectedItems.push({ email, period });
       } else {
-        state.adminIds.push(adminId);
+        state.selectedItems.splice(index, 1);
       }
     },
-    setAllAdminIds: (
+    selectAllItems: (
       state,
-      action: PayloadAction<{ adminIds: string[]; checked: boolean }>,
+      action: PayloadAction<{
+        adminIds: AdminItem[];
+        period: string;
+        checked: boolean;
+      }>,
     ) => {
       const { adminIds, checked } = action.payload;
       if (checked) {
-        state.adminIds = Array.from(new Set([...state.adminIds, ...adminIds]));
+        const newItems = adminIds.filter(
+          (admin) =>
+            !state.selectedItems.some(
+              (item) =>
+                item.email === admin.email && item.period === admin.period,
+            ),
+        );
+        state.selectedItems = [...state.selectedItems, ...newItems];
       } else {
-        state.adminIds = state.adminIds.filter((id) => !adminIds.includes(id));
+        state.selectedItems = state.selectedItems.filter(
+          (item) =>
+            !adminIds.some(
+              (admin) =>
+                admin.email === item.email && admin.period === item.period,
+            ),
+        );
       }
     },
-    clearAdminIds: (state) => {
-      state.adminIds = [];
+    clearSelectedItems: (state) => {
+      state.selectedItems = [];
     },
   },
 });
 
-export const { setAdminId, setAllAdminIds, clearAdminIds } =
+export const { selectItem, selectAllItems, clearSelectedItems } =
   AdminCheckBoxSlice.actions;
 export default AdminCheckBoxSlice.reducer;

@@ -65,6 +65,7 @@ export const getRoleCount = async () => {
 //권한수락
 export const postUserApprove = async (userInfo: ApproveItem) => {
   const { trackName, period, trackRole, email } = userInfo;
+
   try {
     const res = await client.post('/apis/v1/backoffice/role/approve', [
       {
@@ -82,8 +83,8 @@ export const postUserApprove = async (userInfo: ApproveItem) => {
 
 //권한 거절
 export const deleteUsrRole = async (userInfo: DeleteUserType) => {
-  // const { trackName, period, trackRole, email } = userInfo;
   const params = [userInfo];
+
   try {
     const res = await client.delete('/apis/v1/backoffice/role/reject', {
       data: params,

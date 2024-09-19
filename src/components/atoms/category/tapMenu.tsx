@@ -10,10 +10,10 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
   };
 
   return (
-    <section className="h-[65px] w-full border-b pt-[16px]">
+    <section className="h-[65px] w-full border-b">
       <div className="flex h-full flex-row gap-[6px]">
         <div
-          className={`flex h-[48px] w-[104px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'All' ? `border-b-2 border-black` : ``}`}
+          className={`flex w-[104px] items-center gap-[10px] px-[18px] py-[10px] ${selectedTab === 'All' ? `border-b-2 border-black` : ``}`}
         >
           <button onClick={() => handleTabClick('All')}>
             <p
@@ -28,7 +28,7 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
         </div>
 
         <div
-          className={`flex h-[48px] w-[119px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'WAIT' ? `border-b-2 border-black` : ``}`}
+          className={`flex w-[119px] items-center gap-[10px] px-[18px] py-[10px] ${selectedTab === 'WAIT' ? `border-b-2 border-black` : ``}`}
         >
           <button onClick={() => handleTabClick('WAIT')}>
             <p
@@ -43,7 +43,7 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
         </div>
 
         <div
-          className={`flex h-[48px] w-[105px] gap-[10px] px-[18px] py-[10px] ${selectedTab === 'APPROVE' ? `border-b-2 border-black` : ``}`}
+          className={`flex w-[105px] items-center gap-[10px] px-[18px] py-[10px] ${selectedTab === 'APPROVE' ? `border-b-2 border-black` : ``}`}
         >
           <button onClick={() => handleTabClick('APPROVE')}>
             <p

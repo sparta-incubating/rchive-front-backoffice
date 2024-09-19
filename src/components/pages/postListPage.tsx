@@ -6,7 +6,6 @@ import PostFilterCategory from '@/components/atoms/category/postFilterCategory';
 import PostList from '@/components/atoms/category/postList';
 import PostTapMenu from '@/components/atoms/category/postTapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
-import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import BackofficePage from '@/components/pages/backofficePage';
 import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
@@ -20,6 +19,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import SearchBar from '../atoms/searchBar';
 
 interface PostListProps {
   searchParams: SearchParamsType;
@@ -177,7 +177,6 @@ const PostListPage = ({
       <PermissionBoard>
         {/* 탭메뉴 */}
         <PostTapMenu activeTab={activeTab} setActiveTab={handleTabChange} />
-
         <section className="py-6">
           {/* 카테고리 */}
           <section className="mx-auto mb-[24px] flex w-full flex-row justify-between">

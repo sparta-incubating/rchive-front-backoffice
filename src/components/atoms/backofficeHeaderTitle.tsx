@@ -41,7 +41,7 @@ const BackofficeHeaderTitle = () => {
           />
         </div>
       )}
-      <h1 className="text-[24px] font-bold">
+      <h1 className="w-[200px] text-[24px] font-bold">
         {currentLink ? currentLink.title : '페이지 제목 없음'}
       </h1>
     </div>

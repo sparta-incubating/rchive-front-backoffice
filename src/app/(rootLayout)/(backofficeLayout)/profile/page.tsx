@@ -26,11 +26,7 @@ const Profile = () => {
   }
 
   if (isPending) {
-    return (
-      <ProgressModal>
-        <span>프로필을 불러오는 중</span>
-      </ProgressModal>
-    );
+    return <ProgressModal>Loading...</ProgressModal>;
   }
 
   return (
@@ -46,6 +42,7 @@ const Profile = () => {
           handleChangeImage={() => openModal('image')}
         />
       </PermissionBoard>
+
       <PermissionBoard variant="accountInfo">
         <AccountInfo
           email={email}
