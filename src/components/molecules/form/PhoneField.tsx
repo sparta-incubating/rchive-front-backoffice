@@ -36,6 +36,20 @@ const PhoneField = ({
     setDisabled(isInputFilled.length <= 10);
   }, [isInputFilled]);
 
+  const handleTest = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (/^\d*$/.test(value) && value.length <= 14) {
+      setIsInputFilled(value);
+    }
+  };
+
+  const handleAuth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setIsAuthFilled(value);
+    }
+  };
+
   const handleRequestAuth = () => {
     const userInfo = { username: usernameCheck, phone: isInputFilled };
 
@@ -63,9 +77,9 @@ const PhoneField = ({
           className="mb-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="휴대폰 번호 입력 (-) 제외"
           {...register('phone')}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setIsInputFilled(e.target.value)
-          }
+          onChange={handleTest}
+          type="text"
+          value={isInputFilled}
         />
         {isInputFilled.length > 0 && (
           <Button
@@ -86,10 +100,9 @@ const PhoneField = ({
           {...register('authCode')}
           className="mb-[28px] mt-[44px] w-80 bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setIsAuthFilled(e.target.value)
-          }
+          onChange={handleAuth}
           value={isAuthFilled}
+          type="text"
         />
         {isAuthFilled.length > 0 && (
           <button

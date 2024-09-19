@@ -21,7 +21,7 @@ const ProfileChangeForm = ({
 }: ProfileChangeFormProps) => {
   return (
     <>
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-60"></div>
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-60" />
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="flex h-[557px] w-[520px] flex-col items-center rounded-[12px] border bg-white">
           {/* 나가기버튼 */}
