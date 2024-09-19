@@ -82,7 +82,6 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
   }, [popupWindow, watch, handleSubmit, onSubmit]);
 
   return (
-    //게시물 관리
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <section className="flex flex-col">
         <PermissionBoard variant="post">

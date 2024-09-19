@@ -10,6 +10,7 @@ import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import NoDataList from '@/components/atoms/category/noDataList';
 import PageNation from '@/components/atoms/category/pageNation';
 import TapMenu from '@/components/atoms/category/tapMenu';
+import Confirm from '@/components/atoms/confirm';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import SearchBar from '@/components/atoms/searchBar';
 import AuthFilteredList from '@/components/pages/admin/AuthFilteredList';
@@ -19,6 +20,7 @@ import {
   ADMIN_DEFAULT_PAGE,
   ADMIN_DEFAULT_PAGE_SIZE,
 } from '@/constants/admin.constant';
+import { useConfirmContext } from '@/context/useConfirmContext';
 import {
   clearSelectedItems,
   selectAllItems,
@@ -32,11 +34,6 @@ import {
 } from '@/types/admin.types';
 import { createToast } from '@/utils/toast';
 import { useEffect, useRef, useState } from 'react';
-
-interface AdminItem {
-  email: string;
-  period: number;
-}
 
 const Admin = () => {
   const [currentPage, setCurrentPage] = useState<number>(
@@ -63,6 +60,7 @@ const Admin = () => {
   const totalElements = boardList?.data.totalElements;
   const viewList = boardList?.data?.content;
   const { countList } = useRoleCountDataQuery();
+  const confirm = useConfirmContext();
 
   useEffect(() => {
     setFilters((prevFilters) => ({
@@ -227,15 +225,34 @@ const Admin = () => {
   };
 
   const allRejectItems = async () => {
-    extractedData.forEach((item) => {
-      deleteUsrRoleMutate.mutateAsync(item);
-    });
-    createToast(
-      `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
-      'primary',
+    const result = await confirm.handleConfirm(
+      <Confirm text="거절">
+        <div className="flex flex-col gap-2.5">
+          <span className="text-center text-xl font-bold">거절하시겠어요?</span>
+          <div className="flex flex-col justify-center">
+            <span className="text-center text-base font-medium text-gray-600">
+              거절할 경우 권한 설정 목록에서 사라지고,
+            </span>
+            <span className="text-center text-base font-medium text-gray-600">
+              다시 트랙 및 기수를 요청하게 되요.
+            </span>
+          </div>
+        </div>
+      </Confirm>,
       false,
     );
-    dispatch(clearSelectedItems());
+
+    if (result) {
+      extractedData.forEach((item) => {
+        deleteUsrRoleMutate.mutateAsync(item);
+      });
+      createToast(
+        `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
+        'primary',
+        false,
+      );
+      dispatch(clearSelectedItems());
+    }
   };
 
   return (

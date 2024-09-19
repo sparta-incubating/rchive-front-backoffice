@@ -8,12 +8,14 @@ import { usePermissionList } from '@/api/admin/useMutation';
 import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpenSelectBoxContainer';
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';
+import { useConfirmContext } from '@/context/useConfirmContext';
 import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType } from '@/types/admin.types';
 import { createToast } from '@/utils/toast';
 import Image from 'next/image';
 import AdminIsOpenDropDown from '../admin/adminIsOpenDropDown';
+import Confirm from '../confirm';
 
 interface PostIsOpenSelectBoxCategoryProps {
   isStatus: string;
@@ -30,6 +32,7 @@ const AdminSelectBoxCategory = ({
     dropdownRef,
     handleClick: handleDropdownClick,
   } = useDropDownOutsideClick();
+  const confirm = useConfirmContext();
 
   const { trackName: statusTrackName } = useAppSelector(
     (state) => state.authSlice,
@@ -52,9 +55,29 @@ const AdminSelectBoxCategory = ({
         setIsOpen(false);
         createToast(`1건의 요청이 승인되었습니다.`, 'primary', false);
       } else if (isStatus === 'REJECT') {
-        await deleteUsrRoleMutate.mutate(userInfo);
-        setIsOpen(false);
-        createToast(`1건의 요청이 거절되었습니다.`, 'primary', false);
+        const result = await confirm.handleConfirm(
+          <Confirm text="거절">
+            <div className="flex flex-col gap-2.5">
+              <span className="text-center text-xl font-bold">
+                거절하시겠어요?
+              </span>
+              <div className="flex flex-col justify-center">
+                <span className="text-center text-base font-medium text-gray-600">
+                  거절할 경우 권한 설정 목록에서 사라지고,
+                </span>
+                <span className="text-center text-base font-medium text-gray-600">
+                  다시 트랙 및 기수를 요청하게 되요.
+                </span>
+              </div>
+            </div>
+          </Confirm>,
+          false,
+        );
+        if (result) {
+          deleteUsrRoleMutate.mutate(userInfo);
+          setIsOpen(false);
+          createToast(`1건의 요청이 거절되었습니다.`, 'primary', false);
+        }
       }
     } catch (error) {
       throw new Error('권한 요청 응답 실패!');

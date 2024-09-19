@@ -91,12 +91,12 @@ const ThumbnailContainer = ({
 
   const handleDeletePost = async (postId: string) => {
     const result = await confirm.handleConfirm(
-      <Confirm>
+      <Confirm text="삭제">
         <div className="flex flex-col gap-2.5">
           <span className="text-center text-xl font-bold">
             게시물을 삭제하시겠어요?
           </span>
-          <span className="text-md text-center font-medium">
+          <span className="text-md text-center font-medium text-gray-600">
             삭제할 경우 다시 복구할 수 없어요.
           </span>
         </div>
