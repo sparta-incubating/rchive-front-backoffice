@@ -111,7 +111,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             {errors.password?.message && (
               <FormSpan variant="error">{errors.password?.message}</FormSpan>
             )}
-            {errors.passwordConfirm?.message && (
+            {!errors.password?.message && errors.passwordConfirm?.message && (
               <FormSpan variant="error">
                 {errors.passwordConfirm.message}
               </FormSpan>
