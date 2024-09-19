@@ -259,15 +259,14 @@ const Admin = () => {
     <>
       <BackofficePage>
         <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
-        {/* 게시판 */}
 
         <PermissionBoard>
-          {/* 탭 메뉴 */}
           <TapMenu
             onTabChange={handleTabChange}
             selectedTab={selectedTab}
             countList={countList}
           />
+
           {/*카테고리 및 체크박스*/}
           <div className="flex flex-row justify-between py-6">
             <CategoryFiltered
