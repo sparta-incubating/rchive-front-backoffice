@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
 import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -42,27 +43,32 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
   const handleRefreshContent = useCallback(async () => {
     if (!postData.contentLink) return;
 
-    // Progress 출력
-    setIsSubmitLoading(true);
-    setLoadingMessage('노션 자료를 찾아오는 중...');
+    try {
+      // Progress 출력
+      setIsSubmitLoading(true);
+      setLoadingMessage('노션 자료를 찾아오는 중...');
+      // content data 가져오기
+      const responseNotionData = await getNotionPageData(
+        extractPageId(postData.contentLink!)!,
+      );
 
-    // content data 가져오기
-    const responseNotionData = await getNotionPageData(
-      extractPageId(postData.contentLink!)!,
-    );
+      setLoadingMessage('데이터를 서버에 등록 중...');
+      // server data patch
 
-    setLoadingMessage('데이터를 서버에 등록 중...');
-    // server data patch
+      await patchNotionContent(
+        trackName,
+        Number(loginPeriod),
+        { content: responseNotionData, contentLink: postData.contentLink },
+        Number(postData.postId),
+      );
 
-    await patchNotionContent(
-      trackName,
-      Number(loginPeriod),
-      { content: responseNotionData, contentLink: postData.contentLink },
-      Number(postData.postId),
-    );
-
-    setIsSubmitLoading(false);
-    createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
+      setIsSubmitLoading(false);
+      createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        createToast(error.response?.data.message, 'warning');
+      }
+    }
   }, [postData.contentLink, setIsSubmitLoading, setLoadingMessage]);
 
   useEffect(() => {
