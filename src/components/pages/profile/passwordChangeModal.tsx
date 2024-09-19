@@ -39,7 +39,6 @@ const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
       setIsSuccessful(true);
     } catch (error) {
       setpwErrorMsg('비밀번호가 일치하지 않습니다.');
-      throw new Error('비밀번호가 일치하지 않습니다.');
     }
   };
 
