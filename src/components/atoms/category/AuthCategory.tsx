@@ -2,6 +2,7 @@
 
 import select from '@/../public/assets/icons/select-blue.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import Image from 'next/image';
 import { useState } from 'react';
 import SelectLabel from '../selectLabel';
@@ -24,16 +25,21 @@ interface AuthCategoryProps {
 
 const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(label);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const {
+    isOpen,
+    setIsOpen,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
 
   const handleClick = (data: { label: string; value: string }) => {
     setSelectedCategory(data.label);
-    setIsDropdownOpen(false);
+    setIsOpen(false);
     setValue(data.value);
   };
 
   return (
-    <CategoryContainer onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+    <CategoryContainer ref={dropdownRef} onClick={handleDropdownClick}>
       <CategoryLayout>
         <SelectLabel>{selectedCategory}</SelectLabel>
         <Image
@@ -42,11 +48,11 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
           height={12}
           alt="화살표"
           className={`transition-transform duration-500 ${
-            isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            isOpen ? 'rotate-180' : 'rotate-0'
           }`}
         />
       </CategoryLayout>
-      <CategoryDropDown show={isDropdownOpen}>
+      <CategoryDropDown show={isOpen}>
         {data?.map((item: AdminCateoryType) => (
           <div
             className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
