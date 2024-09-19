@@ -1,6 +1,6 @@
 import { classMerge } from '@/utils/utils';
 import { cva, VariantProps } from 'class-variance-authority';
-import { ComponentProps, ReactNode } from 'react';
+import { ComponentProps, forwardRef, ReactNode } from 'react';
 
 const divVariants = cva(
   'relative flex items-center justify-center hover:cursor-pointer ',
@@ -26,17 +26,18 @@ interface CategoryContainerProps
   className?: string;
 }
 
-const CategoryContainer = ({
-  children,
-  className,
-  variant,
-  ...props
-}: CategoryContainerProps) => {
-  return (
-    <div className={classMerge(divVariants({ variant }), className)} {...props}>
-      {children}
-    </div>
-  );
-};
+const CategoryContainer = forwardRef<HTMLDivElement, CategoryContainerProps>(
+  ({ children, className, variant, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={classMerge(divVariants({ variant }), className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
 
 export default CategoryContainer;

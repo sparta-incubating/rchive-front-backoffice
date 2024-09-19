@@ -2,6 +2,7 @@
 
 import select from '@/../public/assets/icons/select-blue.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
 import { createToast } from '@/utils/toast';
 import Image from 'next/image';
@@ -27,12 +28,17 @@ const FilterCategory = ({
   defaultValue,
 }: FilterCategoryProps) => {
   const [selectedItem, setSelectedItem] = useState<SelectOptionType | null>();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const {
+    isOpen,
+    setIsOpen,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
 
   const handleClick = (data: SelectOptionType) => {
     setSelectedItem(data);
     setValue(data.value);
-    setIsDropdownOpen(false);
+    setIsOpen(false);
   };
 
   const handleToast = () => {
@@ -47,9 +53,8 @@ const FilterCategory = ({
 
   return (
     <CategoryContainer
-      onClick={() =>
-        !disabled ? setIsDropdownOpen(!isDropdownOpen) : handleToast()
-      }
+      ref={dropdownRef}
+      onClick={(e) => (!disabled ? handleDropdownClick(e) : handleToast())}
     >
       <CategoryLayout>
         <SelectLabel>{selectedItem ? selectedItem.label : label}</SelectLabel>
@@ -59,11 +64,11 @@ const FilterCategory = ({
           height={12}
           alt="화살표"
           className={`transition-transform duration-500 ${
-            isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            isOpen ? 'rotate-180' : 'rotate-0'
           }`}
         />
       </CategoryLayout>
-      <CategoryDropDown show={isDropdownOpen}>
+      <CategoryDropDown show={isOpen}>
         <div
           className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
           key={0}

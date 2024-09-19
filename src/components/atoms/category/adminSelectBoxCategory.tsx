@@ -8,12 +8,11 @@ import { usePermissionList } from '@/api/admin/useMutation';
 import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpenSelectBoxContainer';
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { useAppSelector } from '@/redux/storeConfig';
 import { AdminDataInfoType } from '@/types/admin.types';
 import { createToast } from '@/utils/toast';
 import Image from 'next/image';
-
-import { useState } from 'react';
 import AdminIsOpenDropDown from '../admin/adminIsOpenDropDown';
 
 interface PostIsOpenSelectBoxCategoryProps {
@@ -25,7 +24,13 @@ const AdminSelectBoxCategory = ({
   isStatus,
   dataList,
 }: PostIsOpenSelectBoxCategoryProps) => {
-  const [showOptions, setShowOptions] = useState(false);
+  const {
+    isOpen,
+    setIsOpen,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
+
   const { trackName: statusTrackName } = useAppSelector(
     (state) => state.authSlice,
   );
@@ -44,11 +49,11 @@ const AdminSelectBoxCategory = ({
     try {
       if (isStatus === 'APPROVE') {
         await postUserApproveMutate.mutate(userInfo);
-        setShowOptions(false);
+        setIsOpen(false);
         createToast(`1건의 요청이 승인되었습니다.`, 'primary', false);
       } else if (isStatus === 'REJECT') {
         await deleteUsrRoleMutate.mutate(userInfo);
-        setShowOptions(false);
+        setIsOpen(false);
         createToast(`1건의 요청이 거절되었습니다.`, 'primary', false);
       }
     } catch (error) {
@@ -58,7 +63,8 @@ const AdminSelectBoxCategory = ({
 
   return (
     <PostIsOpenSelectBoxContainer
-      onClick={() => setShowOptions((prev) => !prev)}
+      ref={dropdownRef}
+      onClick={handleDropdownClick}
     >
       <PostIsOpenSelectBoxLayout>
         <Image
@@ -74,12 +80,12 @@ const AdminSelectBoxCategory = ({
           height={12}
           alt="화살표"
           className={`transition-transform duration-500 ${
-            showOptions ? 'rotate-180' : 'rotate-0'
+            isOpen ? 'rotate-180' : 'rotate-0'
           }`}
         />
       </PostIsOpenSelectBoxLayout>
 
-      <AdminIsOpenDropDown show={showOptions} isLargeSize={isStatus === 'WAIT'}>
+      <AdminIsOpenDropDown show={isOpen} isLargeSize={isStatus === 'WAIT'}>
         <div
           onClick={() =>
             handleClick(isStatus === 'WAIT' ? 'APPROVE' : 'REJECT')
