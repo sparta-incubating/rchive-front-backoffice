@@ -5,7 +5,7 @@ import Modal from '@/components/atoms/modal';
 import PreviewContainer from '@/components/organisms/preview/previewContainer';
 import PostDetail from '@/components/pages/postDetail/postDetail';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Preview = () => {
   const [formData, setFormData] = useState<PostForm | null>(null);
@@ -36,8 +36,8 @@ const Preview = () => {
     return (
       <Modal>
         <section className="flex h-[98px] w-[414px] items-center justify-center gap-4 px-6 py-4">
-          <div className="flex h-[65px] w-[64px] items-center justify-center rounded-full bg-primary-50 p-2.5">
-            <div className="relative h-[50px] w-[40px]">
+          <div className="flex h-[65px] w-16 items-center justify-center rounded-full bg-primary-50 p-2.5">
+            <div className="relative h-[50px] w-10">
               <Image
                 src={'/backoffice/assets/icons/gif/rtanRun.gif'}
                 alt={'progress gif'}

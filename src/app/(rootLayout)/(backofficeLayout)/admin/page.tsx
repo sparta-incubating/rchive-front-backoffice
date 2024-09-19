@@ -269,13 +269,13 @@ const Admin = () => {
             countList={countList}
           />
           {/*카테고리 및 체크박스*/}
-          <div className="flex flex-row justify-between py-[24px]">
+          <div className="flex flex-row justify-between py-6">
             <CategoryFiltered
               handleCategoryChange={handleCategoryChange}
               key={selectedTab}
             />
             {checkedAdminIds.length > 0 && (
-              <section className="flex flex-row gap-[8px]">
+              <section className="flex flex-row gap-2">
                 <p className="flex h-[37px] w-[83px] items-center text-secondary-400">
                   {checkedAdminIds.length}개 선택
                 </p>

@@ -19,7 +19,7 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
   const [expire, setExpire] = useState<boolean>(false);
-  const [authErrorMsg, setAuthErrorMsg] = useState<boolean>(false);
+  // const [authErrorMsg, setAuthErrorMsg] = useState<boolean>(false);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
   const [disabled, setDisabled] = useState<boolean>(false);
   const {
@@ -65,7 +65,6 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
       }
     } catch (error) {
       console.error('Error updating phone:', error);
-      setAuthErrorMsg(true);
       setDisabled(false);
     }
   };
@@ -81,7 +80,7 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
           onClose={onClose}
           isValid={disabled}
         >
-          <section className="flex flex-col gap-[10px]">
+          <section className="flex flex-col gap-2.5">
             {/** */}
             <PasswordContainer variant="primary">
               <InputField>

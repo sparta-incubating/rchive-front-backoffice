@@ -62,7 +62,7 @@ const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
                     {...register('originPassword')}
                     placeholder="현재 비밀번호 입력"
                     type="password"
-                    className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                    className="bold h-5 w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
                   />
                 </InputField>
               </InputContainer>
@@ -78,7 +78,7 @@ const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
                     {...register('newPassword')}
                     type="password"
                     placeholder="6자 이상, 숫자와 영문자 조합"
-                    className="bold h-[20px] w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                    className="bold h-5 w-full bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
                   />
                 </InputField>
                 <div className="border" />
@@ -86,7 +86,7 @@ const PasswordChangeModal = ({ onClose }: ChangeModalProps) => {
                   {...register('passwordConfirm')}
                   type="password"
                   placeholder="비밀번호 재입력"
-                  className="my-[28px] h-[20px] w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+                  className="my-7 h-5 w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
                 />
               </PasswordContainer>
               {errors.passwordConfirm && (
