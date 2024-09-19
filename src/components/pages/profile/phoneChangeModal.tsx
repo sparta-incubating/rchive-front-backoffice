@@ -19,13 +19,14 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
   const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
   const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
   const [expire, setExpire] = useState<boolean>(false);
-  // const [authErrorMsg, setAuthErrorMsg] = useState<boolean>(false);
   const [isErrorMsg, setIsErrorMsg] = useState<string | null>(null);
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [originalPhone, setOriginalPhone] = useState<string>('');
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
+    watch,
   } = useForm<z.infer<typeof profilePhoneSchema>>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -38,9 +39,11 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
 
   const { updatePhoneNumberMutate, checkPhoneAuthMutate } = useProfileUpdate();
 
-  const authCheck = async (userInfo: authCodeType) => {
+  const authCheck = async (authInfo: authCodeType) => {
+    const { phone } = authInfo;
+    setOriginalPhone(phone);
     try {
-      await checkPhoneAuthMutate.mutateAsync(userInfo);
+      await checkPhoneAuthMutate.mutateAsync(authInfo);
       setDisabled(true);
       setIsErrorMsg('인증이 완료됐습니다.');
     } catch (error) {
@@ -49,6 +52,12 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
   };
 
   const onSubmit = async (data: z.infer<typeof profilePhoneSchema>) => {
+    if (data.phone !== originalPhone) {
+      setIsErrorMsg('인증이 확인된 휴대폰 번호와 일치하지 않습니다.');
+      setDisabled(false);
+      return;
+    }
+
     const userInfo = {
       username,
       phone: data?.phone,
