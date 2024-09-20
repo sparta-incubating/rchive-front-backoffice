@@ -64,7 +64,7 @@ const useSignupForm = (signupType: signupModalType) => {
   const onSubmit = async (data: SignupFormSchema) => {
     if (!emailChecked && !phoneVerified) {
       setEmailError('이메일 중복 확인은 필수입니다.');
-      setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
+      setIsErrorMsg('휴대폰 인증은 필수입니다.');
       return;
     }
     if (!emailChecked) {
@@ -72,12 +72,12 @@ const useSignupForm = (signupType: signupModalType) => {
       return;
     }
     if (!phoneVerified) {
-      setIsErrorMsg('휴대폰 인증번호 확인은 필수입니다.');
+      setIsErrorMsg('휴대폰 인증은 필수입니다.');
       return;
     }
 
     if (originalPhone !== data.phone) {
-      setIsErrorMsg('인증이 확인된 휴대폰 번호와 일치하지 않습니다.');
+      setIsErrorMsg('휴대폰 인증은 필수입니다.');
       return;
     }
     try {

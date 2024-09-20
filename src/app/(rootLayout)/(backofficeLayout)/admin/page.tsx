@@ -258,7 +258,7 @@ const Admin = () => {
   return (
     <>
       <BackofficePage>
-        <SearchBar ref={inputRef} onKeyPress={handleSearchChange} />
+        <SearchBar ref={inputRef} onKeyDown={handleSearchChange} />
 
         <PermissionBoard>
           <TapMenu

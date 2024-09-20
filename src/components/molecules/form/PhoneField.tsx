@@ -33,7 +33,11 @@ const PhoneField = ({
   const { postPhoneAuthNumberMutate } = useProfileUpdate();
 
   useEffect(() => {
-    setDisabled(isInputFilled.length <= 10);
+    if (isInputFilled.length === 8) {
+      setDisabled(false);
+    } else if (isInputFilled.length >= 12) {
+      setDisabled(true);
+    }
   }, [isInputFilled]);
 
   const handleTest = (e: React.ChangeEvent<HTMLInputElement>) => {
