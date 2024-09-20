@@ -34,17 +34,14 @@ const usePageLeaveConfirm = (isDirty: boolean) => {
     const handlePopState = async (e: PopStateEvent) => {
       if (isDirty) {
         if (await showConfirmDialog()) {
-          // 사용자가 확인을 선택한 경우
-          return;
+          router.back();
         } else {
-          // 사용자가 취소를 선택한 경우
-          history.pushState(null, '', window.location.href);
+          window.history.pushState(null, '', window.location.href);
         }
       }
     };
 
     if (isDirty) {
-      console.log('window에 등록한다?');
       window.history.pushState(null, '', window.location.href);
     }
     window.addEventListener('popstate', handlePopState);
