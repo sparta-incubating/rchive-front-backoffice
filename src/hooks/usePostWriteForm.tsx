@@ -10,15 +10,18 @@ import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
 import { postFetchData, PostsFormSchema } from '@/types/posts.types';
+import { TagType } from '@/types/tag.types';
 import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { isEqual } from 'lodash';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 const usePostWriteForm = (postData?: postFetchData) => {
   const {
@@ -29,11 +32,13 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
   const { setIsSubmitLoading, setLoadingMessage } = useLoadingProgress();
 
-  const { tags, addTag, clearTags } = useTagContext();
+  const { tags, addTag, clearTags, setTags } = useTagContext();
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
   const [customIsValid, setCustomIsValid] = useState(false);
+  const [tagsChanged, setTagsChanged] = useState(false);
+  const initialTagsRef = useRef<TagType[]>([]);
 
   const router = useRouter();
   const {
@@ -144,29 +149,54 @@ const usePostWriteForm = (postData?: postFetchData) => {
       setValue('tutor', { ...postData.tutorRes });
       setValue('isOpened', String(postData.isOpened) as 'true' | 'false');
 
-      clearTags(); // 기존 태그 초기화
       if (postData.tagNameList.length > 0) {
-        // Promise.all로 모든 태그 추가 작업이 완료될 때까지 기다립니다.
-        Promise.all(
-          postData.tagNameList.map((tag) => {
-            addTag(tag as string);
-          }),
-        ).then(() => {
-          setValue('tagNameList', tags); // 모든 태그가 추가된 후 설정
-        });
+        clearTags();
+        const initTags: TagType[] = postData.tagNameList.map((tag) => ({
+          tagId: uuidv4(),
+          tagName: tag,
+        }));
+        setTags(initTags);
+        initialTagsRef.current = initTags;
+        setValue('tagNameList', initTags);
       }
     }
-  }, [setValue]);
+  }, []);
+
+  useEffect(() => {
+    if (postData) {
+      const currentTags = tags.map((tag) => tag.tagName);
+      const initialTags = initialTagsRef.current.map((tag) => tag.tagName);
+      setTagsChanged(!isEqual(currentTags, initialTags));
+    }
+  }, [tags, postData]);
 
   const tutor = watch('tutor');
   const contentLink = watch('contentLink');
   const videoLink = watch('videoLink');
   const uploadedAt = watch('uploadedAt');
   useEffect(() => {
-    setCustomIsValid(
-      formIsValid && !!(contentLink || videoLink) && !!uploadedAt && !!tutor,
-    );
-  }, [contentLink, videoLink, uploadedAt, formIsValid, tutor]);
+    if (postData) {
+      setCustomIsValid(
+        (formIsValid &&
+          !!(contentLink || videoLink) &&
+          !!uploadedAt &&
+          !!tutor) ||
+          tagsChanged,
+      );
+    } else {
+      setCustomIsValid(
+        formIsValid && !!(contentLink || videoLink) && !!uploadedAt && !!tutor,
+      );
+    }
+  }, [
+    contentLink,
+    videoLink,
+    uploadedAt,
+    formIsValid,
+    tutor,
+    tagsChanged,
+    postData,
+  ]);
 
   return {
     register,
