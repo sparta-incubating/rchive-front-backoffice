@@ -48,7 +48,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     handleSubmit,
     setValue,
     trigger,
-    formState: { errors, isValid: formIsValid },
+    formState: { errors, isValid: formIsValid, isDirty },
   } = useForm<PostsFormSchema>({
     resolver: zodResolver(postsSchema),
     mode: 'all',
@@ -209,6 +209,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     notionValidateState,
     setNotionValidateState,
     isValid: customIsValid,
+    isDirty,
   };
 };
 
