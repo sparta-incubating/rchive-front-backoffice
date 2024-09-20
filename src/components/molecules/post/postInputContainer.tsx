@@ -90,7 +90,7 @@ const PostInputContainer = ({
             {...register('title')}
             watch={watch('title')}
             isUseButton={false}
-            placeholder="제목을 입력해 주세요."
+            placeholder="제목을 입력해 주세요. (최대 20자)"
           />
         </TitleContainer>
         {errors.title?.message && (
