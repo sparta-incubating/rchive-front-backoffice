@@ -50,7 +50,6 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
           className={`transition-transform duration-500 ${
             isOpen ? 'rotate-180' : 'rotate-0'
           }`}
-          layout="intrinsic"
         />
       </CategoryLayout>
       <CategoryDropDown show={isOpen}>
