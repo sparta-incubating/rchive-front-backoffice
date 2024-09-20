@@ -1,8 +1,9 @@
 'use client';
 
-import { getTags, postTag } from '@/api/client/postApi';
+import { getTags } from '@/api/client/postApi';
 import useComposition from '@/hooks/useComposition';
 import { TagType } from '@/types/tag.types';
+import { createToast } from '@/utils/toast';
 import { debounce } from 'lodash';
 import React, {
   createContext,
@@ -17,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface TagContextType {
   tags: TagType[];
-  addTag: (tag: string) => void;
+  addTag: (tag: string) => Promise<void>;
   deleteTag: (tagId: string) => void;
   inputRef: React.RefObject<HTMLDivElement>;
   tagContainerRef: React.RefObject<HTMLDivElement>;
@@ -26,6 +27,7 @@ interface TagContextType {
   searchTags: TagType[] | null;
   handleClickDropDownData: (label: string) => void;
   clearTags: () => void;
+  setTags: React.Dispatch<React.SetStateAction<TagType[]>>;
 }
 
 export const TagContext = createContext<TagContextType | undefined>(undefined);
@@ -40,31 +42,36 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
 
   const addTag = useCallback(
     async (tag: string) => {
+      if (tags?.length > 9) {
+        createToast('태그는 10개까지만 입력 가능합니다.', 'warning');
+        return;
+      }
+
       if (
         tags.find(
           (tagState) => tagState.tagName.toLowerCase() === tag.toLowerCase(),
         )
       ) {
+        createToast('중복된 태그입니다.', 'warning');
         return;
       }
 
-      if (searchTags) {
-        if (
-          !searchTags.some(
-            (searchTag) =>
-              searchTag.tagName.toLowerCase() === tag.toLowerCase(),
-          )
-        ) {
-          await postTag(tag);
-        }
-      }
+      // if (searchTags) {
+      //   if (
+      //     !searchTags.some(
+      //       (searchTag) =>
+      //         searchTag.tagName.toLowerCase() === tag.toLowerCase(),
+      //     )
+      //   ) {
+      //     await postTag(tag);
+      //   }
+      // }
 
       const newTag: TagType = {
         tagId: uuidv4(),
         tagName: tag,
       };
 
-      // flushSync를 제거하고 바로 상태 업데이트
       setTags((prevState) => [...prevState, newTag]);
 
       if (tagContainerRef.current) {
@@ -210,6 +217,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       searchTags,
       handleClickDropDownData,
       clearTags,
+      setTags,
     }),
     [
       tags,
@@ -220,6 +228,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       searchTags,
       handleClickDropDownData,
       clearTags,
+      setTags,
     ],
   );
 
