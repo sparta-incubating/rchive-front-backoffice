@@ -10,6 +10,7 @@ import ThumbnailContainer from '@/components/molecules/post/thumbnailContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TagContainer from '@/components/organisms/tagContainer';
 import { useTagContext } from '@/context/useTagContext';
+import usePageLeaveConfirm from '@/hooks/usePageLeaveConfirm';
 import usePostWriteForm from '@/hooks/usePostWriteForm';
 import { postFetchData } from '@/types/posts.types';
 import { radioType } from '@/types/radio.types';
@@ -34,11 +35,12 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
     notionValidateState,
     setNotionValidateState,
     isValid,
+    isDirty,
   } = usePostWriteForm(postData);
 
   const [popupWindow, setPopupWindow] = useState<Window | null>(null);
   const { tags } = useTagContext();
-
+  usePageLeaveConfirm(isDirty);
   const handlePreview = useCallback(() => {
     const formData = new PostForm(
       watch('postType'),
