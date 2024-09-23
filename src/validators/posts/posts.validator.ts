@@ -21,7 +21,7 @@ export const postsSchema = z.object({
   title: z
     .string()
     .min(1, '최소 1글자 이상의 제목을 입력해주세요.')
-    .max(20, '최대 20글자까지 입력가능합니다.'),
+    .max(50, '최대 50글자까지 입력가능합니다.'),
   tutor: tutor.nullish().refine((val) => val !== null, {
     message: '튜터를 선택해주세요.',
   }),
