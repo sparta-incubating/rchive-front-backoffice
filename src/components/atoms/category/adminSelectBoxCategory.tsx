@@ -59,7 +59,7 @@ const AdminSelectBoxCategory = ({
           <Confirm text="거절">
             <div className="flex flex-col gap-2.5">
               <span className="text-center text-xl font-bold">
-                거절하시겠어요?
+                요청을 거절하시겠어요?
               </span>
               <div className="flex flex-col justify-center">
                 <span className="text-center text-base font-medium text-gray-600">

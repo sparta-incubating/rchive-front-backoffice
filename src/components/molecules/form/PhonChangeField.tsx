@@ -35,7 +35,7 @@ const PhoneChangeField = ({
   const { postPhoneAuthNumberMutate } = useProfileUpdate();
 
   useEffect(() => {
-    if (isInputFilled.length === 8) {
+    if (isInputFilled.length === 11) {
       setDisabled(false);
     } else if (isInputFilled.length >= 12) {
       setDisabled(true);

@@ -14,8 +14,16 @@ const usePageLeaveConfirm = (isDirty: boolean) => {
     isConfirmShownRef.current = true;
     const result = await handleConfirm(
       <Confirm text="이동">
-        <p>페이지를 이동하시겠습니까?</p>
-        <p>변경사항이 저장되지 않습니다.</p>
+        <div className="flex flex-col gap-2.5">
+          <span className="text-center text-xl font-bold">
+            작성화면을 나가시겠어요?
+          </span>
+          <div className="flex flex-col justify-center">
+            <span className="text-center text-base font-medium text-gray-600">
+              이동하게 되면 변경사항이 저장되지 않아요.
+            </span>
+          </div>
+        </div>
       </Confirm>,
       false,
     );
