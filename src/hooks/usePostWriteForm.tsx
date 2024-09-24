@@ -33,6 +33,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
   const { setIsSubmitLoading, setLoadingMessage } = useLoadingProgress();
 
   const { tags, addTag, clearTags, setTags } = useTagContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
@@ -80,6 +81,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     }
 
     try {
+      setIsSubmitting(true);
       setIsSubmitLoading(true);
       setLoadingMessage('노션 자료를 찾아오는 중...');
       const formData = new PostForm(
@@ -114,6 +116,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
       router.push('/posts');
       router.refresh();
     } catch (error) {
+      setIsSubmitting(false);
       if (axios.isAxiosError(error)) {
         if (!postData) {
           createToast(
@@ -132,6 +135,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
         }
       }
     } finally {
+      // setIsSubmitting(false);
       setIsSubmitLoading(false);
     }
   };
@@ -210,6 +214,7 @@ const usePostWriteForm = (postData?: postFetchData) => {
     setNotionValidateState,
     isValid: customIsValid,
     isDirty,
+    isSubmitting,
   };
 };
 

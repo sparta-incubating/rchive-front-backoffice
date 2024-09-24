@@ -36,11 +36,12 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
     setNotionValidateState,
     isValid,
     isDirty,
+    isSubmitting,
   } = usePostWriteForm(postData);
 
   const [popupWindow, setPopupWindow] = useState<Window | null>(null);
   const { tags } = useTagContext();
-  usePageLeaveConfirm(isDirty);
+  usePageLeaveConfirm(isDirty, isSubmitting);
   const handlePreview = useCallback(() => {
     const formData = new PostForm(
       watch('postType'),

@@ -3,13 +3,13 @@ import { useConfirmContext } from '@/context/useConfirmContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 
-const usePageLeaveConfirm = (isDirty: boolean) => {
+const usePageLeaveConfirm = (isDirty: boolean, isSubmitting: boolean) => {
   const { handleConfirm } = useConfirmContext();
   const router = useRouter();
   const isConfirmShownRef = useRef(false);
 
   const showConfirmDialog = useCallback(async () => {
-    if (!isDirty || isConfirmShownRef.current) return true;
+    if (!isDirty || isConfirmShownRef.current || isSubmitting) return true;
 
     isConfirmShownRef.current = true;
     const result = await handleConfirm(
@@ -29,7 +29,7 @@ const usePageLeaveConfirm = (isDirty: boolean) => {
     );
     isConfirmShownRef.current = false;
     return result;
-  }, [handleConfirm, isDirty]);
+  }, [handleConfirm, isDirty, isSubmitting]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
