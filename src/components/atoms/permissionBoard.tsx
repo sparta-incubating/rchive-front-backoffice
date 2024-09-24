@@ -6,7 +6,7 @@ const ProfileBoardVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'h-[800px]',
+        primary: 'min-h-[800px] h-auto',
         userInfo: 'h-[306px]',
         accountInfo: 'h-[238px]',
         post: 'h-[882px] gap-6  flex flex-col',
