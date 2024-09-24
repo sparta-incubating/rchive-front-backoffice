@@ -35,11 +35,10 @@ const PhoneField = ({
   useEffect(() => {
     if (isInputFilled.length === 11) {
       setDisabled(false);
-    } else if (isInputFilled.length >= 12) {
+    } else {
       setDisabled(true);
     }
   }, [isInputFilled]);
-
   const handleTest = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (/^\d*$/.test(value) && value.length <= 14) {

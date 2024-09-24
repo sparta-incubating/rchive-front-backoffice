@@ -37,7 +37,7 @@ const PhoneChangeField = ({
   useEffect(() => {
     if (isInputFilled.length === 11) {
       setDisabled(false);
-    } else if (isInputFilled.length >= 12) {
+    } else {
       setDisabled(true);
     }
   }, [isInputFilled]);
