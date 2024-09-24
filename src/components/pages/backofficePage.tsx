@@ -6,7 +6,7 @@ const BackofficePage = ({ children }: PropsWithChildren) => {
     <div className="flex flex-grow flex-col bg-blue-55">
       <div className="mx-auto flex-grow">
         <BackofficeHeader />
-        <div className="h-screen">{children}</div>
+        <div className="h-auto min-h-screen">{children}</div>
       </div>
     </div>
   );
