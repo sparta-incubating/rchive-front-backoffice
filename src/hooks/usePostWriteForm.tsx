@@ -107,7 +107,12 @@ const usePostWriteForm = (postData?: postFetchData) => {
       setLoadingMessage('데이터를 서버에 등록 중...');
 
       // 등록 및 수정에서는 tag 등록이 필수이기떄문에
-      postTagsMutate(fetchTags, { onSuccess: () => {} });
+      postTagsMutate(fetchTags, {
+        onError: (error) => {
+          createToast(`태그 저장 중 오류가 발생했습니다.`, 'warning');
+          throw new Error('태그 저장에 실패했습니다.');
+        },
+      });
 
       if (!postData) {
         //todo: post, update react-query로 변경 필요

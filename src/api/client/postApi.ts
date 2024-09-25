@@ -18,14 +18,10 @@ export const getTags = async (keyword: string) => {
 
 // 태그 저장 함수
 export const postTag = async (tagNames: string[]) => {
-  try {
-    const response = await client.post('/apis/v1/posts/tags', {
-      tagNameList: tagNames,
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('태그 저장에 실패했습니다.');
-  }
+  const response = await client.post('/apis/v1/posts/tags', {
+    tagNameList: tagNames,
+  });
+  return response.data;
 };
 
 // 기수 검색 함수
