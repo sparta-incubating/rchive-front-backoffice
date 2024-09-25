@@ -17,10 +17,10 @@ export const getTags = async (keyword: string) => {
 };
 
 // 태그 저장 함수
-export const postTag = async (tagName: string) => {
+export const postTag = async (tagNames: string[]) => {
   try {
     const response = await client.post('/apis/v1/posts/tags', {
-      tagName,
+      tagNameList: tagNames,
     });
     return response.data;
   } catch (error) {

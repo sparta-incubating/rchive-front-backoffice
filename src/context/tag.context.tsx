@@ -56,17 +56,6 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         return;
       }
 
-      // if (searchTags) {
-      //   if (
-      //     !searchTags.some(
-      //       (searchTag) =>
-      //         searchTag.tagName.toLowerCase() === tag.toLowerCase(),
-      //     )
-      //   ) {
-      //     await postTag(tag);
-      //   }
-      // }
-
       const newTag: TagType = {
         tagId: uuidv4(),
         tagName: tag,
