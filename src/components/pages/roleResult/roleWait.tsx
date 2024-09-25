@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/atoms/button';
+import { HELP_LINK } from '@/constants/helpLink.constant';
 import { signOut } from 'next-auth/react';
 
 const RoleWait = () => {
@@ -14,7 +15,11 @@ const RoleWait = () => {
         <span className="text-sm text-gray-900">
           승인 처리가 지연될 시, 시스템 관리자에게 문의바랍니다.
         </span>
-        <a target="_blank" className="text-sm text-gray-400 underline">
+        <a
+          href={HELP_LINK}
+          target="_blank"
+          className="text-sm text-gray-400 underline"
+        >
           문의하기
         </a>
       </div>
