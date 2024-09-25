@@ -6,6 +6,7 @@ import {
   postDataPost,
   postTag,
 } from '@/api/client/postApi';
+import { revalidatePostsAction } from '@/app/actions/serverActions';
 import { PostForm } from '@/class/postForm';
 import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
@@ -128,8 +129,9 @@ const usePostWriteForm = (postData?: postFetchData) => {
         createToast('게시물 수정이 완료되었습니다.', 'primary');
       }
 
+      // server action
+      await revalidatePostsAction('/posts');
       router.push('/posts');
-      router.refresh();
     } catch (error) {
       setIsSubmitting(false);
       if (axios.isAxiosError(error)) {

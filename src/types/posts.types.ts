@@ -42,6 +42,12 @@ export type tutorApiType = {
   status: number;
 };
 
+export type PostResponse = {
+  status: number;
+  message: string;
+  data: postFetchData;
+};
+
 export type postFetchData = {
   title: string;
   tutorRes: { tutorId: number; tutorName: string };
