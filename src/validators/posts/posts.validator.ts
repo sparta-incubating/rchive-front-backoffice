@@ -31,12 +31,14 @@ export const postsSchema = z.object({
   }),
   contentLink: z
     .string()
+    .max(255, '최대 255글자까지 입력 가능합니다.')
     .optional()
     .refine((url) => !url || notionPattern.test(url), {
       message: '노션 링크가 맞는지 확인해주세요.',
     }),
   videoLink: z
     .string()
+    .max(255, '최대 255글자까지 입력 가능합니다.')
     .optional()
     .refine((url) => !url || youtubePattern.test(url), {
       message: '유튜브 링크가 맞는지 확인해주세요.',
