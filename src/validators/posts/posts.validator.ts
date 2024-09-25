@@ -20,8 +20,12 @@ const tagSchema = z.object({
 export const postsSchema = z.object({
   title: z
     .string()
-    .min(1, '최소 1글자 이상의 제목을 입력해주세요.')
-    .max(50, '최대 50글자까지 입력가능합니다.'),
+    .trim() // 앞뒤 공백 제거
+    .min(1, '최소 1글자 이상의 제목을 입력해주세요.') // 공백 제거 후 최소 1글자 확인
+    .max(50, '최대 50글자까지 입력 가능합니다.') // 최대 50글자 제한
+    .refine((val) => val.trim().length > 0, {
+      message: '공백만 입력할 수 없습니다.',
+    }),
   tutor: tutor.nullish().refine((val) => val !== null, {
     message: '튜터를 선택해주세요.',
   }),
