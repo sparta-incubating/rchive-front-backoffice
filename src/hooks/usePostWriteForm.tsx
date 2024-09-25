@@ -127,6 +127,9 @@ const usePostWriteForm = (postData?: postFetchData) => {
             );
             createToast('게시물 수정이 완료되었습니다.', 'primary');
           }
+
+          await revalidatePostsAction('/posts');
+          router.push('/posts');
         },
         onError: (error) => {
           createToast(`태그 저장 중 오류가 발생했습니다.`, 'warning');
@@ -135,8 +138,6 @@ const usePostWriteForm = (postData?: postFetchData) => {
       });
 
       // server action
-      await revalidatePostsAction('/posts');
-      router.push('/posts');
     } catch (error) {
       setIsSubmitting(false);
       if (axios.isAxiosError(error)) {
