@@ -14,7 +14,11 @@ const RoleWait = () => {
         <span className="text-sm text-gray-900">
           승인 처리가 지연될 시, 시스템 관리자에게 문의바랍니다.
         </span>
-        <a target="_blank" className="text-sm text-gray-400 underline">
+        <a
+          href="https://docs.google.com/forms/d/13bIzwLauvSrKgY1oOw-7ZjKchVtrIUjGMboB5TjG7Eg/edit"
+          target="_blank"
+          className="text-sm text-gray-400 underline"
+        >
           문의하기
         </a>
       </div>

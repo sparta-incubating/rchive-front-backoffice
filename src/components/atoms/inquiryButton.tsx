@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import { ComponentProps } from 'react';
 
-interface InquiryButtonProps extends ComponentProps<'button'> {}
+interface InquiryButtonProps extends ComponentProps<'a'> {}
 
 const InquiryButton = ({ ...props }: InquiryButtonProps) => {
   return (
-    <button
+    <a
+      href="https://docs.google.com/forms/d/13bIzwLauvSrKgY1oOw-7ZjKchVtrIUjGMboB5TjG7Eg/edit"
+      target="_blank"
       className="shadow-inquiry Button rounded-[55px] bg-white p-[13px]"
       {...props}
     >
@@ -19,7 +21,7 @@ const InquiryButton = ({ ...props }: InquiryButtonProps) => {
         </div>
         <span className="text-sm font-medium">문의하기</span>
       </div>
-    </button>
+    </a>
   );
 };
 
