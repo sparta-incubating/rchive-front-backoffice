@@ -236,7 +236,7 @@ const Admin = () => {
               거절할 경우 권한 설정 목록에서 사라지고,
             </span>
             <span className="text-center text-base font-medium text-gray-600">
-              다시 트랙 및 기수를 요청하게 되요.
+              다시 트랙 및 기수를 요청하게 돼요.
             </span>
           </div>
         </div>

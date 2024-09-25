@@ -56,6 +56,11 @@ const PhoneChangeField = ({
     }
   };
 
+  const onClickEnter = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleRequestAuth();
+  };
+
   const handleRequestAuth = () => {
     const userInfo = { username, phone: isInputFilled };
 
@@ -77,7 +82,7 @@ const PhoneChangeField = ({
     authCode: isAuthFilled,
   };
   return (
-    <>
+    <form onSubmit={onClickEnter}>
       <InputContainer variant="secondary" className="relative">
         <Input
           className="mb-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
@@ -92,7 +97,7 @@ const PhoneChangeField = ({
             size="sm"
             variant="submit"
             disabled={disabled}
-            className="absolute -top-[11px] right-1 h-[44px] w-[87px] px-5 py-3 text-xs"
+            className="absolute -top-[20px] right-0 h-[42px] w-[85px] px-5 py-3 text-xs"
             type="button"
             onClick={handleRequestAuth}
           >
@@ -113,14 +118,14 @@ const PhoneChangeField = ({
         {isAuthFilled.length > 0 && (
           <button
             type="button"
-            className={`h-[36px] w-[100px] text-xs ${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
+            className={`h-[48px] w-[103px] text-sm font-semibold${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
             onClick={() => authCheck(authInfo)}
           >
             확인
           </button>
         )}
       </InputContainer>
-    </>
+    </form>
   );
 };
 export default PhoneChangeField;

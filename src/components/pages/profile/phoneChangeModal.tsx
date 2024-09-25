@@ -93,7 +93,9 @@ const PhoneChangeModal = ({ onClose, username }: PhoneChangeModalProps) => {
             {/** */}
             <PasswordContainer variant="primary">
               <InputField>
-                <Label htmlFor="phone">휴대폰 번호</Label>
+                <Label htmlFor="phone" className="h-auto w-[230px]">
+                  휴대폰 번호
+                </Label>
                 <PhoneChangeField
                   register={register}
                   username={username}
