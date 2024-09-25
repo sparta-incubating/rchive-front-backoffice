@@ -4,6 +4,7 @@ import {
   getNotionPageData,
   patchDataPost,
   postDataPost,
+  postTag,
 } from '@/api/client/postApi';
 import { PostForm } from '@/class/postForm';
 import { useTagContext } from '@/context/useTagContext';
@@ -15,6 +16,7 @@ import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
@@ -40,6 +42,8 @@ const usePostWriteForm = (postData?: postFetchData) => {
   const [customIsValid, setCustomIsValid] = useState(false);
   const [tagsChanged, setTagsChanged] = useState(false);
   const initialTagsRef = useRef<TagType[]>([]);
+
+  const { mutate: postTagsMutate } = useMutation({ mutationFn: postTag });
 
   const router = useRouter();
   const {
@@ -84,10 +88,12 @@ const usePostWriteForm = (postData?: postFetchData) => {
       setIsSubmitting(true);
       setIsSubmitLoading(true);
       setLoadingMessage('노션 자료를 찾아오는 중...');
+      const fetchTags = tags.map((tag) => tag.tagName);
+
       const formData = new PostForm(
         data.postType,
         data.title,
-        tags.map((tag) => tag.tagName),
+        fetchTags,
         Number(tutor?.tutorId),
         Number(data.postPeriod),
         data.isOpened === 'true',
@@ -100,7 +106,16 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
       setLoadingMessage('데이터를 서버에 등록 중...');
 
+      // 등록 및 수정에서는 tag 등록이 필수이기떄문에
+      postTagsMutate(fetchTags, {
+        onError: (error) => {
+          createToast(`태그 저장 중 오류가 발생했습니다.`, 'warning');
+          throw new Error('태그 저장에 실패했습니다.');
+        },
+      });
+
       if (!postData) {
+        //todo: post, update react-query로 변경 필요
         await postDataPost(watch('trackName'), Number(loginPeriod), formData);
         createToast('게시물 등록이 완료되었습니다.', 'primary');
       } else {

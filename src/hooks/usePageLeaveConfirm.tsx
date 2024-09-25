@@ -13,10 +13,10 @@ const usePageLeaveConfirm = (isDirty: boolean, isSubmitting: boolean) => {
 
     isConfirmShownRef.current = true;
     const result = await handleConfirm(
-      <Confirm text="이동">
+      <Confirm text="확인">
         <div className="flex flex-col gap-2.5">
           <span className="text-center text-xl font-bold">
-            작성화면을 나가시겠어요?
+            작성 화면을 나가시겠어요?
           </span>
           <div className="flex flex-col justify-center">
             <span className="text-center text-base font-medium text-gray-600">

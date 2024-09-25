@@ -41,7 +41,7 @@ const AuthFilteredList = ({ data }: FilteredListProps) => {
   }, [adminIds, data]);
 
   return (
-    <div className="h-[471px] border-gray-300">
+    <div className="h-auto border-gray-300">
       {data.length > 0 ? (
         data.map((item) => (
           <div

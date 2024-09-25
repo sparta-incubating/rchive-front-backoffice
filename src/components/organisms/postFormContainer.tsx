@@ -42,11 +42,13 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
   const [popupWindow, setPopupWindow] = useState<Window | null>(null);
   const { tags } = useTagContext();
   usePageLeaveConfirm(isDirty, isSubmitting);
+
   const handlePreview = useCallback(() => {
+    const formTag = tags.map((tag) => tag.tagName);
     const formData = new PostForm(
       watch('postType'),
       watch('title'),
-      tags.map((tag) => tag.tagName),
+      formTag,
       Number(watch('tutor')?.tutorId),
       Number(watch('postPeriod')),
       Boolean(watch('isOpened')),
@@ -73,9 +75,7 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data.type === 'POPUP_LOADED') {
-        popupWindow?.postMessage({ type: 'FORM_DATA', data: watch() }, '*');
-      } else if (event.data.type === 'SUBMIT_FORM') {
+      if (event.data.type === 'SUBMIT_FORM') {
         handleSubmit(onSubmit)();
       }
     };
