@@ -7,8 +7,6 @@ import { TagContextProvider } from '@/context/tag.context';
 import { postFetchData } from '@/types/posts.types';
 import axios from 'axios';
 
-export const revalidate = 0;
-
 const PostUpdate = async ({ params }: { params: { id: string } }) => {
   const postId = params.id;
   const session = await auth();
