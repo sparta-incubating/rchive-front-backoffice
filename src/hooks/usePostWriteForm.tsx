@@ -109,25 +109,30 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
       // 등록 및 수정에서는 tag 등록이 필수이기떄문에
       postTagsMutate(fetchTags, {
+        onSuccess: async () => {
+          if (!postData) {
+            //todo: post, update react-query로 변경 필요
+            await postDataPost(
+              watch('trackName'),
+              Number(loginPeriod),
+              formData,
+            );
+            createToast('게시물 등록이 완료되었습니다.', 'primary');
+          } else {
+            await patchDataPost(
+              watch('trackName'),
+              Number(loginPeriod),
+              formData,
+              Number(postData.postId),
+            );
+            createToast('게시물 수정이 완료되었습니다.', 'primary');
+          }
+        },
         onError: (error) => {
           createToast(`태그 저장 중 오류가 발생했습니다.`, 'warning');
           throw new Error('태그 저장에 실패했습니다.');
         },
       });
-
-      if (!postData) {
-        //todo: post, update react-query로 변경 필요
-        await postDataPost(watch('trackName'), Number(loginPeriod), formData);
-        createToast('게시물 등록이 완료되었습니다.', 'primary');
-      } else {
-        await patchDataPost(
-          watch('trackName'),
-          Number(loginPeriod),
-          formData,
-          Number(postData.postId),
-        );
-        createToast('게시물 수정이 완료되었습니다.', 'primary');
-      }
 
       // server action
       await revalidatePostsAction('/posts');
