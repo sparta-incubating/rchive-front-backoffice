@@ -298,7 +298,7 @@ const Admin = () => {
           ) : (
             <>
               {viewList?.length > 0 ? (
-                <>
+                <div className="flex flex-col gap-6">
                   <AuthFilteredList data={viewList} />
                   <PageNation
                     currentPage={currentPage}
@@ -306,7 +306,7 @@ const Admin = () => {
                     size={Number(ADMIN_DEFAULT_PAGE_SIZE)}
                     onPageChange={handlePageChange}
                   />
-                </>
+                </div>
               ) : (
                 <NoDataList />
               )}
