@@ -38,6 +38,7 @@ const PostInputContainer = ({
     const url = watch('contentLink');
     if (!url) {
       setErrorMessage('유효하지 않은 URL입니다.');
+      handleValidateIsLoading(false);
       return;
     }
 
@@ -45,6 +46,7 @@ const PostInputContainer = ({
 
     if (!notionPageId) {
       setErrorMessage('유효하지 않은 URL입니다.');
+      handleValidateIsLoading(false);
       return;
     }
 
