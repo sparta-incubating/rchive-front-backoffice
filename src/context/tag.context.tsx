@@ -42,6 +42,10 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
 
   const addTag = useCallback(
     async (tag: string) => {
+      if (!tag.trim()) {
+        createToast('공백은 등록할 수 없습니다.', 'warning');
+        return;
+      }
       if (tags?.length > 9) {
         createToast('태그는 10개까지만 입력 가능합니다.', 'warning');
         return;
