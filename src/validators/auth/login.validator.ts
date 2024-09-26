@@ -1,5 +1,7 @@
-import { PASSWORD_REG } from '@/validators/auth/signup.validator';
 import { z } from 'zod';
+
+// 한글을 포함하는지 확인하는 정규식
+export const PASSWORD_REG = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
 export const loginSchema = z.object({
   username: z
