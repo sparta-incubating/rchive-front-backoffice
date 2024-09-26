@@ -75,6 +75,15 @@ const ThumbnailContainer = ({
       const file = files[0];
       const maxSize = 3 * 1024 * 1024;
 
+      // 허용된 이미지 형식 목록
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp'];
+
+      if (!allowedTypes.includes(file.type)) {
+        setFileUploadError('이미지 형식만 업로드 가능합니다.');
+        createToast('이미지 형식만 업로드 가능합니다.', 'warning');
+        return;
+      }
+
       if (file.size <= maxSize) {
         setFileUploadError(null);
         thumbnailMutate(file);
