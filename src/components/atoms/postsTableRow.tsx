@@ -84,17 +84,19 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
         <CategoryBox text="" onChange={handleCheckChange} checked={checked} />
       </td>
       <td className="w-[65.5px] text-gray-700">
-        <div className="relative h-[38px] w-full">
-          <Image
-            src={
-              postData.thumbnailUrl ||
-              '/backoffice/assets/icons/defaultThumbnail.png'
-            }
-            alt={postData.title}
-            style={{ borderRadius: '4px' }}
-            fill
-          />
-        </div>
+        <Link href={`/posts/${postData.postId}`}>
+          <div className="relative h-[38px] w-full">
+            <Image
+              src={
+                postData.thumbnailUrl ||
+                '/backoffice/assets/icons/defaultThumbnail.png'
+              }
+              alt={postData.title}
+              style={{ borderRadius: '4px' }}
+              fill
+            />
+          </div>
+        </Link>
       </td>
       <td className="w-60 px-4 text-gray-700">
         <Link href={`/posts/${postData.postId}`}>
