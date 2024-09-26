@@ -1,5 +1,4 @@
 import { getSearchTutor } from '@/api/client/postApi';
-import CloseButton from '@/components/atoms/closeButton';
 import CustomDropDown from '@/components/atoms/customDropDown';
 import FormSpan from '@/components/atoms/formSpan';
 import SelectItem from '@/components/atoms/selectItem';
@@ -107,7 +106,7 @@ const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
         {tutor ? (
           <TutorCard>
             {tutor.tutorName}
-            <CloseButton onClick={deleteTutor} />
+            {/*<CloseButton onClick={deleteTutor} />*/}
           </TutorCard>
         ) : (
           <TutorInput key="tutor" placeholder={placeHolder} ref={inputRef} />
