@@ -173,6 +173,22 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
     [addTag, isComposing],
   );
 
+  const handleKeyDownSpace = useCallback(
+    async (event: KeyboardEvent) => {
+      if (event.key === ' ' && !isComposing && inputRef.current) {
+        const tag = inputRef.current.innerText.trim();
+        if (tag) {
+          await addTag(tag);
+          if (inputRef.current) {
+            inputRef.current.innerText = '';
+          }
+          event.preventDefault();
+        }
+      }
+    },
+    [addTag, isComposing],
+  );
+
   useEffect(() => {
     const inputElement = inputRef.current;
 
@@ -180,6 +196,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       inputElement.addEventListener('input', handleKeyDownComma);
       inputElement.addEventListener('keydown', handleKeyDownBackspace);
       inputElement.addEventListener('keydown', handleKeyDownEnter);
+      inputElement.addEventListener('keydown', handleKeyDownSpace);
     }
 
     return () => {
@@ -187,6 +204,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         inputElement.removeEventListener('input', handleKeyDownComma);
         inputElement.removeEventListener('keydown', handleKeyDownBackspace);
         inputElement.removeEventListener('keydown', handleKeyDownEnter);
+        inputElement.removeEventListener('keydown', handleKeyDownSpace);
       }
     };
   }, [
