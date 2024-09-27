@@ -42,6 +42,8 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
 
   const addTag = useCallback(
     async (tag: string) => {
+      tag = tag.replace(/#/g, '');
+
       if (!tag.trim()) {
         createToast('공백은 등록할 수 없습니다.', 'warning');
         return;
@@ -100,7 +102,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   // debounce 적용하여 자동완성 dropdown 출력에 사용
   const handleInput = debounce(async () => {
     if (inputRef.current) {
-      const keyword = inputRef.current.innerText;
+      const keyword = inputRef.current.innerText.replace(/#/g, '');
 
       // text가 없을때 backDrop 숨김
       if (keyword.trim() === '') {
@@ -173,6 +175,23 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
     [addTag, isComposing],
   );
 
+  const handleKeyDownSpace = useCallback(
+    async (event: KeyboardEvent) => {
+      // composition 중일 때는 무시하고, 끝난 후에만 동작
+      if (event.key === ' ' && inputRef.current) {
+        const tag = inputRef.current.innerText.trim();
+        if (tag) {
+          await addTag(tag);
+          if (inputRef.current) {
+            inputRef.current.innerText = '';
+          }
+          event.preventDefault();
+        }
+      }
+    },
+    [addTag, isComposing],
+  );
+
   useEffect(() => {
     const inputElement = inputRef.current;
 
@@ -180,6 +199,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       inputElement.addEventListener('input', handleKeyDownComma);
       inputElement.addEventListener('keydown', handleKeyDownBackspace);
       inputElement.addEventListener('keydown', handleKeyDownEnter);
+      inputElement.addEventListener('keydown', handleKeyDownSpace);
     }
 
     return () => {
@@ -187,6 +207,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         inputElement.removeEventListener('input', handleKeyDownComma);
         inputElement.removeEventListener('keydown', handleKeyDownBackspace);
         inputElement.removeEventListener('keydown', handleKeyDownEnter);
+        inputElement.removeEventListener('keydown', handleKeyDownSpace);
       }
     };
   }, [
