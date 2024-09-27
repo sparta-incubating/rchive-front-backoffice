@@ -1,7 +1,7 @@
 'use client';
 
+import backofficeMain from '@/../public/assets/icons/back-dashboard.svg';
 import board from '@/../public/assets/icons/board-rtan.svg';
-import backofficeMain from '@/../public/assets/icons/dashboard.svg';
 import permission from '@/../public/assets/icons/permission-rtan.svg';
 import rtan from '@/../public/assets/icons/sign-rtan.svg';
 import write from '@/../public/assets/icons/write-rtan.svg';
