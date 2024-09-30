@@ -48,6 +48,16 @@ const PostListPage = ({
     searchParams?.postType || 'all',
   );
 
+  // 기수
+  const [searchPeriod, setSearchPeriod] = useState<string>(
+    searchParams?.searchPeriod ||
+      (loginTrackRole === 'APM' ? loginPeriod : '0'),
+  );
+
+  // 튜터
+  const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);
+  const [tutor, setTutor] = useState<string>('all');
+
   // URL 파라미터를 유지하면서 업데이트하는 함수
   const updateQueryParams = (
     key: string,
@@ -69,6 +79,10 @@ const PostListPage = ({
     } else if (key === 'searchPeriod' && value === 'all') {
       query.delete('searchPeriod');
     } else if (value) {
+      if (key === 'searchPeriod') {
+        setTutor('all');
+        query.delete('tutorId');
+      }
       query.set(key, String(value));
     } else {
       query.delete(key);
@@ -86,19 +100,9 @@ const PostListPage = ({
     updateQueryParams('postType', newTab);
   };
 
-  // 기수
-  const [searchPeriod, setSearchPeriod] = useState<string>(
-    searchParams?.searchPeriod ||
-      (loginTrackRole === 'APM' ? loginPeriod : '0'),
-  );
-
-  // 튜터
-  const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);
-  const [tutor, setTutor] = useState<string>('0');
-
   useEffect(() => {
     if (getFetchTutors) {
-      if (getFetchTutors.length > 0 && tutor === '0') {
+      if (getFetchTutors.length > 0 && tutor === 'all') {
         const defaultTutor = getFetchTutors.find(
           (tutor) => tutor.value === searchParams?.tutorId,
         );

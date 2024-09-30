@@ -35,7 +35,11 @@ const FilterCategory = ({
     handleClick: handleDropdownClick,
   } = useDropDownOutsideClick();
 
-  const handleClick = (data: SelectOptionType) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    data: SelectOptionType,
+  ) => {
+    e.stopPropagation();
     setSelectedItem(data);
     setValue(data.value);
     setIsOpen(false);
@@ -72,8 +76,8 @@ const FilterCategory = ({
         <div
           className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
           key={0}
-          onClick={() =>
-            handleClick({ value: 'all', label: '전체', selected: false })
+          onClick={(e) =>
+            handleClick(e, { value: 'all', label: '전체', selected: false })
           }
         >
           <p
@@ -90,7 +94,7 @@ const FilterCategory = ({
             <div
               className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
               key={data.value + index}
-              onClick={() => handleClick(data)}
+              onClick={(e) => handleClick(e, data)}
             >
               <p
                 className={`mx-[14px] w-[84px] text-sm ${selectedItem?.value === data.value ? 'text-secondary-500' : 'text-black'}`}
