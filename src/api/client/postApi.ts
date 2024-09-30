@@ -170,7 +170,8 @@ export const patchNotionContent = async (
 ) => {
   try {
     const response = await client.patch(
-      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      // `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      `/apis/v1/posts/${postId}/content`,
       data,
     );
 
