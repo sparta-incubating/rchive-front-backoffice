@@ -121,7 +121,7 @@ const PhoneChangeField = ({
             className={`h-[48px] w-[103px] text-sm font-semibold${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
             onClick={() => authCheck(authInfo)}
           >
-            확인
+            <p className="h-full pt-[22px]">확인</p>
           </button>
         )}
       </InputContainer>
