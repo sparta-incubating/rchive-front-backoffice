@@ -24,7 +24,9 @@ interface AuthCategoryProps {
 }
 
 const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>(label);
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    label === '전체' ? '전체' : label,
+  );
   const {
     isOpen,
     setIsOpen,
@@ -38,10 +40,14 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
     setValue(data.value);
   };
 
+  const handleCategoryLabel = () => {
+    return selectedCategory === '전체' ? label : selectedCategory;
+  };
+
   return (
     <CategoryContainer ref={dropdownRef} onClick={handleDropdownClick}>
       <CategoryLayout>
-        <SelectLabel>{selectedCategory}</SelectLabel>
+        <SelectLabel>{handleCategoryLabel()}</SelectLabel>
         <Image
           src={arrow}
           width={12}
@@ -61,14 +67,14 @@ const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
           >
             <p
               className={`mx-[14px] w-[84px] text-sm ${
-                selectedCategory === item.value
+                selectedCategory === item.name
                   ? 'text-secondary-500'
                   : 'text-black'
               }`}
             >
               {item.name}
             </p>
-            {selectedCategory === item.value && (
+            {selectedCategory === item.name && (
               <Image src={select} width={16} height={12} alt="선택됨" />
             )}
           </div>
