@@ -24,9 +24,7 @@ interface AuthCategoryProps {
 }
 
 const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    label === '전체' ? '전체' : label,
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>(label);
   const {
     isOpen,
     setIsOpen,
