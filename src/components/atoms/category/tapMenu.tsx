@@ -26,7 +26,7 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
             </p>
             <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-blue-55 p-[4px] text-sm font-semibold text-blue-400">
               {allCount}
-            </p>{' '}
+            </p>
           </button>
         </div>
 
@@ -44,7 +44,7 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
             </p>
             <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-[#ff9900]/10 p-[4px] text-sm font-semibold text-[#FF9900]">
               {waitCount}
-            </p>{' '}
+            </p>
           </button>
         </div>
 
@@ -62,7 +62,7 @@ const TapMenu = ({ onTabChange, selectedTab, countList }: TapProps) => {
             </p>
             <p className="flex h-[28px] w-[33px] items-center justify-center rounded-lg bg-[#58b32e]/10 p-[4px] text-sm font-semibold text-success-green">
               {approveCount}
-            </p>{' '}
+            </p>
           </button>
         </div>
       </div>
