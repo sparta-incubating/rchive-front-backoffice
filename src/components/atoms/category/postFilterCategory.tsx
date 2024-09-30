@@ -55,13 +55,16 @@ const FilterCategory = ({
     }
   }, [defaultValue, filterData]);
 
+  const initialLabel =
+    selectedItem?.value === 'all' || !selectedItem ? label : selectedItem.label;
+
   return (
     <CategoryContainer
       ref={dropdownRef}
       onClick={(e) => (!disabled ? handleDropdownClick(e) : handleToast())}
     >
       <CategoryLayout>
-        <SelectLabel>{selectedItem ? selectedItem.label : label}</SelectLabel>
+        <SelectLabel>{initialLabel}</SelectLabel>
         <Image
           src={arrow}
           width={12}
