@@ -53,8 +53,8 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       );
 
       setLoadingMessage('데이터를 서버에 등록 중...');
-      // server data patch
 
+      // server data patch
       await patchNotionContent(
         trackName,
         Number(loginPeriod),
