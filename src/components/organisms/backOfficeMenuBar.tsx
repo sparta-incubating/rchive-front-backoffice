@@ -13,7 +13,6 @@ const BackOfficeMenuBar = () => {
 
   const handleGoHome = () => {
     router.push('/admin');
-    window.location.reload();
   };
 
   return (

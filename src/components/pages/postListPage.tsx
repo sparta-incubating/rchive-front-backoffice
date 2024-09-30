@@ -17,7 +17,7 @@ import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import SearchBar from '../atoms/searchBar';
 
@@ -56,7 +56,7 @@ const PostListPage = ({
 
   // 튜터
   const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);
-  const [tutor, setTutor] = useState<string>('all');
+  const [tutor, setTutor] = useState<string>(searchParams?.tutorId || 'all');
 
   // URL 파라미터를 유지하면서 업데이트하는 함수
   const updateQueryParams = (
@@ -99,20 +99,6 @@ const PostListPage = ({
     setActiveTab(newTab);
     updateQueryParams('postType', newTab);
   };
-
-  useEffect(() => {
-    if (getFetchTutors) {
-      if (getFetchTutors.length > 0 && tutor === 'all') {
-        const defaultTutor = getFetchTutors.find(
-          (tutor) => tutor.value === searchParams?.tutorId,
-        );
-        if (defaultTutor) {
-          setTutor(defaultTutor.value);
-          updateQueryParams('tutorId', defaultTutor.value);
-        }
-      }
-    }
-  }, [getFetchTutors, tutor, searchParams?.tutorId, updateQueryParams]);
 
   // 공개여부
   const isOpenedOptionsData: SelectOptionType[] = [
