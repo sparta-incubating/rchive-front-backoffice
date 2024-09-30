@@ -46,6 +46,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     try {
       await updateRoleMutate.mutateAsync(roleChangeInfo);
       createToast('권한 수정이 요청되었습니다.', 'primary');
+      onClose();
     } catch (error) {
       console.error('Error updating password:', error);
       alert('권한 수정 요청에 실패했습니다. 다시 시도해 주세요.');
