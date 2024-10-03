@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserInfoDataQuery } from '@/api/profile/useQuery';
+import { useUserInfoDataQuery } from '@/api/profile/useProfileQuery';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import AccountInfo from '@/components/pages/accountInfo';
 import BackofficePage from '@/components/pages/backofficePage';

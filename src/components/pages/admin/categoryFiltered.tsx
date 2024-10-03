@@ -1,6 +1,6 @@
 'use client';
 
-import { usePeriodListQuery } from '@/api/profile/useQuery';
+import { usePeriodListQuery } from '@/api/profile/useProfileQuery';
 import AuthFilterCategory from '@/components/atoms/category/AuthCategory';
 import { useAppSelector } from '@/redux/storeConfig';
 

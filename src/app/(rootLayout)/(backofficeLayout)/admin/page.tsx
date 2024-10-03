@@ -1,10 +1,10 @@
 'use client';
 
-import { usePermissionList } from '@/api/admin/useMutation';
+import { usePermissionList } from '@/api/admin/useAdminMutation';
 import {
   usePermissionDataQuery,
   useRoleCountDataQuery,
-} from '@/api/admin/useQuery';
+} from '@/api/admin/useAdminQuery';
 import AdminTableHeader from '@/components/atoms/admin/adminTableHeader';
 import BackOfficeButton from '@/components/atoms/backOfficeButton';
 import NoDataList from '@/components/atoms/category/noDataList';
