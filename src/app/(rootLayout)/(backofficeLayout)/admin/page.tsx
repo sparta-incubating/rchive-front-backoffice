@@ -245,9 +245,9 @@ const Admin = () => {
     );
 
     if (result) {
-      extractedData.forEach((item) => {
-        deleteUsrRoleMutate.mutateAsync(item);
-      });
+      await Promise.all(
+        extractedData.map((item) => deleteUsrRoleMutate.mutateAsync(item)),
+      );
       createToast(
         `${checkedAdminIds.length}건의 요청이 거절되었습니다.`,
         'primary',
