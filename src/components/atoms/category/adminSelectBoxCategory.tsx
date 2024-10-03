@@ -4,7 +4,7 @@ import green from '@/../public/assets/icons/rectangle-green.svg';
 import orange from '@/../public/assets/icons/rectangle-orange.svg';
 import red from '@/../public/assets/icons/rectangle-red.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
-import { usePermissionList } from '@/api/admin/useMutation';
+import { usePermissionList } from '@/api/admin/useAdminMutation';
 import PostIsOpenSelectBoxContainer from '@/components/atoms/category/postIsOpenSelectBoxContainer';
 import PostIsOpenSelectBoxLayout from '@/components/atoms/category/postIsOpenSelectBoxLayout';
 import SelectLabel from '@/components/atoms/selectLabel';

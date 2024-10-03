@@ -1,5 +1,5 @@
 import { getMailCheck, postSignup } from '@/api/client/authApi';
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import { Admin, User } from '@/class/signup';
 import SignUpCompleteModal from '@/components/pages/signUpCompleteModal';
 import { useModalContext } from '@/context/useModalContext';

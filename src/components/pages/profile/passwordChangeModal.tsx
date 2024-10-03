@@ -1,4 +1,4 @@
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
 import Label from '@/components/atoms/label';

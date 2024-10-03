@@ -1,4 +1,4 @@
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import AuthTimer from '@/components/atoms/authTimer';
 import FormSpan from '@/components/atoms/formSpan';
 import Label from '@/components/atoms/label';

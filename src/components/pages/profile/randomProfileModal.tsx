@@ -1,7 +1,7 @@
 'use client';
 
 import refresh from '@/../public/assets/icons/refresh-button.svg';
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import { RandomProfileModalProps } from '@/types/profile.types';
 import Image from 'next/image';

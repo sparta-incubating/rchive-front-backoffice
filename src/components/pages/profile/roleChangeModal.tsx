@@ -1,4 +1,4 @@
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
