@@ -1,26 +1,25 @@
 import { PostListResponse } from '@/types/posts.types';
-import { createServerAPI } from '@/utils/serverAPI';
+import { serverAxios } from '@/utils/serverAxios';
 import { cache } from 'react';
 
-export const getPostList = cache(
-  async (trackName: string, period: number, queryString: string) => {
-    const serverAPI = await createServerAPI();
-    return serverAPI.get<PostListResponse>(
-      `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${queryString}`,
-    );
-  },
-);
+export const getPostList = async (
+  trackName: string,
+  period: number,
+  queryString: string,
+) => {
+  return serverAxios.get<PostListResponse>(
+    `/apis/v1/backoffice/post/search?trackName=${trackName}&period=${period}&${queryString}`,
+  );
+};
 
 export const getPost = cache(
   async (postId: number, trackName: string, period: number) => {
-    const serverAPI = await createServerAPI();
-    return await serverAPI.get(
+    return await serverAxios.get(
       `/apis/v1/backoffice/post/${postId}?trackName=${trackName}&loginPeriod=${period}`,
     );
   },
 );
 
 export const getPostPeriod = async (trackName: string) => {
-  const serverAPI = await createServerAPI();
-  return serverAPI.get(`/apis/v1/role/track/period?trackName=${trackName}`);
+  return serverAxios.get(`/apis/v1/role/track/period?trackName=${trackName}`);
 };
