@@ -1,7 +1,6 @@
 import { getLastConnectRole, getRoleApplyStatus } from '@/api/server/authApi';
 import { authConfig } from '@/auth.config';
 import { trackRole } from '@/types/auth.types';
-import { TrackType } from '@/types/posts.types';
 import axiosAPI from '@/utils/axiosAPI';
 import NextAuth from 'next-auth';
 
@@ -20,9 +19,11 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           const response = await getLastConnectRole(user.accessToken);
 
           const { trackId, trackRole, trackName, period } = response.data.data;
+
           token.trackId = trackId;
           token.trackRole = trackRole;
-          token.trackName = trackName;
+          token.trackName = trackName.key;
+          token.trackLabel = trackName.value;
           token.loginPeriod = period;
         } catch (error) {
           // 권한이 없을때
@@ -54,8 +55,10 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       session.user.roleError = token.roleError as string | undefined;
       session.user.trackId = token.trackId as number;
       session.user.trackRole = token.trackRole as trackRole;
-      session.user.trackName = token.trackName as TrackType;
+      session.user.trackName = token.trackName as string;
+      session.user.trackLabel = token.trackLabel as string;
       session.user.loginPeriod = token.loginPeriod as number;
+      session.user.roleApply = token.roleApply as boolean;
 
       return session;
     },

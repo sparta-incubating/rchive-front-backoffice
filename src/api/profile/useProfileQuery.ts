@@ -24,7 +24,5 @@ export function usePeriodListQuery(trackName: string) {
     enabled: !!trackName,
   });
 
-  const periodList = data?.data?.trackPeriodList;
-
-  return periodList;
+  return data?.data?.trackPeriodList;
 }

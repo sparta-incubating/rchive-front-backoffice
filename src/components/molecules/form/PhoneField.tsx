@@ -1,7 +1,6 @@
 'use client';
 
-import { useProfileUpdate } from '@/api/profile/useMutation';
-import AuthTimer from '@/components/atoms/authTimer';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import Button from '@/components/atoms/button';
 import Input from '@/components/atoms/input';
 import InputContainer from '@/components/atoms/InputContainer';
@@ -14,16 +13,18 @@ interface PhoneFieldProps {
   register: UseFormRegister<SignupFormSchema>;
   usernameCheck: string;
   authCheck: (authInfo: authCodeType) => Promise<void>;
-  isErrorMsg: string | null;
   setIsErrorMsg: Dispatch<SetStateAction<string | null>>;
+  setRequestAuthNumber: React.Dispatch<React.SetStateAction<boolean>>;
+  expire: boolean;
 }
 
 const PhoneField = ({
   register,
   usernameCheck,
   authCheck,
-  isErrorMsg,
   setIsErrorMsg,
+  setRequestAuthNumber,
+  expire,
 }: PhoneFieldProps) => {
   const [isInputFilled, setIsInputFilled] = useState<string>('');
   const [isAuthFilled, setIsAuthFilled] = useState<string>('');
@@ -31,12 +32,26 @@ const PhoneField = ({
 
   const { postPhoneAuthNumberMutate } = useProfileUpdate();
 
-  const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
-  const [expire, setExpire] = useState<boolean>(false);
-
   useEffect(() => {
-    setDisabled(isInputFilled.length <= 10);
+    if (isInputFilled.length === 11) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   }, [isInputFilled]);
+  const handleTest = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (/^\d*$/.test(value) && value.length <= 14) {
+      setIsInputFilled(value);
+    }
+  };
+
+  const handleAuth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setIsAuthFilled(value);
+    }
+  };
 
   const handleRequestAuth = () => {
     const userInfo = { username: usernameCheck, phone: isInputFilled };
@@ -60,21 +75,21 @@ const PhoneField = ({
   };
   return (
     <>
-      <InputContainer variant="secondary">
+      <InputContainer variant="secondary" className="relative">
         <Input
-          className="my-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          className="mb-5 w-[233px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="휴대폰 번호 입력 (-) 제외"
           {...register('phone')}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setIsInputFilled(e.target.value)
-          }
+          onChange={handleTest}
+          type="text"
+          value={isInputFilled}
         />
         {isInputFilled.length > 0 && (
           <Button
             size="sm"
             variant="submit"
             disabled={disabled}
-            className="h-[44px] w-[87px] px-5 py-3 text-xs"
+            className="absolute -top-[11px] right-1 h-[44px] w-[87px] px-5 py-3 text-xs"
             type="button"
             onClick={handleRequestAuth}
           >
@@ -86,36 +101,22 @@ const PhoneField = ({
       <InputContainer variant="secondary">
         <Input
           {...register('authCode')}
-          className="w-80 bg-blue-50 py-5 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+          className="mb-[28px] mt-[44px] w-80 bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
           placeholder="인증번호 입력"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setIsAuthFilled(e.target.value)
-          }
+          onChange={handleAuth}
           value={isAuthFilled}
+          type="text"
         />
         {isAuthFilled.length > 0 && (
           <button
             type="button"
-            className={`h-[36px] w-[100px] ${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
+            className={`h-[36px] w-[100px] text-xs ${isAuthFilled.length > 5 ? 'text-gray-900' : 'text-gray-300'} font-semibold`}
             onClick={() => authCheck(authInfo)}
           >
             확인
           </button>
         )}
       </InputContainer>
-      {isErrorMsg && (
-        <span
-          className={
-            isErrorMsg.includes('완료됐습니다')
-              ? 'text-success-green'
-              : 'text-primary-400'
-          }
-        >
-          {isErrorMsg}
-        </span>
-      )}
-
-      {requestAuthNumber && <AuthTimer setExpire={setExpire} />}
     </>
   );
 };

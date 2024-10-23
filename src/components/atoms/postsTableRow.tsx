@@ -10,9 +10,9 @@ import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { setPostId } from '@/redux/slice/postCheckBox.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/storeConfig';
 import { PostContentType } from '@/types/posts.types';
-import { extractPageId } from '@/utils/notionAPI';
-import { getNameCategory } from '@/utils/setAuthInfo/post.util';
+import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -43,27 +43,32 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
   const handleRefreshContent = useCallback(async () => {
     if (!postData.contentLink) return;
 
-    // Progress 출력
-    setIsSubmitLoading(true);
-    setLoadingMessage('노션 자료를 찾아오는 중...');
+    try {
+      // Progress 출력
+      setIsSubmitLoading(true);
+      setLoadingMessage('노션 자료를 찾아오는 중...');
+      // content data 가져오기
+      const responseNotionData = await getNotionPageData(
+        extractPageId(postData.contentLink!)!,
+      );
 
-    // content data 가져오기
-    const responseNotionData = await getNotionPageData(
-      extractPageId(postData.contentLink!)!,
-    );
+      setLoadingMessage('데이터를 서버에 등록 중...');
 
-    setLoadingMessage('데이터를 서버에 등록 중...');
-    // server data patch
+      // server data patch
+      await patchNotionContent(
+        trackName,
+        Number(loginPeriod),
+        { content: responseNotionData, contentLink: postData.contentLink },
+        Number(postData.postId),
+      );
 
-    await patchNotionContent(
-      trackName,
-      Number(loginPeriod),
-      { content: responseNotionData, contentLink: postData.contentLink },
-      Number(postData.postId),
-    );
-
-    setIsSubmitLoading(false);
-    createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
+      setIsSubmitLoading(false);
+      createToast('게시물의 콘텐츠 수정이 완료되었습니다.', 'primary');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        createToast(error.response?.data.message, 'warning');
+      }
+    }
   }, [postData.contentLink, setIsSubmitLoading, setLoadingMessage]);
 
   useEffect(() => {
@@ -78,39 +83,41 @@ const PostsTableRow = ({ postData }: PostsTableRowProps) => {
       <td className="ml-6 mr-7 flex h-5 w-5 items-center justify-center">
         <CategoryBox text="" onChange={handleCheckChange} checked={checked} />
       </td>
-      <td className="w-[65.5px] text-gray-400">
-        <div className="relative h-[38px] w-full">
-          <Image
-            src={
-              postData.thumbnailUrl ||
-              '/backoffice/assets/icons/defaultThumbnail.png'
-            }
-            alt={postData.title}
-            style={{ borderRadius: '4px' }}
-            fill
-          />
-        </div>
+      <td className="w-[65.5px] text-gray-700">
+        <Link href={`/posts/${postData.postId}`}>
+          <div className="relative h-[38px] w-full">
+            <Image
+              src={
+                postData.thumbnailUrl ||
+                '/backoffice/assets/icons/defaultThumbnail.png'
+              }
+              alt={postData.title}
+              style={{ borderRadius: '4px' }}
+              fill
+            />
+          </div>
+        </Link>
       </td>
-      <td className="w-60 px-4 text-gray-400">
+      <td className="w-60 px-4 text-gray-700">
         <Link href={`/posts/${postData.postId}`}>
           <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
             {postData.title}
           </span>
         </Link>
       </td>
-      <td className="w-[153px] px-2.5 text-gray-400">
-        {getNameCategory(postData.postType)}
+      <td className="w-[153px] px-2.5 text-gray-700">
+        {postData.postType.value}
       </td>
-      <td className="w-[97px] px-2.5 text-gray-400">{postData.tutor}</td>
-      <td className="w-[69px] text-gray-400">{postData.period}기</td>
-      <td className="w-[137px] px-2.5 text-gray-400">
+      <td className="w-[97px] px-2.5 text-gray-700">{postData.tutor}</td>
+      <td className="w-[69px] text-gray-700">{postData.period}기</td>
+      <td className="w-[137px] px-2.5 text-gray-700">
         <PostIsOpenSelectBoxCategory
           isOpen={postData.isOpened}
           postId={String(postData.postId)}
         />
       </td>
-      <td className="w-[106px] text-gray-400">{postData.uploadedAt}</td>
-      <td className="w-[74px] text-gray-400">
+      <td className="w-[106px] text-gray-700">{postData.uploadedAt}</td>
+      <td className="w-[74px] text-gray-700">
         <RefreshButton
           disabled={!postData.contentLink}
           onClick={handleRefreshContent}

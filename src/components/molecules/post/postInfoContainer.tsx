@@ -6,9 +6,10 @@ import TutorContainer from '@/components/molecules/post/tutorContainer';
 import SelectCategoryFormBox from '@/components/organisms/selectCategoryFormBox';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
+import usePostTypeNames from '@/hooks/usePostTypeNames';
 import useSelectBox from '@/hooks/useSelectBox';
 import { useAppSelector } from '@/redux/storeConfig';
-import { PostsFormSchema, postTypeList } from '@/types/posts.types';
+import { PostsFormSchema } from '@/types/posts.types';
 import {
   Control,
   Controller,
@@ -39,10 +40,12 @@ const PostInfoContainer = ({
     period ? period : [],
   );
 
+  const { postTypeOptions } = usePostTypeNames();
+
   const {
     selectOptions: postTypeSelectedOptions,
     handleSelected: handlePostTypeSelected,
-  } = useSelectBox(postTypeList);
+  } = useSelectBox(postTypeOptions);
 
   return (
     <section className="flex gap-4">
@@ -57,9 +60,10 @@ const PostInfoContainer = ({
               onSelect={(value) => {
                 handlePeriodSelected(value);
                 onChange(value);
+                setValue('tutor', undefined, { shouldValidate: true });
               }}
               variant="secondary"
-              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
+              className="h-[60px] w-[328px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               value={value}
               disabled={trackRole === 'APM'}
             />
@@ -83,7 +87,7 @@ const PostInfoContainer = ({
                 field.onChange(value);
               }}
               variant="secondary"
-              className="w-[334px] border border-blue-100 bg-white px-4 py-[18.5px]"
+              className="h-[60px] w-[328px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               field={field}
             />
           )}

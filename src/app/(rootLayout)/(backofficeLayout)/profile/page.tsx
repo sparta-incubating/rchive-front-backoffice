@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserInfoDataQuery } from '@/api/profile/useQuery';
+import { useUserInfoDataQuery } from '@/api/profile/useProfileQuery';
 import PermissionBoard from '@/components/atoms/permissionBoard';
 import AccountInfo from '@/components/pages/accountInfo';
 import BackofficePage from '@/components/pages/backofficePage';
@@ -26,11 +26,7 @@ const Profile = () => {
   }
 
   if (isPending) {
-    return (
-      <ProgressModal>
-        <span>프로필을 불러오는 중</span>
-      </ProgressModal>
-    );
+    return <ProgressModal>Loading...</ProgressModal>;
   }
 
   return (
@@ -39,13 +35,14 @@ const Profile = () => {
         <UserInfo
           profileImg={profileImg}
           username={username}
-          trackName={trackName}
+          trackName={trackName.value}
           period={period}
           trackRole={trackRole}
           handleChangeRole={() => openModal('role')}
           handleChangeImage={() => openModal('image')}
         />
       </PermissionBoard>
+
       <PermissionBoard variant="accountInfo">
         <AccountInfo
           email={email}

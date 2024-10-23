@@ -31,7 +31,7 @@ const Post = async ({ searchParams }: PostProps) => {
   const trackName = session?.user?.trackName;
 
   const query = new URLSearchParams();
-  if (searchParamsData.postType && searchParams.postType !== 'all')
+  if (searchParamsData.postType && searchParamsData.postType !== 'all')
     query.set('postType', searchParamsData.postType);
   if (searchParamsData.startDate)
     query.set('startDate', searchParamsData.startDate);

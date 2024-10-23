@@ -1,5 +1,6 @@
 'use client';
 
+import { FilterParams } from '@/types/admin.types';
 import { useQuery } from '@tanstack/react-query';
 import {
   getBackOfficeInfo,
@@ -23,7 +24,7 @@ export function useBackOfficeProfileQuery() {
   return { profileInfo, isPending, isError };
 }
 
-export function usePermissionDataQuery(filters: Record<string, string>) {
+export function usePermissionDataQuery(filters: FilterParams) {
   const {
     data: boardList,
     isPending,

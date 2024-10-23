@@ -35,17 +35,17 @@ const UploadInput = React.forwardRef<HTMLInputElement, UploadInputProps>(
       (!isUpdateMod || (isUpdateMod && !validate));
 
     return (
-      <div className="flex h-[62px] w-[334px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
+      <div className="flex h-[60px] w-[328px] items-center justify-between rounded-[12px] border border-blue-100 py-[9px] pl-5 pr-2">
         <input
           type="text"
           ref={ref}
           {...props}
-          className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap outline-none"
+          className="mr-2 w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm placeholder-gray-300 outline-none"
         />
         {showButton && (
           <Button
             size="sm"
-            variant="secondary"
+            variant="submit"
             onClick={onClick}
             className="right-2 top-1/2 flex h-[44px] w-full min-w-[74px] max-w-[84px] items-center justify-center px-5 py-3 text-xs font-semibold"
             disabled={!!isLoading}

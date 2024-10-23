@@ -26,7 +26,7 @@ const TagContainer = ({ placeholder }: TagContainerProps) => {
       <div
         ref={tagContainerRef}
         onClick={handleFocusTagInput}
-        className="group relative flex h-auto w-full flex-wrap gap-2 space-x-2 rounded-[12px] border border-blue-100 p-5"
+        className="group relative flex h-auto w-full flex-wrap items-center gap-2 space-x-2 rounded-[12px] border border-blue-100 p-5 text-sm"
       >
         {tags.map((tag, index) => (
           <TagCard key={tag.tagId + index}>

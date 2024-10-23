@@ -4,20 +4,27 @@ import {
   getNotionPageData,
   patchDataPost,
   postDataPost,
+  postTag,
 } from '@/api/client/postApi';
+import { revalidatePostsAction } from '@/app/actions/serverActions';
 import { PostForm } from '@/class/postForm';
 import { useTagContext } from '@/context/useTagContext';
 import useLoadingProgress from '@/hooks/useLoadingProgress';
 import { useAppSelector } from '@/redux/storeConfig';
-import { postFetchData, PostsFormSchema, TrackType } from '@/types/posts.types';
-import { extractPageId } from '@/utils/notionAPI';
+import { postFetchData, PostsFormSchema } from '@/types/posts.types';
+import { TagType } from '@/types/tag.types';
+import { extractPageId } from '@/utils/notion/notionAPI';
 import { createToast } from '@/utils/toast';
 import { postsSchema } from '@/validators/posts/posts.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import dayjs from 'dayjs';
+import { isEqual } from 'lodash';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 const usePostWriteForm = (postData?: postFetchData) => {
   const {
@@ -28,10 +35,17 @@ const usePostWriteForm = (postData?: postFetchData) => {
 
   const { setIsSubmitLoading, setLoadingMessage } = useLoadingProgress();
 
-  const { tags, addTag, clearTags } = useTagContext();
+  const { tags, addTag, clearTags, setTags } = useTagContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [notionValidateState, setNotionValidateState] =
     useState<boolean>(false);
+  const [customIsValid, setCustomIsValid] = useState(false);
+  const [tagsChanged, setTagsChanged] = useState(false);
+  const initialTagsRef = useRef<TagType[]>([]);
+
+  const { mutate: postTagsMutate } = useMutation({ mutationFn: postTag });
+
   const router = useRouter();
   const {
     register,
@@ -39,22 +53,23 @@ const usePostWriteForm = (postData?: postFetchData) => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isValid },
+    trigger,
+    formState: { errors, isValid: formIsValid, isDirty },
   } = useForm<PostsFormSchema>({
     resolver: zodResolver(postsSchema),
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: {
       title: '',
-      tutor: null,
+      tutor: undefined,
       thumbnailUrl: '',
       contentLink: '',
       videoLink: '',
       tagNameList: [],
       uploadedAt: null,
-      trackName: trackName as TrackType,
+      trackName: trackName,
       postPeriod: trackRole === 'APM' ? loginPeriod : '',
-      isOpened: 'true',
+      isOpened: 'false',
     },
   });
 
@@ -70,46 +85,81 @@ const usePostWriteForm = (postData?: postFetchData) => {
       return;
     }
 
-    setIsSubmitLoading(true);
-    setLoadingMessage('노션 자료를 찾아오는 중...');
-    const formData = new PostForm(
-      data.postType,
-      data.title,
-      tags.map((tag) => tag.tagName),
-      Number(tutor?.tutorId),
-      Number(data.postPeriod),
-      Boolean(data.isOpened),
-      dayjs(data.uploadedAt).format('YYYY-MM-DD'),
-      contentLink ? await getNotionPageData(extractPageId(contentLink)!) : '',
-      data.contentLink,
-      data.videoLink,
-      data.thumbnailUrl,
-    );
-
-    setLoadingMessage('데이터를 서버에 등록 중...');
     try {
-      if (!postData) {
-        await postDataPost(watch('trackName'), Number(loginPeriod), formData);
-        createToast('게시물 등록이 완료되었습니다.', 'primary');
-      } else {
-        await patchDataPost(
-          watch('trackName'),
-          Number(loginPeriod),
-          formData,
-          Number(postData.postId),
-        );
-        createToast('게시물 수정이 완료되었습니다.', 'primary');
-      }
+      setIsSubmitting(true);
+      setIsSubmitLoading(true);
+      setLoadingMessage('노션 자료를 찾아오는 중...');
+      const fetchTags = tags.map((tag) => tag.tagName);
+
+      const formData = new PostForm(
+        data.postType,
+        data.title,
+        fetchTags,
+        Number(tutor?.tutorId),
+        Number(data.postPeriod),
+        data.isOpened === 'true',
+        dayjs(data.uploadedAt).format('YYYY-MM-DD'),
+        contentLink ? await getNotionPageData(extractPageId(contentLink)!) : '',
+        data.contentLink,
+        data.videoLink,
+        data.thumbnailUrl,
+      );
+
+      setLoadingMessage('데이터를 서버에 등록 중...');
+
+      // 등록 및 수정에서는 tag 등록이 필수이기떄문에
+      postTagsMutate(fetchTags, {
+        onSuccess: async () => {
+          if (!postData) {
+            //todo: post, update react-query로 변경 필요
+            await postDataPost(
+              watch('trackName'),
+              Number(loginPeriod),
+              formData,
+            );
+            createToast('게시물 등록이 완료되었습니다.', 'primary');
+          } else {
+            await patchDataPost(
+              watch('trackName'),
+              Number(loginPeriod),
+              formData,
+              Number(postData.postId),
+            );
+            createToast('게시물 수정이 완료되었습니다.', 'primary');
+          }
+
+          await revalidatePostsAction('/posts');
+          router.push('/posts');
+        },
+        onError: (error) => {
+          createToast(`태그 저장 중 오류가 발생했습니다.`, 'warning');
+          throw new Error('태그 저장에 실패했습니다.');
+        },
+      });
+
+      // server action
     } catch (error) {
-      if (!postData) {
-        createToast('게시물 등록 중 오류가 발생했습니다.', 'warning');
-      } else {
-        createToast('게시물 수정 중 오류가 발생했습니다.', 'warning');
+      setIsSubmitting(false);
+      if (axios.isAxiosError(error)) {
+        if (!postData) {
+          createToast(
+            error.response?.data.message
+              ? error.response?.data.message
+              : `게시물 등록 중 오류가 발생했습니다.`,
+            'warning',
+          );
+        } else {
+          createToast(
+            error.response?.data.message
+              ? error.response?.data.message
+              : `게시물 수정 중 오류가 발생했습니다.`,
+            'warning',
+          );
+        }
       }
     } finally {
-      router.push('/posts');
+      // setIsSubmitting(false);
       setIsSubmitLoading(false);
-      router.refresh();
     }
   };
 
@@ -121,24 +171,59 @@ const usePostWriteForm = (postData?: postFetchData) => {
       setNotionValidateState(!!postData.contentLink);
       setValue('videoLink', postData.videoLink);
       setValue('postPeriod', String(postData.period));
-      setValue('postType', postData.postType);
+      setValue('postType', postData.postType.key);
       setValue('uploadedAt', dayjs(postData.uploadedAt).toDate());
       setValue('tutor', { ...postData.tutorRes });
       setValue('isOpened', String(postData.isOpened) as 'true' | 'false');
 
-      clearTags(); // 기존 태그 초기화
       if (postData.tagNameList.length > 0) {
-        // Promise.all로 모든 태그 추가 작업이 완료될 때까지 기다립니다.
-        Promise.all(
-          postData.tagNameList.map((tag) => {
-            addTag(tag as string);
-          }),
-        ).then(() => {
-          setValue('tagNameList', tags); // 모든 태그가 추가된 후 설정
-        });
+        clearTags();
+        const initTags: TagType[] = postData.tagNameList.map((tag) => ({
+          tagId: uuidv4(),
+          tagName: tag,
+        }));
+        setTags(initTags);
+        initialTagsRef.current = initTags;
+        setValue('tagNameList', initTags);
       }
     }
-  }, [setValue]);
+  }, []);
+
+  useEffect(() => {
+    if (postData) {
+      const currentTags = tags.map((tag) => tag.tagName);
+      const initialTags = initialTagsRef.current.map((tag) => tag.tagName);
+      setTagsChanged(!isEqual(currentTags, initialTags));
+    }
+  }, [tags, postData]);
+
+  const tutor = watch('tutor');
+  const contentLink = watch('contentLink');
+  const videoLink = watch('videoLink');
+  const uploadedAt = watch('uploadedAt');
+  useEffect(() => {
+    if (postData) {
+      setCustomIsValid(
+        (formIsValid &&
+          !!(contentLink || videoLink) &&
+          !!uploadedAt &&
+          !!tutor) ||
+          tagsChanged,
+      );
+    } else {
+      setCustomIsValid(
+        formIsValid && !!(contentLink || videoLink) && !!uploadedAt && !!tutor,
+      );
+    }
+  }, [
+    contentLink,
+    videoLink,
+    uploadedAt,
+    formIsValid,
+    tutor,
+    tagsChanged,
+    postData,
+  ]);
 
   return {
     register,
@@ -150,7 +235,9 @@ const usePostWriteForm = (postData?: postFetchData) => {
     onSubmit,
     notionValidateState,
     setNotionValidateState,
-    isValid,
+    isValid: customIsValid,
+    isDirty,
+    isSubmitting,
   };
 };
 

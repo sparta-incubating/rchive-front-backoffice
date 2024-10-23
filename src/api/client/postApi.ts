@@ -1,5 +1,5 @@
 import { PostForm } from '@/class/postForm';
-import { TrackType, tutorApiType } from '@/types/posts.types';
+import { tutorApiType } from '@/types/posts.types';
 import { client } from '@/utils/clientAPI';
 import { removeMarkdown } from '@/utils/removeMarkDown.util';
 import { createToast } from '@/utils/toast';
@@ -17,15 +17,11 @@ export const getTags = async (keyword: string) => {
 };
 
 // 태그 저장 함수
-export const postTag = async (tagName: string) => {
-  try {
-    const response = await client.post('/apis/v1/posts/tags', {
-      tagName,
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('태그 저장에 실패했습니다.');
-  }
+export const postTag = async (tagNames: string[]) => {
+  const response = await client.post('/apis/v1/posts/tags', {
+    tagNameList: tagNames,
+  });
+  return response.data;
 };
 
 // 기수 검색 함수
@@ -79,9 +75,31 @@ export const getThumbnailDelete = async (thumbnailUrl: string) => {
   }
 };
 
+// update thumbnail delete
+export const deleteThumbnailDeletePost = async ({
+  trackName,
+  period,
+  postId,
+}: {
+  trackName: string;
+  period: number;
+  postId: string;
+}) => {
+  try {
+    return await client.delete(`/apis/v1/posts/${postId}/thumbnail`, {
+      data: {
+        trackName,
+        period,
+      },
+    });
+  } catch (error) {
+    throw new Error('파일 삭제에 실패했습니다.');
+  }
+};
+
 // 튜터 검색
 export const getSearchTutor = async (
-  track: TrackType,
+  track: string,
   loginPeriod: number,
   inputPeriod: number,
   keyword: string,
@@ -99,15 +117,11 @@ export const getSearchTutor = async (
 
 // notion 게시물 데이터 가져오기
 export const getNotionPageData = async (pageId: string) => {
-  try {
-    const response = await axios.get(
-      `/backoffice/api/notion/content?url=${pageId}`,
-    );
+  const response = await axios.get(
+    `/backoffice/api/notion/content?url=${pageId}`,
+  );
 
-    return removeMarkdown(response.data.result).replace('"', '');
-  } catch (error) {
-    throw new Error('notion Page Data호출에 실패했습니다.');
-  }
+  return removeMarkdown(response.data.result).replace('"', '');
 };
 
 // 게시물 등록 endpoint
@@ -156,7 +170,8 @@ export const patchNotionContent = async (
 ) => {
   try {
     const response = await client.patch(
-      `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      // `/apis/v1/posts/${postId}?trackName=${trackName}&loginPeriod=${period}`,
+      `/apis/v1/posts/${postId}/content`,
       data,
     );
 
@@ -206,7 +221,7 @@ export const patchPostClose = async (
 
 // 게시물 삭제 endpoiont
 export const deletePost = async (
-  trackName: TrackType,
+  trackName: string,
   loginPeriod: number,
   postId: string,
 ) => {

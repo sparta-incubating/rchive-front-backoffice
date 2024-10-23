@@ -2,6 +2,7 @@
 
 import select from '@/../public/assets/icons/select-blue.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import Image from 'next/image';
 import { useState } from 'react';
 import SelectLabel from '../selectLabel';
@@ -24,45 +25,54 @@ interface AuthCategoryProps {
 
 const AuthFilterCategory = ({ label, data, setValue }: AuthCategoryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(label);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const {
+    isOpen,
+    setIsOpen,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
 
   const handleClick = (data: { label: string; value: string }) => {
     setSelectedCategory(data.label);
-    setIsDropdownOpen(false);
+    setIsOpen(false);
     setValue(data.value);
   };
 
+  const handleCategoryLabel = () => {
+    return selectedCategory === '전체' ? label : selectedCategory;
+  };
+
   return (
-    <CategoryContainer onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+    <CategoryContainer ref={dropdownRef} onClick={handleDropdownClick}>
       <CategoryLayout>
-        <SelectLabel>{selectedCategory}</SelectLabel>
+        <SelectLabel>{handleCategoryLabel()}</SelectLabel>
         <Image
           src={arrow}
           width={12}
           height={12}
           alt="화살표"
           className={`transition-transform duration-500 ${
-            isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            isOpen ? 'rotate-180' : 'rotate-0'
           }`}
         />
       </CategoryLayout>
-      <CategoryDropDown show={isDropdownOpen}>
-        {data?.map((item) => (
+      <CategoryDropDown show={isOpen}>
+        {data?.map((item: AdminCateoryType) => (
           <div
             className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-            key={item.id}
+            key={`${item.id}+${item.label}`}
             onClick={() => handleClick(item)}
           >
             <p
               className={`mx-[14px] w-[84px] text-sm ${
-                selectedCategory === item.value
+                selectedCategory === item.name
                   ? 'text-secondary-500'
                   : 'text-black'
               }`}
             >
               {item.name}
             </p>
-            {selectedCategory === item.value && (
+            {selectedCategory === item.name && (
               <Image src={select} width={16} height={12} alt="선택됨" />
             )}
           </div>

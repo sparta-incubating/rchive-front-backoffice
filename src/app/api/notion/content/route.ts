@@ -1,6 +1,6 @@
+import { getPageContent } from '@/utils/notion/notion.content.util';
 import { Client } from '@notionhq/client';
 import { NextResponse } from 'next/server';
-import { NotionToMarkdown } from 'notion-to-md';
 
 const notionAPIURL = process.env.NOTION_API;
 
@@ -14,12 +14,9 @@ export async function GET(request: Request) {
     });
 
     if (url) {
-      const n2m = new NotionToMarkdown({ notionClient: notion });
+      const content = await getPageContent(url, notion).catch();
 
-      const mdblocks = await n2m.pageToMarkdown(url);
-      const mdString = n2m.toMarkdownString(mdblocks);
-
-      return NextResponse.json({ result: mdString.parent.toString() });
+      return NextResponse.json({ result: content });
     }
   } catch (error) {
     return NextResponse.json(

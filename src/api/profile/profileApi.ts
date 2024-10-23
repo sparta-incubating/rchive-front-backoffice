@@ -20,15 +20,12 @@ export const getUserInfo = async () => {
     );
     return res.data;
   } catch (error) {
-    console.log(error);
     throw new Error('프로필 조회에 실패했습니다. 다시 시도해주세요.');
   }
 };
 
 export const updatePassword = async (password: PassWordChange) => {
   const { originPassword, newPassword } = password;
-  // console.log(originPassword, '기존비밀번호');
-  // console.log(newPassword, '변경할 비밀번호');
   try {
     const res = await client.patch(`/apis/v1/profile/password`, {
       originPassword,

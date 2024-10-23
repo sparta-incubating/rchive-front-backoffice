@@ -1,15 +1,16 @@
 import { getSearchTutor } from '@/api/client/postApi';
-import CloseButton from '@/components/atoms/closeButton';
-import DropDownItem from '@/components/atoms/dropDownItem';
+import CustomDropDown from '@/components/atoms/customDropDown';
 import FormSpan from '@/components/atoms/formSpan';
+import SelectItem from '@/components/atoms/selectItem';
 import TutorInput from '@/components/atoms/tutorInput';
-import DropDownContainer from '@/components/molecules/dropDownContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TutorCard from '@/components/molecules/tutorCard';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { useAppSelector } from '@/redux/storeConfig';
-import { PostsFormSchema, TutorType } from '@/types/posts.types';
-import { debounce } from 'lodash';
-import { useRef, useState } from 'react';
+import { PostsFormSchema } from '@/types/posts.types';
+import { SelectOptionType } from '@/types/signup.types';
+import Image from 'next/image';
+import React, { useRef, useState } from 'react';
 import { FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 interface TutorContainerProps {
@@ -19,80 +20,132 @@ interface TutorContainerProps {
 }
 
 const TutorContainer = ({ setValue, watch, errors }: TutorContainerProps) => {
+  const { isOpen, setIsOpen, dropdownRef, handleClick } =
+    useDropDownOutsideClick();
+  const [placeHolder, setPlaceHolder] =
+    useState<string>('기수를 먼저 선택해주세요.');
   const { period: loginPeriod } = useAppSelector((state) => state.authSlice);
   const inputRef = useRef<HTMLDivElement>(null);
   const [periodError, setPeriodError] = useState<string>('');
-  const [searchTutors, setSearchTutors] = useState<TutorType[] | null>(null);
-  const tutor = watch('tutor');
 
-  const handleInput = debounce(async () => {
+  const [searchTutors, setSearchTutors] = useState<SelectOptionType[] | null>(
+    null,
+  );
+
+  const tutor = watch('tutor');
+  const period = watch('postPeriod');
+
+  const [selectedOption, setSelectedOption] = useState<SelectOptionType | null>(
+    searchTutors?.find((option) => option.value === '') || null,
+  );
+
+  const handleSelect = (option: SelectOptionType) => {
+    setSelectedOption(option);
+    setValue(
+      'tutor',
+      {
+        tutorId: Number(option.value),
+        tutorName: option.label,
+      },
+      { shouldValidate: true },
+    );
+    setIsOpen(false);
+  };
+
+  const handleInputClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     const period = watch('postPeriod');
-    if (!period) {
-      setPeriodError('기수를 먼저 선택해주세요.');
-      return;
+
+    if (!isOpen) {
+      if (!period) {
+        setPeriodError('기수를 먼저 선택해주세요.');
+        return;
+      }
     }
 
     setPeriodError('');
-    if (inputRef.current) {
-      const keyword = inputRef.current.innerText;
-
-      if (keyword.trim() === '') {
-        setSearchTutors(null);
-        return;
-      }
-
-      const response = await getSearchTutor(
+    let response;
+    if (!isOpen) {
+      response = await getSearchTutor(
         watch('trackName'),
         Number(loginPeriod),
         Number(period),
-        keyword,
+        '',
       );
-      setSearchTutors(response.data);
     }
-  }, 300);
 
-  const deleteTutor = () => {
-    setValue('tutor', null);
+    let tutors: SelectOptionType[] = [];
+
+    if (response?.data) {
+      tutors = response.data.map((tutor) => ({
+        value: String(tutor.tutorId),
+        label: tutor.tutorName,
+        selected: false,
+      })) as SelectOptionType[];
+    }
+
+    setSearchTutors(tutors);
+    handleClick(e);
+  };
+
+  const deleteTutor = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setValue('tutor', undefined, { shouldValidate: true });
+    setSelectedOption(null);
     if (inputRef.current) {
       inputRef.current.innerText = '';
     }
   };
 
-  const selectTutor = (selectedTutor: TutorType) => {
-    setValue('tutor', selectedTutor);
-    setSearchTutors(null);
-  };
-
   return (
     <TitleContainer title="튜터" className="w-full">
-      <div className="group relative flex h-[61px] w-full items-center gap-2 rounded-[12px] border border-blue-100 px-5">
+      <div
+        onClick={handleInputClick}
+        className="group relative flex h-[60px] w-[328px] items-center justify-between gap-2 rounded-[12px] border border-blue-100 px-5"
+      >
         {tutor ? (
           <TutorCard>
             {tutor.tutorName}
-            <CloseButton onClick={deleteTutor} />
+            {/*<CloseButton onClick={deleteTutor} />*/}
           </TutorCard>
         ) : (
-          <TutorInput
-            key="tutor"
-            handleInput={handleInput}
-            placeholder="튜터를 입력해주세요."
-            ref={inputRef}
-          />
+          <TutorInput key="tutor" placeholder={placeHolder} ref={inputRef} />
+        )}
+        {period && (
+          <div
+            data-clicked={isOpen}
+            className="flex h-6 w-6 rotate-180 items-center justify-center transition-transform duration-500 ease-in-out data-[clicked=false]:rotate-0"
+          >
+            <Image
+              src={'/backoffice/assets/icons/selectArrow.svg'}
+              alt={'select arrow icon'}
+              fill
+            />
+          </div>
         )}
 
-        {searchTutors && searchTutors.length > 0 && (
-          <DropDownContainer disable={false} className="ml-0">
-            {searchTutors.map((tutorItem) => (
-              <DropDownItem
-                key={tutorItem.tutorId}
+        <CustomDropDown clicked={isOpen} ref={dropdownRef}>
+          {searchTutors && searchTutors?.length > 0 ? (
+            searchTutors?.map((tutorItem) => (
+              <SelectItem
+                key={tutorItem.value}
+                data-value={tutorItem.value}
+                selected={tutorItem.value === selectedOption?.value}
                 variant="secondary"
-                onClick={() => selectTutor(tutorItem)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelect(tutorItem);
+                }}
               >
-                {tutorItem.tutorName}
-              </DropDownItem>
-            ))}
-          </DropDownContainer>
-        )}
+                {tutorItem.label}
+              </SelectItem>
+            ))
+          ) : (
+            <div className="flex w-full">
+              <span className="mx-auto text-sm">튜터 데이터가 없습니다.</span>
+            </div>
+          )}
+        </CustomDropDown>
       </div>
       {periodError && <FormSpan variant="error">{periodError}</FormSpan>}
       {errors.tutor?.message && (

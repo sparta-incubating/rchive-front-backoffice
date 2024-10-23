@@ -1,8 +1,8 @@
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
-import { trackOptions } from '@/types/posts.types';
+import useTrackName from '@/hooks/useTrackName';
 import { RoleChangeModalProps } from '@/types/profile.types';
 import { RoleFormSchema } from '@/types/role.types';
 import { createToast } from '@/utils/toast';
@@ -30,8 +30,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     },
   });
 
-  const watchTrackName = watch('trackName');
-
+  const { trackNameOptions } = useTrackName();
   const period = useGetPeriod(watch('trackName'), trackRole);
 
   const { updateRoleMutate } = useProfileUpdate();
@@ -47,6 +46,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
     try {
       await updateRoleMutate.mutateAsync(roleChangeInfo);
       createToast('권한 수정이 요청되었습니다.', 'primary');
+      onClose();
     } catch (error) {
       console.error('Error updating password:', error);
       alert('권한 수정 요청에 실패했습니다. 다시 시도해 주세요.');
@@ -69,7 +69,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
           render={({ field: { onChange, value } }) => (
             <SelectFormBox
               className="w-[360px]"
-              options={trackOptions}
+              options={trackNameOptions}
               label={'트랙'}
               onSelect={onChange}
               value={value}

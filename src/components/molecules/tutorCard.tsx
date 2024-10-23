@@ -5,7 +5,8 @@ import { PropsWithChildren } from 'react';
 const tagCardVariants = cva('inline-block rounded-full ', {
   variants: {
     variant: {
-      primary: 'text-secondary-500',
+      // primary: 'text-secondary-500',
+      primary: 'text-gray-900',
       secondary: 'bg-gray-500 text-white border-gray-500',
       ghost: 'bg-transparent text-black border-black',
     },
@@ -28,11 +29,8 @@ interface TagCardProps
 
 function TagCard({ children, variant, size, className = '' }: TagCardProps) {
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className={classMerge(tagCardVariants({ variant, size }), className)}
-    >
-      <div className="flex w-full items-center justify-between gap-2">
+    <div className={classMerge(tagCardVariants({ variant, size }), className)}>
+      <div className="text-md flex w-full items-center justify-between gap-2">
         {children}
       </div>
     </div>

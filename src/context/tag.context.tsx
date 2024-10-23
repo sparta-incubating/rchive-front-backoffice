@@ -1,8 +1,9 @@
 'use client';
 
-import { getTags, postTag } from '@/api/client/postApi';
+import { getTags } from '@/api/client/postApi';
 import useComposition from '@/hooks/useComposition';
 import { TagType } from '@/types/tag.types';
+import { createToast } from '@/utils/toast';
 import { debounce } from 'lodash';
 import React, {
   createContext,
@@ -17,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface TagContextType {
   tags: TagType[];
-  addTag: (tag: string) => void;
+  addTag: (tag: string) => Promise<void>;
   deleteTag: (tagId: string) => void;
   inputRef: React.RefObject<HTMLDivElement>;
   tagContainerRef: React.RefObject<HTMLDivElement>;
@@ -26,6 +27,7 @@ interface TagContextType {
   searchTags: TagType[] | null;
   handleClickDropDownData: (label: string) => void;
   clearTags: () => void;
+  setTags: React.Dispatch<React.SetStateAction<TagType[]>>;
 }
 
 export const TagContext = createContext<TagContextType | undefined>(undefined);
@@ -40,23 +42,24 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
 
   const addTag = useCallback(
     async (tag: string) => {
+      tag = tag.replace(/#/g, '');
+
+      if (!tag.trim()) {
+        createToast('공백은 등록할 수 없습니다.', 'warning');
+        return;
+      }
+      if (tags?.length > 9) {
+        createToast('태그는 10개까지만 입력 가능합니다.', 'warning');
+        return;
+      }
+
       if (
         tags.find(
           (tagState) => tagState.tagName.toLowerCase() === tag.toLowerCase(),
         )
       ) {
+        createToast('중복된 태그입니다.', 'warning');
         return;
-      }
-
-      if (searchTags) {
-        if (
-          !searchTags.some(
-            (searchTag) =>
-              searchTag.tagName.toLowerCase() === tag.toLowerCase(),
-          )
-        ) {
-          await postTag(tag);
-        }
       }
 
       const newTag: TagType = {
@@ -64,7 +67,6 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         tagName: tag,
       };
 
-      // flushSync를 제거하고 바로 상태 업데이트
       setTags((prevState) => [...prevState, newTag]);
 
       if (tagContainerRef.current) {
@@ -100,7 +102,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
   // debounce 적용하여 자동완성 dropdown 출력에 사용
   const handleInput = debounce(async () => {
     if (inputRef.current) {
-      const keyword = inputRef.current.innerText;
+      const keyword = inputRef.current.innerText.replace(/#/g, '');
 
       // text가 없을때 backDrop 숨김
       if (keyword.trim() === '') {
@@ -173,6 +175,23 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
     [addTag, isComposing],
   );
 
+  const handleKeyDownSpace = useCallback(
+    async (event: KeyboardEvent) => {
+      // composition 중일 때는 무시하고, 끝난 후에만 동작
+      if (event.key === ' ' && inputRef.current) {
+        const tag = inputRef.current.innerText.trim();
+        if (tag) {
+          await addTag(tag);
+          if (inputRef.current) {
+            inputRef.current.innerText = '';
+          }
+          event.preventDefault();
+        }
+      }
+    },
+    [addTag, isComposing],
+  );
+
   useEffect(() => {
     const inputElement = inputRef.current;
 
@@ -180,6 +199,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       inputElement.addEventListener('input', handleKeyDownComma);
       inputElement.addEventListener('keydown', handleKeyDownBackspace);
       inputElement.addEventListener('keydown', handleKeyDownEnter);
+      inputElement.addEventListener('keydown', handleKeyDownSpace);
     }
 
     return () => {
@@ -187,6 +207,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
         inputElement.removeEventListener('input', handleKeyDownComma);
         inputElement.removeEventListener('keydown', handleKeyDownBackspace);
         inputElement.removeEventListener('keydown', handleKeyDownEnter);
+        inputElement.removeEventListener('keydown', handleKeyDownSpace);
       }
     };
   }, [
@@ -210,6 +231,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       searchTags,
       handleClickDropDownData,
       clearTags,
+      setTags,
     }),
     [
       tags,
@@ -220,6 +242,7 @@ export const TagContextProvider = ({ children }: PropsWithChildren) => {
       searchTags,
       handleClickDropDownData,
       clearTags,
+      setTags,
     ],
   );
 

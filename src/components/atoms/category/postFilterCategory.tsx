@@ -2,6 +2,7 @@
 
 import select from '@/../public/assets/icons/select-blue.svg';
 import arrow from '@/../public/assets/icons/selectArrow.svg';
+import useDropDownOutsideClick from '@/hooks/useDropDownOutsideClick';
 import { SelectOptionType } from '@/types/signup.types';
 import { createToast } from '@/utils/toast';
 import Image from 'next/image';
@@ -27,12 +28,21 @@ const FilterCategory = ({
   defaultValue,
 }: FilterCategoryProps) => {
   const [selectedItem, setSelectedItem] = useState<SelectOptionType | null>();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const {
+    isOpen,
+    setIsOpen,
+    dropdownRef,
+    handleClick: handleDropdownClick,
+  } = useDropDownOutsideClick();
 
-  const handleClick = (data: SelectOptionType) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    data: SelectOptionType,
+  ) => {
+    e.stopPropagation();
     setSelectedItem(data);
     setValue(data.value);
-    setIsDropdownOpen(false);
+    setIsOpen(false);
   };
 
   const handleToast = () => {
@@ -45,23 +55,49 @@ const FilterCategory = ({
     }
   }, [defaultValue, filterData]);
 
+  const initialLabel =
+    selectedItem?.value === 'all' || !selectedItem ? label : selectedItem.label;
+
   return (
     <CategoryContainer
-      onClick={() =>
-        !disabled ? setIsDropdownOpen(!isDropdownOpen) : handleToast()
-      }
+      ref={dropdownRef}
+      onClick={(e) => (!disabled ? handleDropdownClick(e) : handleToast())}
     >
       <CategoryLayout>
-        <SelectLabel>{selectedItem ? selectedItem.label : label}</SelectLabel>
-        <Image src={arrow} width={12} height={12} alt="화살표" />
+        <SelectLabel>{initialLabel}</SelectLabel>
+        <Image
+          src={arrow}
+          width={12}
+          height={12}
+          alt="화살표"
+          className={`transition-transform duration-500 ${
+            isOpen ? 'rotate-180' : 'rotate-0'
+          }`}
+        />
       </CategoryLayout>
-      <CategoryDropDown show={isDropdownOpen}>
+      <CategoryDropDown show={isOpen}>
+        <div
+          className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
+          key={0}
+          onClick={(e) =>
+            handleClick(e, { value: 'all', label: '전체', selected: false })
+          }
+        >
+          <p
+            className={`mx-[14px] w-[84px] text-sm ${selectedItem?.value === 'all' ? 'text-secondary-500' : 'text-black'}`}
+          >
+            전체
+          </p>
+          {selectedItem?.value === 'all' && (
+            <Image src={select} width={16} height={12} alt="선택됨" />
+          )}
+        </div>
         {filterData &&
-          filterData.map((data) => (
+          filterData.map((data, index) => (
             <div
               className="flex h-[36px] w-[136px] flex-row items-center rounded-[8px] py-[9px] hover:bg-secondary-55"
-              key={data.value}
-              onClick={() => handleClick(data)}
+              key={data.value + index}
+              onClick={(e) => handleClick(e, data)}
             >
               <p
                 className={`mx-[14px] w-[84px] text-sm ${selectedItem?.value === data.value ? 'text-secondary-500' : 'text-black'}`}

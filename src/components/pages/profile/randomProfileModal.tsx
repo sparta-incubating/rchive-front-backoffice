@@ -1,7 +1,7 @@
 'use client';
 
 import refresh from '@/../public/assets/icons/refresh-button.svg';
-import { useProfileUpdate } from '@/api/profile/useMutation';
+import { useProfileUpdate } from '@/api/profile/useProfileMutation';
 import ProfileChangeForm from '@/components/organisms/profileChangeForm';
 import { RandomProfileModalProps } from '@/types/profile.types';
 import Image from 'next/image';
@@ -78,7 +78,7 @@ const RandomProfileModal = ({
           </figure>
           {/* 리프레시버튼 */}
           <button onClick={handleRandomImg} type="button">
-            <div className="flex h-[18px] flex-row justify-center gap-[4px]">
+            <div className="flex h-[18px] flex-row justify-center gap-1">
               <Image src={refresh} width={16} height={16} alt="리프레시 버튼" />
               <p className="text-xs text-gray-400">랜덤 프로필 설정</p>
             </div>

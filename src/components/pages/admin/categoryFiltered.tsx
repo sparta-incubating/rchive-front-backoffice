@@ -1,6 +1,6 @@
 'use client';
 
-import { usePeriodListQuery } from '@/api/profile/useQuery';
+import { usePeriodListQuery } from '@/api/profile/useProfileQuery';
 import AuthFilterCategory from '@/components/atoms/category/AuthCategory';
 import { useAppSelector } from '@/redux/storeConfig';
 
@@ -12,7 +12,7 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
   const { trackName, trackRole } = useAppSelector((state) => state.authSlice);
 
   const roleCategory = [
-    { id: 1, name: '전체', label: '직책', value: '' },
+    { id: 1, name: '전체', label: '전체', value: '' },
     { id: 2, name: 'APM', label: 'APM', value: 'APM' },
     { id: 3, name: '수강생', label: '수강생', value: 'STUDENT' },
   ];
@@ -28,8 +28,7 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
   ];
 
   const periodList = usePeriodListQuery(trackName) ?? [];
-  const reversPeriod = [...periodList].reverse();
-  const periodItem = reversPeriod?.map((item: number) => ({
+  const periodItem = periodList?.map((item: number) => ({
     id: item,
     name: `${item}기`,
     value: item.toString(),
@@ -37,7 +36,7 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
   }));
 
   const periodCategory = [
-    { id: 1, name: '전체', label: '기수', value: '' },
+    { id: 1, name: '전체', label: '전체', value: '' },
     ...periodItem,
   ];
 

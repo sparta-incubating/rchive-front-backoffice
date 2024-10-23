@@ -6,10 +6,8 @@ import PostFilterCategory from '@/components/atoms/category/postFilterCategory';
 import PostList from '@/components/atoms/category/postList';
 import PostTapMenu from '@/components/atoms/category/postTapMenu';
 import PermissionBoard from '@/components/atoms/permissionBoard';
-import SearchBar from '@/components/atoms/searchBar';
 import { DateRangePicker } from '@/components/molecules/dateRangePicker';
 import BackofficePage from '@/components/pages/backofficePage';
-import { postTabArr } from '@/constants/permission.constant';
 import usePostIsOpenUpdate from '@/hooks/usePostIsOpenUpdate';
 import useSearchKeyword from '@/hooks/useSearchKeyword';
 import useSearchTutor from '@/hooks/useSearchTutor';
@@ -19,8 +17,9 @@ import { PostListResponse, SearchParamsType } from '@/types/posts.types';
 import { SelectOptionType } from '@/types/signup.types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import SearchBar from '../atoms/searchBar';
 
 interface PostListProps {
   searchParams: SearchParamsType;
@@ -35,7 +34,6 @@ const PostListPage = ({
 }: PostListProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const {
     trackName,
@@ -50,40 +48,6 @@ const PostListPage = ({
     searchParams?.postType || 'all',
   );
 
-  // URL 파라미터를 유지하면서 업데이트하는 함수
-  const updateQueryParams = useCallback(
-    (key: string, value: string | number | DateRange | undefined) => {
-      const query = new URLSearchParams(window.location.search);
-
-      if (key === 'date' && value) {
-        const dateRange = value as DateRange;
-        if (dateRange.from)
-          query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
-        if (dateRange.to)
-          query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
-      } else if (key === 'date' && !value) {
-        query.delete('startDate');
-        query.delete('endDate');
-      } else if (value) {
-        query.set(key, String(value));
-      } else {
-        query.delete(key);
-      }
-      if (key !== 'page') {
-        setCurrentPage(1);
-        query.set('page', '1');
-      }
-
-      router.push(`/posts?${query.toString()}`);
-    },
-    [router],
-  );
-
-  const handleTabChange = (newTab: string) => {
-    setActiveTab(newTab);
-    updateQueryParams('postType', newTab);
-  };
-
   // 기수
   const [searchPeriod, setSearchPeriod] = useState<string>(
     searchParams?.searchPeriod ||
@@ -92,25 +56,52 @@ const PostListPage = ({
 
   // 튜터
   const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);
-  const [tutor, setTutor] = useState<string>('0');
+  const [tutor, setTutor] = useState<string>(searchParams?.tutorId || 'all');
 
-  useEffect(() => {
-    if (getFetchTutors) {
-      if (getFetchTutors.length > 0 && tutor === '0') {
-        const defaultTutor = getFetchTutors.find(
-          (tutor) => tutor.value === searchParams?.tutorId,
-        );
-        if (defaultTutor) {
-          setTutor(defaultTutor.value);
-          updateQueryParams('tutorId', defaultTutor.value);
-        }
+  // URL 파라미터를 유지하면서 업데이트하는 함수
+  const updateQueryParams = (
+    key: string,
+    value: string | number | DateRange | undefined,
+  ) => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (key === 'date' && value) {
+      const dateRange = value as DateRange;
+      if (dateRange.from)
+        query.set('startDate', dayjs(dateRange.from).format('YYYY-MM-DD'));
+      if (dateRange.to)
+        query.set('endDate', dayjs(dateRange.to).format('YYYY-MM-DD'));
+    } else if (key === 'date' && !value) {
+      query.delete('startDate');
+      query.delete('endDate');
+    } else if (key === 'tutorId' && value === 'all') {
+      query.delete('tutorId');
+    } else if (key === 'searchPeriod' && value === 'all') {
+      query.delete('searchPeriod');
+    } else if (value) {
+      if (key === 'searchPeriod') {
+        setTutor('all');
+        query.delete('tutorId');
       }
+      query.set(key, String(value));
+    } else {
+      query.delete(key);
     }
-  }, [getFetchTutors, tutor, searchParams?.tutorId, updateQueryParams]);
+    if (key !== 'page') {
+      setCurrentPage(1);
+      query.set('page', '1');
+    }
+
+    router.push(`/posts?${query.toString()}`);
+  };
+
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab);
+    updateQueryParams('postType', newTab);
+  };
 
   // 공개여부
   const isOpenedOptionsData: SelectOptionType[] = [
-    { value: 'all', label: '전체', selected: true },
     { value: 'true', label: '공개', selected: false },
     { value: 'false', label: '비공개', selected: false },
   ];
@@ -132,6 +123,8 @@ const PostListPage = ({
     setDate(date);
     updateQueryParams('date', date);
   };
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
@@ -173,13 +166,8 @@ const PostListPage = ({
       {/* 게시판 */}
       <PermissionBoard>
         {/* 탭메뉴 */}
-        <PostTapMenu
-          data={postTabArr}
-          activeTab={activeTab}
-          setActiveTab={handleTabChange}
-        />
-
-        <section className="px-9 py-6">
+        <PostTapMenu activeTab={activeTab} setActiveTab={handleTabChange} />
+        <section className="py-6">
           {/* 카테고리 */}
           <section className="mx-auto mb-[24px] flex w-full flex-row justify-between">
             <section className="flex flex-row gap-2.5">

@@ -4,7 +4,7 @@ import { postRoleApply } from '@/api/server/authApi';
 import Button from '@/components/atoms/button';
 import SelectFormBox from '@/components/organisms/selectFormBox';
 import useGetPeriod from '@/hooks/useGetPeriod';
-import { trackOptions } from '@/types/posts.types';
+import useTrackName from '@/hooks/useTrackName';
 import { RoleFormSchema } from '@/types/role.types';
 import { roleSchema } from '@/validators/auth/role.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,6 +33,7 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
       period: '',
     },
   });
+  const { trackNameOptions } = useTrackName();
 
   const period = useGetPeriod(watch('trackName'), trackRole);
 
@@ -45,7 +46,7 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
 
   return (
     <form className="m-auto" onSubmit={handleSubmit(onSubmit)}>
-      <section className="flex w-[520px] flex-col items-center gap-5 rounded-[12px] bg-white pb-7 pt-14">
+      <section className="flex h-[577px] w-[520px] flex-col items-center justify-center gap-5 rounded-[12px] bg-white pb-7 pt-14">
         {children}
         <Controller
           name="trackName"
@@ -53,7 +54,7 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
           render={({ field: { onChange, value } }) => (
             <SelectFormBox
               className="w-[360px]"
-              options={trackOptions}
+              options={trackNameOptions}
               label={'트랙'}
               onSelect={onChange}
               value={value}

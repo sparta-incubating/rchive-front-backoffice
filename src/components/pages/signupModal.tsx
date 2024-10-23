@@ -1,5 +1,6 @@
 'use client';
 
+import AuthTimer from '@/components/atoms/authTimer';
 import Button from '@/components/atoms/button';
 import FormSpan from '@/components/atoms/formSpan';
 import Input from '@/components/atoms/input';
@@ -14,12 +15,15 @@ import AcceptTermsGroup from '@/components/organisms/acceptTermsGroup';
 import useSignupForm from '@/hooks/useSignupForm';
 import { signupModalType } from '@/types/signup.types';
 import { handleKeyPressOnlyNumber } from '@/utils/utils';
+import { useState } from 'react';
 
 interface SignupModalProps {
   signupModalType: signupModalType;
 }
 
 const SignupModal = ({ signupModalType }: SignupModalProps) => {
+  const [requestAuthNumber, setRequestAuthNumber] = useState<boolean>(false);
+  const [expire, setExpire] = useState<boolean>(false);
   const {
     handleSubmit,
     onSubmit,
@@ -40,7 +44,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
   const usernameCheck = watch('username');
 
   return (
-    <Modal inboardClassName="w-auto max-w-full p-4">
+    <Modal inboardClassName="w-auto max-w-full p-6">
       {/*modal 헤더*/}
       <SignupHeader />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -62,7 +66,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
                 variant={'submit'}
                 type="button"
                 disabled={!!errors.email?.message}
-                className="h-[42px] w-[85px] p-2 text-xs"
+                className="absolute right-3.5 h-[42px] w-[85px] border-0 p-3 px-5 text-xs"
                 onClick={() => checkEmail(getValues('email'))}
               >
                 중복 확인
@@ -100,14 +104,14 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
               type="password"
               {...register('passwordConfirm')}
               placeholder="비밀번호 재입력"
-              className="my-[28px] h-[20px] w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
+              className="mb-[28px] mt-[32px] h-[20px] w-[320px] bg-blue-50 text-sm font-medium placeholder:text-gray-300 focus:outline-none"
             />
           </PasswordContainer>
           <div className="flex flex-col gap-1">
             {errors.password?.message && (
               <FormSpan variant="error">{errors.password?.message}</FormSpan>
             )}
-            {errors.passwordConfirm?.message && (
+            {!errors.password?.message && errors.passwordConfirm?.message && (
               <FormSpan variant="error">
                 {errors.passwordConfirm.message}
               </FormSpan>
@@ -138,11 +142,30 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
             register={register}
             usernameCheck={usernameCheck}
             authCheck={authCheck}
-            isErrorMsg={isErrorMsg}
             setIsErrorMsg={setIsErrorMsg}
+            setRequestAuthNumber={setRequestAuthNumber}
+            expire={expire}
           />
           {errors.phone?.message && (
             <FormSpan variant="error">휴대폰 인증번호는 필수입니다.</FormSpan>
+          )}
+          {!errors.phone?.message && (
+            <>
+              {isErrorMsg && (
+                <span
+                  className={
+                    isErrorMsg.includes('완료됐습니다')
+                      ? 'text-sm text-success-green'
+                      : 'text-sm text-primary-400'
+                  }
+                >
+                  {isErrorMsg}
+                </span>
+              )}
+              {requestAuthNumber && !isErrorMsg && (
+                <AuthTimer setExpire={setExpire} />
+              )}
+            </>
           )}
         </section>
         {/* birthday */}
@@ -176,7 +199,7 @@ const SignupModal = ({ signupModalType }: SignupModalProps) => {
           <Button
             type="submit"
             disabled={!isValid || isEmailUnique}
-            className="mb-5 w-80 px-7"
+            className="mb-5 w-80 w-full px-7"
           >
             가입하기
           </Button>

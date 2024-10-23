@@ -2,7 +2,6 @@ import { PostForm } from '@/class/postForm';
 import PostDetailHeader from '@/components/atoms/postDetail/postDetailHeader';
 import NotionContainer from '@/components/molecules/postDetail/notionContainer';
 import PostDetailTag from '@/components/molecules/postDetail/postDetailTag';
-import SocialButtonGroup from '@/components/molecules/postDetail/socialButtonGroup';
 import VideoContainer from '@/components/molecules/postDetail/videoContainer';
 import useSocialButtonPosition from '@/hooks/useSocialButtonPosition';
 import { useMemo, useState } from 'react';
@@ -75,7 +74,7 @@ const PostDetail = ({ postData }: PostDetailProps) => {
             left: `${fixedPosition.left}px`,
           }}
         >
-          <SocialButtonGroup />
+          {/*<SocialButtonGroup />*/}
         </div>
       </div>
     </div>

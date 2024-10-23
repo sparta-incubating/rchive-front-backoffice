@@ -1,7 +1,6 @@
 'use client';
 
 import { extractYouTubeId } from '@/utils/utils';
-import YouTube from 'react-youtube';
 
 interface VideoComponentProps {
   videoLink: string;
@@ -10,18 +9,14 @@ interface VideoComponentProps {
 const VideoContainer = ({ videoLink }: VideoComponentProps) => {
   return (
     <div className="w-full">
-      <YouTube
-        videoId={extractYouTubeId(videoLink)}
-        opts={{
-          width: '100%',
-          height: '444px',
-          playerVars: {
-            autoplay: 1,
-            modestbranding: 1,
-            loop: 1,
-          },
-        }}
-      />
+      <iframe
+        allow="picture-in-picture; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+        src={`https://www.youtube.com/embed/${extractYouTubeId(videoLink)}`}
+        title="YouTube video player"
+        width="100%"
+        height="444"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 };

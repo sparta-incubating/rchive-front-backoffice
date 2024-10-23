@@ -63,7 +63,7 @@ const PostTableHeader = ({
           날짜
         </td>
         <td key="update" className="w-[74px] text-gray-400">
-          업데이트
+          노션 최신화
         </td>
       </tr>
     </thead>

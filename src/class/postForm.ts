@@ -1,7 +1,5 @@
-import { PostType } from '@/types/posts.types';
-
 export class PostForm {
-  postType: PostType;
+  postType: string;
   title: string;
   tagNameList: string[] | undefined;
   tutorId: number;
@@ -14,7 +12,7 @@ export class PostForm {
   thumbnailUrl: string | undefined;
 
   constructor(
-    postType: PostType,
+    postType: string,
     title: string,
     tagNameList: string[] | undefined,
     tutorId: number,

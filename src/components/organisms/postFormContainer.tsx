@@ -10,12 +10,14 @@ import ThumbnailContainer from '@/components/molecules/post/thumbnailContainer';
 import TitleContainer from '@/components/molecules/post/titleContainer';
 import TagContainer from '@/components/organisms/tagContainer';
 import { useTagContext } from '@/context/useTagContext';
+import usePageLeaveConfirm from '@/hooks/usePageLeaveConfirm';
 import usePostWriteForm from '@/hooks/usePostWriteForm';
 import { postFetchData } from '@/types/posts.types';
 import { radioType } from '@/types/radio.types';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import PermissionBoard from '../atoms/permissionBoard';
 
 interface PostFormContainerProps {
   postData?: postFetchData;
@@ -33,16 +35,20 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
     notionValidateState,
     setNotionValidateState,
     isValid,
+    isDirty,
+    isSubmitting,
   } = usePostWriteForm(postData);
 
   const [popupWindow, setPopupWindow] = useState<Window | null>(null);
   const { tags } = useTagContext();
+  usePageLeaveConfirm(isDirty, isSubmitting);
 
   const handlePreview = useCallback(() => {
+    const formTag = tags.map((tag) => tag.tagName);
     const formData = new PostForm(
       watch('postType'),
       watch('title'),
-      tags.map((tag) => tag.tagName),
+      formTag,
       Number(watch('tutor')?.tutorId),
       Number(watch('postPeriod')),
       Boolean(watch('isOpened')),
@@ -69,9 +75,7 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data.type === 'POPUP_LOADED') {
-        popupWindow?.postMessage({ type: 'FORM_DATA', data: watch() }, '*');
-      } else if (event.data.type === 'SUBMIT_FORM') {
+      if (event.data.type === 'SUBMIT_FORM') {
         handleSubmit(onSubmit)();
       }
     };
@@ -83,7 +87,7 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
   return (
     <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <section className="flex flex-col">
-        <div className="m-6 flex max-w-[1102px] flex-col gap-4 rounded-[14px] border border-blue-100 bg-white px-9 py-8">
+        <PermissionBoard variant="post">
           {/* Thumbnail */}
           <ThumbnailContainer
             setValue={setValue}
@@ -135,19 +139,25 @@ const PostFormContainer = ({ postData }: PostFormContainerProps) => {
             </TitleContainer>
           </div>
           <div className="flex justify-end gap-4">
-            <Button type="button" variant="secondary" onClick={handlePreview}>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={!isValid}
+              onClick={handlePreview}
+              className="w-[176px]"
+            >
               미리보기
             </Button>
             <Button
               type="submit"
               variant="submit"
               disabled={!isValid}
-              className="w-[178px]"
+              className="w-[176px]"
             >
-              {postData ? '수정하기' : '등록하기'}
+              {postData ? '수정하기' : '게시하기'}
             </Button>
           </div>
-        </div>
+        </PermissionBoard>
       </section>
     </form>
   );

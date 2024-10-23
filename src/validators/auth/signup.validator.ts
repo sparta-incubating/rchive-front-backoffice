@@ -6,7 +6,9 @@ export const BIRTHDATE_REG =
 
 export const signupSchema = z
   .object({
-    email: z.string().email({ message: '올바른 이메일을 입력해주세요.' }),
+    email: z
+      .string()
+      .email({ message: '올바른 이메일 주소 형식으로 다시 입력해 주세요.' }),
     username: z.string().min(1, '이름을 입력해주세요.'),
     password: z
       .string()
@@ -18,7 +20,6 @@ export const signupSchema = z
     passwordConfirm: z.string(),
     phone: z.string().min(8, '휴대폰 인증은 필수입니다.'),
     authCode: z.string().min(6, '휴대폰 인증은 필수입니다.'),
-    nickname: z.string().default(''),
     profileImg: z.string().default('default'),
     birth: z
       .string()
