@@ -3,13 +3,12 @@ import RoleContainerPage from '@/components/pages/roleContainerPage';
 import RoleWait from '@/components/pages/roleResult/roleWait';
 import { RoleResultEnum } from '@/types/role.types';
 import { serverAxios } from '@/utils/serverAxios';
-import { isTeamSpartaEmail } from '@/utils/utils';
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 
 const RoleResultPage = async () => {
   const email = getCookie('loginId', { cookies });
-  const trackRole = isTeamSpartaEmail(String(email)) ? 'PM' : 'APM';
+  const trackRole = 'PM';
 
   // 권한 신청 결과 조회 endpoint
   const getRoleApplyResult = async () => {

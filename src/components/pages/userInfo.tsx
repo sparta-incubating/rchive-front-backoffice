@@ -30,16 +30,16 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <p className="flex h-[24px] w-[60px] py-2 text-base font-medium leading-6 text-gray-900">
           회원정보
         </p>
-        {trackRole === 'APM' && (
-          <button
-            className="mt-2 box-border h-[44px] w-[111px] rounded-[8px] border px-[20px] py-[12px]"
-            onClick={handleChangeRole}
-          >
-            <p className="text-xs font-semibold leading-[18px] text-gray-900">
-              권한 수정 요청
-            </p>
-          </button>
-        )}
+
+        {/* 권한 수정이 필요할때 해제 할 것.*/}
+        {/*<button
+          className="mt-2 box-border h-[44px] w-[111px] rounded-[8px] border px-[20px] py-[12px]"
+          onClick={handleChangeRole}
+        >
+          <p className="text-xs font-semibold leading-[18px] text-gray-900">
+            권한 수정 요청
+          </p>
+        </button>*/}
       </section>
 
       {/* 회원 정보 */}

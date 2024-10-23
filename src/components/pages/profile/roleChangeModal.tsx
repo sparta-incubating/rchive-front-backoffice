@@ -31,7 +31,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
   });
 
   const { trackNameOptions } = useTrackName();
-  const period = useGetPeriod(watch('trackName'), trackRole);
+  const period = useGetPeriod(watch('trackName'));
 
   const { updateRoleMutate } = useProfileUpdate();
 
@@ -80,7 +80,7 @@ const RoleChangeModal = ({ onClose, trackRole }: RoleChangeModalProps) => {
           <p className="text-red-500">{errors.trackName.message}</p>
         )}
 
-        {trackRole === 'APM' && period && (
+        {period && (
           <>
             <Controller
               name="period"

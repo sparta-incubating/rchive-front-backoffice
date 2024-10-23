@@ -35,7 +35,7 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
   });
   const { trackNameOptions } = useTrackName();
 
-  const period = useGetPeriod(watch('trackName'), trackRole);
+  const period = useGetPeriod(watch('trackName'));
 
   const onSubmit = async (data: RoleFormSchema) => {
     const response = await postRoleApply(data);
@@ -65,7 +65,7 @@ const RoleSelectForm = ({ trackRole, children }: RoleSelectFormProps) => {
           <p className="text-red-500">{errors.trackName.message}</p>
         )}
 
-        {trackRole === 'APM' && period && (
+        {period && (
           <>
             <Controller
               name="period"

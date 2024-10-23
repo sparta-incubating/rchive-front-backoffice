@@ -49,10 +49,7 @@ const PostListPage = ({
   );
 
   // 기수
-  const [searchPeriod, setSearchPeriod] = useState<string>(
-    searchParams?.searchPeriod ||
-      (loginTrackRole === 'APM' ? loginPeriod : '0'),
-  );
+  const [searchPeriod, setSearchPeriod] = useState<string>('0');
 
   // 튜터
   const getFetchTutors = useSearchTutor(trackName, loginPeriod, searchPeriod);

@@ -13,7 +13,6 @@ const CategoryFiltered = ({ handleCategoryChange }: CategoryProps) => {
 
   const roleCategory = [
     { id: 1, name: '전체', label: '전체', value: '' },
-    { id: 2, name: 'APM', label: 'APM', value: 'APM' },
     { id: 3, name: '수강생', label: '수강생', value: 'STUDENT' },
   ];
 

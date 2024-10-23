@@ -1,4 +1,4 @@
-export type trackRole = 'PM' | 'APM' | 'USER';
+export type trackRole = 'PM' | 'USER';
 
 export type LastConnectRoleDataType = {
   trackId: number;

@@ -65,7 +65,6 @@ const PostInfoContainer = ({
               variant="secondary"
               className="h-[60px] w-[328px] border border-blue-100 bg-white px-4 py-[18.5px] text-sm"
               value={value}
-              disabled={trackRole === 'APM'}
             />
           )}
         />
